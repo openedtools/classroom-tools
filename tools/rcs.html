@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RCS – Radar Visibility Trainer (Simplified)</title>
+<style>
+  :root{--bg:#0b1020;--panel:#121a33;--stroke:#273a7e;--text:#e6ecff;--muted:#9fb0ff;--accent:#5ad1ff}
+  html,body{height:100%}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -10%, #1a2961 0%, var(--bg) 50%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;display:grid;grid-template-rows:auto 1fr auto}
+  header{padding:16px 20px 0}
+  h1{margin:0 0 6px}
+  .sub{color:var(--muted);font-size:14px}
+  .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;padding:12px 20px 20px}
+  .card{background:var(--panel);border:1px solid var(--stroke);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .pad{padding:14px}
+  .row{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center;margin:10px 0}
+  label{font-size:13px;color:var(--muted)}
+  input[type=range]{width:100%}
+  select,button{background:#0f1630;color:var(--text);border:1px solid #24346e;border-radius:8px;padding:8px 10px;cursor:pointer}
+  .toggle{display:flex;gap:8px;flex-wrap:wrap}
+  .toggle button{border-radius:999px}
+  .toggle button.active{outline:2px solid var(--accent)}
+  #scene{height:380px;border-radius:12px;background:#0c1533;display:grid;grid-template-columns:1fr 280px}
+  #viz{position:relative}
+  #meter{border-left:1px solid #22306b;padding:12px}
+  .gauge{height:24px;border-radius:12px;background:linear-gradient(90deg,#2ecc71,#f1c40f,#e67e22,#e74c3c);position:relative}
+  .needle{position:absolute;top:-4px;width:2px;height:32px;background:#fff;border-radius:2px}
+  .glabel{display:flex;justify-content:space-between;font-size:12px;color:#a6b6ff;margin-top:4px}
+  .big{font-size:36px;font-weight:800;margin:6px 0}
+  .why{font-size:13px;color:#c9d5ff}
+  .pill{display:inline-block;padding:2px 6px;border-radius:6px;background:#0f1630;border:1px solid #2a3b7a;margin-right:4px}
+  footer{color:#90a2ff;opacity:.9;font-size:12px;padding:6px 20px 16px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Radar Visibility Trainer</h1>
+  <div class="sub">Simple rule-of-thumb model. Think **flashlight and mirror**: radar sends energy, the target reflects some back. More backscatter → easier to detect.</div>
+</header>
+
+<div class="wrap">
+  <!-- LEFT: Visual + Meter -->
+  <div class="card pad" style="display:flex;flex-direction:column;gap:10px">
+    <div id="scene">
+      <div id="viz"></div>
+      <div id="meter">
+        <div style="font-size:12px;color:#a6b6ff">Radar Return</div>
+        <div class="gauge"><div id="needle" class="needle"></div></div>
+        <div class="glabel"><span>LOW</span><span>HIGH</span></div>
+        <div class="big" id="scoreTxt">—</div>
+        <div class="why" id="whyTxt"></div>
+      </div>
+    </div>
+    <div class="why">
+      <b>What they learn:</b>
+      <span class="pill">Shape</span> flat → strong; rounded/angled → weaker.
+      <span class="pill">Angle</span> point edges away from radar to spill energy.
+      <span class="pill">Material</span> RAM absorbs some energy.
+      <span class="pill">Frequency</span> higher = smaller details matter more.
+    </div>
+  </div>
+
+  <!-- RIGHT: Simple Controls -->
+  <div class="card pad">
+    <div class="row">
+      <label>Shape</label>
+      <div class="toggle" id="shapeBtns"></div>
+    </div>
+    <div class="row">
+      <label>Angle to Radar</label>
+      <div>
+        <input id="angle" type="range" min="0" max="90" step="1" value="0" />
+        <div style="display:flex;justify-content:space-between;color:#8ea0ff;font-size:12px"><span>Facing (0°)</span><span>Edge-on (90°)</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <label>Material</label>
+      <div class="toggle" id="matBtns"></div>
+    </div>
+    <div class="row">
+      <label>Frequency Band</label>
+      <div class="toggle" id="freqBtns"></div>
+    </div>
+
+    <div class="row">
+      <label>Real‑world Example</label>
+      <select id="example">
+        <option value="none" selected>Choose…</option>
+        <option value="car">Car: license plate vs bumper</option>
+        <option value="boat">Boat: flat hull panel vs rounded bow</option>
+        <option value="drone">Drone: angled body w/ RAM tape</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<footer>Class use: Give each team a scenario (e.g., “Avoid X‑band radar”). They pick shape/angle/material and explain in plain language **why** the meter went down.</footer>
+
+<script>
+  // --- Simple heuristics (0–100 score) ---
+  // Shapes
+  const SHAPES = [
+    {key:'flat',   label:'Flat Panel', base:90},
+    {key:'box',    label:'Boxy Body',  base:75},
+    {key:'round',  label:'Rounded Body', base:55},
+    {key:'faceted',label:'Angled/Faceted', base:40}
+  ];
+  // Materials (multipliers)
+  const MATS = [
+    {key:'metal', label:'Metal', k:1.0, note:'reflective'},
+    {key:'paint', label:'Painted Metal', k:0.8, note:'slightly absorbs'},
+    {key:'ram',   label:'RAM Coating', k:0.6, note:'absorbs more'}
+  ];
+  // Frequency bands (multipliers)
+  const FREQS = [
+    {key:'low',  label:'Low (L/S)', k:0.9, note:'big shapes dominate'},
+    {key:'mid',  label:'Mid (X)',   k:1.0, note:'balanced'},
+    {key:'high', label:'High (Ku/Ka)', k:1.15, note:'small details matter'}
+  ];
+
+  // UI refs
+  const shapeBtns = document.getElementById('shapeBtns');
+  const matBtns = document.getElementById('matBtns');
+  const freqBtns = document.getElementById('freqBtns');
+  const angle = document.getElementById('angle');
+  const scoreTxt = document.getElementById('scoreTxt');
+  const whyTxt = document.getElementById('whyTxt');
+  const viz = document.getElementById('viz');
+  const needle = document.getElementById('needle');
+  const example = document.getElementById('example');
+
+  let state = {shape:'flat', mat:'metal', freq:'mid', ang:0};
+
+  // Button builders
+  function buildToggle(container, items, key){
+    items.forEach(it=>{
+      const b=document.createElement('button'); b.textContent=it.label; b.dataset.key=it.key; if(it.key===state[key]) b.classList.add('active');
+      b.onclick=()=>{ state[key]=it.key; [...container.children].forEach(x=>x.classList.toggle('active', x.dataset.key===state[key])); update(); };
+      container.appendChild(b);
+    });
+  }
+  buildToggle(shapeBtns, SHAPES, 'shape');
+  buildToggle(matBtns, MATS, 'mat');
+  buildToggle(freqBtns, FREQS, 'freq');
+  angle.addEventListener('input', ()=>{ state.ang=parseInt(angle.value,10); update(); });
+
+  // Example presets
+  example.addEventListener('change', ()=>{
+    if(example.value==='car'){ state={shape:'flat', mat:'metal', freq:'mid', ang:0}; angle.value=0; }
+    if(example.value==='boat'){ state={shape:'round', mat:'paint', freq:'low', ang:20}; angle.value=20; }
+    if(example.value==='drone'){ state={shape:'faceted', mat:'ram', freq:'high', ang:35}; angle.value=35; }
+    // refresh toggles
+    [...shapeBtns.children].forEach(x=>x.classList.toggle('active', x.dataset.key===state.shape));
+    [...matBtns.children].forEach(x=>x.classList.toggle('active', x.dataset.key===state.mat));
+    [...freqBtns.children].forEach(x=>x.classList.toggle('active', x.dataset.key===state.freq));
+    update();
+  });
+
+  // Score function: start with base by shape; reduce by angle; scale by material & frequency
+  function computeScore(){
+    const s = SHAPES.find(x=>x.key===state.shape).base;
+    const km = MATS.find(x=>x.key===state.mat).k;
+    const kf = FREQS.find(x=>x.key===state.freq).k;
+    // Angle effect: big drop for flat/faceted, smaller for round/box; 0° → no drop; 90° → strong drop
+    const angleDropFactor = {flat: (a)=>1 - 0.9*(a/90), faceted:(a)=>1 - 0.85*(a/90), box:(a)=>1 - 0.6*(a/90), round:(a)=>1 - 0.4*(a/90)}[state.shape](state.ang);
+    let score = s * angleDropFactor * km * kf;
+    return Math.max(5, Math.min(100, score));
+  }
+
+  // Simple SVG scene to visualize rays & reflection
+  function drawScene(){
+    const w = viz.clientWidth, h = viz.clientHeight; viz.innerHTML='';
+    const svgNS='http://www.w3.org/2000/svg';
+    const svg=document.createElementNS(svgNS,'svg'); svg.setAttribute('width','100%'); svg.setAttribute('height','100%');
+    // Radar icon
+    const radar=document.createElementNS(svgNS,'circle'); radar.setAttribute('cx',60); radar.setAttribute('cy',h/2); radar.setAttribute('r',10); radar.setAttribute('fill','#5ad1ff'); svg.appendChild(radar);
+    // Rays
+    for(let i=-2;i<=2;i++){
+      const ray=document.createElementNS(svgNS,'line'); ray.setAttribute('x1',70); ray.setAttribute('y1',h/2 + i*10); ray.setAttribute('x2',w/2-40); ray.setAttribute('y2',h/2 + i*10); ray.setAttribute('stroke','#3aa8ff'); ray.setAttribute('stroke-width','2'); svg.appendChild(ray);
+    }
+    // Target
+    const g=document.createElementNS(svgNS,'g'); g.setAttribute('transform',`translate(${w/2},${h/2}) rotate(${-state.ang})`);
+    let target;
+    if(state.shape==='flat'){
+      target=document.createElementNS(svgNS,'rect'); target.setAttribute('x',-10); target.setAttribute('y',-40); target.setAttribute('width',20); target.setAttribute('height',80); target.setAttribute('rx',4);
+    } else if(state.shape==='box'){
+      target=document.createElementNS(svgNS,'rect'); target.setAttribute('x',-35); target.setAttribute('y',-25); target.setAttribute('width',70); target.setAttribute('height',50); target.setAttribute('rx',8);
+    } else if(state.shape==='round'){
+      target=document.createElementNS(svgNS,'circle'); target.setAttribute('cx',0); target.setAttribute('cy',0); target.setAttribute('r',32);
+    } else { // faceted
+      target=document.createElementNS(svgNS,'polygon'); target.setAttribute('points','-40,0 -10,-30 10,-30 40,0 10,30 -10,30');
+    }
+    target.setAttribute('fill','#1ec8a5'); target.setAttribute('stroke','#0a7363'); target.setAttribute('stroke-width','2'); g.appendChild(target); svg.appendChild(g);
+
+    // Reflected arrow thickness = score
+    const score = computeScore();
+    const back=document.createElementNS(svgNS,'line'); back.setAttribute('x1',w/2-30); back.setAttribute('y1',h/2); back.setAttribute('x2',80); back.setAttribute('y2',h/2);
+    back.setAttribute('stroke','#fff'); back.setAttribute('stroke-width', Math.max(2, score/25)); svg.appendChild(back);
+    const arrow=document.createElementNS(svgNS,'polygon'); arrow.setAttribute('points',`80,${h/2-6} 80,${h/2+6} 65,${h/2}`); arrow.setAttribute('fill','#fff'); svg.appendChild(arrow);
+
+    viz.appendChild(svg);
+  }
+
+  function update(){
+    const score = computeScore();
+    // Meter
+    const meter = document.querySelector('.gauge');
+    const w = meter.clientWidth; const x = (score/100)*w;
+    needle.style.left = (x-1)+'px';
+    scoreTxt.textContent = score<25? 'Very Low' : score<50? 'Low' : score<75? 'Medium' : 'High';
+
+    const s = SHAPES.find(x=>x.key===state.shape), m = MATS.find(x=>x.key===state.mat), f = FREQS.find(x=>x.key===state.freq);
+    const reasons = [];
+    reasons.push(`${s.label} shape` + (state.shape==='flat'?' reflects straight back':' spreads energy away'));
+    if(state.ang>0) reasons.push(`${state.ang}° angle spills energy away`);
+    reasons.push(`${m.label} ${m.note}`);
+    reasons.push(`${f.label}: ${f.note}`);
+    whyTxt.textContent = reasons.join(' • ');
+
+    drawScene();
+  }
+
+  // Initial render
+  window.addEventListener('resize', drawScene);
+  update();
+</script>
+</body>
+</html>

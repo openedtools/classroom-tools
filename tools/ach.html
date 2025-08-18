@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ACH Board Simulator – ESL (Offline)</title>
+<style>
+  :root{--bg:#0b1020;--panel:#121a33;--stroke:#273a7e;--text:#e6ecff;--muted:#9fb0ff;--accent:#5ad1ff;--good:#2ecc71;--bad:#e74c3c;--mid:#9aa6ff}
+  html,body{height:100%}
+  body{margin:0;background:radial-gradient(1100px 600px at 50% -10%, #1a2961 0%, var(--bg) 55%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;display:grid;grid-template-rows:auto 1fr auto}
+  header{padding:16px 20px 6px}
+  h1{margin:0 0 6px}
+  .sub{color:var(--muted);font-size:14px}
+  .wrap{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;padding:12px 20px 20px}
+  .card{background:var(--panel);border:1px solid var(--stroke);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .pad{padding:14px}
+  .row{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center;margin:8px 0}
+  label{font-size:13px;color:var(--muted)}
+  input,select,button,textarea{background:#0f1630;color:var(--text);border:1px solid #24346e;border-radius:8px;padding:8px 10px;font-family:inherit}
+  textarea{min-height:70px;resize:vertical}
+  button{cursor:pointer}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#0f1630;border:1px solid #2a3b7a;border-radius:999px;padding:6px 10px;margin:0 6px 6px 0}
+  .chip input{border:none;background:transparent;padding:0;width:160px}
+  .chip .rm{background:#201f3f;border:1px solid #3a4a9a;border-radius:999px;padding:2px 6px;font-size:12px}
+  .list{display:flex;flex-direction:column;gap:8px}
+  .ev{display:grid;grid-template-columns:1.6fr 0.9fr 0.4fr;gap:8px}
+  .ev input{width:100%}
+  .ev .rm{width:100%}
+  table{width:100%;border-collapse:separate;border-spacing:0 8px}
+  th,td{padding:8px 6px;text-align:center}
+  thead th{font-size:12px;color:#bcd0ff}
+  tbody tr{background:#0e1633;border:1px solid #22306b}
+  tbody td:first-child{text-align:left}
+  .pill{display:inline-block;padding:2px 6px;border-radius:6px;background:#0f1630;border:1px solid #2a3b7a;margin-right:4px}
+  .btn{border-radius:8px}
+  .btn.small{padding:4px 8px;font-size:12px}
+  .seg{display:inline-flex;border:1px solid #2a3b7a;border-radius:8px;overflow:hidden}
+  .seg button{border:0; padding:6px 10px}
+  .seg button.active{background:#1a2550}
+  .S{background:rgba(46,204,113,.14);border:1px solid rgba(46,204,113,.35)}
+  .H{background:rgba(231,76,60,.14);border:1px solid rgba(231,76,60,.35)}
+  .N{background:rgba(154,166,255,.14);border:1px solid rgba(154,166,255,.35)}
+  .scoreRow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin:6px 0}
+  .bar{height:10px;background:#0f1630;border:1px solid #22306b;border-radius:999px;position:relative}
+  .bar > div{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--good),#f1c40f,var(--bad));border-radius:999px}
+  .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+  .k{background:#0f1630;border:1px solid #22306b;border-radius:12px;padding:10px}
+  .k h4{margin:0 0 4px;font-size:11px;color:#a6b6ff}
+  .k .v{font-weight:700}
+  .hint{font-size:12px;color:#9fb0ff;margin-top:6px}
+  footer{color:#90a2ff;opacity:.9;font-size:12px;padding:6px 20px 14px}
+  .smallnote{font-size:12px;color:#9fb0ff;margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>ACH Board Simulator</h1>
+  <div class="sub">Compare hypotheses with the <b>same evidence</b>. Mark each cell: <b>Helps</b> ✅, <b>Hurts</b> ❌, or <b>Not sure</b> ◻. Focus on contradictions.</div>
+</header>
+
+<div class="wrap">
+  <!-- LEFT: Matrix -->
+  <div class="card pad">
+    <div class="row">
+      <label>Question</label>
+      <input id="q" placeholder="e.g., Who is behind the GPS jamming in Sector X?"/>
+    </div>
+
+    <div class="row" style="align-items:start">
+      <label>Hypotheses</label>
+      <div id="hypoWrap"></div>
+    </div>
+
+    <div class="row" style="align-items:start">
+      <label>Evidence</label>
+      <div class="list" id="evList"></div>
+    </div>
+
+    <div class="row">
+      <label>Weights</label>
+      <div>
+        <div class="seg" id="weightMode" style="margin-bottom:6px">
+          <button data-mode="off" class="active">Off</button>
+          <button data-mode="on">On</button>
+        </div>
+        <div id="weightsHelp" class="smallnote">Off: every ❌ Hurts counts as 1. ◻ Not sure counts as 0.5. ✅ Helps = 0.</div>
+      </div>
+    </div>
+
+    <div style="overflow:auto; margin-top:8px">
+      <table id="matrix">
+        <thead><tr id="thead"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="hint">Method tip: Fill each <b>row</b> left→right (work across), not column by column. That keeps evidence consistent.</div>
+  </div>
+
+  <!-- RIGHT: Results & Notes -->
+  <div class="card pad">
+    <div class="kpi">
+      <div class="k"><h4>Most Consistent</h4><div class="v" id="bestOut">—</div></div>
+      <div class="k"><h4>Key Evidence</h4><div class="v" id="keyOut">—</div></div>
+      <div class="k"><h4>Flip Test</h4><div class="v" id="flipOut">—</div></div>
+    </div>
+
+    <div id="scores"></div>
+
+    <div class="row">
+      <label>Sensitivity</label>
+      <select id="dropEv"></select>
+    </div>
+
+    <div class="row" style="align-items:start">
+      <label>Write-up</label>
+      <textarea id="writeup" placeholder="2–3 sentences: What we think and why. What would change our mind?"></textarea>
+    </div>
+
+    <div class="row">
+      <label>Save/Load</label>
+      <div>
+        <button class="btn small" id="save">Save JSON</button>
+        <input type="file" id="load" accept="application/json" style="display:inline-block"/>
+        <button class="btn small" id="print">Print</button>
+      </div>
+    </div>
+
+    <div class="hint">Scoring: ❌ Hurts = +1 (bad). ✅ Helps = 0. ◻ Not sure = 0.5 (optional). With <b>Weights: On</b> → High counts ×2, Low counts ×0.5.</div>
+  </div>
+</div>
+
+<footer>
+  Class flow: add 2–4 hypotheses and 5–8 evidence items → mark the grid → read ranking → drop one key evidence (sensitivity) → write final note.
+</footer>
+
+<script>
+  // ---------- State ----------
+  let state = {
+    question: '',
+    weightMode: 'off',
+    hypos: [ {id:'H1', name:'H1'}, {id:'H2', name:'H2'}, {id:'H3', name:'H3'} ],
+    evidence: [ // default examples (can be cleared)
+      {id:'E1', title:'Jamming near border', note:'', importance:'Med'},
+      {id:'E2', title:'New emitter on 121.5', note:'', importance:'High'},
+      {id:'E3', title:'Local weather good', note:'', importance:'Low'}
+    ],
+    cells: {} // key: EID|HID -> 'S'|'H'|'N'
+  };
+
+  const q = document.getElementById('q');
+  const hypoWrap = document.getElementById('hypoWrap');
+  const evList = document.getElementById('evList');
+  const thead = document.getElementById('thead');
+  const tbody = document.getElementById('tbody');
+  const weightMode = document.getElementById('weightMode');
+  const weightsHelp = document.getElementById('weightsHelp');
+  const scoresDiv = document.getElementById('scores');
+  const keyOut = document.getElementById('keyOut');
+  const bestOut = document.getElementById('bestOut');
+  const flipOut = document.getElementById('flipOut');
+  const dropEv = document.getElementById('dropEv');
+  const writeup = document.getElementById('writeup');
+  const saveBtn = document.getElementById('save');
+  const loadInput = document.getElementById('load');
+  const printBtn = document.getElementById('print');
+
+  // ---------- UI Builders ----------
+  function renderHypos(){
+    hypoWrap.innerHTML='';
+    state.hypos.forEach(h=>{
+      const chip = document.createElement('div'); chip.className='chip';
+      const inp = document.createElement('input'); inp.value = h.name; inp.oninput=()=>{h.name=inp.value; renderMatrix(); renderScores();};
+      const rm = document.createElement('button'); rm.textContent='×'; rm.className='rm'; rm.onclick=()=>{ if(state.hypos.length>2){ state.hypos=state.hypos.filter(x=>x.id!==h.id); renderAll(); } };
+      chip.append(inp, rm); hypoWrap.appendChild(chip);
+    });
+    const add = document.createElement('button'); add.textContent='+ Add'; add.className='btn small';
+    add.onclick=()=>{ const id = 'H'+(state.hypos.length+1); state.hypos.push({id,name:id}); renderAll(); };
+    hypoWrap.appendChild(add);
+  }
+
+  function renderEvidence(){
+    evList.innerHTML='';
+    state.evidence.forEach(e=>{
+      const row = document.createElement('div'); row.className='ev';
+      const t = document.createElement('input'); t.placeholder='Short evidence'; t.value=e.title; t.oninput=()=>{e.title=t.value; renderMatrix(); renderScores();};
+      const imp = document.createElement('select'); ['Low','Med','High'].forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; if(e.importance===v)o.selected=true; imp.appendChild(o); });
+      imp.onchange=()=>{ e.importance=imp.value; renderMatrix(); renderScores(); };
+      const rm = document.createElement('button'); rm.textContent='Remove'; rm.className='rm'; rm.onclick=()=>{ state.evidence=state.evidence.filter(x=>x.id!==e.id); renderAll(); };
+      row.append(t, imp, rm); evList.appendChild(row);
+    });
+    const add = document.createElement('button'); add.textContent='+ Add Evidence'; add.className='btn small';
+    add.onclick=()=>{ const id='E'+(state.evidence.length+1); state.evidence.push({id,title:'',note:'',importance:'Med'}); renderAll(); };
+    evList.appendChild(add);
+  }
+
+  function renderMatrix(){
+    // header
+    thead.innerHTML='';
+    const h0 = document.createElement('th'); h0.textContent='Evidence ↓  |  Hypotheses →'; h0.style.textAlign='left'; thead.appendChild(h0);
+    state.hypos.forEach(h=>{ const th=document.createElement('th'); th.textContent=h.name; thead.appendChild(th); });
+
+    // body
+    tbody.innerHTML='';
+    state.evidence.forEach(e=>{
+      const tr=document.createElement('tr');
+      const td0=document.createElement('td');
+      td0.style.textAlign='left';
+      td0.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><div><b>${e.title||e.id}</b> <span class="pill">${e.importance}</span></div></div>`;
+      tr.appendChild(td0);
+      state.hypos.forEach(h=>{
+        const td=document.createElement('td');
+        const seg=document.createElement('div'); seg.className='seg';
+        ['S','N','H'].forEach(code=>{
+          const b=document.createElement('button'); b.textContent = code==='S'?'✅ Helps': code==='H'?'❌ Hurts':'◻ Not sure';
+          if(getCell(e.id,h.id)===code) b.classList.add('active');
+          b.onclick=()=>{ setCell(e.id,h.id, code); [...seg.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); renderScores(); };
+          seg.appendChild(b);
+        });
+        td.appendChild(seg); tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  function getCell(eid,hid){ return state.cells[`${eid}|${hid}`] || 'N'; }
+  function setCell(eid,hid,val){ state.cells[`${eid}|${hid}`]=val; }
+
+  // ---------- Scoring ----------
+  function weightFor(importance){ if(state.weightMode==='off') return 1; return importance==='High'? 2 : importance==='Low'? 0.5 : 1; }
+
+  function computeScores(dropId=null){
+    const scores = state.hypos.map(h=>({hid:h.id, name:h.name, bad:0, mid:0, good:0}));
+    state.evidence.forEach(e=>{
+      if(dropId && e.id===dropId) return; // sensitivity: drop one evidence
+      const w = weightFor(e.importance);
+      state.hypos.forEach((h,hi)=>{
+        const v = getCell(e.id,h.id);
+        if(v==='H') scores[hi].bad += 1*w; else if(v==='N') scores[hi].mid += 0.5*w; else if(v==='S') scores[hi].good += 0*w;
+      });
+    });
+    // rank by lowest contradictions (bad), tiebreaker by mid
+    scores.sort((a,b)=> (a.bad-b.bad) || (a.mid-b.mid));
+    return scores;
+  }
+
+  function findKeyEvidence(){
+    // evidence that creates the biggest difference between best and next
+    let best=null; let bestGap=-Infinity;
+    state.evidence.forEach(e=>{
+      const scores = computeScores(e.id);
+      const gap = scores.length>1 ? (scores[1].bad - scores[0].bad) : 0;
+      if(gap>bestGap){ bestGap=gap; best=e; }
+    });
+    return best; // may be null if no evidence
+  }
+
+  function renderScores(){
+    const scores = computeScores(dropEv.value||null);
+    bestOut.textContent = scores.length? `${scores[0].name}` : '—';
+
+    // bars
+    scoresDiv.innerHTML='';
+    scores.forEach(s=>{
+      const row=document.createElement('div'); row.className='scoreRow';
+      const name=document.createElement('div'); name.textContent=s.name; row.appendChild(name);
+      const bar=document.createElement('div'); bar.className='bar'; const fill=document.createElement('div');
+      const maxBad = Math.max(1, ...scores.map(x=>x.bad));
+      fill.style.width = (s.bad/maxBad*100)+'%'; bar.appendChild(fill); row.appendChild(bar);
+      const num=document.createElement('div'); num.textContent = `Hurts: ${s.bad.toFixed(1)}  · Not sure: ${s.mid.toFixed(1)}`; row.appendChild(num);
+      scoresDiv.appendChild(row);
+    });
+
+    // key evidence + flip test setup
+    dropEv.innerHTML='';
+    const opt0=document.createElement('option'); opt0.value=''; opt0.textContent='— none —'; dropEv.appendChild(opt0);
+    state.evidence.forEach(e=>{ const o=document.createElement('option'); o.value=e.id; o.textContent=`Drop ${e.id}: ${e.title||''}`; dropEv.appendChild(o); });
+
+    const key = findKeyEvidence(); keyOut.textContent = key? `${key.id} (${key.title||'evidence'})` : '—';
+    const base = computeScores(); const drop = computeScores(key? key.id:null);
+    const flipped = (base[0] && drop[0]) ? (base[0].hid !== drop[0].hid) : false;
+    flipOut.textContent = key? (flipped? 'Flips when dropped' : 'Holds when dropped') : '—';
+  }
+
+  // ---------- Events ----------
+  q.addEventListener('input', ()=> state.question = q.value);
+  weightMode.querySelectorAll('button').forEach(b=> b.onclick=()=>{ state.weightMode=b.dataset.mode; weightMode.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));
+    weightsHelp.textContent = (state.weightMode==='on')
+      ? 'On: High = ×2 (strong evidence). Med = ×1. Low = ×0.5. ❌ Hurts adds more when evidence is High.'
+      : 'Off: every ❌ Hurts counts as 1. ◻ Not sure counts as 0.5. ✅ Helps = 0.';
+    renderScores();
+  });
+  dropEv.addEventListener('change', renderScores);
+  saveBtn.onclick=()=>{
+    const data = JSON.stringify(state, null, 2);
+    const blob = new Blob([data], {type:'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ach_board.json'; a.click();
+  };
+  loadInput.onchange=(e)=>{
+    const file=e.target.files[0]; if(!file) return; const fr=new FileReader(); fr.onload=()=>{ try{ state=JSON.parse(fr.result); renderAll(); }catch{} }; fr.readAsText(file);
+  };
+  printBtn.onclick=()=> window.print();
+
+  // ---------- Render all ----------
+  function renderAll(){ renderHypos(); renderEvidence(); renderMatrix(); renderScores(); }
+
+  // Kickoff
+  renderAll();
+</script>
+</body>
+</html>

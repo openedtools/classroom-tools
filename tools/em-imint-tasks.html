@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EM Spectrum ⇄ IMINT ⇄ Analyst Tasks</title>
+<style>
+  :root{
+    --bg:#0b0e12; --panel:#121722; --tile:#18202c; --tileBorder:#243043; --tileHL:#2b3b55;
+    --text:#e7eefb; --muted:#9ab0d1; --accent:#6aa9ff; --accent2:#9cdb97; --warn:#ffcc66;
+  }
+  html,body{height:100%;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;}
+  .wrap{max-width:1100px;margin:24px auto;padding:0 16px;}
+  h1{font-size:20px;margin:0 0 12px 0;font-weight:600;letter-spacing:.2px}
+
+  /* Spectrum */
+  .spectrumCard{background:var(--panel);border:1px solid var(--tileBorder);border-radius:14px;padding:14px 14px 10px;margin-bottom:14px}
+  .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .readout{min-width:180px;font-variant-numeric:tabular-nums}
+  .readout .big{font-size:22px;font-weight:700}
+  .unit{color:var(--muted);font-size:12px;margin-left:4px}
+  .slider{flex:1}
+  input[type=range]{width:100%}
+  .ticks{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px}
+
+  /* Grids */
+  .twoCol{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  @media (max-width:900px){.twoCol{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--tileBorder);border-radius:14px;padding:12px}
+  .grid{display:grid;gap:10px}
+  .grid.images{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
+  .grid.tasks{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+
+  .tile{background:var(--tile);border:1px solid var(--tileBorder);border-radius:12px;padding:10px 12px;cursor:pointer;transition:transform .05s ease, border-color .2s ease, background .2s ease}
+  .tile:hover{transform:translateY(-1px)}
+  .tile.active{background:var(--tileHL);border-color:var(--accent)}
+  .tile h3{margin:0 0 4px 0;font-size:14px}
+  .range{font-size:11px;color:var(--muted)}
+
+  /* Description */
+  .desc.panel{margin:12px 0}
+  .desc h2{margin:0 0 6px 0;font-size:18px}
+  .desc .k{color:var(--muted);font-size:12px}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:8px}
+  ul{margin:6px 0 0 18px}
+  .badge{display:inline-block;margin-left:8px;font-size:11px;color:#0b0e12;background:var(--warn);padding:2px 6px;border-radius:6px}
+
+  /* SVG spectrum */
+  .svgWrap{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--tileBorder);background:#0e1420}
+  svg{display:block;width:100%;height:110px}
+  .zoneLabel{font-size:10px;fill:#e7eefb;opacity:.9}
+  .tickLabel{font-size:9px;fill:#9ab0d1}
+  .band{opacity:.22}
+  .band.visible{opacity:.35}
+  .band.mw{opacity:.24}
+  .mwDivider{stroke:#34425e;stroke-dasharray:4 4;opacity:.8}
+  .handle{pointer-events:all;cursor:ew-resize}
+  .handle circle{fill:#e7eefb}
+  .handle line{stroke:#e7eefb;opacity:.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>EM Spectrum ⇄ IMINT Modalities ⇄ Analyst Tasks</h1>
+
+  <!-- Top: Spectrum + slider + readout -->
+  <div class="spectrumCard" id="spectrumCard">
+    <div class="svgWrap">
+      <svg id="spectrumSvg" viewBox="0 0 1000 110" aria-label="EM spectrum">
+        <defs>
+          <linearGradient id="visGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#4900ff"/>
+            <stop offset="17%" stop-color="#0049ff"/>
+            <stop offset="33%" stop-color="#00b7ff"/>
+            <stop offset="50%" stop-color="#1cff7a"/>
+            <stop offset="66%" stop-color="#f6ff00"/>
+            <stop offset="83%" stop-color="#ff7a00"/>
+            <stop offset="100%" stop-color="#ff0033"/>
+          </linearGradient>
+        </defs>
+        <g id="zones"></g>
+        <rect x="20" y="24" width="760" height="42" fill="#122038" rx="6"/>
+        <g id="bands"></g>
+        <rect x="mapVisX0" y="24" width="mapVisW" height="42" fill="url(#visGrad)" opacity="0.7" rx="6" id="visGradRect"/>
+        <g id="tickGroup"></g>
+        <g id="mwGroup"></g>
+        <g class="handle" id="handle">
+          <line x1="0" y1="16" x2="0" y2="82" stroke-width="1.5"/>
+          <circle cx="0" cy="65" r="6"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <div class="readout"><span class="big" id="wlOut">—</span><span class="unit">µm</span></div>
+      <div class="slider"><input id="slider" type="range" min="-0.5228787453" max="5.4771212547" step="0.0001" value="-0.2600713870"/></div>
+    </div>
+    <div class="ticks" id="ticks"></div>
+  </div>
+
+  <!-- Middle: Description panel full width -->
+  <div class="desc panel" id="desc"></div>
+
+  <!-- Bottom: Two columns: Imagery Types | Analyst Tasks -->
+  <div class="twoCol">
+    <div class="panel">
+      <h2 style="margin:0 0 6px 0;font-size:16px">Imagery Types</h2>
+      <div class="grid images" id="imageryGrid"></div>
+    </div>
+    <div class="panel">
+      <h2 style="margin:0 0 6px 0;font-size:16px">Analyst Tasks</h2>
+      <div class="grid tasks" id="taskGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== Data (verbatim + platforms) ======
+const IMAGERY_TYPES = [
+  { id: "optical_visible", name: "Optical / Visible-Light (EO)", range_um: [0.4, 0.7], rep_um: 0.55,
+    notes: ["Captures reflected sunlight in 0.4–0.7 µm.", "Panchromatic/color, oblique/vertical, panoramic, WAMI."],
+    examples: ["Film/digital EO", "KH-11 class (generic)", "WorldView", "WAMI"],
+    best_for: ["High detail & context", "ID by shape/color", "Daytime ops"],
+    platforms: ["U-2 (SYERS)", "RQ-4 (EO payload)", "Manned ISR (EO)", "NTM (Satellites)"] },
+  { id: "nir", name: "Near-IR (NIR)", range_um: [0.7, 1.0], rep_um: 0.85,
+    notes: ["Vegetation response; water absorption"],
+    examples: ["VNIR satellite/airborne sensors"],
+    best_for: ["Vegetation vigor", "Water vs land", "Camouflage cues"],
+    platforms: ["U-2 (VNIR bands)", "Airborne VNIR mappers", "NTM (VNIR)", "Civil sats (Sentinel‑2, Landsat)"] },
+  { id: "swir", name: "Short-Wave IR (SWIR)", range_um: [1.0, 3.0], rep_um: 1.6,
+    notes: ["Material/moisture cues; better through smoke/haze", "Reflected nighttime illumination possible (e.g., moon)"],
+    examples: ["SWIR line scanners", "Day/night reflected-light cases"],
+    best_for: ["Moisture & minerals", "Smoke/haze penetration", "Night reflected-light"],
+    platforms: ["U-2 (SWIR)", "Airborne SWIR imagers", "WorldView‑3 (SWIR)", "NTM (SWIR)"] },
+  { id: "mwir", name: "Mid-Wave IR (MWIR)", range_um: [3.0, 5.0], rep_um: 3.5,
+    notes: ["Thermal emission; strong for hot targets"],
+    examples: ["FLIR (3–5 µm)"],
+    best_for: ["Hot engines", "Missile/rocket plumes", "Fires (day/night)"],
+    platforms: ["MQ‑9 (IR)", "Manned ISR (MWIR FLIR)", "Airborne MWIR sensors"] },
+  { id: "lwir", name: "Long-Wave IR (LWIR, Thermal IR)", range_um: [8.0, 14.0], rep_um: 10.0,
+    notes: ["Thermal emission; passive night vision"],
+    examples: ["Thermal cameras (8–14 µm)"],
+    best_for: ["People/vehicles at night", "Heat loss mapping", "Persistent night ops"],
+    platforms: ["MQ‑9 (IR)", "Aerostat IR", "Manned ISR (LWIR)"] },
+  { id: "msi", name: "Multispectral (MSI)", range_um: [0.4, 2.5], rep_um: 0.8,
+    notes: ["5–30 discrete bands (VNIR–SWIR)"],
+    examples: ["Landsat", "Sentinel-2", "WorldView-3 MSI"],
+    best_for: ["Land cover classes", "Crop health", "Mineral mapping"],
+    platforms: ["Landsat", "Sentinel‑2", "WorldView‑3 (MSI)", "Airborne MSI", "NTM (MSI)"] },
+  { id: "hsi", name: "Hyperspectral (HSI)", range_um: [0.4, 2.5], rep_um: 1.0,
+    notes: ["Dozens–hundreds of contiguous bands (VNIR/SWIR; sometimes TIR)"],
+    examples: ["AVIRIS", "HyMap", "PRISMA"],
+    best_for: ["Material ‘fingerprints’", "Paint/camouflage/chemical residues", "Precise material ID"],
+    platforms: ["AVIRIS (airborne)", "HyMap (airborne)", "PRISMA (sat)", "NTM (HSI)"] },
+  { id: "lidar_topo", name: "LiDAR (Topographic)", range_um: [1.0, 1.1], rep_um: 1.064,
+    notes: ["Active laser ranging to build 3D point clouds"],
+    examples: ["Airborne topo LiDAR"],
+    best_for: ["High-fidelity elevation", "Canopy vs ground", "3D feature extraction"],
+    platforms: ["Airborne topo LiDAR", "Geiger/Single‑Photon LiDAR (airborne)"] },
+  { id: "lidar_bathy", name: "LiDAR (Bathymetric)", range_um: [0.52, 0.55], rep_um: 0.532,
+    notes: ["Green laser penetrates shallow clear water"],
+    examples: ["Airborne bathy LiDAR"],
+    best_for: ["Shallow seafloor mapping", "Coastal hazards", "Port/river surveys"],
+    platforms: ["Airborne bathy LiDAR (green)"] },
+  { id: "lidar_geiger", name: "LiDAR (Geiger/Single-Photon/Flash)", range_um: [1.0, 1.1], rep_um: 1.06,
+    notes: ["Wide-area, low-power coverage; flash LiDAR on UAVs for LZ assessment"],
+    examples: ["Geiger-mode LiDAR", "Flash LiDAR"],
+    best_for: ["Large-area 3D collection", "Rapid LZ assessment"],
+    platforms: ["Geiger‑mode LiDAR (airborne)", "Flash LiDAR (UAV)"] },
+  { id: "fmv", name: "Full-Motion Video (FMV)", range_um: [0.4, 14.0], rep_um: 0.65,
+    notes: ["Continuous EO/IR video from UAVs/aircraft/aerostats"],
+    examples: ["MQ-9 EO/IR", "Aerostat EO/IR"],
+    best_for: ["Pattern-of-life", "Dynamic target tracking"],
+    platforms: ["MQ‑9 EO/IR", "Aerostat EO/IR", "Manned ISR (EO/IR)"] },
+  { id: "waps", name: "Wide-Area Persistent Surveillance (WAPS)", range_um: [0.4, 1.0], rep_um: 0.6,
+    notes: ["Gigapixel EO/NIR coverage; forensic back-tracking in urban grids"],
+    examples: ["Gorgon Stare", "ARGUS-IS"],
+    best_for: ["City-scale monitoring", "Multi-target tracking", "Forensic movement analysis"],
+    platforms: ["Gorgon Stare (airborne)", "ARGUS‑IS (airborne)"] },
+  { id: "radar_sar", name: "Imaging Radar (SAR)", range_um: [10000, 300000], rep_um: 30000,
+    notes: ["Active microwave; works through clouds and at night"],
+    examples: ["Strip-map", "Spotlight SAR", "ISAR (ships)"],
+    best_for: ["All-weather imaging", "Ship/structure imaging", "Surface roughness & moisture cues"],
+    platforms: ["U‑2 (SAR)", "Airborne SAR", "Sentinel‑1 (C‑band)", "NTM (SAR)"] },
+  { id: "radar_gmti_ccd", name: "Radar GMTI / CCD", range_um: [10000, 300000], rep_um: 230000,
+    notes: ["GMTI for moving targets; CCD for subtle land-surface change"],
+    examples: ["Airborne GMTI", "SAR-based CCD"],
+    best_for: ["Vehicle movement", "Road usage patterns", "Subtle change detection"],
+    platforms: ["Airborne GMTI (e.g., JSTARS‑class)", "Airborne SAR (CCD)"] },
+  { id: "radar_polsar_insar", name: "Radar PolSAR / InSAR", range_um: [10000, 300000], rep_um: 56000,
+    notes: ["Polarimetry & interferometry; deformation, subsidence, foliage effects"],
+    examples: ["Sentinel-1 (InSAR)", "Airborne PolSAR"],
+    best_for: ["Deformation mapping", "Foliage effects", "Soil/structure change"],
+    platforms: ["Sentinel‑1 (InSAR)", "Airborne PolSAR", "NTM (InSAR/PolSAR)"] }
+];
+
+const ANALYST_TASKS = [
+  { id: "id_detail", name: "Identify vehicles/buildings (detail, daytime)", imagery: "optical_visible", why: "Visible EO shows shape, texture, and color for fine detail." },
+  { id: "detect_camouflage", name: "Detect camouflaged assets in vegetation", imagery: "nir", why: "NIR highlights healthy vegetation; disturbed/camouflage patterns stand out." },
+  { id: "moisture_smoke", name: "Distinguish wet/dry ground or see through smoke", imagery: "swir", why: "SWIR is sensitive to moisture and penetrates smoke/haze better than visible." },
+  { id: "hot_engines", name: "Find hot engines/active fires (day or night)", imagery: "mwir", why: "MWIR emphasizes hot sources like engines and plumes." },
+  { id: "night_people_vehicles", name: "Track people/vehicles at night", imagery: "lwir", why: "LWIR sees heat signatures without external illumination." },
+  { id: "crop_health", name: "Assess crop/vegetation health", imagery: "msi", why: "MSI uses several bands to classify vegetation vigor and stress." },
+  { id: "material_id", name: "Identify paints/minerals/chemicals", imagery: "hsi", why: "HSI’s many bands capture unique spectral ‘fingerprints’." },
+  { id: "elevation_3d", name: "Map terrain elevation / 3D features", imagery: "lidar_topo", why: "Topo LiDAR produces precise elevation and 3D point clouds." },
+  { id: "shallow_water", name: "Map shallow coastal/river bottoms", imagery: "lidar_bathy", why: "Green bathymetric LiDAR penetrates clear shallow water." },
+  { id: "pattern_of_life", name: "Pattern-of-life / dynamic tracking", imagery: "fmv", why: "FMV provides continuous motion for tracking and behavior analysis." },
+  { id: "city_wide", name: "City-wide forensic back-tracking", imagery: "waps", why: "WAPS captures large urban areas for historical movement analysis." },
+  { id: "ships_all_weather", name: "Image ships at night / through clouds", imagery: "radar_sar", why: "SAR is active microwave and isn’t blocked by clouds or darkness." },
+  { id: "moving_targets", name: "Detect moving vehicles over wide areas", imagery: "radar_gmti_ccd", why: "GMTI highlights movers; CCD finds subtle surface changes." },
+  { id: "deformation", name: "Measure terrain/structure deformation", imagery: "radar_polsar_insar", why: "InSAR/PolSAR reveal ground motion and structural changes." }
+];
+
+// ====== Utilities ======
+const clamp=(v,min,max)=>Math.min(max,Math.max(min,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const fmt=(x)=>{ if(x>=1000) return x.toLocaleString(undefined,{maximumFractionDigits:0}); if(x>=10) return x.toFixed(2).replace(/\.00$/,''); if(x>=1) return x.toFixed(2); if(x>=0.1) return x.toFixed(3); return x.toPrecision(3); };
+
+const MIN_UM=0.3, MAX_UM=300000;
+const log10=(x)=>Math.log10(x); const pow10=(x)=>10**x; const MIN_LOG=log10(MIN_UM), MAX_LOG=log10(MAX_UM);
+
+const VIS_MIN=0.3, VIS_MAX=14; const MW_MIN=10000, MW_MAX=300000;
+
+function wlToX_um(um){
+  const x0=20, x1=780; if(um<=VIS_MAX){ const t=(log10(um)-log10(VIS_MIN))/(log10(VIS_MAX)-log10(VIS_MIN)); return x0+(x1-x0)*clamp(t,0,1);} const mw0=820, mw1=980; const t=(log10(um)-log10(MW_MIN))/(log10(MW_MAX)-log10(MW_MIN)); return mw0+(mw1-mw0)*clamp(t,0,1);
+}
+function xToWl_um(x){ if(x<=780){ const x0=20,x1=780; const t=clamp((x-x0)/(x1-x0),0,1); const logV=log10(VIS_MIN)+t*(log10(VIS_MAX)-log10(VIS_MIN)); return pow10(logV);} const mw0=820,mw1=980; const t=clamp((x-mw0)/(mw1-mw0),0,1); const logV=log10(MW_MIN)+t*(log10(MW_MAX)-log10(MW_MIN)); return pow10(logV); }
+function setSliderByUm(um){ const logv=log10(clamp(um,MIN_UM,MAX_UM)); document.getElementById('slider').value=logv; updateFromSlider(); }
+
+// Prefer most-specific imagery whose range contains the wavelength (narrowest width). Boundary rule: lower inclusive, upper exclusive.
+function imageryForUm(um){
+  let pick=null; let bestWidth=Infinity;
+  for(const it of IMAGERY_TYPES){
+    const [a,b]=it.range_um; const width=b-a;
+    if(um===a || (um>a && um<b)){
+      if(width<bestWidth){ bestWidth=width; pick=it; }
+    }
+  }
+  if(!pick && um>=MW_MIN){ pick=IMAGERY_TYPES.find(i=>i.id==='radar_sar'); }
+  return pick || IMAGERY_TYPES[0];
+}
+
+// ====== Render Spectrum SVG ======
+(function initSpectrum(){
+  const svg=document.getElementById('spectrumSvg');
+  const bandsG=document.getElementById('bands');
+  const zonesG=document.getElementById('zones');
+  const ticksG=document.getElementById('tickGroup');
+  const mwG=document.getElementById('mwGroup');
+
+  const ZONES=[
+    {name:'UV', a:0.3, b:0.4, vis:false},
+    {name:'Visible', a:0.4, b:0.7, vis:true},
+    {name:'NIR', a:0.7, b:1.0, vis:false},
+    {name:'SWIR', a:1.0, b:3.0, vis:false},
+    {name:'MWIR', a:3.0, b:5.0, vis:false},
+    {name:'LWIR', a:8.0, b:14.0, vis:false}
+  ];
+
+  for(const z of ZONES){
+    const x=wlToX_um(z.a), w=wlToX_um(z.b)-wlToX_um(z.a);
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',x); r.setAttribute('y',24); r.setAttribute('width',w); r.setAttribute('height',42); r.setAttribute('fill',z.vis? 'url(#visGrad)':'#3a5c7d'); r.setAttribute('class','band'+(z.vis?' visible':'')); bandsG.appendChild(r);
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text'); t.setAttribute('x',x+Math.max(24,w*0.5)); t.setAttribute('y',20); t.setAttribute('class','zoneLabel'); t.textContent=z.name; zonesG.appendChild(t);
+  }
+
+  const mwX0=820, mwX1=980; const mwW=mwX1-mwX0;
+  const mwRect=document.createElementNS('http://www.w3.org/2000/svg','rect'); mwRect.setAttribute('x',mwX0); mwRect.setAttribute('y',24); mwRect.setAttribute('width',mwW); mwRect.setAttribute('height',42); mwRect.setAttribute('fill','#21455f'); mwRect.setAttribute('class','band mw'); mwRect.setAttribute('rx','6'); mwG.appendChild(mwRect);
+  const mwLbl=document.createElementNS('http://www.w3.org/2000/svg','text'); mwLbl.setAttribute('x',mwX0+mwW/2-48); mwLbl.setAttribute('y',20); mwLbl.setAttribute('class','zoneLabel'); mwLbl.textContent='Microwave (Radar)'; mwG.appendChild(mwLbl);
+  const div=document.createElementNS('http://www.w3.org/2000/svg','line'); div.setAttribute('x1',800); div.setAttribute('x2',800); div.setAttribute('y1',12); div.setAttribute('y2',96); div.setAttribute('class','mwDivider'); mwG.appendChild(div);
+
+  const visRect=document.getElementById('visGradRect'); visRect.setAttribute('x', wlToX_um(0.4)); visRect.setAttribute('width', wlToX_um(0.7)-wlToX_um(0.4));
+
+  const TICKS=[0.3,0.4,0.7,1,3,5,8,10,14,10000,30000,100000,300000];
+  for(const v of TICKS){ const x=wlToX_um(v); const l=document.createElementNS('http://www.w3.org/2000/svg','line'); l.setAttribute('x1',x); l.setAttribute('x2',x); l.setAttribute('y1',68); l.setAttribute('y2',86); l.setAttribute('stroke','#557199'); l.setAttribute('stroke-width','1'); ticksG.appendChild(l); const t=document.createElementNS('http://www.w3.org/200/svg','text'); t.setAttribute('x',x-8); t.setAttribute('y',102); t.setAttribute('class','tickLabel'); t.textContent=(v>=1000? v.toLocaleString(): v); ticksG.appendChild(t); }
+
+  const handle=document.getElementById('handle');
+  function setHandleX(x){ handle.setAttribute('transform',`translate(${x},0)`); }
+  setHandleX(wlToX_um(0.55));
+
+  let dragging=false;
+  svg.addEventListener('pointerdown', (e)=>{ const pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY; const inv=svg.getScreenCTM().inverse(); const loc=pt.matrixTransform(inv); const x=clamp(loc.x,20,980); dragging=true; setHandleX(x); selectionLock=false; setWavelength(xToWl_um(x)); });
+  window.addEventListener('pointermove',(e)=>{ if(!dragging) return; const pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY; const inv=svg.getScreenCTM().inverse(); const loc=pt.matrixTransform(inv); const x=clamp(loc.x,20,980); setHandleX(x); selectionLock=false; setWavelength(xToWl_um(x)); });
+  window.addEventListener('pointerup',()=> dragging=false);
+
+  window.__setHandleByUm=(um)=> setHandleX(wlToX_um(um));
+})();
+
+// ====== UI: tiles and description ======
+const state={ wavelengthUm:0.55, selectedImageryId:'optical_visible' };
+let selectionLock=false; // when true, slider changes won't auto-switch imagery
+
+function renderImageryTiles(){
+  const grid=document.getElementById('imageryGrid'); grid.innerHTML='';
+  for(const it of IMAGERY_TYPES){
+    const el=document.createElement('div'); el.className='tile' + (state.selectedImageryId===it.id?' active':'');
+    el.innerHTML=`<h3>${it.name}</h3><div class="range">${fmt(it.range_um[0])}–${fmt(it.range_um[1])} µm</div>`;
+    el.addEventListener('click',()=>{ selectImagery(it.id,true); });
+    grid.appendChild(el);
+  }
+}
+
+function renderTaskTiles(){
+  const grid=document.getElementById('taskGrid'); grid.innerHTML='';
+  for(const t of ANALYST_TASKS){
+    const it=IMAGERY_TYPES.find(i=>i.id===t.imagery);
+    const el=document.createElement('div'); el.className='tile';
+    el.innerHTML=`<h3>${t.name}</h3><div class="range">Uses: <span style="color:var(--accent)">${it.name}</span></div>`;
+    el.addEventListener('click',()=>{ selectImagery(t.imagery,true,t.why); });
+    grid.appendChild(el);
+  }
+}
+
+function renderDesc(extraWhy){
+  const desc=document.getElementById('desc');
+  const it=IMAGERY_TYPES.find(i=>i.id===state.selectedImageryId) || IMAGERY_TYPES[0];
+  const wl=state.wavelengthUm;
+  const inMicrowave = wl>=MW_MIN;
+  desc.innerHTML=`
+    <h2>${it.name} ${inMicrowave?'<span class="badge">Microwave (Radar)</span>':''}</h2>
+    <div class="k">Wavelength range: ${fmt(it.range_um[0])}–${fmt(it.range_um[1])} µm • Representative: ${fmt(it.rep_um)} µm</div>
+    ${extraWhy? `<div class="k" style="margin-top:6px"><strong>Why:</strong> ${extraWhy}</div>`:''}
+    <div class="cols">
+      <div>
+        <div class="k">Notes</div>
+        <ul>${it.notes.map(n=>`<li>${n}</li>`).join('')}</ul>
+      </div>
+      <div>
+        <div class="k">Best for</div>
+        <ul>${it.best_for.map(n=>`<li>${n}</li>`).join('')}</ul>
+      </div>
+      <div>
+        <div class="k">Examples</div>
+        <ul>${it.examples.map(n=>`<li>${n}</li>`).join('')}</ul>
+      </div>
+      <div>
+        <div class="k">Platforms / Sensors</div>
+        <ul>${(it.platforms||[]).map(p=>`<li>${p}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+}
+
+// ====== Interaction ======
+function setWavelength(um){
+  state.wavelengthUm = um; document.getElementById('wlOut').textContent = fmt(um);
+  if(!selectionLock){
+    const it=imageryForUm(um);
+    if(it && it.id!==state.selectedImageryId){ state.selectedImageryId=it.id; renderImageryTiles(); }
+  }
+  renderDesc();
+}
+
+function selectImagery(id, animate=false, extraWhy){
+  const it=IMAGERY_TYPES.find(i=>i.id===id); if(!it) return;
+  state.selectedImageryId=id; renderImageryTiles(); renderDesc(extraWhy);
+  const target=it.rep_um;
+  if(animate){ animateSliderTo(target, 300, extraWhy); } else { setSliderByUm(target); }
+}
+
+function animateSliderTo(targetUm, ms=300, extraWhy){
+  selectionLock=true; // keep the chosen imagery highlighted through the animation
+  const startUm=state.wavelengthUm; const t0=performance.now();
+  function step(now){
+    const p=clamp((now-t0)/ms,0,1); const eased = p<.5 ? 2*p*p : -1+(4-2*p)*p; const cur=lerp(startUm, targetUm, eased);
+    window.__setHandleByUm(cur); state.wavelengthUm=cur; document.getElementById('wlOut').textContent=fmt(cur); renderDesc(extraWhy);
+    if(p<1){ requestAnimationFrame(step);} else {
+      setSliderByUm(targetUm); // updates handle + readout
+      selectionLock=false; // allow band auto-update again
+      renderDesc(extraWhy);
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+function updateFromSlider(){
+  const logv=parseFloat(document.getElementById('slider').value); const um=pow10(logv);
+  window.__setHandleByUm(um); setWavelength(um);
+}
+
+(function init(){
+  renderImageryTiles();
+  renderTaskTiles();
+  renderDesc();
+  document.getElementById('slider').addEventListener('input', updateFromSlider);
+  setSliderByUm(0.55);
+})();
+
+// ====== Minimal Tests ======
+(function tests(){
+  const near=(a,b,eps=0.02)=>Math.abs(a-b)<eps;
+  setSliderByUm(0.55); console.assert(IMAGERY_TYPES.find(i=>i.id===state.selectedImageryId).id==='optical_visible','Test 1 failed');
+  selectImagery('nir'); console.assert(state.selectedImageryId==='nir','Test 2A failed'); console.assert(near(IMAGERY_TYPES.find(i=>i.id==='nir').rep_um,0.85,0.001),'Test 2B failed');
+  selectImagery('radar_sar'); console.assert(state.selectedImageryId==='radar_sar','Test 3A failed'); console.assert(near(IMAGERY_TYPES.find(i=>i.id==='radar_sar').rep_um,30000,1),'Test 3B failed');
+  setSliderByUm(10); console.assert(state.selectedImageryId==='lwir','Test 4 failed');
+  setSliderByUm(1.6); console.assert(state.selectedImageryId==='swir','Test 5 failed');
+  setSliderByUm(0.70); console.assert(state.selectedImageryId==='nir','Test 6 failed');
+  console.log('%cAll smoke tests executed.','color:#9cdb97');
+})();
+</script>
+</body>
+</html>
