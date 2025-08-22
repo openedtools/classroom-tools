@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Spectrum Tool (v8 — Radar Toggle Fix + Side-by-Side Right Panel)</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --panel: #121936;
+    --ink: #e8ecff;
+    --muted: #9aa4cf;
+    --accent: #6ea8ff;
+    --grid: rgba(255,255,255,0.08);
+    --band: rgba(110,168,255,0.22);
+    --popover: #0d1330;
+    --hi: rgba(110,168,255,0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    color: var(--ink);
+    background: radial-gradient(1200px 800px at 50% -10%, #18224d 0%, var(--bg) 55%);
+  }
+  header {
+    padding: 18px clamp(16px, 4vw, 28px);
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: space-between;
+  }
+  header h1 { margin: 0; font-weight: 700; letter-spacing: 0.3px; font-size: clamp(20px, 2.6vw, 28px); }
+  .controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .btn {
+    background: linear-gradient(180deg, #1a245a, #0f1640);
+    color: var(--ink);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform .08s ease, filter .2s ease, background .2s ease;
+  }
+  .btn:active { transform: translateY(1px) scale(0.99); }
+  .btn.toggled { outline: 2px solid var(--accent); background: linear-gradient(180deg, #22307b, #101a4d); }
+
+  .readouts {
+    display: grid; grid-template-columns: repeat(2, minmax(210px, 1fr)); gap: 12px;
+    padding: 0 clamp(16px, 4vw, 28px);
+  }
+  .card {
+    background: linear-gradient(180deg, #141c46, #0f163b);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    border-radius: 14px; padding: 12px 14px;
+  }
+  .card h3 { margin: 0 0 6px 0; font-size: 14px; font-weight: 600; color: var(--muted); letter-spacing: .3px; }
+  .big { font-size: clamp(18px, 3vw, 28px); font-variant-numeric: tabular-nums; }
+  .unit { font-size: 12px; color: var(--muted); margin-left: 8px; }
+
+  .stage {
+    position: relative; margin: 12px auto; width: min(1200px, 96vw);
+    background: linear-gradient(180deg, #0b1133, #0c0f2a);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden;
+    padding: 12px;
+  }
+  .viz {
+    display: grid; grid-template-columns: 1fr 420px; gap: 12px; align-items: stretch;
+  }
+  .leftPane { position: relative; }
+  .gridOverlay::before, .gridOverlay::after {
+    content: ""; position: absolute; inset: 56px 8px 84px 8px; background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to top, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none;
+  }
+
+  /* Top-centered spectrum bar (original segmented style) */
+  .spectrum {
+    position: absolute; left: 8px; right: 8px; top: 8px; height: 36px;
+    border-radius: 10px; border: 1px solid rgba(255,255,255,0.12);
+    overflow: hidden; isolation: isolate;
+  }
+  .region { position: absolute; display: grid; place-items: center; font-size: 12px; user-select: none; cursor: pointer; inset-block: 0; }
+  .region:hover { filter: brightness(1.08); }
+  .region span { mix-blend-mode: screen; text-shadow: 0 2px 6px rgba(0,0,0,.5); }
+  .region.radio { background: linear-gradient(90deg, #27496d, #193652); }
+  .region.microwave { background: linear-gradient(90deg, #355c7d, #2b4e6e); }
+  .region.terahertz { background: linear-gradient(90deg, #4e2b6d, #6e3b9a); }
+  .region.infrared { background: linear-gradient(90deg, #6d2b3b, #b3395b); }
+  .region.visible { background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); }
+  .region.uv { background: linear-gradient(90deg, #6a00ff, #9b4dff); }
+  .region.xrays { background: linear-gradient(90deg, #7f8c8d, #bdc3c7); color: #101010; }
+  .region.gamma { background: linear-gradient(90deg, #b70000, #7d0000); }
+  .specMarker { position: absolute; top: -4px; width: 2px; height: 44px; background: #fff; box-shadow: 0 0 8px rgba(255,255,255,.9); }
+
+  canvas { width: 100%; height: 440px; display: block; border-radius: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
+
+  .radar-overlay { position: absolute; left: 8px; right: 8px; bottom: 60px; height: 64px; display: none; flex-direction: column; gap: 6px; z-index: 5; }
+  .radar-overlay.active { display: flex; }
+  .bands { position: relative; height: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); overflow: hidden; background: rgba(0,0,0,0.25); backdrop-filter: blur(2px); }
+  .band { position: absolute; top: 0; bottom: 0; display: grid; place-items: center; font-size: 12px; background: var(--band); border-right: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
+  .band:hover { background: rgba(110,168,255,0.32); }
+
+  .sliderbar { margin-top: 8px; display: grid; grid-template-columns: 90px 1fr 90px; gap: 12px; align-items: center; }
+  .label { font-size: 12px; color: var(--muted); letter-spacing: .4px; }
+  input[type="range"] {
+    appearance: none; width: 100%; height: 8px; border-radius: 999px; background: linear-gradient(90deg, #234, #5a7cff);
+    outline: none; border: 1px solid rgba(255,255,255,0.15);
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 2px solid #6ea8ff; box-shadow: 0 2px 12px rgba(110,168,255,.6);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 2px solid #6ea8ff; box-shadow: 0 2px 12px rgba(110,168,255,.6);
+  }
+
+  .side {
+    background: linear-gradient(180deg, #141c46, #0f163b);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px; padding: 12px;
+    display: grid; grid-template-rows: auto auto 1fr; gap: 10px;
+  }
+  .side h3 { margin: 0; font-size: 14px; color: var(--muted); letter-spacing: .3px; }
+  .regionTag { display: inline-block; margin-top: 4px; padding: 3px 8px; border-radius: 999px; background: rgba(110,168,255,0.18); border: 1px solid rgba(110,168,255,0.4); font-size: 12px; }
+
+  /* Right panel two-column layout */
+  .sideGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+  .panel {
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 8px;
+    background: rgba(255,255,255,0.02);
+    min-height: 220px;
+  }
+  .panel h4 { margin: 0 0 6px 0; font-size: 13px; color: var(--muted); }
+  .bandlist { display: grid; gap: 6px; }
+  .bandrow {
+    display: grid; grid-template-columns: 72px 1fr; gap: 6px; align-items: center;
+    padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02); font-size: 12px;
+  }
+  .bandrow.active { background: var(--hi); border-color: rgba(110,168,255,0.6); }
+  .bandrow .name { font-weight: 700; }
+  .bandrow .range { color: var(--muted); font-size: 12px; }
+
+  .useList { display: grid; gap: 6px; }
+  .useRow { padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); font-size: 12px; }
+  .useRow.active { background: var(--hi); border-color: rgba(110,168,255,0.6); }
+  .useRow .hdr { font-weight: 700; }
+  .useRow .desc { color: var(--muted); font-size: 12px; }
+
+  .popover {
+    position: fixed; max-width: min(420px, 92vw); background: var(--popover);
+    border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 14px 14px 12px 14px; box-shadow: 0 18px 60px rgba(0,0,0,.45);
+    z-index: 50; display: none;
+  }
+  .popover h4 { margin: 0 0 6px 0; font-size: 15px; letter-spacing: .3px; }
+  .popover p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+  .popover .close { position: absolute; right: 10px; top: 8px; background: transparent; color: var(--muted); border: 0; font-size: 18px; cursor: pointer; }
+
+  footer { padding: 8px 16px 18px; text-align: center; color: var(--muted); font-size: 12px; }
+
+  @media (max-width: 1000px) {
+    .viz { grid-template-columns: 1fr; }
+    canvas { height: 360px; }
+    .sideGrid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1 aria-label="Interactive Spectrum Tool">Interactive Spectrum Tool</h1>
+    <div class="controls">
+      <button id="radarBtn" class="btn" aria-pressed="false" title="Toggle Military Radar Mode">Military Radar Mode</button>
+      <button id="slowBtn" class="btn" aria-pressed="false" title="Slow motion">Slow-Mo</button>
+      <button id="resetBtn" class="btn" title="Reset to Visible light">Reset</button>
+    </div>
+  </header>
+
+  <section class="readouts" aria-live="polite">
+    <div class="card">
+      <h3>Wavelength (λ)</h3>
+      <div class="big"><span id="lambdaVal">—</span><span class="unit" id="lambdaUnit"></span></div>
+    </div>
+    <div class="card">
+      <h3>Frequency (f)</h3>
+      <div class="big"><span id="freqVal">—</span><span class="unit" id="freqUnit"></span></div>
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="viz">
+      <div class="leftPane gridOverlay">
+        <!-- Top-centered Spectrum bar with segments + live marker -->
+        <div class="spectrum" id="spectrumBar" aria-label="Electromagnetic spectrum regions">
+          <div id="specMarker" class="specMarker" style="left:50%"></div>
+        </div>
+
+        <!-- Wave Animation -->
+        <canvas id="waveCanvas" aria-label="Wave animation"></canvas>
+
+        <!-- Radar Overlay -->
+        <div id="radarOverlay" class="radar-overlay" aria-hidden="true">
+          <div class="bands" id="bands"></div>
+          <div class="hint" style="padding-left:6px">Click a band to jump and see its use.</div>
+        </div>
+
+        <!-- Slider Row -->
+        <div class="sliderbar">
+          <div class="label">ENERGY</div>
+          <input id="energy" type="range" min="0" max="1000" step="1" value="700" aria-label="Energy slider (controls frequency)">
+          <button id="infoBtn" class="btn text" title="How to use">?</button>
+        </div>
+      </div>
+
+      <aside class="side" aria-live="polite">
+        <h3>Now Showing</h3>
+        <div><span id="regionTag" class="regionTag">—</span></div>
+        <div id="currentBandText" style="margin-top:6px">—</div>
+
+        <div class="sideGrid">
+          <div class="panel">
+            <h4>Radio Sub‑Bands (ITU)</h4>
+            <div class="bandlist" id="bandList"></div>
+          </div>
+          <div class="panel">
+            <h4>EM Regions & Uses</h4>
+            <div class="useList" id="useList"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Popover -->
+  <div id="popover" class="popover" role="dialog" aria-modal="false">
+    <button class="close" aria-label="Close">×</button>
+    <h4 id="popTitle">Title</h4>
+    <p id="popBody">Body</p>
+  </div>
+
+  <footer>Drag ENERGY to change frequency; the top marker shows your position. Radar Mode overlays L/S/C/X/Ku/K/Ka above the canvas. Right panel shows ITU bands and EM uses side-by-side.</footer>
+
+<script>
+(() => {
+  // Physical constants
+  const C = 299_792_458; // m/s
+
+  // Animation speed tuning
+  const BASE_SPEED = 0.30;
+  const SLOW_MULT  = 0.10;
+
+  // Slider mapping on log scale
+  const LOGF_MIN = 3;   // 1 kHz
+  const LOGF_MAX = 21;  // 1 EHz
+
+  // DOM
+  const energySlider = document.getElementById('energy');
+  const freqVal = document.getElementById('freqVal');
+  const freqUnit = document.getElementById('freqUnit');
+  const lambdaVal = document.getElementById('lambdaVal');
+  const lambdaUnit = document.getElementById('lambdaUnit');
+
+  const spectrumBar = document.getElementById('spectrumBar');
+  const specMarker = document.getElementById('specMarker');
+  const radarBtn = document.getElementById('radarBtn');
+  const radarOverlay = document.getElementById('radarOverlay');
+  const bandsEl = document.getElementById('bands');
+  const resetBtn = document.getElementById('resetBtn');
+  const infoBtn = document.getElementById('infoBtn');
+  const slowBtn  = document.getElementById('slowBtn');
+
+  const bandList = document.getElementById('bandList');
+  const regionTag = document.getElementById('regionTag');
+  const currentBandText = document.getElementById('currentBandText');
+  const useList = document.getElementById('useList');
+  const pop = document.getElementById('popover');
+  const popTitle = document.getElementById('popTitle');
+  const popBody = document.getElementById('popBody');
+
+  // Regions across whole EM (incl. Terahertz)
+  const regions = [
+    { key:'radio',    label:'Radio',     f0: 1e3,    f1: 3e9,   uses:'Broadcast, comms, navigation (VHF/UHF), long-range links.' },
+    { key:'microwave',label:'Microwaves',f0: 3e9,    f1: 3e11,  uses:'RADAR, satellite links, Wi‑Fi, microwave ovens.' },
+    { key:'terahertz',label:'Terahertz', f0: 3e11,   f1: 3e12,  uses:'Spectroscopy, security screening, experimental imaging.' },
+    { key:'infrared', label:'Infrared',  f0: 3e12,   f1: 4e14,  uses:'Thermal cameras, night vision, remote controls, fiber links.' },
+    { key:'visible',  label:'Visible',   f0: 4e14,   f1: 7.5e14,uses:'Human vision, cameras, lasers, optical sensors.' },
+    { key:'uv',       label:'Ultraviolet',f0: 7.5e14,f1: 3e16,  uses:'Sterilization, fluorescence, photolithography.' },
+    { key:'xrays',    label:'X‑Rays',    f0: 3e16,   f1: 3e19,  uses:'Medical imaging, security scanning, materials analysis.' },
+    { key:'gamma',    label:'Gamma',     f0: 3e19,   f1: 1e21,  uses:'Nuclear/astrophysical sources, radiation therapy.' }
+  ];
+
+  // ITU radio sub-bands
+  const ITU = [
+    { name:'VLF', f0: 3e3,   f1: 30e3,   pretty:'3 kHz – 30 kHz' },
+    { name:'LF',  f0: 30e3,  f1: 300e3,  pretty:'30 kHz – 300 kHz' },
+    { name:'MF',  f0: 300e3, f1: 3e6,    pretty:'300 kHz – 3 MHz' },
+    { name:'HF',  f0: 3e6,   f1: 30e6,   pretty:'3 MHz – 30 MHz' },
+    { name:'VHF', f0: 30e6,  f1: 300e6,  pretty:'30 MHz – 300 MHz' },
+    { name:'UHF', f0: 300e6, f1: 3e9,    pretty:'300 MHz – 3 GHz' },
+    { name:'SHF', f0: 3e9,   f1: 30e9,   pretty:'3 GHz – 30 GHz' },
+    { name:'EHF', f0: 30e9,  f1: 300e9,  pretty:'30 GHz – 300 GHz' }
+  ];
+
+  // Radar bands (approximate)
+  const radarBands = [
+    { name:'L',  f0: 1e9,   f1: 2e9,   note:'Longer range, AEW, long-range search, foliage penetration.' },
+    { name:'S',  f0: 2e9,   f1: 4e9,   note:'Weather, surface search, ATC, some fire control.' },
+    { name:'C',  f0: 4e9,   f1: 8e9,   note:'Surveillance, maritime, weather; balance of range & resolution.' },
+    { name:'X',  f0: 8e9,   f1: 12e9,  note:'High-resolution targeting, missile guidance, SAR imaging.' },
+    { name:'Ku', f0: 12e9,  f1: 18e9,  note:'Tracking, seekers, high-res imaging; satellite comms.' },
+    { name:'K',  f0: 18e9,  f1: 27e9,  note:'Short-range targeting, altimeters; atmospheric attenuation ↑.' },
+    { name:'Ka', f0: 27e9,  f1: 40e9,  note:'Very high resolution, seekers, satellite links.' }
+  ];
+
+  // Helpers
+  function lerp(a,b,t){ return a + (b-a)*t; }
+  function invLerp(a,b,v){ return (v-a)/(b-a); }
+  function logfFromSlider(v){ return lerp(LOGF_MIN, LOGF_MAX, v/1000); }
+  function sliderFromLogf(logf){ return Math.round(1000 * invLerp(LOGF_MIN, LOGF_MAX, logf)); }
+  function fFromSlider(v){ return 10 ** logfFromSlider(v); }
+  function logfFromF(f){ return Math.log10(f); }
+  function pctFromF(f){ return invLerp(LOGF_MIN, LOGF_MAX, logfFromF(f)) * 100; }
+
+  // Build top spectrum bar segments
+  function buildSpectrum() {
+    spectrumBar.querySelectorAll('.region').forEach(el => el.remove());
+    regions.forEach(r => {
+      const seg = document.createElement('div');
+      seg.className = `region ${r.key}`;
+      const left = pctFromF(r.f0);
+      const right = pctFromF(r.f1);
+      seg.style.left = `${left}%`;
+      seg.style.width = `${Math.max(1, right-left)}%`;
+      const span = document.createElement('span');
+      span.textContent = r.label;
+      seg.appendChild(span);
+      seg.addEventListener('click', (e) => {
+        const fmid = Math.sqrt(r.f0 * r.f1);
+        energySlider.value = sliderFromLogf(logfFromF(fmid));
+        showPopover(e.clientX, e.clientY, r.label, r.uses);
+      });
+      spectrumBar.appendChild(seg);
+    });
+  }
+
+  // Build radar bands overlay
+  function buildBands() {
+    bandsEl.innerHTML = '';
+    radarBands.forEach(b => {
+      const div = document.createElement('div');
+      div.className = 'band';
+      const left = pctFromF(b.f0);
+      const right = pctFromF(b.f1);
+      div.style.left = `${left}%`;
+      div.style.width = `${Math.max(1, right-left)}%`;
+      div.textContent = `${b.name}-Band`;
+      div.title = `${b.name}-Band`;
+      div.addEventListener('click', (e) => {
+        const fmid = Math.sqrt(b.f0 * b.f1);
+        energySlider.value = sliderFromLogf(logfFromF(fmid));
+        showPopover(e.clientX, e.clientY, `${b.name}-Band`, `${b.name}-Band approx. ${formatRange(b.f0,b.f1)} — ${b.note}`);
+      });
+      bandsEl.appendChild(div);
+    });
+  }
+
+  // Side lists
+  function buildITUList(){
+    bandList.innerHTML = '';
+    ITU.forEach(b => {
+      const row = document.createElement('div');
+      row.className = 'bandrow';
+      row.dataset.f0 = b.f0; row.dataset.f1 = b.f1;
+      row.innerHTML = `<div class="name">${b.name}</div><div class="range">${b.pretty}</div>`;
+      bandList.appendChild(row);
+    });
+  }
+  function buildUseList(){
+    useList.innerHTML = '';
+    regions.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'useRow';
+      row.dataset.f0 = r.f0; row.dataset.f1 = r.f1;
+      row.innerHTML = `<div class="hdr">${r.label} — ${formatRange(r.f0, r.f1)}</div>
+                       <div class="desc">${r.uses}</div>`;
+      useList.appendChild(row);
+    });
+  }
+
+  // Formatting
+  function formatFreq(f){
+    const abs = Math.abs(f);
+    if (abs < 1e3) return { value: f.toFixed(0), unit: 'Hz' };
+    if (abs < 1e6) return { value: (f/1e3).toFixed(2), unit: 'kHz' };
+    if (abs < 1e9) return { value: (f/1e6).toFixed(2), unit: 'MHz' };
+    if (abs < 1e12) return { value: (f/1e9).toFixed(2), unit: 'GHz' };
+    if (abs < 1e15) return { value: (f/1e12).toFixed(2), unit: 'THz' };
+    if (abs < 1e18) return { value: (f/1e15).toFixed(2), unit: 'PHz' };
+    return { value: (f/1e18).toFixed(2), unit: 'EHz' };
+  }
+  function formatRange(f0,f1){
+    const a = formatFreq(f0), b = formatFreq(f1);
+    return `${a.value} ${a.unit} – ${b.value} ${b.unit}`;
+  }
+  function formatWavelength(l){
+    const abs = Math.abs(l);
+    if (abs >= 1) return { value: abs.toFixed(3), unit: 'm' };
+    if (abs >= 1e-3) return { value: (abs*1e3).toFixed(3), unit: 'mm' };
+    if (abs >= 1e-6) return { value: (abs*1e6).toFixed(2), unit: 'µm' };
+    if (abs >= 1e-9) return { value: (abs*1e9).toFixed(1), unit: 'nm' };
+    if (abs >= 1e-12) return { value: (abs*1e12).toFixed(1), unit: 'pm' };
+    return { value: (abs*1e15).toFixed(1), unit: 'fm' };
+  }
+
+  // Popover helpers
+  function showPopover(x, y, title, body) {
+    popTitle.textContent = title;
+    popBody.textContent = body;
+    pop.style.display = 'block';
+    const pad = 12;
+    const rect = pop.getBoundingClientRect();
+    let px = Math.min(window.innerWidth - rect.width - pad, Math.max(pad, x - rect.width/2));
+    let py = Math.min(window.innerHeight - rect.height - pad, Math.max(pad, y - rect.height - 16));
+    pop.style.left = `${px}px`;
+    pop.style.top = `${py}px`;
+  }
+  pop.querySelector('.close').addEventListener('click', () => pop.style.display = 'none');
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') pop.style.display = 'none'; });
+
+  // Canvas & animation
+  const canvas = document.getElementById('waveCanvas');
+  const ctx = canvas.getContext('2d');
+  function resizeCanvas(){
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(440 * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener('resize', resizeCanvas, { passive: true });
+  resizeCanvas();
+
+  let t = 0;      // phase advance in "pixels"
+  let slow = false;
+
+  function updateUIForFreq(f){
+    // Move top spectrum marker
+    const pct = pctFromF(f);
+    specMarker.style.left = `calc(${pct}% - 1px)`;
+
+    // Highlight ITU rows
+    const rows = bandList.querySelectorAll('.bandrow');
+    rows.forEach(row => {
+      const f0 = Number(row.dataset.f0), f1 = Number(row.dataset.f1);
+      const active = f>=f0 && f<f1;
+      row.classList.toggle('active', active);
+    });
+
+    // Highlight region use row
+    const useRows = useList.querySelectorAll('.useRow');
+    useRows.forEach(row => {
+      const f0 = Number(row.dataset.f0), f1 = Number(row.dataset.f1);
+      const active = f>=f0 && f<f1;
+      row.classList.toggle('active', active);
+    });
+
+    const reg = regions.find(r => f>=r.f0 && f<r.f1);
+    const itub = ITU.find(b => f>=b.f0 && f<b.f1);
+    regionTag.textContent = reg ? reg.label : '—';
+    currentBandText.textContent = itub ? `${itub.name} — ${itub.pretty}`
+                                       : (reg ? `${reg.label} — ${formatRange(reg.f0, reg.f1)}` : '—');
+  }
+
+  function drawAndUpdate(dt){
+    const w = canvas.clientWidth; const h = canvas.clientHeight;
+    const f = fFromSlider(energySlider.valueAsNumber);
+    const logf = Math.log10(f);
+
+    // Speed in px/ms
+    const base = (0.04 + (logf - 3) * 0.018) * BASE_SPEED;
+    const speed = base * (slow ? SLOW_MULT : 1);
+    t += dt * speed;
+
+    // Visual mappings
+    const lambda = C / f;
+    const pxLambda = Math.max(8, 900 - (logf - 3) * 60);
+    const midY = h/2;
+    const A = Math.min(80, 24 + (logf - 3) * 8);
+
+    ctx.clearRect(0,0,w,h);
+
+    // Baseline
+    ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+    ctx.lineWidth = 1.5; ctx.beginPath();
+    ctx.moveTo(0, midY); ctx.lineTo(w, midY); ctx.stroke();
+
+    // Wave
+    ctx.lineWidth = 3.0;
+    ctx.strokeStyle = 'rgba(110,168,255,0.9)';
+    ctx.beginPath();
+    const k = (Math.PI * 2) / pxLambda;
+    for (let x=0; x<=w; x++) {
+      const y = midY + Math.sin(k * (x + t)) * A;
+      if (x===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Phase dot
+    const dotX = ((t % pxLambda) + pxLambda) % pxLambda;
+    const dotY = midY + Math.sin(k * (dotX + t)) * A;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(dotX, dotY, 4, 0, Math.PI*2); ctx.fill();
+
+    // Readouts
+    const { value, unit } = formatWavelength(lambda);
+    lambdaVal.textContent = value; lambdaUnit.textContent = unit;
+    const fFmt = formatFreq(f);
+    freqVal.textContent = fFmt.value; freqUnit.textContent = fFmt.unit;
+
+    // UI sync
+    updateUIForFreq(f);
+  }
+
+  let lastTS = performance.now();
+  function loop(ts){
+    const dt = Math.min(32, ts - lastTS);
+    lastTS = ts;
+    drawAndUpdate(dt);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  // Events
+  radarBtn.addEventListener('click', () => {
+    const on = radarOverlay.classList.toggle('active');
+    radarOverlay.setAttribute('aria-hidden', String(!on));
+    radarBtn.classList.toggle('toggled', on);
+    radarBtn.setAttribute('aria-pressed', String(on));
+  });
+  resetBtn.addEventListener('click', () => {
+    const fMidVisible = Math.sqrt(4e14 * 7.5e14);
+    energySlider.value = sliderFromLogf(logfFromF(fMidVisible));
+  });
+  infoBtn?.addEventListener('click', () => {
+    alert('Drag ENERGY to change frequency. The top bar segments are clickable; the white marker shows your exact position. Toggle Military Radar Mode to overlay L/S/C/X/Ku/K/Ka bands.');
+  });
+  slowBtn.addEventListener('click', () => {
+    slow = !slow;
+    slowBtn.classList.toggle('toggled', slow);
+    slowBtn.setAttribute('aria-pressed', String(slow));
+  });
+
+  // Init builds
+  buildSpectrum();
+  buildBands();
+  buildITUList();
+  buildUseList();
+})();
+</script>
+</body>
+</html>
