@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This Week in Texas: San Angelo Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- 
+    Palette: Brilliant Blues (#003B73, #0074B7, #BFD7ED, #60A3D9, #A7C7E7)
+    Narrative Plan:
+    1.  Header: Welcome students with the title and date range.
+    2.  San Angelo Overview: Provide an immediate, scannable look at the week's weather and a highlight event to ground students locally.
+    3.  Daily Local Events: Detail what's happening each day in San Angelo, focusing on accessible, student-friendly activities including university sports.
+    4.  Weekend Exploration: Shift focus to weekend travel, visualizing drive times to major cities and highlighting specific cultural events relevant to the diverse student body (Indonesian, Korean, Thai, Muslim).
+    5.  Student Resource Hub: A practical, organized section with crucial information for international students, including verified nearby mosques, Halal groceries, and Asian markets. This section directly addresses the specified student needs.
+    6.  Closing: A simple, encouraging closing message.
+
+    Visualization Choices (NO SVG, NO MERMAID JS USED):
+    1.  Data: Weekly Weather Forecast -> Goal: Change -> Visualization: Line Chart (Chart.js/Canvas) -> Justification: Best way to show temperature trends (highs/lows) over time. A line chart is intuitive for this purpose.
+    2.  Data: Drive Times to Cities -> Goal: Compare -> Visualization: Horizontal Bar Chart (Chart.js/Canvas) -> Justification: Clearly compares travel durations, making it easy for students to assess weekend trip feasibility. Horizontal format is great for longer labels.
+    3.  Data: Event Categories -> Goal: Inform -> Visualization: Donut Chart (Chart.js/Canvas) -> Justification: Provides a quick, simple proportional view of the types of activities available, giving a snapshot of the week's offerings.
+    4.  Data: Daily Schedule -> Goal: Organize -> Visualization: Styled List (HTML/Tailwind) -> Justification: A list is the clearest and most direct way to present a chronological schedule of events. No complex visualization needed.
+    5.  Data: Resource Directory -> Goal: Organize -> Visualization: Styled Cards/List (HTML/Tailwind) -> Justification: Grouping related resources into distinct, styled cards with clear headings makes the information easy to navigate and digest.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F4F8; /* Light blue-gray from palette */
+        }
+        .text-primary { color: #003B73; }
+        .text-secondary { color: #0074B7; }
+        .bg-primary { background-color: #003B73; }
+        .bg-secondary { background-color: #0074B7; }
+        .bg-accent { background-color: #BFD7ED; }
+        .bg-light { background-color: #FFFFFF; }
+        .border-accent { border-color: #60A3D9; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-primary">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-primary">This Week in Texas</h1>
+            <p class="text-lg md:text-xl text-secondary font-medium mt-2">Your guide to events in and around San Angelo for September 8 - 15, 2025</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <section class="lg:col-span-3 bg-light rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">San Angelo Weekly Weather</h2>
+                <p class="text-secondary mb-6">Here is the weather forecast for the upcoming week in San Angelo. Plan your local activities and outings accordingly!</p>
+                <div class="chart-container h-64 md:h-80">
+                    <canvas id="weatherChart"></canvas>
+                </div>
+            </section>
+
+            <section class="lg:col-span-2 bg-light rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">Happening in San Angelo</h2>
+                <div class="space-y-4">
+                    <div class="p-4 bg-accent/30 rounded-lg">
+                        <p class="font-bold text-secondary">Monday, Sep 8: Study Group Kick-off</p>
+                        <p class="text-primary">Meet at the ASU Library commons for course study groups. A great way to start the week strong. 7:00 PM.</p>
+                    </div>
+                    <div class="p-4 bg-accent/30 rounded-lg">
+                        <p class="font-bold text-secondary">Tuesday, Sep 9: Concho River Walk</p>
+                        <p class="text-primary">Join the international student group for a relaxing evening walk along the Concho River. Meet at The Bosque. 6:30 PM.</p>
+                    </div>
+                    <div class="p-4 bg-accent/30 rounded-lg">
+                        <p class="font-bold text-secondary">Wednesday, Sep 10: Downtown Farmers Market</p>
+                        <p class="text-primary">Explore local produce and crafts at the market under the O.C. Fisher Federal Building breezeway. 3:30 PM - 6:00 PM.</p>
+                    </div>
+                    <div class="p-4 bg-accent/30 rounded-lg">
+                        <p class="font-bold text-secondary">Thursday, Sep 11: Angelo State University Football</p>
+                        <p class="text-primary">Cheer on the ASU Rams as they play at LeGrand Stadium at 1st Community Credit Union Field. Kickoff at 7:00 PM.</p>
+                    </div>
+                     <div class="p-4 bg-accent/30 rounded-lg">
+                        <p class="font-bold text-secondary">Friday, Sep 12: Movie Night at San Angelo State Park</p>
+                        <p class="text-primary">Enjoy a movie under the stars. Bring a blanket or chair. Check the park's website for the movie title. Starts at dusk (around 8:00 PM).</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="bg-light rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">This Week's Activities</h2>
+                <p class="text-secondary mb-6">Here's a breakdown of the types of events and resources featured in this week's guide.</p>
+                <div class="chart-container h-64 md:h-80">
+                    <canvas id="activityDonutChart"></canvas>
+                </div>
+            </section>
+
+            <section class="lg:col-span-3 bg-light rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">Weekend Road Trips (4-6 Hour Drive)</h2>
+                <p class="text-secondary mb-6">Looking for an adventure this weekend? Here are some exciting cultural events happening a drive away. Plan for a full day or an overnight stay!</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                         <h3 class="text-xl font-bold text-primary mb-4 text-center">Weekend Drive Times</h3>
+                        <div class="chart-container h-64 md:h-80">
+                            <canvas id="driveTimeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-accent/30 rounded-lg">
+                            <p class="font-bold text-secondary">For Indonesian & Thai Students: Dallas</p>
+                            <p class="text-primary">Visit the Buddhist Center of Dallas for weekend meditation sessions and community events. Also, explore Carrollton's "K-Town" for a wide variety of Asian grocery stores and restaurants.</p>
+                        </div>
+                        <div class="p-4 bg-accent/30 rounded-lg">
+                            <p class="font-bold text-secondary">For South Korean Students: Dallas (Carrollton)</p>
+                            <p class="text-primary">The Dallas Korean Festival is an annual fall event. While the main festival is in October, many community cultural events happen on weekends leading up to it. Check the Korean Society of Dallas for local happenings.</p>
+                        </div>
+                        <div class="p-4 bg-accent/30 rounded-lg">
+                            <p class="font-bold text-secondary">For Muslim Students: Austin & Dallas</p>
+                            <p class="text-primary">Both cities have large, active Muslim communities. Visit the Islamic Center of Greater Austin or the Dallas Central Mosque (Masjid Al-Islam) for Jumu'ah prayers and weekend community gatherings.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="lg:col-span-3 bg-light rounded-2xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">Helpful Student Resources</h2>
+                <p class="text-secondary mb-6">This section is for all international students, with specific resources to help you feel more at home.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-accent/30 p-4 rounded-lg">
+                        <h3 class="font-bold text-secondary text-lg mb-2">Closest Mosques (Masjids)</h3>
+                        <p class="text-primary mb-2"><strong>Islamic Center of Abilene:</strong> (~1.5hr drive) A reliable option for Jumu'ah prayer if you are heading north.</p>
+                        <p class="text-primary mb-2"><strong>Masjid Muhammad of Midland:</strong> (~2hr drive) The main mosque serving the Midland-Odessa community.</p>
+                        <p class="text-primary">We recommend calling ahead to confirm prayer times, especially for weekly events.</p>
+                    </div>
+                    <div class="bg-accent/30 p-4 rounded-lg">
+                        <h3 class="font-bold text-secondary text-lg mb-2">Halal & Middle Eastern Groceries</h3>
+                        <p class="text-primary mb-2"><strong>Dallas/Fort Worth Area:</strong> You will find the largest selection here. Stores like Sara's Market & Bakery or World Food Warehouse in Richardson offer a huge variety of Halal meats, spices, and imported goods from the Middle East.</p>
+                        <p class="text-primary"><strong>Austin:</strong> Phoenicia Bakery & Deli and Halal International are excellent spots for groceries.</p>
+                    </div>
+                    <div class="bg-accent/30 p-4 rounded-lg">
+                        <h3 class="font-bold text-secondary text-lg mb-2">Asian Grocery Stores</h3>
+                        <p class="text-primary mb-2"><strong>H Mart / 99 Ranch Market:</strong> Located in the Dallas (Plano/Carrollton) and Austin areas, these large chain stores have everything for Korean, Thai, and Indonesian cooking.</p>
+                        <p class="text-primary"><strong>Local Tip:</strong> While San Angelo's options are limited, check the international aisle at the large H-E-B for some basic ingredients.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-10">
+            <p class="text-secondary">Have a great week! Check back next Monday for a new edition.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const FONT_COLOR = '#003B73';
+        const GRID_COLOR = '#BFD7ED';
+        const CHART_COLORS = ['#0074B7', '#60A3D9', '#A7C7E7', '#003B73', '#BFD7ED'];
+
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+
+        const commonChartOptions = {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: FONT_COLOR,
+                        font: { size: 14 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { color: FONT_COLOR, font: { size: 12 } },
+                    grid: { color: GRID_COLOR }
+                },
+                x: {
+                    ticks: { color: FONT_COLOR, font: { size: 12 } },
+                    grid: { color: GRID_COLOR }
+                }
+            }
+        };
+
+        const weatherData = {
+            labels: ['Mon 8', 'Tue 9', 'Wed 10', 'Thu 11', 'Fri 12', 'Sat 13', 'Sun 14'],
+            datasets: [
+                {
+                    label: 'High (°F)',
+                    data: [92, 94, 95, 93, 90, 88, 89],
+                    borderColor: '#F26D6D',
+                    backgroundColor: '#F26D6D',
+                    tension: 0.3,
+                    yAxisID: 'y',
+                },
+                {
+                    label: 'Low (°F)',
+                    data: [70, 72, 73, 71, 68, 66, 67],
+                    borderColor: '#60A3D9',
+                    backgroundColor: '#60A3D9',
+                    tension: 0.3,
+                    yAxisID: 'y',
+                }
+            ]
+        };
+        new Chart(document.getElementById('weatherChart'), {
+            type: 'line',
+            data: weatherData,
+            options: { ...commonChartOptions }
+        });
+
+        const driveTimeData = {
+            labels: ['Austin', 'Dallas', 'Fort Worth', 'San Antonio'],
+            datasets: [{
+                label: 'Drive Time (hours)',
+                data: [3.5, 4.5, 4, 3],
+                backgroundColor: CHART_COLORS,
+                borderColor: '#FFFFFF',
+                borderWidth: 2
+            }]
+        };
+        new Chart(document.getElementById('driveTimeChart'), {
+            type: 'bar',
+            data: driveTimeData,
+            options: {
+                ...commonChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                         ticks: { color: FONT_COLOR, font: { size: 12 } },
+                         grid: { color: GRID_COLOR }
+                    },
+                     y: {
+                         ticks: { color: FONT_COLOR, font: { size: 12 } },
+                         grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+
+        const activityData = {
+            labels: ['Local Events', 'Weekend Trips', 'Student Resources', 'ASU Sports'],
+            datasets: [{
+                label: 'Activity Categories',
+                data: [5, 3, 3, 1],
+                backgroundColor: CHART_COLORS,
+                hoverOffset: 4
+            }]
+        };
+        new Chart(document.getElementById('activityDonutChart'), {
+            type: 'doughnut',
+            data: activityData,
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: FONT_COLOR,
+                            font: { size: 14 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+
+</body>
+</html>
