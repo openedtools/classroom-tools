@@ -19,26 +19,18 @@ body {
 /* ── Header ── */
 #page-header {
   background: linear-gradient(135deg, #1B3A6B 0%, #254e9a 100%);
-  color: #fff;
-  padding: 1.1rem 1.5rem;
-  border-radius: 10px;
-  margin-bottom: 1.1rem;
-  box-shadow: 0 4px 18px rgba(27,58,107,.35);
+  color: #fff; padding: 1.1rem 1.5rem; border-radius: 10px;
+  margin-bottom: 1.1rem; box-shadow: 0 4px 18px rgba(27,58,107,.35);
 }
 #page-header h1 { font-size: 1.45rem; font-weight: 700; letter-spacing: .02em; }
 #page-header .subtitle { font-size: .8rem; opacity: .7; margin-top: .2rem; }
 
 /* ── Scenario ── */
 #scenario {
-  background: #fff;
-  border-left: 4px solid #2E75B6;
-  padding: .85rem 1.1rem;
-  border-radius: 0 8px 8px 0;
-  font-size: .89rem;
-  line-height: 1.65;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.07);
-  color: #2a3045;
+  background: #fff; border-left: 4px solid #2E75B6;
+  padding: .85rem 1.1rem; border-radius: 0 8px 8px 0;
+  font-size: .89rem; line-height: 1.65; margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07); color: #2a3045;
 }
 #scenario strong { color: #1B3A6B; display: block; margin-bottom: .35rem; font-size: .92rem; }
 
@@ -62,59 +54,46 @@ body {
 #key-rule { font-weight: 700; color: #1B3A6B; font-size: .88rem; }
 
 /* ── Toolbar ── */
-#toolbar {
-  display: flex; align-items: center; gap: .6rem;
-  margin-bottom: .85rem; flex-wrap: wrap;
-}
-#progress-text {
-  flex: 1; font-size: .86rem; color: #5a6a88; font-weight: 500;
-}
+#toolbar { display: flex; align-items: center; gap: .6rem; margin-bottom: .85rem; flex-wrap: wrap; }
+#progress-text { flex: 1; font-size: .86rem; color: #5a6a88; font-weight: 500; }
 .btn {
   padding: .48rem 1.15rem; border: none; border-radius: 6px;
   font-size: .87rem; font-weight: 600; cursor: pointer;
-  transition: background .15s, opacity .15s; letter-spacing: .02em;
-  white-space: nowrap;
+  transition: background .15s; letter-spacing: .02em; white-space: nowrap;
 }
 .btn:active { transform: scale(.97); }
-.btn-navy   { background: #1B3A6B; color: #fff; box-shadow: 0 2px 6px rgba(27,58,107,.3); }
-.btn-navy:hover   { background: #2355a0; }
-.btn-gold   { background: #b08800; color: #fff; box-shadow: 0 2px 6px rgba(176,136,0,.3); }
-.btn-gold:hover   { background: #8f6e00; }
-.btn-green  { background: #1a7a3c; color: #fff; box-shadow: 0 2px 6px rgba(26,122,60,.3); }
-.btn-green:hover  { background: #155f2f; }
+.btn-navy    { background: #1B3A6B; color: #fff; box-shadow: 0 2px 6px rgba(27,58,107,.3); }
+.btn-navy:hover    { background: #2355a0; }
+.btn-gold    { background: #b08800; color: #fff; box-shadow: 0 2px 6px rgba(176,136,0,.3); }
+.btn-gold:hover    { background: #8f6e00; }
+.btn-green   { background: #1a7a3c; color: #fff; box-shadow: 0 2px 6px rgba(26,122,60,.3); }
+.btn-green:hover   { background: #155f2f; }
 .btn-outline { background: #fff; color: #1B3A6B; border: 1.5px solid #1B3A6B; }
 .btn-outline:hover { background: #eef3fa; }
-.btn:disabled { opacity: .42; cursor: not-allowed; transform: none; }
 
 /* ── Matrix card ── */
 #matrix-card {
   background: #fff; border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.09);
-  overflow: hidden; overflow-x: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,.09); overflow: hidden; overflow-x: auto;
 }
-
 table { border-collapse: collapse; width: 100%; min-width: 700px; font-size: .9rem; }
 th, td { border: 1px solid #dce5f0; text-align: center; padding: .44rem .35rem; vertical-align: middle; }
-
 thead th {
   background: #1B3A6B; color: #fff;
   padding: .75rem .5rem; line-height: 1.3; font-weight: 600; font-size: .9rem;
 }
 thead th:first-child { text-align: left; padding-left: 1rem; }
-
-/* Winner header: gold border only, keep dark background so text stays readable */
 thead th.winner-hdr { box-shadow: inset 0 0 0 3px #f0c000; }
 
 .ev-label {
-  text-align: left; font-size: .86rem;
-  padding: .55rem .85rem; max-width: 240px; line-height: 1.45;
-  background: #f7f9fc;
+  text-align: left; font-size: .86rem; padding: .55rem .85rem;
+  max-width: 240px; line-height: 1.45; background: #f7f9fc;
 }
 tbody tr:nth-child(even) .ev-label { background: #f0f4fa; }
 tbody tr:nth-child(even) td { background: #fafbff; }
 .ev-id { font-weight: 700; color: #1B3A6B; margin-right: .3rem; }
 
-/* ── Select wrapper ── */
+/* ── Dropdowns ── */
 .sel-wrap { position: relative; display: inline-block; }
 .sel-wrap::after {
   content: '▾'; position: absolute; right: 6px; top: 50%;
@@ -132,26 +111,20 @@ tbody tr:nth-child(even) td { background: #fafbff; }
 .cell-select.state-c  { background: #cef0d8; color: #155724; border-color: #7ecb97; }
 .cell-select.state-i  { background: #fdd9dc; color: #721c24; border-color: #f09fa5; }
 .cell-select.state-na { background: #e6e9ed; color: #495057; border-color: #adb5bd; }
-
-/* ── Check My Work feedback ── */
 td.fb-correct .cell-select { box-shadow: 0 0 0 3px #28a745; border-color: #28a745; }
 td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc3545; }
 
-/* ── Count row ── */
+/* ── Count / winner rows ── */
 #count-row td { background: #eef3fa; font-weight: 700; font-size: .88rem; color: #1B3A6B; padding: .55rem .35rem; }
 #count-row td:first-child { text-align: left; padding-left: 1rem; color: #666; font-weight: 400; font-size: .83rem; }
 #count-row td.winner-col { background: #fffbe6 !important; outline: 3px solid #b08800; outline-offset: -2px; }
-
-/* ── Winner row ── */
 #winner-row { display: none; }
 #winner-row td { padding: .65rem .35rem; font-size: .85rem; border-top: 2px solid #d0dbed; background: #f7f9fc; }
 #winner-row td:first-child { text-align: left; padding-left: 1rem; font-weight: 600; color: #1B3A6B; }
 #winner-row td.winner-col { background: #fffbe6 !important; outline: 3px solid #b08800; outline-offset: -2px; }
-
 .winner-badge {
   display: inline-block; background: #b08800; color: #fff;
-  border-radius: 5px; padding: .18rem .6rem;
-  font-size: .8rem; font-weight: 700; letter-spacing: .04em;
+  border-radius: 5px; padding: .18rem .6rem; font-size: .8rem; font-weight: 700; letter-spacing: .04em;
 }
 #tie-msg {
   display: inline-block; color: #7a4800; font-weight: 700;
@@ -166,6 +139,69 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   border-left: 4px solid #2E75B6; font-size: .9rem; color: #1B3A6B; font-weight: 600;
 }
 #feedback-bar.hidden { display: none; }
+
+/* ── Debrief section ── */
+#debrief { margin-top: 1.5rem; }
+#debrief.hidden { display: none; }
+
+.debrief-header {
+  background: linear-gradient(135deg, #1B3A6B 0%, #254e9a 100%);
+  color: #fff; padding: .8rem 1.2rem; border-radius: 10px 10px 0 0;
+  font-size: 1.05rem; font-weight: 700; letter-spacing: .03em;
+}
+
+.debrief-body {
+  background: #fff; border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.09); padding: 1.2rem 1.4rem;
+}
+
+/* Takeaways */
+.takeaway-heading {
+  font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: #2E75B6; margin-bottom: .7rem;
+}
+.takeaway-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: .75rem; margin-bottom: 1.4rem; }
+.takeaway-card {
+  display: flex; gap: .75rem; align-items: flex-start;
+  background: #f0f5ff; border: 1px solid #c8d9f5; border-radius: 8px; padding: .75rem .9rem;
+}
+.takeaway-num {
+  flex-shrink: 0; width: 26px; height: 26px; background: #1B3A6B; color: #fff;
+  border-radius: 50%; font-size: .82rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.takeaway-text { font-size: .87rem; line-height: 1.5; color: #1a2a50; }
+
+/* Rationale table */
+.rationale-heading {
+  font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: #2E75B6; margin-bottom: .7rem;
+}
+.rationale-divider { border: none; border-top: 1px solid #e0e8f5; margin: .5rem 0; }
+.rationale-item { padding: .6rem 0; }
+.rationale-item:not(:last-child) { border-bottom: 1px solid #edf1f9; }
+.rat-ev {
+  display: flex; align-items: baseline; gap: .5rem; margin-bottom: .3rem;
+}
+.rat-id { font-weight: 700; color: #1B3A6B; font-size: .9rem; flex-shrink: 0; }
+.rat-ev-text { font-size: .88rem; color: #333; font-style: italic; }
+.rat-explanation { font-size: .87rem; line-height: 1.55; color: #2a3045; padding-left: 1.4rem; }
+
+/* Instructor caveat */
+.caveat-box {
+  margin-top: 1.2rem; background: #fff8e6; border: 1px solid #f0d080;
+  border-left: 4px solid #b08800; border-radius: 0 8px 8px 0; padding: .85rem 1rem;
+}
+.caveat-box h4 { font-size: .85rem; color: #7a4800; font-weight: 700; margin-bottom: .4rem; letter-spacing: .02em; }
+.caveat-box p  { font-size: .86rem; line-height: 1.6; color: #5c3900; }
+
+/* Recommendation */
+.recommendation-box {
+  margin-top: 1rem; background: #f0f9f3; border: 1px solid #a3d9b1;
+  border-left: 4px solid #1a7a3c; border-radius: 0 8px 8px 0; padding: .85rem 1rem;
+}
+.recommendation-box h4 { font-size: .85rem; color: #155724; font-weight: 700; margin-bottom: .4rem; letter-spacing: .02em; }
+.recommendation-box p  { font-size: .86rem; line-height: 1.6; color: #1a3a24; }
 </style>
 </head>
 <body>
@@ -193,8 +229,8 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 
 <div id="toolbar">
   <span id="progress-text">0 of 40 cells filled</span>
-  <button class="btn btn-gold"    id="check-btn"   style="display:none"  onclick="checkWork()">&#10003; Check My Work</button>
-  <button class="btn btn-outline" id="hide-btn"    style="display:none"  onclick="hideFeedback()">Hide Feedback</button>
+  <button class="btn btn-gold"    id="check-btn"    style="display:none" onclick="checkWork()">&#10003; Check My Work</button>
+  <button class="btn btn-outline" id="hide-btn"     style="display:none" onclick="hideFeedback()">Hide Feedback</button>
   <button class="btn btn-green"   id="evaluate-btn" style="display:none" onclick="evaluate()">&#9654; Evaluate</button>
   <button class="btn btn-navy"    onclick="resetMatrix()">Reset Matrix</button>
 </div>
@@ -214,17 +250,11 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   <tfoot>
     <tr id="count-row">
       <td>Inconsistent (I) count</td>
-      <td id="cnt-0">0</td>
-      <td id="cnt-1">0</td>
-      <td id="cnt-2">0</td>
-      <td id="cnt-3">0</td>
+      <td id="cnt-0">0</td><td id="cnt-1">0</td><td id="cnt-2">0</td><td id="cnt-3">0</td>
     </tr>
     <tr id="winner-row">
       <td id="assess-label">Assessment</td>
-      <td id="assess-0"></td>
-      <td id="assess-1"></td>
-      <td id="assess-2"></td>
-      <td id="assess-3"></td>
+      <td id="assess-0"></td><td id="assess-1"></td><td id="assess-2"></td><td id="assess-3"></td>
     </tr>
   </tfoot>
 </table>
@@ -234,17 +264,46 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   <span id="feedback-text"></span>
 </div>
 
+<div id="debrief" class="hidden">
+  <div class="debrief-header">&#128196; Instructor Debrief</div>
+  <div class="debrief-body">
+
+    <div class="takeaway-heading">Key Takeaways</div>
+    <div class="takeaway-cards">
+      <div class="takeaway-card">
+        <div class="takeaway-num">1</div>
+        <div class="takeaway-text">The primary objective of ACH is to minimize confirmation bias by identifying the hypothesis with the <strong>least inconsistent evidence</strong>, not the one with the most support.</div>
+      </div>
+      <div class="takeaway-card">
+        <div class="takeaway-num">2</div>
+        <div class="takeaway-text">A <strong>single piece of highly discriminating evidence</strong> can fundamentally alter an analytical conclusion, turning circumstantial indicators into irrelevant data points.</div>
+      </div>
+      <div class="takeaway-card">
+        <div class="takeaway-num">3</div>
+        <div class="takeaway-text">Evidence that relates exclusively to <strong>human emotion or motivation</strong> provides zero analytical value when evaluated against mechanical or material failures.</div>
+      </div>
+    </div>
+
+    <div class="rationale-heading">Evidence Rationale</div>
+    <div id="rationale-list"></div>
+
+    <div class="caveat-box">
+      <h4>&#9888; Instructor Note — E10 / H1 Edge Case</h4>
+      <p>A student may argue that E10 is <em>Consistent</em> with Sabotage by suggesting employees deliberately contaminated the new flour supply. While this demonstrates creative thinking, guide the student back to the available evidence: Frank (the prime suspect) successfully baked his first batch using the old flour. If a coordinated effort specifically targeted only the new flour, it requires a complex, multi-step assumption with no supporting evidence. In structured analysis, when a simpler explanation — defective supplier goods — carries <strong>zero inconsistencies</strong> and requires fewer assumptions, it is the mathematically and logically superior hypothesis.</p>
+    </div>
+
+    <div class="recommendation-box">
+      <h4>&#9654; Facilitation Recommendation</h4>
+      <p>Focus the majority of debrief time on <strong>Evidence Item 10</strong>. Before E10 is applied, Sabotage appears highly likely due to the volume of circumstantial human motive evidence (E5–E8). E10 demonstrates how a single piece of highly diagnostic evidence can completely invert the leading hypothesis by exposing a logical inconsistency — the core value of the ACH method.</p>
+    </div>
+
+  </div>
+</div>
+
 </div>
 
 <script>
   const H = 4;
-
-  const HYPOTHESES = [
-    'Sabotage by Employees',
-    'Malfunction of Gas Gauges',
-    'Fluctuations in Gas Pressure',
-    'The Flour is Defective'
-  ];
 
   const EVIDENCE = [
     { id:'E1',  text:'Three batches of bread were overbaked.' },
@@ -259,24 +318,31 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     { id:'E10', text:'Only batches made with the new flour were overbaked.' },
   ];
 
-  // N/A logic:
-  // E6-E8 (employee grievances) have no bearing on equipment or flour quality → N/A for H2, H3, H4
-  // E9 (flour delivery delay) has no bearing on sabotage, gauges, or pressure → N/A for H1, H2, H3
-  // E3: pressure would affect ALL ovens (serviceman confirmed) → I for H3
-  // E4: serviceman found nothing wrong → I for H2 (directly contradicts gauge malfunction)
-  // E10: only new-flour batches burned → I for H1/H2/H3, C for H4
   const ANSWER_KEY = [
-  //  H1     H2     H3     H4
-    ['C',   'C',   'C',   'C'  ],  // E1
-    ['C',   'I',   'I',   'C'  ],  // E2 - equipment/pressure fault would affect ALL bread, not just special
-    ['C',   'C',   'I',   'C'  ],  // E3 - pressure would affect ALL ovens
-    ['C',   'I',   'C',   'C'  ],  // E4 - serviceman found nothing = contradicts gauge malfunction
-    ['C',   'C',   'C',   'C'  ],  // E5
-    ['C',   'N/A', 'N/A', 'N/A'],  // E6 - employee grievance irrelevant to equipment/flour
-    ['C',   'N/A', 'N/A', 'N/A'],  // E7 - employee grievance irrelevant to equipment/flour
-    ['C',   'N/A', 'N/A', 'N/A'],  // E8 - employee activity irrelevant to equipment/flour
-    ['N/A', 'N/A', 'N/A', 'C'  ],  // E9 - flour delivery only relevant to flour hypothesis
-    ['I',   'I',   'I',   'C'  ],  // E10 - only new flour batches burned → points to flour
+  //   H1      H2      H3      H4
+    [ 'C',    'C',    'C',    'C'   ],  // E1
+    [ 'C',    'I',    'I',    'C'   ],  // E2
+    [ 'C',    'C',    'I',    'C'   ],  // E3
+    [ 'C',    'I',    'C',    'C'   ],  // E4
+    [ 'C',    'N/A',  'N/A',  'N/A' ],  // E5
+    [ 'C',    'N/A',  'N/A',  'N/A' ],  // E6
+    [ 'C',    'N/A',  'N/A',  'N/A' ],  // E7
+    [ 'C',    'N/A',  'N/A',  'N/A' ],  // E8
+    [ 'N/A',  'N/A',  'N/A',  'C'   ],  // E9
+    [ 'I',    'I',    'I',    'C'   ],  // E10
+  ];
+
+  const RATIONALE = [
+    { id:'E1', rationale: 'Establishes the baseline problem. All four hypotheses can account for multiple burned batches — this evidence lacks the specificity to favor any single cause.' },
+    { id:'E2', rationale: 'Mechanical systems cannot distinguish between bread recipes; a gauge fault or pressure problem burns whatever is in the oven. Only sabotage (targeted action) or defective flour (ingredient-specific) can explain why only the specialty bread was affected.' },
+    { id:'E3', rationale: 'The serviceman explicitly stated that a gas pressure issue would affect all ovens simultaneously — only two were affected, directly contradicting H3. Sabotage, gauge malfunction, and defective flour can each produce isolated oven failures.' },
+    { id:'E4', rationale: 'The serviceman\'s inspection found no fault. This directly contradicts Gauge Malfunction — if the gauges were the root cause, a targeted inspection would have found a mechanical fault.' },
+    { id:'E5', rationale: 'The busy season provides motive and opportunity for a deliberate actor seeking maximum disruption. The calendar date has no causal relationship to gauge performance, gas line behavior, or ingredient quality.' },
+    { id:'E6', rationale: 'Establishes grievance and motive for sabotage. Human emotions and administrative decisions have zero effect on equipment function or flour chemistry — Not Applicable to H2, H3, and H4.' },
+    { id:'E7', rationale: 'Reinforces the sabotage motive. Anger over a firing is a human factor with no bearing on mechanical systems or ingredient properties — Not Applicable to H2, H3, and H4.' },
+    { id:'E8', rationale: 'Suggests potential coordination between a current and former employee — relevant only to deliberate human action. Equipment does not malfunction because employees meet in a parking lot.' },
+    { id:'E9', rationale: 'A delayed delivery from an unverified new supplier explains how untested flour entered production under time pressure. A supply chain delay has no causal effect on employee behavior, gauge function, or gas pressure — Not Applicable to H1, H2, and H3.' },
+    { id:'E10', rationale: 'The decisive variable. Failures correlated perfectly with the new flour, not with the location of suspected individuals. Frank (Crew 2) successfully baked his first batch using old flour. Gauge and pressure faults operate independently of ingredients. This single item overturns the apparent weight of the circumstantial sabotage evidence.' },
   ];
 
   const TOTAL_CELLS = EVIDENCE.length * H;
@@ -315,7 +381,24 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
       }
       tbody.appendChild(tr);
     });
+    buildRationale();
     refresh();
+  }
+
+  function buildRationale() {
+    const list = document.getElementById('rationale-list');
+    list.innerHTML = '';
+    RATIONALE.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'rationale-item';
+      div.innerHTML = `
+        <div class="rat-ev">
+          <span class="rat-id">${item.id}</span>
+          <span class="rat-ev-text">${EVIDENCE[i].text}</span>
+        </div>
+        <div class="rat-explanation">${item.rationale}</div>`;
+      list.appendChild(div);
+    });
   }
 
   function onCellChange(r, c) {
@@ -339,7 +422,6 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     document.getElementById('check-btn').style.display    = filled >= 4 ? '' : 'none';
     document.getElementById('evaluate-btn').style.display = allFilled   ? '' : 'none';
 
-    // Live I count (no winner highlighting until Evaluate)
     const counts = Array(H).fill(0);
     for (let r = 0; r < EVIDENCE.length; r++)
       for (let c = 0; c < H; c++)
@@ -349,13 +431,12 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   }
 
   function refresh() {
-    for (let r = 0; r < EVIDENCE.length; r++) {
+    for (let r = 0; r < EVIDENCE.length; r++)
       for (let c = 0; c < H; c++) {
         const sel = document.getElementById(`cell-${r}-${c}`);
         sel.value = grid[r][c];
         sel.className = 'cell-select ' + CLS[grid[r][c]];
       }
-    }
     updateUI();
   }
 
@@ -366,7 +447,6 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
       for (let c = 0; c < H; c++)
         if (grid[r][c] === 'I') counts[c]++;
 
-    // Clear previous winner styles
     for (let c = 0; c < H; c++) {
       document.getElementById(`hdr-${c}`).classList.remove('winner-hdr');
       document.getElementById(`cnt-${c}`).classList.remove('winner-col');
@@ -377,8 +457,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 
     const min = Math.min(...counts);
     const winners = counts.reduce((a, v, i) => v === min ? [...a, i] : a, []);
-    const winnerRow = document.getElementById('winner-row');
-    winnerRow.style.display = '';
+    document.getElementById('winner-row').style.display = '';
 
     if (winners.length > 1) {
       winners.forEach(c => {
@@ -398,6 +477,8 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     }
 
     document.getElementById('evaluate-btn').style.display = 'none';
+    document.getElementById('debrief').classList.remove('hidden');
+    document.getElementById('debrief').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function clearEvaluation() {
@@ -410,6 +491,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     }
     document.getElementById('assess-label').textContent = 'Assessment';
     document.getElementById('winner-row').style.display = 'none';
+    document.getElementById('debrief').classList.add('hidden');
   }
 
   function checkWork() {
@@ -445,6 +527,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     feedbackVisible = false;
     evaluated = false;
     document.getElementById('winner-row').style.display = 'none';
+    document.getElementById('debrief').classList.add('hidden');
     hideFeedback();
     build();
   }
