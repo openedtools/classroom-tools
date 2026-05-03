@@ -1,311 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ACH Board Simulator – ESL (Offline)</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ACH Matrix – Bakery Dilemma</title>
 <style>
-  :root{--bg:#0b1020;--panel:#121a33;--stroke:#273a7e;--text:#e6ecff;--muted:#9fb0ff;--accent:#5ad1ff;--good:#2ecc71;--bad:#e74c3c;--mid:#9aa6ff}
-  html,body{height:100%}
-  body{margin:0;background:radial-gradient(1100px 600px at 50% -10%, #1a2961 0%, var(--bg) 55%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;display:grid;grid-template-rows:auto 1fr auto}
-  header{padding:16px 20px 6px}
-  h1{margin:0 0 6px}
-  .sub{color:var(--muted);font-size:14px}
-  .wrap{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;padding:12px 20px 20px}
-  .card{background:var(--panel);border:1px solid var(--stroke);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-  .pad{padding:14px}
-  .row{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center;margin:8px 0}
-  label{font-size:13px;color:var(--muted)}
-  input,select,button,textarea{background:#0f1630;color:var(--text);border:1px solid #24346e;border-radius:8px;padding:8px 10px;font-family:inherit}
-  textarea{min-height:70px;resize:vertical}
-  button{cursor:pointer}
-  .chip{display:inline-flex;align-items:center;gap:6px;background:#0f1630;border:1px solid #2a3b7a;border-radius:999px;padding:6px 10px;margin:0 6px 6px 0}
-  .chip input{border:none;background:transparent;padding:0;width:160px}
-  .chip .rm{background:#201f3f;border:1px solid #3a4a9a;border-radius:999px;padding:2px 6px;font-size:12px}
-  .list{display:flex;flex-direction:column;gap:8px}
-  .ev{display:grid;grid-template-columns:1.6fr 0.9fr 0.4fr;gap:8px}
-  .ev input{width:100%}
-  .ev .rm{width:100%}
-  table{width:100%;border-collapse:separate;border-spacing:0 8px}
-  th,td{padding:8px 6px;text-align:center}
-  thead th{font-size:12px;color:#bcd0ff}
-  tbody tr{background:#0e1633;border:1px solid #22306b}
-  tbody td:first-child{text-align:left}
-  .pill{display:inline-block;padding:2px 6px;border-radius:6px;background:#0f1630;border:1px solid #2a3b7a;margin-right:4px}
-  .btn{border-radius:8px}
-  .btn.small{padding:4px 8px;font-size:12px}
-  .seg{display:inline-flex;border:1px solid #2a3b7a;border-radius:8px;overflow:hidden}
-  .seg button{border:0; padding:6px 10px}
-  .seg button.active{background:#1a2550}
-  .S{background:rgba(46,204,113,.14);border:1px solid rgba(46,204,113,.35)}
-  .H{background:rgba(231,76,60,.14);border:1px solid rgba(231,76,60,.35)}
-  .N{background:rgba(154,166,255,.14);border:1px solid rgba(154,166,255,.35)}
-  .scoreRow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin:6px 0}
-  .bar{height:10px;background:#0f1630;border:1px solid #22306b;border-radius:999px;position:relative}
-  .bar > div{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--good),#f1c40f,var(--bad));border-radius:999px}
-  .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
-  .k{background:#0f1630;border:1px solid #22306b;border-radius:12px;padding:10px}
-  .k h4{margin:0 0 4px;font-size:11px;color:#a6b6ff}
-  .k .v{font-weight:700}
-  .hint{font-size:12px;color:#9fb0ff;margin-top:6px}
-  footer{color:#90a2ff;opacity:.9;font-size:12px;padding:6px 20px 14px}
-  .smallnote{font-size:12px;color:#9fb0ff;margin-top:6px}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fff;
+    color: #111;
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  #page-header {
+    background: #1B3A6B;
+    color: #fff;
+    padding: .85rem 1.2rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+  #page-header h1 { font-size: 1.5rem; letter-spacing: .02em; }
+  #page-header .subtitle { font-size: .85rem; opacity: .75; margin-top: .2rem; }
+
+  #scenario {
+    background: #eef3fa;
+    border-left: 4px solid #2E75B6;
+    padding: .7rem 1rem;
+    border-radius: 4px;
+    font-size: .92rem;
+    line-height: 1.55;
+    margin-bottom: .85rem;
+  }
+  #scenario strong { color: #1B3A6B; }
+
+  #info-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 2rem;
+    align-items: center;
+    background: #f4f6f9;
+    border: 1px solid #d0d8e8;
+    border-radius: 4px;
+    padding: .55rem 1rem;
+    margin-bottom: .9rem;
+    font-size: .88rem;
+  }
+  .legend-items { display: flex; gap: .9rem; flex-wrap: wrap; align-items: center; }
+  .leg { display: flex; align-items: center; gap: .3rem; }
+  .swatch {
+    width: 24px; height: 24px; border-radius: 3px;
+    border: 1px solid #bbb; font-size: .78rem;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+  .sw-c  { background: #d4edda; color: #155724; border-color: #9ecfac; }
+  .sw-i  { background: #f8d7da; color: #721c24; border-color: #f1adb3; }
+  .sw-na { background: #e2e3e5; color: #383d41; border-color: #c6c8ca; }
+  .sw-bl { background: #fff;    color: #555;    border-color: #bbb; }
+  #key-rule { font-weight: 700; color: #1B3A6B; font-size: .9rem; }
+
+  #reset-btn {
+    display: block;
+    margin: 0 0 1rem auto;
+    background: #1B3A6B;
+    color: #fff;
+    border: none;
+    padding: .5rem 1.4rem;
+    border-radius: 5px;
+    font-size: .92rem;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: .03em;
+  }
+  #reset-btn:hover { background: #2E75B6; }
+
+  #matrix-wrap { overflow-x: auto; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 520px;
+    font-size: .95rem;
+  }
+
+  th, td {
+    border: 1px solid #bbc8dd;
+    text-align: center;
+    padding: .45rem .4rem;
+    vertical-align: middle;
+  }
+
+  thead th {
+    background: #1B3A6B;
+    color: #fff;
+    font-size: 1rem;
+    padding: .65rem .5rem;
+    line-height: 1.3;
+  }
+  thead th:first-child { text-align: left; padding-left: .8rem; }
+
+  .ev-label {
+    text-align: left;
+    background: #f0f4fa;
+    font-size: .88rem;
+    padding: .5rem .75rem;
+    max-width: 270px;
+  }
+  .ev-id { font-weight: 700; color: #1B3A6B; margin-right: .3rem; }
+
+  .cell-btn {
+    width: 68px;
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+    font-size: .92rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: #fff;
+    color: #555;
+    transition: filter .1s;
+  }
+  .cell-btn:hover { filter: brightness(.92); }
+  .state-c  { background: #d4edda; color: #155724; border-color: #9ecfac; }
+  .state-i  { background: #f8d7da; color: #721c24; border-color: #f1adb3; }
+  .state-na { background: #e2e3e5; color: #555;    border-color: #c6c8ca; }
+
+  #count-row td {
+    background: #eef3fa;
+    font-weight: 700;
+    font-size: .92rem;
+    color: #1B3A6B;
+  }
+  #count-row td:first-child {
+    text-align: left;
+    padding-left: .8rem;
+    color: #555;
+    font-weight: 400;
+  }
+
+  #winner-row td {
+    padding: .65rem .4rem;
+    font-size: .88rem;
+    border-top: 2px solid #1B3A6B;
+  }
+  #winner-row td:first-child {
+    text-align: left;
+    padding-left: .8rem;
+    font-weight: 600;
+    color: #1B3A6B;
+  }
+
+  .winner-col {
+    outline: 3px solid #c9a200;
+    outline-offset: -2px;
+    background: #fffbe6 !important;
+  }
+  .winner-badge {
+    display: inline-block;
+    background: #c9a200;
+    color: #fff;
+    border-radius: 4px;
+    padding: .15rem .55rem;
+    font-size: .82rem;
+    font-weight: 700;
+  }
+  #tie-msg {
+    display: inline-block;
+    color: #7a4800;
+    font-weight: 700;
+    font-size: .88rem;
+    padding: .2rem .5rem;
+    background: #fff3cd;
+    border-radius: 4px;
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>ACH Board Simulator</h1>
-  <div class="sub">Compare hypotheses with the <b>same evidence</b>. Mark each cell: <b>Helps</b> ✅, <b>Hurts</b> ❌, or <b>Not sure</b> ◻. Focus on contradictions.</div>
-</header>
 
-<div class="wrap">
-  <!-- LEFT: Matrix -->
-  <div class="card pad">
-    <div class="row">
-      <label>Question</label>
-      <input id="q" placeholder="e.g., Who is behind the GPS jamming in Sector X?"/>
-    </div>
-
-    <div class="row" style="align-items:start">
-      <label>Hypotheses</label>
-      <div id="hypoWrap"></div>
-    </div>
-
-    <div class="row" style="align-items:start">
-      <label>Evidence</label>
-      <div class="list" id="evList"></div>
-    </div>
-
-    <div class="row">
-      <label>Weights</label>
-      <div>
-        <div class="seg" id="weightMode" style="margin-bottom:6px">
-          <button data-mode="off" class="active">Off</button>
-          <button data-mode="on">On</button>
-        </div>
-        <div id="weightsHelp" class="smallnote">Off: every ❌ Hurts counts as 1. ◻ Not sure counts as 0.5. ✅ Helps = 0.</div>
-      </div>
-    </div>
-
-    <div style="overflow:auto; margin-top:8px">
-      <table id="matrix">
-        <thead><tr id="thead"></tr></thead>
-        <tbody id="tbody"></tbody>
-      </table>
-    </div>
-
-    <div class="hint">Method tip: Fill each <b>row</b> left→right (work across), not column by column. That keeps evidence consistent.</div>
-  </div>
-
-  <!-- RIGHT: Results & Notes -->
-  <div class="card pad">
-    <div class="kpi">
-      <div class="k"><h4>Most Consistent</h4><div class="v" id="bestOut">—</div></div>
-      <div class="k"><h4>Key Evidence</h4><div class="v" id="keyOut">—</div></div>
-      <div class="k"><h4>Flip Test</h4><div class="v" id="flipOut">—</div></div>
-    </div>
-
-    <div id="scores"></div>
-
-    <div class="row">
-      <label>Sensitivity</label>
-      <select id="dropEv"></select>
-    </div>
-
-    <div class="row" style="align-items:start">
-      <label>Write-up</label>
-      <textarea id="writeup" placeholder="2–3 sentences: What we think and why. What would change our mind?"></textarea>
-    </div>
-
-    <div class="row">
-      <label>Save/Load</label>
-      <div>
-        <button class="btn small" id="save">Save JSON</button>
-        <input type="file" id="load" accept="application/json" style="display:inline-block"/>
-        <button class="btn small" id="print">Print</button>
-      </div>
-    </div>
-
-    <div class="hint">Scoring: ❌ Hurts = +1 (bad). ✅ Helps = 0. ◻ Not sure = 0.5 (optional). With <b>Weights: On</b> → High counts ×2, Low counts ×0.5.</div>
-  </div>
+<div id="page-header">
+  <h1>Analysis of Competing Hypotheses (ACH) Matrix</h1>
+  <div class="subtitle">Teaching Aid — Unclassified Training Use Only</div>
 </div>
 
-<footer>
-  Class flow: add 2–4 hypotheses and 5–8 evidence items → mark the grid → read ranking → drop one key evidence (sensitivity) → write final note.
-</footer>
+<div id="scenario">
+  <strong>Scenario — The Bakery Dilemma:</strong>
+  A commercial bakery has experienced three separate incidents in which batches of bread were overbaked,
+  causing product loss and customer complaints. Management must determine whether the cause is deliberate
+  sabotage by disgruntled employees, a malfunction of the oven gas gauges, or naturally occurring
+  fluctuations in gas line pressure.
+</div>
+
+<div id="info-bar">
+  <div class="legend-items">
+    <div class="leg"><div class="swatch sw-c">C</div> Consistent</div>
+    <div class="leg"><div class="swatch sw-i">I</div> Inconsistent</div>
+    <div class="leg"><div class="swatch sw-na">N/A</div> Not Applicable</div>
+    <div class="leg"><div class="swatch sw-bl">&nbsp;</div> Blank</div>
+  </div>
+  <div id="key-rule">Key Rule: Select the hypothesis with the LEAST evidence against it.</div>
+</div>
+
+<button id="reset-btn" onclick="resetMatrix()">Reset Matrix</button>
+
+<div id="matrix-wrap">
+<table>
+  <thead>
+    <tr>
+      <th style="min-width:210px">Evidence</th>
+      <th id="hdr-0">H1<br><span style="font-weight:400;font-size:.85rem">Sabotage by Employees</span></th>
+      <th id="hdr-1">H2<br><span style="font-weight:400;font-size:.85rem">Malfunction of Gas Gauges</span></th>
+      <th id="hdr-2">H3<br><span style="font-weight:400;font-size:.85rem">Fluctuations in Gas Pressure</span></th>
+    </tr>
+  </thead>
+  <tbody id="matrix-body"></tbody>
+  <tfoot>
+    <tr id="count-row">
+      <td>Inconsistent (I) count</td>
+      <td id="cnt-0">0</td>
+      <td id="cnt-1">0</td>
+      <td id="cnt-2">0</td>
+    </tr>
+    <tr id="winner-row">
+      <td id="assess-label">Assessment</td>
+      <td id="assess-0"></td>
+      <td id="assess-1"></td>
+      <td id="assess-2"></td>
+    </tr>
+  </tfoot>
+</table>
+</div>
 
 <script>
-  // ---------- State ----------
-  let state = {
-    question: '',
-    weightMode: 'off',
-    hypos: [ {id:'H1', name:'H1'}, {id:'H2', name:'H2'}, {id:'H3', name:'H3'} ],
-    evidence: [ // default examples (can be cleared)
-      {id:'E1', title:'Jamming near border', note:'', importance:'Med'},
-      {id:'E2', title:'New emitter on 121.5', note:'', importance:'High'},
-      {id:'E3', title:'Local weather good', note:'', importance:'Low'}
-    ],
-    cells: {} // key: EID|HID -> 'S'|'H'|'N'
-  };
+  const H = 3;
+  const EVIDENCE = [
+    { id:'E1', text:'Three batches of bread were overbaked.' },
+    { id:'E2', text:'Only specially prepared bread was overbaked.' },
+    { id:'E3', text:'Only 2 of the ovens were affected.' },
+    { id:'E4', text:'Maintenance found nothing wrong with the equipment.' },
+    { id:'E5', text:"Overbaking occurred during the bakery's busiest season." },
+    { id:'E6', text:'Employees were denied additional benefits.' },
+    { id:'E7', text:"Employees were angry about an employee's firing." },
+    { id:'E8', text:'Flour from a new supplier was delayed.' },
+  ];
 
-  const q = document.getElementById('q');
-  const hypoWrap = document.getElementById('hypoWrap');
-  const evList = document.getElementById('evList');
-  const thead = document.getElementById('thead');
-  const tbody = document.getElementById('tbody');
-  const weightMode = document.getElementById('weightMode');
-  const weightsHelp = document.getElementById('weightsHelp');
-  const scoresDiv = document.getElementById('scores');
-  const keyOut = document.getElementById('keyOut');
-  const bestOut = document.getElementById('bestOut');
-  const flipOut = document.getElementById('flipOut');
-  const dropEv = document.getElementById('dropEv');
-  const writeup = document.getElementById('writeup');
-  const saveBtn = document.getElementById('save');
-  const loadInput = document.getElementById('load');
-  const printBtn = document.getElementById('print');
+  const CYCLE = ['', 'C', 'I', 'N/A'];
+  const CLS   = { '':'', 'C':'state-c', 'I':'state-i', 'N/A':'state-na' };
 
-  // ---------- UI Builders ----------
-  function renderHypos(){
-    hypoWrap.innerHTML='';
-    state.hypos.forEach(h=>{
-      const chip = document.createElement('div'); chip.className='chip';
-      const inp = document.createElement('input'); inp.value = h.name; inp.oninput=()=>{h.name=inp.value; renderMatrix(); renderScores();};
-      const rm = document.createElement('button'); rm.textContent='×'; rm.className='rm'; rm.onclick=()=>{ if(state.hypos.length>2){ state.hypos=state.hypos.filter(x=>x.id!==h.id); renderAll(); } };
-      chip.append(inp, rm); hypoWrap.appendChild(chip);
-    });
-    const add = document.createElement('button'); add.textContent='+ Add'; add.className='btn small';
-    add.onclick=()=>{ const id = 'H'+(state.hypos.length+1); state.hypos.push({id,name:id}); renderAll(); };
-    hypoWrap.appendChild(add);
-  }
+  let grid = EVIDENCE.map(() => Array(H).fill(''));
 
-  function renderEvidence(){
-    evList.innerHTML='';
-    state.evidence.forEach(e=>{
-      const row = document.createElement('div'); row.className='ev';
-      const t = document.createElement('input'); t.placeholder='Short evidence'; t.value=e.title; t.oninput=()=>{e.title=t.value; renderMatrix(); renderScores();};
-      const imp = document.createElement('select'); ['Low','Med','High'].forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; if(e.importance===v)o.selected=true; imp.appendChild(o); });
-      imp.onchange=()=>{ e.importance=imp.value; renderMatrix(); renderScores(); };
-      const rm = document.createElement('button'); rm.textContent='Remove'; rm.className='rm'; rm.onclick=()=>{ state.evidence=state.evidence.filter(x=>x.id!==e.id); renderAll(); };
-      row.append(t, imp, rm); evList.appendChild(row);
-    });
-    const add = document.createElement('button'); add.textContent='+ Add Evidence'; add.className='btn small';
-    add.onclick=()=>{ const id='E'+(state.evidence.length+1); state.evidence.push({id,title:'',note:'',importance:'Med'}); renderAll(); };
-    evList.appendChild(add);
-  }
-
-  function renderMatrix(){
-    // header
-    thead.innerHTML='';
-    const h0 = document.createElement('th'); h0.textContent='Evidence ↓  |  Hypotheses →'; h0.style.textAlign='left'; thead.appendChild(h0);
-    state.hypos.forEach(h=>{ const th=document.createElement('th'); th.textContent=h.name; thead.appendChild(th); });
-
-    // body
-    tbody.innerHTML='';
-    state.evidence.forEach(e=>{
-      const tr=document.createElement('tr');
-      const td0=document.createElement('td');
-      td0.style.textAlign='left';
-      td0.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><div><b>${e.title||e.id}</b> <span class="pill">${e.importance}</span></div></div>`;
+  function build() {
+    const tbody = document.getElementById('matrix-body');
+    tbody.innerHTML = '';
+    EVIDENCE.forEach((ev, r) => {
+      const tr = document.createElement('tr');
+      const td0 = document.createElement('td');
+      td0.className = 'ev-label';
+      td0.innerHTML = `<span class="ev-id">${ev.id}</span>${ev.text}`;
       tr.appendChild(td0);
-      state.hypos.forEach(h=>{
-        const td=document.createElement('td');
-        const seg=document.createElement('div'); seg.className='seg';
-        ['S','N','H'].forEach(code=>{
-          const b=document.createElement('button'); b.textContent = code==='S'?'✅ Helps': code==='H'?'❌ Hurts':'◻ Not sure';
-          if(getCell(e.id,h.id)===code) b.classList.add('active');
-          b.onclick=()=>{ setCell(e.id,h.id, code); [...seg.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); renderScores(); };
-          seg.appendChild(b);
-        });
-        td.appendChild(seg); tr.appendChild(td);
-      });
+      for (let c = 0; c < H; c++) {
+        const td  = document.createElement('td');
+        const btn = document.createElement('button');
+        btn.className = 'cell-btn';
+        btn.id = `cell-${r}-${c}`;
+        btn.setAttribute('aria-label', `${ev.id} vs H${c + 1}`);
+        btn.addEventListener('click', () => cycle(r, c));
+        td.appendChild(btn);
+        tr.appendChild(td);
+      }
       tbody.appendChild(tr);
     });
+    refresh();
   }
 
-  function getCell(eid,hid){ return state.cells[`${eid}|${hid}`] || 'N'; }
-  function setCell(eid,hid,val){ state.cells[`${eid}|${hid}`]=val; }
+  function cycle(r, c) {
+    grid[r][c] = CYCLE[(CYCLE.indexOf(grid[r][c]) + 1) % CYCLE.length];
+    const btn = document.getElementById(`cell-${r}-${c}`);
+    btn.textContent = grid[r][c];
+    btn.className = 'cell-btn ' + CLS[grid[r][c]];
+    updateAssessment();
+  }
 
-  // ---------- Scoring ----------
-  function weightFor(importance){ if(state.weightMode==='off') return 1; return importance==='High'? 2 : importance==='Low'? 0.5 : 1; }
+  function refresh() {
+    for (let r = 0; r < EVIDENCE.length; r++) {
+      for (let c = 0; c < H; c++) {
+        const btn = document.getElementById(`cell-${r}-${c}`);
+        btn.textContent = grid[r][c];
+        btn.className = 'cell-btn ' + CLS[grid[r][c]];
+      }
+    }
+    updateAssessment();
+  }
 
-  function computeScores(dropId=null){
-    const scores = state.hypos.map(h=>({hid:h.id, name:h.name, bad:0, mid:0, good:0}));
-    state.evidence.forEach(e=>{
-      if(dropId && e.id===dropId) return; // sensitivity: drop one evidence
-      const w = weightFor(e.importance);
-      state.hypos.forEach((h,hi)=>{
-        const v = getCell(e.id,h.id);
-        if(v==='H') scores[hi].bad += 1*w; else if(v==='N') scores[hi].mid += 0.5*w; else if(v==='S') scores[hi].good += 0*w;
+  function updateAssessment() {
+    const counts = Array(H).fill(0);
+    for (let r = 0; r < EVIDENCE.length; r++)
+      for (let c = 0; c < H; c++)
+        if (grid[r][c] === 'I') counts[c]++;
+
+    for (let c = 0; c < H; c++)
+      document.getElementById(`cnt-${c}`).textContent = counts[c];
+
+    // Clear winner styling
+    for (let c = 0; c < H; c++) {
+      ['hdr','cnt','assess'].forEach(p =>
+        document.getElementById(`${p}-${c}`).classList.remove('winner-col')
+      );
+      document.getElementById(`assess-${c}`).innerHTML = '';
+    }
+    document.getElementById('assess-label').textContent = 'Assessment';
+
+    const anyI = counts.some(v => v > 0);
+    if (!anyI) return;
+
+    const min     = Math.min(...counts);
+    const winners = counts.reduce((a, v, i) => (v === min ? [...a, i] : a), []);
+
+    if (winners.length > 1) {
+      winners.forEach(c => {
+        ['hdr','cnt','assess'].forEach(p =>
+          document.getElementById(`${p}-${c}`).classList.add('winner-col')
+        );
       });
-    });
-    // rank by lowest contradictions (bad), tiebreaker by mid
-    scores.sort((a,b)=> (a.bad-b.bad) || (a.mid-b.mid));
-    return scores;
+      document.getElementById('assess-label').innerHTML =
+        'Assessment &nbsp;<span id="tie-msg">Tied — more analysis needed</span>';
+    } else {
+      const w = winners[0];
+      ['hdr','cnt','assess'].forEach(p =>
+        document.getElementById(`${p}-${w}`).classList.add('winner-col')
+      );
+      document.getElementById(`assess-${w}`).innerHTML =
+        '<span class="winner-badge">Most Likely</span>';
+    }
   }
 
-  function findKeyEvidence(){
-    // evidence that creates the biggest difference between best and next
-    let best=null; let bestGap=-Infinity;
-    state.evidence.forEach(e=>{
-      const scores = computeScores(e.id);
-      const gap = scores.length>1 ? (scores[1].bad - scores[0].bad) : 0;
-      if(gap>bestGap){ bestGap=gap; best=e; }
-    });
-    return best; // may be null if no evidence
+  function resetMatrix() {
+    grid = EVIDENCE.map(() => Array(H).fill(''));
+    refresh();
   }
 
-  function renderScores(){
-    const scores = computeScores(dropEv.value||null);
-    bestOut.textContent = scores.length? `${scores[0].name}` : '—';
-
-    // bars
-    scoresDiv.innerHTML='';
-    scores.forEach(s=>{
-      const row=document.createElement('div'); row.className='scoreRow';
-      const name=document.createElement('div'); name.textContent=s.name; row.appendChild(name);
-      const bar=document.createElement('div'); bar.className='bar'; const fill=document.createElement('div');
-      const maxBad = Math.max(1, ...scores.map(x=>x.bad));
-      fill.style.width = (s.bad/maxBad*100)+'%'; bar.appendChild(fill); row.appendChild(bar);
-      const num=document.createElement('div'); num.textContent = `Hurts: ${s.bad.toFixed(1)}  · Not sure: ${s.mid.toFixed(1)}`; row.appendChild(num);
-      scoresDiv.appendChild(row);
-    });
-
-    // key evidence + flip test setup
-    dropEv.innerHTML='';
-    const opt0=document.createElement('option'); opt0.value=''; opt0.textContent='— none —'; dropEv.appendChild(opt0);
-    state.evidence.forEach(e=>{ const o=document.createElement('option'); o.value=e.id; o.textContent=`Drop ${e.id}: ${e.title||''}`; dropEv.appendChild(o); });
-
-    const key = findKeyEvidence(); keyOut.textContent = key? `${key.id} (${key.title||'evidence'})` : '—';
-    const base = computeScores(); const drop = computeScores(key? key.id:null);
-    const flipped = (base[0] && drop[0]) ? (base[0].hid !== drop[0].hid) : false;
-    flipOut.textContent = key? (flipped? 'Flips when dropped' : 'Holds when dropped') : '—';
-  }
-
-  // ---------- Events ----------
-  q.addEventListener('input', ()=> state.question = q.value);
-  weightMode.querySelectorAll('button').forEach(b=> b.onclick=()=>{ state.weightMode=b.dataset.mode; weightMode.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));
-    weightsHelp.textContent = (state.weightMode==='on')
-      ? 'On: High = ×2 (strong evidence). Med = ×1. Low = ×0.5. ❌ Hurts adds more when evidence is High.'
-      : 'Off: every ❌ Hurts counts as 1. ◻ Not sure counts as 0.5. ✅ Helps = 0.';
-    renderScores();
-  });
-  dropEv.addEventListener('change', renderScores);
-  saveBtn.onclick=()=>{
-    const data = JSON.stringify(state, null, 2);
-    const blob = new Blob([data], {type:'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ach_board.json'; a.click();
-  };
-  loadInput.onchange=(e)=>{
-    const file=e.target.files[0]; if(!file) return; const fr=new FileReader(); fr.onload=()=>{ try{ state=JSON.parse(fr.result); renderAll(); }catch{} }; fr.readAsText(file);
-  };
-  printBtn.onclick=()=> window.print();
-
-  // ---------- Render all ----------
-  function renderAll(){ renderHypos(); renderEvidence(); renderMatrix(); renderScores(); }
-
-  // Kickoff
-  renderAll();
+  build();
 </script>
 </body>
 </html>
