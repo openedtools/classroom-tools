@@ -211,6 +211,57 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 .advanced-box p  { font-size: .86rem; line-height: 1.6; color: #2e1a50; }
 .advanced-box ul { padding-left: 1.2rem; margin: .4rem 0; }
 .advanced-box li { font-size: .86rem; line-height: 1.6; color: #2e1a50; margin-bottom: .35rem; }
+
+/* ── Sources modal ── */
+#sources-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(10,20,45,.6); z-index: 1000;
+  align-items: center; justify-content: center; padding: 1rem;
+}
+#sources-overlay.open { display: flex; }
+#sources-modal {
+  background: #fff; border-radius: 12px; width: 100%; max-width: 680px;
+  max-height: 88vh; display: flex; flex-direction: column;
+  box-shadow: 0 12px 40px rgba(0,0,0,.35);
+}
+#sources-modal-header {
+  background: linear-gradient(135deg, #1B3A6B 0%, #254e9a 100%);
+  color: #fff; padding: .9rem 1.2rem; border-radius: 12px 12px 0 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+#sources-modal-header h2 { font-size: 1rem; font-weight: 700; letter-spacing: .02em; }
+#sources-close {
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
+  color: #fff; border-radius: 6px; padding: .25rem .65rem;
+  font-size: 1rem; cursor: pointer; line-height: 1; font-family: inherit;
+}
+#sources-close:hover { background: rgba(255,255,255,.3); }
+#sources-modal-body { overflow-y: auto; padding: 1.1rem 1.3rem 1.4rem; }
+.sources-intro {
+  font-size: .87rem; line-height: 1.6; color: #3a4560; margin-bottom: 1.1rem;
+  padding-bottom: .9rem; border-bottom: 1px solid #e5eaf5;
+}
+.sources-group-label {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: #2E75B6; margin: 1rem 0 .5rem;
+}
+.source-item {
+  padding: .65rem .85rem; background: #f7f9fc; border: 1px solid #e0e8f5;
+  border-radius: 7px; margin-bottom: .5rem;
+}
+.source-item:last-child { margin-bottom: 0; }
+.source-title { font-weight: 700; color: #1B3A6B; font-size: .88rem; }
+.source-meta  { font-size: .82rem; color: #555; margin-top: .15rem; line-height: 1.5; }
+.source-avail {
+  display: inline-block; margin-top: .3rem;
+  font-size: .76rem; font-weight: 600; color: #155724;
+  background: #d4edda; border: 1px solid #9ecfac;
+  border-radius: 4px; padding: .1rem .45rem;
+}
+.sources-footer {
+  margin-top: 1.1rem; padding-top: .85rem; border-top: 1px solid #e5eaf5;
+  font-size: .8rem; color: #6a7a99; line-height: 1.55; text-align: center;
+}
 </style>
 </head>
 <body>
@@ -243,6 +294,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   <button class="btn btn-green"   id="evaluate-btn" style="display:none" onclick="evaluate()">&#9654; Evaluate</button>
   <button class="btn btn-navy"    onclick="resetMatrix()">Reset Matrix</button>
   <button class="btn btn-outline" onclick="window.open('./ach-builder.html','_blank')">&#43; Build Your Own</button>
+  <button class="btn btn-outline" onclick="openSources()">&#128218; Sources</button>
 </div>
 
 <div id="matrix-card">
@@ -317,6 +369,76 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
       <p style="margin-top:.5rem">These features add analytical precision but also add complexity. Master the fundamentals first — a well-reasoned C/I/N/A matrix is more valuable than a poorly understood weighted one.</p>
     </div>
 
+  </div>
+</div>
+
+<!-- ── Sources modal ── -->
+<div id="sources-overlay" onclick="closeSources(event)">
+  <div id="sources-modal">
+    <div id="sources-modal-header">
+      <h2>&#128218; Sources &amp; References</h2>
+      <button id="sources-close" onclick="closeSources()">&#10005; Close</button>
+    </div>
+    <div id="sources-modal-body">
+      <p class="sources-intro">
+        All content in this teaching tool — the ACH methodology, scenario structure, analytic standards, and instructor rationale — is derived exclusively from publicly available, unclassified sources. No controlled unclassified information (CUI), classified material, or proprietary data was used.
+      </p>
+
+      <div class="sources-group-label">Foundational Methodology</div>
+
+      <div class="source-item">
+        <div class="source-title">Psychology of Intelligence Analysis</div>
+        <div class="source-meta">Heuer, Richards J., Jr. Center for the Study of Intelligence, Central Intelligence Agency, 1999.<br>The foundational text introducing ACH. Describes how analysts can structure evidence evaluation to reduce cognitive bias and confirmation error.</div>
+        <span class="source-avail">&#10003; Publicly available — cia.gov/resources/csi</span>
+      </div>
+
+      <div class="source-item">
+        <div class="source-title">Structured Analytic Techniques for Intelligence Analysis, 3rd Edition</div>
+        <div class="source-meta">Heuer, Richards J., Jr. and Randolph H. Pherson. SAGE Publications / CQ Press, 2021. ISBN 978-1-5063-6893-1.<br>The standard reference for 66 structured analytic techniques used across the Intelligence Community, including a detailed treatment of ACH methodology and application.</div>
+        <span class="source-avail">&#10003; Published commercial textbook — widely available</span>
+      </div>
+
+      <div class="sources-group-label">U.S. Government Policy &amp; Standards</div>
+
+      <div class="source-item">
+        <div class="source-title">A Tradecraft Primer: Structured Analytic Techniques for Improving Intelligence Analysis</div>
+        <div class="source-meta">Center for the Study of Intelligence, Central Intelligence Agency, March 2009.<br>An unclassified primer describing structured analytic techniques approved for use across the U.S. Intelligence Community, including ACH as a core diagnostic method.</div>
+        <span class="source-avail">&#10003; Publicly available — cia.gov/resources/csi</span>
+      </div>
+
+      <div class="source-item">
+        <div class="source-title">Intelligence Community Directive 203: Analytic Standards</div>
+        <div class="source-meta">Office of the Director of National Intelligence (ODNI), 2015.<br>Establishes the analytic standards all IC analysts must meet, including objectivity, independence of sources, and proper distinction between evidence and assumptions — the same principles ACH operationalizes.</div>
+        <span class="source-avail">&#10003; Publicly available — dni.gov</span>
+      </div>
+
+      <div class="sources-group-label">Software &amp; Digital Tools</div>
+
+      <div class="source-item">
+        <div class="source-title">Analysis of Competing Hypotheses (ACH) Software, Version 2.0</div>
+        <div class="source-meta">Palo Alto Research Center (PARC), developed in collaboration with Richards J. Heuer, Jr. Funded in part by the Intelligence Community's Advanced Research and Development Activity (ARDA) and the Office of Naval Research (ONR).<br>The original digital implementation of Heuer's ACH matrix methodology, released as freeware for non-commercial and educational use.</div>
+        <span class="source-avail">&#10003; Released for non-commercial / educational use</span>
+      </div>
+
+      <div class="sources-group-label">Further Reading</div>
+
+      <div class="source-item">
+        <div class="source-title">How Does Analysis of Competing Hypotheses (ACH) Improve Intelligence Analysis?</div>
+        <div class="source-meta">Pherson, Randolph H. Pherson Associates, LLC.<br>A practitioner-focused paper examining the evidence base for ACH's effectiveness in reducing analytic errors and improving structured reasoning.</div>
+        <span class="source-avail">&#10003; Publicly available — pherson.org</span>
+      </div>
+
+      <div class="source-item">
+        <div class="source-title">Te@mACH® Collaborative ACH Platform</div>
+        <div class="source-meta">Globalytica, LLC (founded by Randolph H. Pherson), 2010–present.<br>A web-based collaborative implementation of the ACH methodology used in professional training and academic settings. Referenced here as an example of ACH applied in modern digital training environments.</div>
+        <span class="source-avail">&#10003; Publicly documented — globalytica.com</span>
+      </div>
+
+      <p class="sources-footer">
+        This tool is a teaching aid for unclassified training use only.<br>
+        No FOUO &nbsp;|&nbsp; No CUI &nbsp;|&nbsp; No user data collected &nbsp;|&nbsp; No external connections
+      </p>
+    </div>
   </div>
 </div>
 
@@ -553,6 +675,18 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   }
 
   build();
+
+  function openSources() {
+    document.getElementById('sources-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSources(e) {
+    if (e && e.target !== document.getElementById('sources-overlay') &&
+        e.target !== document.getElementById('sources-close')) return;
+    document.getElementById('sources-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSources({target: document.getElementById('sources-overlay')}); });
 </script>
 </body>
 </html>
