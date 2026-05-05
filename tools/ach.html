@@ -316,7 +316,6 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   <span id="progress-text">0 of 40 cells filled</span>
   <button class="btn btn-gold"    id="check-btn"    style="display:none" onclick="checkWork()">&#10003; Check My Work</button>
   <button class="btn btn-outline" id="hide-btn"     style="display:none" onclick="hideFeedback()">Hide Feedback</button>
-  <button class="btn btn-green"   id="evaluate-btn" style="display:none" onclick="evaluate()">&#9654; Evaluate</button>
   <button class="btn btn-navy"    onclick="resetMatrix()">Reset Matrix</button>
   <button class="btn btn-outline" onclick="window.open('./ach-builder.html','_blank')">&#43; Build Your Own</button>
   <button class="btn btn-outline" onclick="openSources()">&#128218; Sources</button>
@@ -533,11 +532,11 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     ['C — A saboteur could tamper with specific ovens rather than the whole system.',
      'C — A gauge fault is typically isolated to one oven; two could fail independently.',
      'I — The serviceman explicitly stated a pressure problem would affect all ovens simultaneously.',
-     'C — If only certain crews used the new flour at certain times, only those ovens would show overbaking.'],
+     'C — The new flour was not distributed evenly. Each crew had different amounts of old flour remaining when the shipment arrived, so they switched to new flour at different times. The two affected ovens are simply the ones where crews happened to be baking with new flour first. Defective flour fails wherever it is used — it does not require all ovens to fail at once.'],
     // E4
     ['C — A clean equipment inspection does not rule out deliberate human action.',
      'I — If the gauge were the root cause, a direct targeted inspection would have detected the fault.',
-     'C — The serviceman inspected the gauges, not the gas supply lines, so pressure issues remain possible.',
+     'C — The serviceman inspected the thermostats and heat gauges only — not the gas supply lines or pressure regulators. His clean finding eliminates gauge malfunction (H2) but says nothing about gas pressure. This keeps H3 viable. N/A would mean zero relevance, but this finding does narrow the field: because the gauges are clear, something else must explain the overbaking, which is logically consistent with a pressure cause.',
      'C — Equipment integrity has no bearing on whether the flour delivered is defective.'],
     // E5
     ['C — The busiest season provides both maximum disruption impact and cover in a high-activity environment.',
@@ -575,7 +574,6 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   const CLS = { '':'', 'C':'state-c', 'I':'state-i', 'N/A':'state-na' };
   let grid = EVIDENCE.map(() => Array(H).fill(''));
   let feedbackVisible = false;
-  let evaluated = false;
 
   function build() {
     const tbody = document.getElementById('matrix-body');
@@ -632,7 +630,6 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     grid[r][c] = sel.value;
     sel.className = 'cell-select ' + CLS[sel.value];
     if (feedbackVisible) hideFeedback();
-    if (evaluated) clearEvaluation();
     updateUI();
   }
 
@@ -645,8 +642,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     const allFilled = filled === TOTAL_CELLS;
     document.getElementById('progress-text').textContent =
       allFilled ? 'All cells filled — ready to evaluate!' : `${filled} of ${TOTAL_CELLS} cells filled`;
-    document.getElementById('check-btn').style.display    = allFilled ? '' : 'none';
-    document.getElementById('evaluate-btn').style.display = allFilled ? '' : 'none';
+    document.getElementById('check-btn').style.display = allFilled ? '' : 'none';
 
     const counts = Array(H).fill(0);
     for (let r = 0; r < EVIDENCE.length; r++)
@@ -664,60 +660,6 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
         sel.className = 'cell-select ' + CLS[grid[r][c]];
       }
     updateUI();
-  }
-
-  function evaluate() {
-    evaluated = true;
-    const counts = Array(H).fill(0);
-    for (let r = 0; r < EVIDENCE.length; r++)
-      for (let c = 0; c < H; c++)
-        if (grid[r][c] === 'I') counts[c]++;
-
-    for (let c = 0; c < H; c++) {
-      document.getElementById(`hdr-${c}`).classList.remove('winner-hdr');
-      document.getElementById(`cnt-${c}`).classList.remove('winner-col');
-      document.getElementById(`assess-${c}`).classList.remove('winner-col');
-      document.getElementById(`assess-${c}`).innerHTML = '';
-    }
-    document.getElementById('assess-label').textContent = 'Assessment';
-
-    const min = Math.min(...counts);
-    const winners = counts.reduce((a, v, i) => v === min ? [...a, i] : a, []);
-    document.getElementById('winner-row').style.display = 'table-row';
-
-    if (winners.length > 1) {
-      winners.forEach(c => {
-        document.getElementById(`hdr-${c}`).classList.add('winner-hdr');
-        document.getElementById(`cnt-${c}`).classList.add('winner-col');
-        document.getElementById(`assess-${c}`).classList.add('winner-col');
-      });
-      document.getElementById('assess-label').innerHTML =
-        'Assessment &nbsp;<span id="tie-msg">Tied — more analysis needed</span>';
-    } else {
-      const w = winners[0];
-      document.getElementById(`hdr-${w}`).classList.add('winner-hdr');
-      document.getElementById(`cnt-${w}`).classList.add('winner-col');
-      const ac = document.getElementById(`assess-${w}`);
-      ac.classList.add('winner-col');
-      ac.innerHTML = '<span class="winner-badge">Most Likely</span>';
-    }
-
-    document.getElementById('evaluate-btn').style.display = 'none';
-    document.getElementById('debrief').classList.remove('hidden');
-    document.getElementById('debrief').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  function clearEvaluation() {
-    evaluated = false;
-    for (let c = 0; c < H; c++) {
-      document.getElementById(`hdr-${c}`).classList.remove('winner-hdr');
-      document.getElementById(`cnt-${c}`).classList.remove('winner-col');
-      document.getElementById(`assess-${c}`).classList.remove('winner-col');
-      document.getElementById(`assess-${c}`).innerHTML = '';
-    }
-    document.getElementById('assess-label').textContent = 'Assessment';
-    document.getElementById('winner-row').style.display = 'none';
-    document.getElementById('debrief').classList.add('hidden');
   }
 
   function checkWork() {
@@ -768,6 +710,48 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
       });
     }
     document.getElementById('cell-explain').classList.remove('hidden');
+
+    // Show winner assessment
+    const counts = Array(H).fill(0);
+    for (let r = 0; r < EVIDENCE.length; r++)
+      for (let c = 0; c < H; c++)
+        if (grid[r][c] === 'I') counts[c]++;
+
+    for (let c = 0; c < H; c++) {
+      document.getElementById(`hdr-${c}`).classList.remove('winner-hdr');
+      document.getElementById(`cnt-${c}`).classList.remove('winner-col');
+      document.getElementById(`assess-${c}`).classList.remove('winner-col');
+      document.getElementById(`assess-${c}`).innerHTML = '';
+    }
+    document.getElementById('assess-label').textContent = 'Assessment';
+
+    if (counts.some(v => v > 0)) {
+      const min = Math.min(...counts);
+      const winners = counts.reduce((a, v, i) => v === min ? [...a, i] : a, []);
+      document.getElementById('winner-row').style.display = 'table-row';
+
+      if (winners.length > 1) {
+        winners.forEach(c => {
+          document.getElementById(`hdr-${c}`).classList.add('winner-hdr');
+          document.getElementById(`cnt-${c}`).classList.add('winner-col');
+          document.getElementById(`assess-${c}`).classList.add('winner-col');
+        });
+        document.getElementById('assess-label').innerHTML =
+          'Assessment &nbsp;<span id="tie-msg">Tied — more analysis needed</span>';
+      } else {
+        const w = winners[0];
+        document.getElementById(`hdr-${w}`).classList.add('winner-hdr');
+        document.getElementById(`cnt-${w}`).classList.add('winner-col');
+        const ac = document.getElementById(`assess-${w}`);
+        ac.classList.add('winner-col');
+        ac.innerHTML = '<span class="winner-badge">Most Likely</span>';
+      }
+    }
+
+    // Show instructor debrief
+    document.getElementById('debrief').classList.remove('hidden');
+    setTimeout(() => document.getElementById('cell-explain')
+      .scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   }
 
   function hideFeedback() {
@@ -776,6 +760,15 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
         document.getElementById(`td-${r}-${c}`).classList.remove('fb-correct', 'fb-wrong');
     document.getElementById('feedback-bar').classList.add('hidden');
     document.getElementById('cell-explain').classList.add('hidden');
+    document.getElementById('debrief').classList.add('hidden');
+    document.getElementById('winner-row').style.display = 'none';
+    for (let c = 0; c < H; c++) {
+      document.getElementById(`hdr-${c}`).classList.remove('winner-hdr');
+      document.getElementById(`cnt-${c}`).classList.remove('winner-col');
+      document.getElementById(`assess-${c}`).classList.remove('winner-col');
+      document.getElementById(`assess-${c}`).innerHTML = '';
+    }
+    document.getElementById('assess-label').textContent = 'Assessment';
     document.getElementById('hide-btn').style.display = 'none';
     feedbackVisible = false;
   }
@@ -783,10 +776,6 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   function resetMatrix() {
     grid = EVIDENCE.map(() => Array(H).fill(''));
     feedbackVisible = false;
-    evaluated = false;
-    document.getElementById('winner-row').style.display = 'none';
-    document.getElementById('debrief').classList.add('hidden');
-    document.getElementById('cell-explain').classList.add('hidden');
     hideFeedback();
     build();
   }
