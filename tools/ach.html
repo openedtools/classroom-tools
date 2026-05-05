@@ -212,6 +212,31 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 .advanced-box ul { padding-left: 1.2rem; margin: .4rem 0; }
 .advanced-box li { font-size: .86rem; line-height: 1.6; color: #2e1a50; margin-bottom: .35rem; }
 
+/* ── Cell explanation panel ── */
+#cell-explain {
+  margin-top: .75rem; background: #fff; border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08); overflow: hidden;
+}
+#cell-explain.hidden { display: none; }
+#ce-heading {
+  background: #1B3A6B; color: #fff; padding: .55rem 1rem;
+  font-size: .82rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+}
+#ce-list { padding: .5rem .75rem .75rem; }
+.ce-item {
+  padding: .6rem .75rem; margin-top: .5rem;
+  background: #fff8f8; border: 1px solid #f0a0a6;
+  border-left: 4px solid #dc3545; border-radius: 0 6px 6px 0;
+}
+.ce-item-header { font-size: .85rem; font-weight: 600; color: #5a1a1a; margin-bottom: .25rem; }
+.ce-wrong-val { color: #dc3545; }
+.ce-right-val { color: #155724; }
+.ce-item-why  { font-size: .84rem; line-height: 1.55; color: #3a3a4a; }
+.ce-all-correct {
+  padding: .8rem 1rem; font-size: .88rem; font-weight: 600;
+  color: #155724; background: #d4edda; border-top: 1px solid #9ecfac;
+}
+
 /* ── Sources modal ── */
 #sources-overlay {
   display: none; position: fixed; inset: 0;
@@ -324,6 +349,11 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 
 <div id="feedback-bar" class="hidden">
   <span id="feedback-text"></span>
+</div>
+
+<div id="cell-explain" class="hidden">
+  <div id="ce-heading">&#10060; Cells marked incorrect — here's why</div>
+  <div id="ce-list"></div>
 </div>
 
 <div id="debrief" class="hidden">
@@ -487,6 +517,60 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     { id:'E10', rationale: 'The decisive variable. Failures correlated perfectly with the new flour, not with the location of suspected individuals. Frank (Crew 2) successfully baked his first batch using old flour. Gauge and pressure faults operate independently of ingredients. This single item overturns the apparent weight of the circumstantial sabotage evidence.' },
   ];
 
+  // Per-cell explanations [row][col] used in the Check My Work panel
+  const CELL_WHY = [
+    // E1
+    ['C — Multiple burned batches is consistent with deliberate sabotage targeting the operation.',
+     'C — Repeated overbaking across cycles is consistent with a malfunctioning gauge running too hot.',
+     'C — Recurring pressure fluctuations could drive temperatures up across multiple baking cycles.',
+     'C — Defective flour used across several batches would cause widespread overbaking.'],
+    // E2
+    ['C — A deliberate actor could choose to target the specialty product specifically.',
+     'I — A broken gauge burns whatever is in the oven. It cannot distinguish between bread recipes.',
+     'I — Gas pressure acts on the oven, not the ingredients. All bread inside would be equally affected.',
+     'C — Defective flour in the specialty recipe\'s unique ingredient blend would only affect that specific product.'],
+    // E3
+    ['C — A saboteur could tamper with specific ovens rather than the whole system.',
+     'C — A gauge fault is typically isolated to one oven; two could fail independently.',
+     'I — The serviceman explicitly stated a pressure problem would affect all ovens simultaneously.',
+     'C — If only certain crews used the new flour at certain times, only those ovens would show overbaking.'],
+    // E4
+    ['C — A clean equipment inspection does not rule out deliberate human action.',
+     'I — If the gauge were the root cause, a direct targeted inspection would have detected the fault.',
+     'C — The serviceman inspected the gauges, not the gas supply lines, so pressure issues remain possible.',
+     'C — Equipment integrity has no bearing on whether the flour delivered is defective.'],
+    // E5
+    ['C — The busiest season provides both maximum disruption impact and cover in a high-activity environment.',
+     'N/A — The time of year has no causal effect on whether a gauge malfunctions.',
+     'N/A — The calendar date cannot cause gas pressure to fluctuate.',
+     'N/A — Seasonal demand has no bearing on flour quality or supplier reliability.'],
+    // E6
+    ['C — Denial of benefits establishes a clear grievance and motive for deliberate sabotage.',
+     'N/A — Employee benefit disputes have no mechanical effect on gas gauge equipment.',
+     'N/A — Administrative decisions about benefits cannot affect gas line pressure.',
+     'N/A — Employee satisfaction has no bearing on whether a new supplier provided defective goods.'],
+    // E7
+    ['C — Anger over the firing reinforces the sabotage motive and emotional state of the workforce.',
+     'N/A — Employee anger does not cause mechanical gauge failure.',
+     'N/A — Human emotions cannot cause gas pressure fluctuations.',
+     'N/A — The circumstances of an employee\'s termination have no relationship to flour quality.'],
+    // E8
+    ['C — Contact between a current employee and a fired, disgruntled ex-employee suggests potential coordination.',
+     'N/A — A parking lot meeting between employees has no effect on gauge equipment.',
+     'N/A — Social contact between individuals cannot cause gas pressure changes.',
+     'N/A — Employee meetings have no bearing on the flour supply or ingredient quality.'],
+    // E9
+    ['N/A — A supplier delay does not logically cause employees to commit sabotage.',
+     'N/A — A flour delivery delay has no causal relationship to gauge malfunction.',
+     'N/A — Supply chain events do not affect gas line pressure.',
+     'C — A rushed delivery from a new, unverified supplier explains how untested, potentially defective flour entered production.'],
+    // E10
+    ['I — If sabotage were the cause, failures would correlate with the suspects, not the ingredient. Frank\'s crew successfully baked their first batch using old flour.',
+     'I — A faulty gauge would overheat all bread in that oven regardless of what flour was used.',
+     'I — Gas pressure fluctuations act on the oven system, not the ingredients — all batches would be equally affected.',
+     'C — Failures correlated precisely with the introduction of new flour. This is the most direct and discriminating evidence pointing to defective ingredients.'],
+  ];
+
   const TOTAL_CELLS = EVIDENCE.length * H;
   const CLS = { '':'', 'C':'state-c', 'I':'state-i', 'N/A':'state-na' };
   let grid = EVIDENCE.map(() => Array(H).fill(''));
@@ -561,8 +645,8 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     const allFilled = filled === TOTAL_CELLS;
     document.getElementById('progress-text').textContent =
       allFilled ? 'All cells filled — ready to evaluate!' : `${filled} of ${TOTAL_CELLS} cells filled`;
-    document.getElementById('check-btn').style.display    = filled >= 4 ? '' : 'none';
-    document.getElementById('evaluate-btn').style.display = allFilled   ? '' : 'none';
+    document.getElementById('check-btn').style.display    = allFilled ? '' : 'none';
+    document.getElementById('evaluate-btn').style.display = allFilled ? '' : 'none';
 
     const counts = Array(H).fill(0);
     for (let r = 0; r < EVIDENCE.length; r++)
@@ -599,7 +683,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 
     const min = Math.min(...counts);
     const winners = counts.reduce((a, v, i) => v === min ? [...a, i] : a, []);
-    document.getElementById('winner-row').style.display = '';
+    document.getElementById('winner-row').style.display = 'table-row';
 
     if (winners.length > 1) {
       winners.forEach(c => {
@@ -638,21 +722,52 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 
   function checkWork() {
     let correct = 0;
-    const filled = countFilled();
+    const hypNames = ['H1: Sabotage','H2: Gas Gauges','H3: Gas Pressure','H4: Flour Defective'];
+    const wrongItems = [];
+
     for (let r = 0; r < EVIDENCE.length; r++) {
       for (let c = 0; c < H; c++) {
         const td = document.getElementById(`td-${r}-${c}`);
         td.classList.remove('fb-correct', 'fb-wrong');
         if (grid[r][c] === '') continue;
-        if (grid[r][c] === ANSWER_KEY[r][c]) { td.classList.add('fb-correct'); correct++; }
-        else td.classList.add('fb-wrong');
+        if (grid[r][c] === ANSWER_KEY[r][c]) {
+          td.classList.add('fb-correct'); correct++;
+        } else {
+          td.classList.add('fb-wrong');
+          wrongItems.push({ r, c, student: grid[r][c], correct: ANSWER_KEY[r][c] });
+        }
       }
     }
+
+    const filled = countFilled();
     document.getElementById('feedback-text').textContent =
-      `${correct} of ${filled} rated cells correct  (${correct} of ${TOTAL_CELLS} total cells match the answer key).`;
+      `${correct} of ${filled} cells correct  (${correct} of ${TOTAL_CELLS} match the answer key).`;
     document.getElementById('feedback-bar').classList.remove('hidden');
     document.getElementById('hide-btn').style.display = '';
     feedbackVisible = true;
+
+    // Populate the "why" panel
+    const ceList = document.getElementById('ce-list');
+    const ceHeading = document.getElementById('ce-heading');
+    ceList.innerHTML = '';
+    if (wrongItems.length === 0) {
+      ceHeading.textContent = '✓ All cells correct!';
+      ceHeading.style.background = '#1a7a3c';
+    } else {
+      ceHeading.textContent = `✗ ${wrongItems.length} cell${wrongItems.length > 1 ? 's' : ''} incorrect — here's why`;
+      ceHeading.style.background = '#1B3A6B';
+      wrongItems.forEach(({ r, c, student, correct: ans }) => {
+        const div = document.createElement('div');
+        div.className = 'ce-item';
+        div.innerHTML =
+          `<div class="ce-item-header">E${r+1} vs ${hypNames[c]} &nbsp;·&nbsp; ` +
+          `You chose <span class="ce-wrong-val">${student}</span> &nbsp;→&nbsp; ` +
+          `Correct: <span class="ce-right-val">${ans}</span></div>` +
+          `<div class="ce-item-why">${CELL_WHY[r][c]}</div>`;
+        ceList.appendChild(div);
+      });
+    }
+    document.getElementById('cell-explain').classList.remove('hidden');
   }
 
   function hideFeedback() {
@@ -660,6 +775,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
       for (let c = 0; c < H; c++)
         document.getElementById(`td-${r}-${c}`).classList.remove('fb-correct', 'fb-wrong');
     document.getElementById('feedback-bar').classList.add('hidden');
+    document.getElementById('cell-explain').classList.add('hidden');
     document.getElementById('hide-btn').style.display = 'none';
     feedbackVisible = false;
   }
@@ -670,6 +786,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     evaluated = false;
     document.getElementById('winner-row').style.display = 'none';
     document.getElementById('debrief').classList.add('hidden');
+    document.getElementById('cell-explain').classList.add('hidden');
     hideFeedback();
     build();
   }
