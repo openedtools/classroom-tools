@@ -287,6 +287,58 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   margin-top: 1.1rem; padding-top: .85rem; border-top: 1px solid #e5eaf5;
   font-size: .8rem; color: #6a7a99; line-height: 1.55; text-align: center;
 }
+
+/* ── Answer Key modal ── */
+#ak-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(10,20,45,.6); z-index: 1000;
+  align-items: center; justify-content: center; padding: 1rem;
+}
+#ak-overlay.open { display: flex; }
+#ak-modal {
+  background: #fff; border-radius: 12px; width: 100%; max-width: 940px;
+  max-height: 90vh; display: flex; flex-direction: column;
+  box-shadow: 0 12px 40px rgba(0,0,0,.35);
+}
+#ak-modal-header {
+  background: linear-gradient(135deg, #1B3A6B 0%, #254e9a 100%);
+  color: #fff; padding: .9rem 1.2rem; border-radius: 12px 12px 0 0;
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+#ak-modal-header h2 { font-size: 1rem; font-weight: 700; letter-spacing: .02em; }
+#ak-close {
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
+  color: #fff; border-radius: 6px; padding: .25rem .65rem;
+  font-size: 1rem; cursor: pointer; line-height: 1; font-family: inherit;
+}
+#ak-close:hover { background: rgba(255,255,255,.3); }
+#ak-modal-body { overflow-y: auto; padding: 1rem 1.2rem 1.4rem; }
+#ak-table { border-collapse: collapse; width: 100%; font-size: .82rem; }
+#ak-table th {
+  background: #1B3A6B; color: #fff; padding: .6rem .5rem; text-align: center;
+  font-weight: 600; line-height: 1.3; border: 1px solid #dce5f0;
+}
+#ak-table th:first-child { text-align: left; padding-left: .85rem; min-width: 190px; }
+#ak-table td { border: 1px solid #dce5f0; padding: .5rem .55rem; vertical-align: top; }
+.ak-ev-cell { background: #f7f9fc !important; }
+#ak-table tr:nth-child(even) .ak-ev-cell { background: #f0f4fa !important; }
+.ak-ev-id { font-weight: 700; color: #1B3A6B; margin-right: .3rem; }
+.ak-ev-text { font-size: .81rem; color: #333; }
+.ak-badge {
+  display: inline-block; border-radius: 4px; padding: .1rem .42rem;
+  font-size: .78rem; font-weight: 700; margin-bottom: .25rem;
+}
+.ak-badge-c  { background: #cef0d8; color: #155724; border: 1px solid #90d4a8; }
+.ak-badge-i  { background: #fdd9dc; color: #721c24; border: 1px solid #f0a0a6; }
+.ak-badge-na { background: #e6e9ed; color: #495057; border: 1px solid #adb5bd; }
+.ak-cell-c  { background: #f5fcf7; }
+.ak-cell-i  { background: #fff8f8; }
+.ak-cell-na { background: #f8f9fa; }
+.ak-why { font-size: .79rem; color: #3a4060; line-height: 1.45; }
+#ak-footer {
+  margin-top: .85rem; padding-top: .75rem; border-top: 1px solid #e5eaf5;
+  font-size: .79rem; color: #6a7a99; text-align: center;
+}
 </style>
 </head>
 <body>
@@ -318,6 +370,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   <button class="btn btn-outline" id="hide-btn"     style="display:none" onclick="hideFeedback()">Hide Feedback</button>
   <button class="btn btn-navy"    onclick="resetMatrix()">Reset Matrix</button>
   <button class="btn btn-outline" onclick="window.open('./ach-builder.html','_blank')">&#43; Build Your Own</button>
+  <button class="btn btn-outline" onclick="openAnswerKey()">&#128203; Answer Key</button>
   <button class="btn btn-outline" onclick="openSources()">&#128218; Sources</button>
 </div>
 
@@ -467,6 +520,22 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
         This tool is a teaching aid for unclassified training use only.<br>
         No FOUO &nbsp;|&nbsp; No CUI &nbsp;|&nbsp; No user data collected &nbsp;|&nbsp; No external connections
       </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Answer Key modal ── -->
+<div id="ak-overlay" onclick="closeAnswerKey(event)">
+  <div id="ak-modal">
+    <div id="ak-modal-header">
+      <h2>&#128203; Answer Key — Instructor Reference</h2>
+      <button id="ak-close" onclick="closeAnswerKey()">&#10005; Close</button>
+    </div>
+    <div id="ak-modal-body">
+      <p style="font-size:.87rem;color:#3a4560;margin-bottom:.9rem;padding-bottom:.75rem;border-bottom:1px solid #e5eaf5">
+        All 40 cells (10 evidence items × 4 hypotheses) with the correct rating and the reason why. For instructor use.
+      </p>
+      <!-- table injected by buildAnswerKeyTable() -->
     </div>
   </div>
 </div>
@@ -792,7 +861,74 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     document.getElementById('sources-overlay').classList.remove('open');
     document.body.style.overflow = '';
   }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSources({target: document.getElementById('sources-overlay')}); });
+
+  // ── Answer Key modal ──
+  function openAnswerKey() {
+    const body = document.getElementById('ak-modal-body');
+    if (!body.querySelector('table')) buildAnswerKeyTable();
+    document.getElementById('ak-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAnswerKey(e) {
+    if (e && e.target !== document.getElementById('ak-overlay') &&
+        e.target !== document.getElementById('ak-close')) return;
+    document.getElementById('ak-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function buildAnswerKeyTable() {
+    const hypShort = [
+      'H1<br><span style="font-weight:400;font-size:.76rem">Sabotage by Employees</span>',
+      'H2<br><span style="font-weight:400;font-size:.76rem">Malfunction of Gas Gauges</span>',
+      'H3<br><span style="font-weight:400;font-size:.76rem">Fluctuations in Gas Pressure</span>',
+      'H4<br><span style="font-weight:400;font-size:.76rem">The Flour is Defective</span>',
+    ];
+    const bclass = { 'C':'ak-badge-c', 'I':'ak-badge-i', 'N/A':'ak-badge-na' };
+    const cclass = { 'C':'ak-cell-c',  'I':'ak-cell-i',  'N/A':'ak-cell-na'  };
+    let html = '<table id="ak-table"><thead><tr><th>Evidence</th>';
+    hypShort.forEach(n => html += `<th>${n}</th>`);
+    html += '</tr></thead><tbody>';
+    EVIDENCE.forEach((ev, r) => {
+      html += '<tr>';
+      html += `<td class="ak-ev-cell"><span class="ak-ev-id">${ev.id}</span><span class="ak-ev-text">${ev.text}</span></td>`;
+      for (let c = 0; c < H; c++) {
+        const ans = ANSWER_KEY[r][c];
+        const rawWhy = CELL_WHY[r][c];
+        // Strip the leading rating label ("C — ", "I — ", "N/A — ") since badge already shows it
+        const why = rawWhy.replace(/^(N\/A|C|I)\s*[—\-]\s*/, '');
+        html += `<td class="${cclass[ans]}">` +
+                `<span class="ak-badge ${bclass[ans]}">${ans}</span>` +
+                `<div class="ak-why">${why}</div></td>`;
+      }
+      html += '</tr>';
+    });
+    html += '</tbody></table><div id="ak-footer">Instructor Reference Only &nbsp;|&nbsp; All 40 cells verified &nbsp;|&nbsp; Unclassified Training Use</div>';
+    const body = document.getElementById('ak-modal-body');
+    // preserve the intro paragraph
+    const intro = body.querySelector('p');
+    body.innerHTML = '';
+    body.appendChild(intro);
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = html;
+    while (wrapper.firstChild) body.appendChild(wrapper.firstChild);
+  }
+
+  // ── Hidden auto-fill (Instructor only) ──
+  // Trigger: Ctrl+Shift+F  OR  double-click the page title
+  function autoFill() {
+    grid = ANSWER_KEY.map(row => [...row]);
+    if (feedbackVisible) hideFeedback();
+    refresh();
+  }
+  document.getElementById('page-header').querySelector('h1')
+    .addEventListener('dblclick', autoFill);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeSources({target: document.getElementById('sources-overlay')});
+      closeAnswerKey({target: document.getElementById('ak-overlay')});
+    }
+    if (e.ctrlKey && e.shiftKey && e.key === 'F') { e.preventDefault(); autoFill(); }
+  });
 </script>
 </body>
 </html>
