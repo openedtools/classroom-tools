@@ -370,7 +370,6 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   <button class="btn btn-outline" id="hide-btn"     style="display:none" onclick="hideFeedback()">Hide Feedback</button>
   <button class="btn btn-navy"    onclick="resetMatrix()">Reset Matrix</button>
   <button class="btn btn-outline" onclick="window.open('./ach-builder.html','_blank')">&#43; Build Your Own</button>
-  <button class="btn btn-outline" onclick="openAnswerKey()">&#128203; Answer Key</button>
   <button class="btn btn-outline" onclick="openSources()">&#128218; Sources</button>
 </div>
 
@@ -409,7 +408,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 </div>
 
 <div id="debrief" class="hidden">
-  <div class="debrief-header">&#128196; Instructor Debrief</div>
+  <div class="debrief-header">&#128202; Debrief &amp; Analysis Review</div>
   <div class="debrief-body">
 
     <div class="takeaway-heading">Key Takeaways</div>
@@ -432,17 +431,17 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     <div id="rationale-list"></div>
 
     <div class="caveat-box">
-      <h4>&#9888; Instructor Note — E10 / H1 Edge Case</h4>
-      <p>A student may argue that E10 is <em>Consistent</em> with Sabotage by suggesting employees deliberately contaminated the new flour supply. While this demonstrates creative thinking, guide the student back to the available evidence: Frank (the prime suspect) successfully baked his first batch using the old flour. If a coordinated effort specifically targeted only the new flour, it requires a complex, multi-step assumption with no supporting evidence. In structured analysis, when a simpler explanation — defective supplier goods — carries <strong>zero inconsistencies</strong> and requires fewer assumptions, it is the mathematically and logically superior hypothesis.</p>
+      <h4>&#128172; Discussion — E10 &amp; the Sabotage Hypothesis</h4>
+      <p>You might wonder whether E10 could be rated <em>Consistent</em> with Sabotage — if employees deliberately contaminated the new flour supply. That is creative thinking, but structured analysis requires staying within the available evidence: Frank (the prime suspect) successfully baked his first batch using the <em>old</em> flour. Arguing that a coordinated effort specifically targeted only the new flour adds a complex, multi-step assumption with no supporting evidence in the scenario. When a simpler explanation — defective supplier goods — carries <strong>zero inconsistencies</strong> and requires fewer assumptions, it is the mathematically and logically superior hypothesis.</p>
     </div>
 
     <div class="recommendation-box">
-      <h4>&#9654; Facilitation Recommendation</h4>
-      <p>Focus the majority of debrief time on <strong>Evidence Item 10</strong>. Before E10 is applied, Sabotage appears highly likely due to the volume of circumstantial human motive evidence (E5–E8). E10 demonstrates how a single piece of highly diagnostic evidence can completely invert the leading hypothesis by exposing a logical inconsistency — the core value of the ACH method.</p>
+      <h4>&#9654; The Key Insight in This Scenario</h4>
+      <p>Pay close attention to <strong>Evidence Item 10</strong>. Before E10, Sabotage appears highly likely because of the volume of motive-based evidence (E5–E8). E10 shows how a single piece of highly diagnostic evidence can completely overturn a leading hypothesis by exposing a logical inconsistency — and that is the core value of the ACH method.</p>
     </div>
 
     <div class="advanced-box">
-      <h4>&#128202; Advanced ACH — For Future Courses</h4>
+      <h4>&#128202; Advanced ACH — What Comes Next</h4>
       <p>The version practiced here uses a simplified three-state rating: <strong>C / I / N/A</strong>. Full professional ACH adds two additional tools that advanced analysts use once they are comfortable with the fundamentals:</p>
       <ul>
         <li><strong>CC / II (Conclusive ratings):</strong> A five-point scale — CC (Conclusively Consistent), C, N/A, I, II (Conclusively Inconsistent) — lets analysts flag evidence that is so strong or so definitive that it essentially rules a hypothesis in or out on its own. E10 in this scenario would be a strong candidate for an II rating against H1, H2, and H3.</li>
@@ -529,7 +528,10 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   <div id="ak-modal">
     <div id="ak-modal-header">
       <h2>&#128203; Answer Key — Instructor Reference</h2>
-      <button id="ak-close" onclick="closeAnswerKey()">&#10005; Close</button>
+      <div style="display:flex;gap:.5rem">
+        <button style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:.25rem .7rem;font-size:.85rem;cursor:pointer;font-family:inherit" onclick="downloadAnswerKeyCSV()">&#11015; Download CSV</button>
+        <button id="ak-close" onclick="closeAnswerKey()">&#10005; Close</button>
+      </div>
     </div>
     <div id="ak-modal-body">
       <p style="font-size:.87rem;color:#3a4560;margin-bottom:.9rem;padding-bottom:.75rem;border-bottom:1px solid #e5eaf5">
@@ -752,7 +754,9 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 
     const filled = countFilled();
     document.getElementById('feedback-text').textContent =
-      `${correct} of ${filled} cells correct  (${correct} of ${TOTAL_CELLS} match the answer key).`;
+      correct === TOTAL_CELLS
+        ? `Perfect score — all ${TOTAL_CELLS} cells correct!`
+        : `${correct} of ${TOTAL_CELLS} cells correct. Review the cells below to see where your ratings differed.`;
     document.getElementById('feedback-bar').classList.remove('hidden');
     document.getElementById('hide-btn').style.display = '';
     feedbackVisible = true;
@@ -765,7 +769,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
       ceHeading.textContent = '✓ All cells correct!';
       ceHeading.style.background = '#1a7a3c';
     } else {
-      ceHeading.textContent = `✗ ${wrongItems.length} cell${wrongItems.length > 1 ? 's' : ''} incorrect — here's why`;
+      ceHeading.textContent = `${wrongItems.length} cell${wrongItems.length > 1 ? 's' : ''} to review — here's why each one differs`;
       ceHeading.style.background = '#1B3A6B';
       wrongItems.forEach(({ r, c, student, correct: ans }) => {
         const div = document.createElement('div');
@@ -912,8 +916,9 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     while (wrapper.firstChild) body.appendChild(wrapper.firstChild);
   }
 
-  // ── Hidden auto-fill (Instructor only) ──
-  // Trigger: Ctrl+Shift+F  OR  double-click the page title
+  // ── Hidden instructor tools (not visible to students) ──
+  // Ctrl+Shift+F  OR  double-click page title  → auto-fill all cells
+  // Ctrl+Shift+A                               → open answer key modal
   function autoFill() {
     grid = ANSWER_KEY.map(row => [...row]);
     if (feedbackVisible) hideFeedback();
@@ -922,12 +927,30 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   document.getElementById('page-header').querySelector('h1')
     .addEventListener('dblclick', autoFill);
 
+  function downloadAnswerKeyCSV() {
+    const hypNames = ['H1 Sabotage by Employees','H2 Malfunction of Gas Gauges','H3 Fluctuations in Gas Pressure','H4 The Flour is Defective'];
+    const esc = s => `"${s.replace(/"/g,'""')}"`;
+    const rows = [['Evidence ID','Evidence Text','Hypothesis','Correct Rating','Explanation']];
+    EVIDENCE.forEach((ev, r) => {
+      for (let c = 0; c < H; c++) {
+        const why = CELL_WHY[r][c].replace(/^(N\/A|C|I)\s*[—\-]\s*/, '');
+        rows.push([ev.id, ev.text, hypNames[c], ANSWER_KEY[r][c], why]);
+      }
+    });
+    const csv = rows.map(r => r.map(esc).join(',')).join('\r\n');
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = 'ACH_BakeryDilemma_AnswerKey.csv';
+    a.click();
+  }
+
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeSources({target: document.getElementById('sources-overlay')});
       closeAnswerKey({target: document.getElementById('ak-overlay')});
     }
     if (e.ctrlKey && e.shiftKey && e.key === 'F') { e.preventDefault(); autoFill(); }
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); openAnswerKey(); }
   });
 </script>
 </body>
