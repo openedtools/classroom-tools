@@ -288,7 +288,37 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   font-size: .8rem; color: #6a7a99; line-height: 1.55; text-align: center;
 }
 
-/* ── Answer Key modal ── */
+/* ── C/I/N/A Cheat Sheet ── */
+#cheat-sheet {
+  background: #fff; border: 1px solid #dde4f0; border-radius: 8px;
+  margin-bottom: 1rem; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,.05);
+}
+#cs-heading {
+  background: #1B3A6B; color: #fff; padding: .45rem 1rem;
+  font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+}
+#cs-body {
+  display: flex; gap: 1rem; padding: .65rem 1rem; flex-wrap: wrap; align-items: flex-start;
+}
+.cs-item {
+  display: flex; gap: .5rem; align-items: flex-start; flex: 1; min-width: 200px;
+}
+.cs-badge {
+  flex-shrink: 0; width: 34px; height: 26px; border-radius: 5px; border: 1.5px solid;
+  font-size: .8rem; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+.cs-badge-c  { background: #cef0d8; color: #155724; border-color: #7ecb97; }
+.cs-badge-i  { background: #fdd9dc; color: #721c24; border-color: #f09fa5; }
+.cs-badge-na { background: #e6e9ed; color: #495057; border-color: #adb5bd; }
+.cs-text { font-size: .83rem; line-height: 1.5; color: #2a3045; }
+.cs-text strong { color: #1B3A6B; }
+.cs-divider { width: 1px; background: #dde4f0; flex-shrink: 0; align-self: stretch; margin: 0 .25rem; }
+#cs-rule {
+  background: #f5f8ff; border-top: 1px solid #dde4f0;
+  padding: .45rem 1rem; font-size: .8rem; color: #3a4a70; line-height: 1.55;
+}
+
+
 #ak-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(10,20,45,.6); z-index: 1000;
@@ -351,7 +381,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 
 <div id="scenario">
   <strong>Scenario — The Bakery Dilemma</strong>
-  A few days before Thanksgiving, a bakery producing specially prepared bread for several grocery chains begins losing batches — loaves coming out burned and worthless. Three separate batches overbaked across two crews, each using their own set of five gas ovens. A serviceman inspected the ovens and thermostats and found nothing wrong, noting that a gas pressure problem would affect <em>all</em> ovens, not just two. Three weeks prior, employees were denied additional benefits; two weeks prior, Michael was fired amid employee unrest. Frank (Crew 2) was seen meeting Michael in the parking lot the day before. That morning, a delayed flour shipment from a new supplier arrived — and only batches made with the new flour overbaked.
+  A few days before Thanksgiving, a bakery producing specially prepared bread for several grocery chains begins losing batches — loaves coming out burned and worthless. Three separate batches overbaked across two crews, each using their own set of five gas ovens. A serviceman who examined the ovens noted that a gas pressure problem would affect <em>all</em> ovens simultaneously — not just two. Three weeks prior, employees were denied additional benefits; two weeks prior, Michael was fired amid employee unrest. Frank (Crew 2) was seen meeting Michael in the parking lot the day before. That morning, a delayed flour shipment from a new supplier arrived — and only batches made with the new flour overbaked.
 </div>
 
 <div id="info-bar">
@@ -364,8 +394,29 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   <div id="key-rule">Key Rule: Select the hypothesis with the LEAST evidence against it.</div>
 </div>
 
+<div id="cheat-sheet">
+  <div id="cs-heading">How to Rate Each Cell — Quick Reference</div>
+  <div id="cs-body">
+    <div class="cs-item">
+      <div class="cs-badge cs-badge-c">C</div>
+      <div class="cs-text"><strong>Consistent</strong> — The evidence is logically connected to this hypothesis <em>and</em> supports what it would predict.</div>
+    </div>
+    <div class="cs-divider"></div>
+    <div class="cs-item">
+      <div class="cs-badge cs-badge-i">I</div>
+      <div class="cs-text"><strong>Inconsistent</strong> — The evidence is logically connected to this hypothesis <em>but</em> contradicts what it would predict.</div>
+    </div>
+    <div class="cs-divider"></div>
+    <div class="cs-item">
+      <div class="cs-badge cs-badge-na">N/A</div>
+      <div class="cs-text"><strong>Not Applicable</strong> — The evidence comes from a completely different causal domain and has <em>no logical connection</em> to this hypothesis at all.</div>
+    </div>
+  </div>
+  <div id="cs-rule"><strong>N/A vs. I — the key distinction:</strong> Ask yourself, "Could this evidence even theoretically affect this hypothesis?" If <strong>no</strong> (e.g., employee anger cannot cause gas pressure to change) → <strong>N/A</strong>. If <strong>yes</strong> but the evidence works against it → <strong>I</strong>.</div>
+</div>
+
 <div id="toolbar">
-  <span id="progress-text">0 of 40 cells filled</span>
+  <span id="progress-text">0 of 27 cells filled</span>
   <button class="btn btn-gold"    id="check-btn"    style="display:none" onclick="checkWork()">&#10003; Check My Work</button>
   <button class="btn btn-outline" id="hide-btn"     style="display:none" onclick="hideFeedback()">Hide Feedback</button>
   <button class="btn btn-navy"    onclick="resetMatrix()">Reset Matrix</button>
@@ -379,20 +430,19 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     <tr>
       <th style="min-width:200px">Evidence</th>
       <th id="hdr-0">H1<br><span style="font-weight:400;font-size:.78rem">Sabotage by Employees</span></th>
-      <th id="hdr-1">H2<br><span style="font-weight:400;font-size:.78rem">Malfunction of Gas Gauges</span></th>
-      <th id="hdr-2">H3<br><span style="font-weight:400;font-size:.78rem">Fluctuations in Gas Pressure</span></th>
-      <th id="hdr-3">H4<br><span style="font-weight:400;font-size:.78rem">The Flour is Defective</span></th>
+      <th id="hdr-1">H2<br><span style="font-weight:400;font-size:.78rem">Fluctuations in Gas Pressure</span></th>
+      <th id="hdr-2">H3<br><span style="font-weight:400;font-size:.78rem">The Flour is Defective</span></th>
     </tr>
   </thead>
   <tbody id="matrix-body"></tbody>
   <tfoot>
     <tr id="count-row">
       <td>Inconsistent (I) count</td>
-      <td id="cnt-0">0</td><td id="cnt-1">0</td><td id="cnt-2">0</td><td id="cnt-3">0</td>
+      <td id="cnt-0">0</td><td id="cnt-1">0</td><td id="cnt-2">0</td>
     </tr>
     <tr id="winner-row">
       <td id="assess-label">Assessment</td>
-      <td id="assess-0"></td><td id="assess-1"></td><td id="assess-2"></td><td id="assess-3"></td>
+      <td id="assess-0"></td><td id="assess-1"></td><td id="assess-2"></td>
     </tr>
   </tfoot>
 </table>
@@ -431,21 +481,21 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     <div id="rationale-list"></div>
 
     <div class="caveat-box">
-      <h4>&#128172; Discussion — E10 &amp; the Sabotage Hypothesis</h4>
-      <p>You might wonder whether E10 could be rated <em>Consistent</em> with Sabotage — if employees deliberately contaminated the new flour supply. That is creative thinking, but structured analysis requires staying within the available evidence: Frank (the prime suspect) successfully baked his first batch using the <em>old</em> flour. Arguing that a coordinated effort specifically targeted only the new flour adds a complex, multi-step assumption with no supporting evidence in the scenario. When a simpler explanation — defective supplier goods — carries <strong>zero inconsistencies</strong> and requires fewer assumptions, it is the mathematically and logically superior hypothesis.</p>
+      <h4>&#128172; Discussion — E9 &amp; the Sabotage Hypothesis</h4>
+      <p>You might wonder whether E9 could be rated <em>Consistent</em> with Sabotage — if employees deliberately contaminated the new flour supply. That is creative thinking, but structured analysis requires staying within the available evidence: Frank (the prime suspect) successfully baked his first batch using the <em>old</em> flour. Arguing that a coordinated effort specifically targeted only the new flour adds a complex, multi-step assumption with no supporting evidence in the scenario. When a simpler explanation — defective supplier goods — carries <strong>zero inconsistencies</strong> and requires fewer assumptions, it is the mathematically and logically superior hypothesis.</p>
     </div>
 
     <div class="recommendation-box">
       <h4>&#9654; The Key Insight in This Scenario</h4>
-      <p>Pay close attention to <strong>Evidence Item 10</strong>. Before E10, Sabotage appears highly likely because of the volume of motive-based evidence (E5–E8). E10 shows how a single piece of highly diagnostic evidence can completely overturn a leading hypothesis by exposing a logical inconsistency — and that is the core value of the ACH method.</p>
+      <p>Pay close attention to <strong>Evidence Item 9</strong>. Before E9, Sabotage appears highly likely because of the volume of motive-based evidence (E4–E7). E9 shows how a single piece of highly diagnostic evidence can completely overturn a leading hypothesis by exposing a logical inconsistency — and that is the core value of the ACH method.</p>
     </div>
 
     <div class="advanced-box">
       <h4>&#128202; Advanced ACH — What Comes Next</h4>
       <p>The version practiced here uses a simplified three-state rating: <strong>C / I / N/A</strong>. Full professional ACH adds two additional tools that advanced analysts use once they are comfortable with the fundamentals:</p>
       <ul>
-        <li><strong>CC / II (Conclusive ratings):</strong> A five-point scale — CC (Conclusively Consistent), C, N/A, I, II (Conclusively Inconsistent) — lets analysts flag evidence that is so strong or so definitive that it essentially rules a hypothesis in or out on its own. E10 in this scenario would be a strong candidate for an II rating against H1, H2, and H3.</li>
-        <li><strong>Evidence weights:</strong> Not all evidence is equally reliable or diagnostic. Weighted ACH assigns each evidence item a credibility multiplier (e.g., Low / Medium / High) so that a firsthand, verified source contributes more to the count than rumor or inference. In this scenario, the serviceman's direct inspection (E4) would likely carry higher weight than employee grievance reports (E6–E8).</li>
+        <li><strong>CC / II (Conclusive ratings):</strong> A five-point scale — CC (Conclusively Consistent), C, N/A, I, II (Conclusively Inconsistent) — lets analysts flag evidence that is so strong or so definitive that it essentially rules a hypothesis in or out on its own. E9 in this scenario would be a strong candidate for an II rating against H1 and H2.</li>
+        <li><strong>Evidence weights:</strong> Not all evidence is equally reliable or diagnostic. Weighted ACH assigns each evidence item a credibility multiplier (e.g., Low / Medium / High) so that a firsthand, verified source contributes more to the count than rumor or inference. In this scenario, the flour correlation finding (E9) would carry far higher weight than circumstantial employee grievance reports (E4–E7).</li>
       </ul>
       <p style="margin-top:.5rem">These features add analytical precision but also add complexity. Master the fundamentals first — a well-reasoned C/I/N/A matrix is more valuable than a poorly understood weighted one.</p>
     </div>
@@ -535,7 +585,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     </div>
     <div id="ak-modal-body">
       <p style="font-size:.87rem;color:#3a4560;margin-bottom:.9rem;padding-bottom:.75rem;border-bottom:1px solid #e5eaf5">
-        All 40 cells (10 evidence items × 4 hypotheses) with the correct rating and the reason why. For instructor use.
+        All 27 cells (9 evidence items × 3 hypotheses) with the correct rating and the reason why. For instructor use.
       </p>
       <!-- table injected by buildAnswerKeyTable() -->
     </div>
@@ -545,99 +595,82 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 </div>
 
 <script>
-  const H = 4;
+  const H = 3;
 
   const EVIDENCE = [
-    { id:'E1',  text:'Three batches of bread were overbaked.' },
-    { id:'E2',  text:'Only specially prepared bread was overbaked.' },
-    { id:'E3',  text:'Only 2 ovens produced overbaked bread.' },
-    { id:'E4',  text:'The serviceman found nothing wrong with the heat gauges.' },
-    { id:'E5',  text:"Overbaking occurred during the bakery's busiest season." },
-    { id:'E6',  text:'Employees were denied additional benefits three weeks prior.' },
-    { id:'E7',  text:'Employees were angry over the firing of Michael.' },
-    { id:'E8',  text:'Frank (Crew 2) was seen talking with Michael in the parking lot.' },
-    { id:'E9',  text:'Flour delivery from the new supplier was delayed.' },
-    { id:'E10', text:'Only batches made with the new flour were overbaked.' },
+    { id:'E1', text:'Three batches of bread were overbaked.' },
+    { id:'E2', text:'Only specially prepared bread was overbaked.' },
+    { id:'E3', text:'Only 2 ovens produced overbaked bread.' },
+    { id:'E4', text:"Overbaking occurred during the bakery's busiest season." },
+    { id:'E5', text:'Employees were denied additional benefits three weeks prior.' },
+    { id:'E6', text:'Employees were angry over the firing of Michael.' },
+    { id:'E7', text:'Frank (Crew 2) was seen talking with Michael in the parking lot.' },
+    { id:'E8', text:'Flour delivery from the new supplier was delayed.' },
+    { id:'E9', text:'Only batches made with the new flour were overbaked.' },
   ];
 
   const ANSWER_KEY = [
-  //   H1      H2      H3      H4
-    [ 'C',    'C',    'C',    'C'   ],  // E1
-    [ 'C',    'I',    'I',    'C'   ],  // E2
-    [ 'C',    'C',    'I',    'C'   ],  // E3
-    [ 'C',    'I',    'C',    'C'   ],  // E4
-    [ 'C',    'N/A',  'N/A',  'N/A' ],  // E5
-    [ 'C',    'N/A',  'N/A',  'N/A' ],  // E6
-    [ 'C',    'N/A',  'N/A',  'N/A' ],  // E7
-    [ 'C',    'N/A',  'N/A',  'N/A' ],  // E8
-    [ 'N/A',  'N/A',  'N/A',  'C'   ],  // E9
-    [ 'I',    'I',    'I',    'C'   ],  // E10
+  //   H1      H2      H3
+    [ 'C',    'C',    'C'   ],  // E1
+    [ 'C',    'I',    'C'   ],  // E2
+    [ 'C',    'I',    'C'   ],  // E3
+    [ 'C',    'N/A',  'N/A' ],  // E4
+    [ 'C',    'N/A',  'N/A' ],  // E5
+    [ 'C',    'N/A',  'N/A' ],  // E6
+    [ 'C',    'N/A',  'N/A' ],  // E7
+    [ 'N/A',  'N/A',  'C'   ],  // E8
+    [ 'I',    'I',    'C'   ],  // E9
   ];
 
   const RATIONALE = [
-    { id:'E1', rationale: 'Establishes the baseline problem. All four hypotheses can account for multiple burned batches — this evidence lacks the specificity to favor any single cause.' },
-    { id:'E2', rationale: 'Mechanical systems cannot distinguish between bread recipes; a gauge fault or pressure problem burns whatever is in the oven. Only sabotage (targeted action) or defective flour (ingredient-specific) can explain why only the specialty bread was affected.' },
-    { id:'E3', rationale: 'The serviceman explicitly stated that a gas pressure issue would affect all ovens simultaneously — only two were affected, directly contradicting H3. Sabotage, gauge malfunction, and defective flour can each produce isolated oven failures.' },
-    { id:'E4', rationale: 'The serviceman\'s inspection found no fault. This directly contradicts Gauge Malfunction — if the gauges were the root cause, a targeted inspection would have found a mechanical fault.' },
-    { id:'E5', rationale: 'The busy season provides motive and opportunity for a deliberate actor seeking maximum disruption. The calendar date has no causal relationship to gauge performance, gas line behavior, or ingredient quality.' },
-    { id:'E6', rationale: 'Establishes grievance and motive for sabotage. Human emotions and administrative decisions have zero effect on equipment function or flour chemistry — Not Applicable to H2, H3, and H4.' },
-    { id:'E7', rationale: 'Reinforces the sabotage motive. Anger over a firing is a human factor with no bearing on mechanical systems or ingredient properties — Not Applicable to H2, H3, and H4.' },
-    { id:'E8', rationale: 'Suggests potential coordination between a current and former employee — relevant only to deliberate human action. Equipment does not malfunction because employees meet in a parking lot.' },
-    { id:'E9', rationale: 'A delayed delivery from an unverified new supplier explains how untested flour entered production under time pressure. A supply chain delay has no causal effect on employee behavior, gauge function, or gas pressure — Not Applicable to H1, H2, and H3.' },
-    { id:'E10', rationale: 'The decisive variable. Failures correlated perfectly with the new flour, not with the location of suspected individuals. Frank (Crew 2) successfully baked his first batch using old flour. Gauge and pressure faults operate independently of ingredients. This single item overturns the apparent weight of the circumstantial sabotage evidence.' },
+    { id:'E1', rationale: 'Establishes the baseline problem. All three hypotheses can account for multiple burned batches — this evidence lacks the specificity to favor any single cause.' },
+    { id:'E2', rationale: 'Gas pressure acts on the oven system, not the ingredients — a pressure problem burns whatever is in the oven regardless of recipe. Only sabotage (targeted action) or defective flour (ingredient-specific) can explain why only the specialty bread was affected.' },
+    { id:'E3', rationale: 'The serviceman explicitly stated that a gas pressure issue would affect all ovens simultaneously — only two were affected, directly contradicting H2. Sabotage and defective flour can each produce isolated oven failures.' },
+    { id:'E4', rationale: 'The busy season provides motive and opportunity for a deliberate actor seeking maximum disruption. The calendar date has no causal relationship to gas line behavior or ingredient quality — Not Applicable to H2 and H3.' },
+    { id:'E5', rationale: 'Establishes grievance and motive for sabotage. Human emotions and administrative decisions have zero effect on gas pressure or flour chemistry — Not Applicable to H2 and H3.' },
+    { id:'E6', rationale: 'Reinforces the sabotage motive. Anger over a firing is a human factor with no bearing on mechanical systems or ingredient properties — Not Applicable to H2 and H3.' },
+    { id:'E7', rationale: 'Suggests potential coordination between a current and former employee — relevant only to deliberate human action. Equipment does not malfunction because employees meet in a parking lot.' },
+    { id:'E8', rationale: 'A delayed delivery from an unverified new supplier explains how untested flour entered production under time pressure. A supply chain delay has no causal effect on employee behavior or gas pressure — Not Applicable to H1 and H2.' },
+    { id:'E9', rationale: 'The decisive variable. Failures correlated perfectly with the new flour, not with the location of suspected individuals. Frank (Crew 2) successfully baked his first batch using old flour. Gas pressure faults act on the oven, not the ingredient — all batches would be equally affected. This single item overturns the apparent weight of the circumstantial sabotage evidence.' },
   ];
 
-  // Per-cell explanations [row][col] used in the Check My Work panel
+  // Per-cell explanations [row][col] — H1 Sabotage, H2 Gas Pressure, H3 Flour
   const CELL_WHY = [
     // E1
     ['C — Multiple burned batches is consistent with deliberate sabotage targeting the operation.',
-     'C — Repeated overbaking across cycles is consistent with a malfunctioning gauge running too hot.',
      'C — Recurring pressure fluctuations could drive temperatures up across multiple baking cycles.',
      'C — Defective flour used across several batches would cause widespread overbaking.'],
     // E2
     ['C — A deliberate actor could choose to target the specialty product specifically.',
-     'I — A broken gauge burns whatever is in the oven. It cannot distinguish between bread recipes.',
-     'I — Gas pressure acts on the oven, not the ingredients. All bread inside would be equally affected.',
+     'I — Gas pressure acts on the oven, not the ingredients. All bread inside would be equally affected regardless of recipe.',
      'C — Defective flour in the specialty recipe\'s unique ingredient blend would only affect that specific product.'],
     // E3
     ['C — A saboteur could tamper with specific ovens rather than the whole system.',
-     'C — A gauge fault is typically isolated to one oven; two could fail independently.',
-     'I — The serviceman explicitly stated a pressure problem would affect all ovens simultaneously.',
-     'C — The new flour was not distributed evenly. Each crew had different amounts of old flour remaining when the shipment arrived, so they switched to new flour at different times. The two affected ovens are simply the ones where crews happened to be baking with new flour first. Defective flour fails wherever it is used — it does not require all ovens to fail at once.'],
-    // E4
-    ['C — A clean equipment inspection does not rule out deliberate human action.',
-     'I — If the gauge were the root cause, a direct targeted inspection would have detected the fault.',
-     'C — The serviceman inspected the thermostats and heat gauges only — not the gas supply lines or pressure regulators. His clean finding eliminates gauge malfunction (H2) but says nothing about gas pressure. This keeps H3 viable. N/A would mean zero relevance, but this finding does narrow the field: because the gauges are clear, something else must explain the overbaking, which is logically consistent with a pressure cause.',
-     'C — Equipment integrity has no bearing on whether the flour delivered is defective.'],
-    // E5
+     'I — The serviceman explicitly stated a pressure problem would affect all ovens simultaneously — not just two.',
+     'C — The new flour was not distributed evenly. Each crew had different amounts of old flour remaining, so they switched to new flour at different times. The two affected ovens are simply the ones where crews happened to be baking with new flour first.'],
+    // E4 (busy season)
     ['C — The busiest season provides both maximum disruption impact and cover in a high-activity environment.',
-     'N/A — The time of year has no causal effect on whether a gauge malfunctions.',
      'N/A — The calendar date cannot cause gas pressure to fluctuate.',
      'N/A — Seasonal demand has no bearing on flour quality or supplier reliability.'],
-    // E6
+    // E5 (benefits denied)
     ['C — Denial of benefits establishes a clear grievance and motive for deliberate sabotage.',
-     'N/A — Employee benefit disputes have no mechanical effect on gas gauge equipment.',
-     'N/A — Administrative decisions about benefits cannot affect gas line pressure.',
+     'N/A — Administrative decisions about employee benefits cannot affect gas line pressure.',
      'N/A — Employee satisfaction has no bearing on whether a new supplier provided defective goods.'],
-    // E7
+    // E6 (employees angry)
     ['C — Anger over the firing reinforces the sabotage motive and emotional state of the workforce.',
-     'N/A — Employee anger does not cause mechanical gauge failure.',
      'N/A — Human emotions cannot cause gas pressure fluctuations.',
      'N/A — The circumstances of an employee\'s termination have no relationship to flour quality.'],
-    // E8
+    // E7 (Frank and Michael)
     ['C — Contact between a current employee and a fired, disgruntled ex-employee suggests potential coordination.',
-     'N/A — A parking lot meeting between employees has no effect on gauge equipment.',
      'N/A — Social contact between individuals cannot cause gas pressure changes.',
      'N/A — Employee meetings have no bearing on the flour supply or ingredient quality.'],
-    // E9
-    ['N/A — A supplier delay does not logically cause employees to commit sabotage.',
-     'N/A — A flour delivery delay has no causal relationship to gauge malfunction.',
+    // E8 (flour delivery delayed)
+    ['N/A — A supplier delivery delay does not logically cause employees to commit sabotage.',
      'N/A — Supply chain events do not affect gas line pressure.',
-     'C — A rushed delivery from a new, unverified supplier explains how untested, potentially defective flour entered production.'],
-    // E10
+     'C — A rushed delivery from a new, unverified supplier explains how untested, potentially defective flour entered production under time pressure.'],
+    // E9 (only new flour overbaked)
     ['I — If sabotage were the cause, failures would correlate with the suspects, not the ingredient. Frank\'s crew successfully baked their first batch using old flour.',
-     'I — A faulty gauge would overheat all bread in that oven regardless of what flour was used.',
-     'I — Gas pressure fluctuations act on the oven system, not the ingredients — all batches would be equally affected.',
+     'I — Gas pressure fluctuations act on the oven system, not the ingredients — all batches in that oven would be equally affected.',
      'C — Failures correlated precisely with the introduction of new flour. This is the most direct and discriminating evidence pointing to defective ingredients.'],
   ];
 
@@ -735,7 +768,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
 
   function checkWork() {
     let correct = 0;
-    const hypNames = ['H1: Sabotage','H2: Gas Gauges','H3: Gas Pressure','H4: Flour Defective'];
+    const hypNames = ['H1: Sabotage','H2: Gas Pressure','H3: Flour Defective'];
     const wrongItems = [];
 
     for (let r = 0; r < EVIDENCE.length; r++) {
@@ -882,9 +915,8 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
   function buildAnswerKeyTable() {
     const hypShort = [
       'H1<br><span style="font-weight:400;font-size:.76rem">Sabotage by Employees</span>',
-      'H2<br><span style="font-weight:400;font-size:.76rem">Malfunction of Gas Gauges</span>',
-      'H3<br><span style="font-weight:400;font-size:.76rem">Fluctuations in Gas Pressure</span>',
-      'H4<br><span style="font-weight:400;font-size:.76rem">The Flour is Defective</span>',
+      'H2<br><span style="font-weight:400;font-size:.76rem">Fluctuations in Gas Pressure</span>',
+      'H3<br><span style="font-weight:400;font-size:.76rem">The Flour is Defective</span>',
     ];
     const bclass = { 'C':'ak-badge-c', 'I':'ak-badge-i', 'N/A':'ak-badge-na' };
     const cclass = { 'C':'ak-cell-c',  'I':'ak-cell-i',  'N/A':'ak-cell-na'  };
@@ -905,7 +937,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
       }
       html += '</tr>';
     });
-    html += '</tbody></table><div id="ak-footer">Instructor Reference Only &nbsp;|&nbsp; All 40 cells verified &nbsp;|&nbsp; Unclassified Training Use</div>';
+    html += '</tbody></table><div id="ak-footer">Instructor Reference Only &nbsp;|&nbsp; All 27 cells verified &nbsp;|&nbsp; Unclassified Training Use</div>';
     const body = document.getElementById('ak-modal-body');
     // preserve the intro paragraph
     const intro = body.querySelector('p');
@@ -928,7 +960,7 @@ td.fb-wrong   .cell-select { box-shadow: 0 0 0 3px #dc3545; border-color: #dc354
     .addEventListener('dblclick', autoFill);
 
   function downloadAnswerKeyCSV() {
-    const hypNames = ['H1 Sabotage by Employees','H2 Malfunction of Gas Gauges','H3 Fluctuations in Gas Pressure','H4 The Flour is Defective'];
+    const hypNames = ['H1 Sabotage by Employees','H2 Fluctuations in Gas Pressure','H3 The Flour is Defective'];
     const esc = s => `"${s.replace(/"/g,'""')}"`;
     const rows = [['Evidence ID','Evidence Text','Hypothesis','Correct Rating','Explanation']];
     EVIDENCE.forEach((ev, r) => {
