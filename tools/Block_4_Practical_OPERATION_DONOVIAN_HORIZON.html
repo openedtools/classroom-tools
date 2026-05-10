@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Operation Donovian Horizon | Block 4 Capstone</title>
+  <style>
+    :root {
+      --navy: #0a1628;
+      --panel: #10233b;
+      --panel2: #07101f;
+      --olive: #5c6e2f;
+      --green: #a0b265;
+      --red: #b22222;
+      --cream: #f5f1e8;
+      --muted: #c9c0a9;
+      --line: rgba(160, 178, 101, 0.55);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(160,178,101,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(160,178,101,.035) 1px, transparent 1px),
+        var(--navy);
+      background-size: 32px 32px;
+      color: var(--cream);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18pt;
+      line-height: 1.42;
+    }
+    .banner {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      padding: .42rem;
+      background: var(--red);
+      color: var(--cream);
+      text-align: center;
+      font: 700 .82rem/1.1 "Courier New", monospace;
+      letter-spacing: .08em;
+    }
+    .banner.bottom { position: fixed; top: auto; bottom: 0; left: 0; right: 0; }
+    .shell {
+      width: min(1280px, calc(100vw - 24px));
+      margin: 1rem auto 3.6rem;
+      border: 1px solid var(--line);
+      background: rgba(10,22,40,.94);
+      min-height: calc(100vh - 7rem);
+    }
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: .75rem;
+      align-items: center;
+      padding: .75rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(16,35,59,.96);
+      font-family: "Courier New", monospace;
+      text-transform: uppercase;
+      font-size: .76rem;
+    }
+    .score {
+      min-width: 8rem;
+      border: 1px solid var(--line);
+      color: var(--green);
+      padding: .28rem .55rem;
+      text-align: center;
+    }
+    .score.flash { background: var(--green); color: var(--navy); }
+    .hamburger {
+      min-width: 48px;
+      min-height: 42px;
+      padding: .25rem .45rem;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--cream);
+      font-size: 1.2rem;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      min-height: calc(100vh - 11rem);
+    }
+    main { padding: clamp(1rem, 2.4vw, 1.6rem); }
+    aside {
+      border-left: 1px solid var(--line);
+      background: rgba(7,16,31,.72);
+      padding: .8rem;
+      overflow: auto;
+    }
+    aside.collapsed { display: none; }
+    h1, h2, h3 {
+      font-family: "Courier New", monospace;
+      letter-spacing: 0;
+      line-height: 1.08;
+      margin: 0 0 1rem;
+    }
+    h1 { font-size: clamp(2.2rem, 5vw, 4rem); }
+    h2 { font-size: clamp(1.55rem, 3.4vw, 2.4rem); }
+    h3 { font-size: 1.08rem; color: var(--green); }
+    p { margin: 0 0 .85rem; }
+    .kicker {
+      color: var(--green);
+      font: 700 .82rem/1.1 "Courier New", monospace;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      margin-bottom: .65rem;
+    }
+    .panel, .card {
+      border: 1px solid var(--line);
+      background: rgba(16,35,59,.76);
+      padding: .85rem;
+      margin: .85rem 0;
+    }
+    .brief-section {
+      border: 1px solid rgba(160,178,101,.32);
+      padding: .55rem;
+      margin-bottom: .55rem;
+      background: rgba(16,35,59,.45);
+      font-size: .72rem;
+    }
+    .brief-section h4 {
+      margin: 0 0 .35rem;
+      color: var(--green);
+      font-family: "Courier New", monospace;
+      text-transform: uppercase;
+      font-size: .72rem;
+    }
+    .brief-section p { margin: 0; color: var(--muted); }
+    .skipped { color: #9c9c9c; font-style: italic; }
+    button, textarea, input {
+      font: inherit;
+    }
+    button {
+      min-height: 56px;
+      border: 1px solid rgba(245,241,232,.16);
+      background: var(--olive);
+      color: var(--cream);
+      padding: .62rem .85rem;
+      font-family: "Courier New", monospace;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    button:hover:not(:disabled), button:focus-visible:not(:disabled) {
+      background: var(--green);
+      color: var(--navy);
+      outline: none;
+    }
+    button:disabled { opacity: .35; cursor: not-allowed; }
+    .button-row { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: .9rem; }
+    .button-row button { flex: 1 1 210px; }
+    input, textarea {
+      width: 100%;
+      min-height: 54px;
+      background: var(--panel2);
+      color: var(--cream);
+      border: 1px solid var(--line);
+      padding: .65rem;
+    }
+    textarea { min-height: 140px; resize: vertical; }
+    .timer {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      border: 1px solid var(--line);
+      padding: .35rem .55rem;
+      margin-bottom: .75rem;
+      color: var(--muted);
+      font: 700 .78rem/1 "Courier New", monospace;
+      text-transform: uppercase;
+    }
+    .options, .match-grid, .class-list { display: grid; gap: .65rem; margin: .8rem 0; }
+    .option, .match-item, .match-cat, .seq-item, .class-choice {
+      width: 100%;
+      text-align: left;
+      background: rgba(16,35,59,.94);
+      border-color: var(--line);
+      text-transform: none;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+    }
+    .option.selected, .match-item.selected, .match-cat.selected, .seq-item.selected, .class-choice.selected {
+      background: var(--green);
+      color: var(--navy);
+    }
+    .correct { border-color: var(--green) !important; }
+    .incorrect { border-color: var(--red) !important; }
+    .match-grid { grid-template-columns: 1fr 1fr; }
+    .assignment { font-size: .72rem; color: var(--muted); margin-top: .3rem; }
+    .sequence-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: .5rem;
+      margin: .75rem 0;
+    }
+    .slot {
+      border: 1px dashed var(--line);
+      min-height: 48px;
+      padding: .35rem;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+    .svg-wrap {
+      border: 1px solid var(--line);
+      background: rgba(7,16,31,.72);
+      padding: .6rem;
+      margin: .8rem 0;
+      display: grid;
+      place-items: center;
+    }
+    svg { max-width: 100%; height: auto; }
+    .hotspot { cursor: pointer; fill: rgba(160,178,101,.05); stroke: rgba(160,178,101,.2); stroke-width: 2; }
+    .hotspot.selected { fill: rgba(160,178,101,.38); stroke: var(--green); }
+    .class-row {
+      border: 1px solid var(--line);
+      padding: .7rem;
+      background: rgba(7,16,31,.46);
+    }
+    .class-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin-top: .45rem;
+    }
+    .class-choice {
+      width: auto;
+      min-height: 44px;
+      padding: .4rem .55rem;
+      font-size: .78rem;
+    }
+    .menu {
+      position: fixed;
+      right: 1rem;
+      top: 4.7rem;
+      width: min(320px, calc(100vw - 2rem));
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: .75rem;
+      z-index: 50;
+      box-shadow: 0 18px 60px rgba(0,0,0,.4);
+    }
+    .menu.hidden, .hidden { display: none; }
+    .menu button { width: 100%; margin: .25rem 0; min-height: 46px; }
+    .pause {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      z-index: 70;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+    .pause.hidden { display: none; }
+    .pause .panel { max-width: 560px; background: var(--panel); }
+    .result-score {
+      font: 700 clamp(3rem, 12vw, 6.5rem)/1 "Courier New", monospace;
+      color: var(--green);
+    }
+    .copy-status { color: var(--green); font-size: .82rem; }
+    @media (max-width: 980px) {
+      header { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 1fr; }
+      aside { border-left: 0; border-top: 1px solid var(--line); }
+    }
+    @media print {
+      body { background: white; color: black; font-size: 12pt; }
+      .banner, header, aside, .button-row, .menu, .pause, .timer { display: none !important; }
+      .shell { border: 0; margin: 0; width: 100%; background: white; }
+      .layout { display: block; }
+      main { padding: 0; }
+      .panel, .card { border: 1px solid #333; background: white; color: black; }
+      h1, h2, h3 { color: black; }
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">UNCLASSIFIED // FOR TRAINING USE ONLY</div>
+  <div class="shell">
+    <header>
+      <div id="headTitle">JTF CORAL SHIELD // OPERATION DONOVIAN HORIZON</div>
+      <div id="teamLine">Team: Not Assigned</div>
+      <div style="display:flex;gap:.5rem;align-items:center;justify-content:flex-end">
+        <div id="scoreLine" class="score">Score: 0</div>
+        <button id="menuBtn" class="hamburger" type="button">MENU</button>
+      </div>
+    </header>
+    <div class="layout">
+      <main id="app"></main>
+      <aside id="briefAside"></aside>
+    </div>
+  </div>
+  <div id="menu" class="menu hidden">
+    <button id="pauseBtn">Pause</button>
+    <button id="skipActivityBtn">Skip Activity</button>
+    <button id="skipPhaseBtn">Skip Phase</button>
+    <button id="restartPhaseBtn">Restart Phase</button>
+    <button id="toggleLockBtn">Instructor Lock: Off</button>
+    <button id="saveBtn">Save Progress</button>
+    <button id="resumeBtn">Resume Saved</button>
+    <button id="quitBtn">Quit to Intro</button>
+  </div>
+  <div id="pauseOverlay" class="pause hidden">
+    <div class="panel">
+      <h2>Mission Paused</h2>
+      <p>Timers are paused. Resume when the team is ready.</p>
+      <button id="resumePauseBtn">Resume Mission</button>
+    </div>
+  </div>
+  <div class="banner bottom">UNCLASSIFIED // FOR TRAINING USE ONLY</div>
+
+  <script>
+    const BRIEF_SECTIONS = [
+      "GEOINT ASSESSMENT",
+      "EM / SIGINT POSTURE",
+      "RADAR & AIR THREATS",
+      "AIR SURVIVAL POSTURE",
+      "CYBER POSTURE",
+      "INFLUENCE / IO",
+      "ISR PLAN",
+      "SPACE ASSESSMENT"
+    ];
+
+    const PHASES = [
+      {
+        id: 1, lesson: "GEOINT (4.1)", title: "FIRST LIGHT OVER THE SEA OF AZURE", briefSection: BRIEF_SECTIONS[0],
+        intelUpdate: "JTF CORAL SHIELD has been activated. Donovian forces are conducting unusual movements along the Gorgan coast. A Donovian armored brigade was reported moving from a garrison toward the Sea of Azure through 200 kilometers of open desert overnight.",
+        activityA: { type: "CLICK_TO_MATCH", title: "Sensor Match", prompt: "Match each collection scenario to the GEOINT capability that best supports it.", items: ["Track every moving vehicle across a 500 km2 desert at night", "Provide foundational maps and elevation for mission planning", "Continuous video of a single Donovian command compound", "Forensic look-back across an entire port for the past 4 hours"], categories: ["MTI", "Geospatial Information (GI)", "FMV", "WAMI"], correctMap: [0,1,2,3], points: 4 },
+        activityB: { type: "MULTI_SELECT", title: "Sensor Selection", prompt: "Donovian forces are reportedly building a hardened command bunker inside a city block. Select all true statements about GEOINT options.", options: ["GEOINT sensors cannot penetrate solid structures.", "SAR can see through buildings as long as cloud cover is present.", "GEOINT can confirm activity around the building but not inside.", "HUMINT or SIGINT will be required to characterize what is inside.", "WAMI will provide interior imagery if you watch long enough."], correct: [0,2,3], points: 6 },
+        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "In 1-2 sentences, write your J-2 assessment of Donovian ground force movement based on the GEOINT picture so far.", keywordSets: [["movement","moving","deploying","repositioning","advancing"],["coast","port","sea of azure","beach","staging","gorgan"],["brigade","column","vehicles","force","battalion","60","200"]], points: 6, fallback: "Donovian ground forces are moving toward the Gorgan coast, with a brigade-sized vehicle column likely staging near the port." },
+        lockText: "Donovian ground movement indicates a brigade-sized force moving toward the Gorgan coast and port staging areas."
+      },
+      {
+        id: 2, lesson: "Electromagnetic Theory (4.2)", title: "THE INVISIBLE BATTLEFIELD", briefSection: BRIEF_SECTIONS[1],
+        intelUpdate: "Collection planners are evaluating sites for a SIGINT collector tasked against a new Donovian air defense radar near the Gorgan coast. Three candidate sites are on the table.",
+        activityA: { type: "CLICK_TO_MATCH", title: "Wave Properties Match", prompt: "Match each frequency range to its primary military use.", items: ["Very Low Frequency (3-30 kHz)", "HF (3-30 MHz)", "Microwave (1-30 GHz)", "Visible Light (400-700 THz)"], categories: ["Submarine communication", "Long-range radio, beyond line-of-sight", "Modern fire-control radar", "Electro-optical imagery"], correctMap: [0,1,2,3], points: 4 },
+        activityB: { type: "HOT_SPOT_MAP", title: "Site Selection", prompt: "Click the site that has viable line of sight to the Donovian radar.", map: "em", spots: [{id:"A", label:"Site A", correct:false}, {id:"B", label:"Site B", correct:true}, {id:"C", label:"Site C", correct:false}], points: 5 },
+        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "Your collection plan recommends Site B. Select the two strongest justifications for the brief.", options: ["Site B has the lowest moisture, so the signal will not be absorbed.", "Site B has unobstructed line of sight to the radar emitter.", "Site B is closer to the radar. Proximity is the dominant factor.", "Site A and C are terrain-shadowed and would receive no usable signal.", "Site B is the only location with adequate power supply."], correct: [1,3], points: 6 },
+        lockText: "Recommend Site B for the SIGINT collector. It has unobstructed line of sight; Sites A and C are terrain-shadowed."
+      },
+      {
+        id: 3, lesson: "Radar and Kill Chain (4.3)", title: "GREAT EAGLE WAKES UP", briefSection: BRIEF_SECTIONS[2],
+        intelUpdate: "SIGINT collected emissions from four Donovian radars along the coast: GREAT EAGLE-1, IRON FANG, STEEL CLAW, and DEATH VIPER. Each has a different role in the IADS.",
+        activityA: { type: "CLICK_TO_MATCH", title: "Radar Role Classifier", prompt: "Match each radar to its IADS role.", items: ["GREAT EAGLE-1: high power, long range, low frequency, wide beam", "IRON FANG: narrower beam, mid-frequency, focused search", "STEEL CLAW: narrow beam, high frequency, precision tracking", "DEATH VIPER: communications-style emissions tied to fighters"], categories: ["Early Warning", "Target Acquisition", "Fire Control / Target Tracking", "Ground Control Intercept"], correctMap: [0,1,2,3], points: 4 },
+        activityB: { type: "SEQUENCE_PUZZLE", title: "Kill Chain Sequence", prompt: "Click each event in the correct radar kill chain order.", items: ["GREAT EAGLE-1 detects unknown contact at 350 km", "IRON FANG narrows location to a 5 km grid square", "STEEL CLAW achieves precision lock", "DEATH VIPER vectors interceptor toward target", "Donovian SAM launches against target", "Battle damage assessment confirms target destroyed"], correctOrder: [0,1,2,3,4,5], points: 6 },
+        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "STEEL CLAW is locked. In one sentence, tell the JFC what this stage means for Donovian intent.", keywordSets: [["track","target","lock","locked"],["imminent","engage","fire","attack","threat"]], points: 6, fallback: "The Donovian IADS is in Track/Target, which indicates an imminent engagement threat." },
+        lockText: "Donovian IADS is in Track/Target. STEEL CLAW lock indicates an imminent engagement threat."
+      },
+      {
+        id: 4, lesson: "Infrared and Airframe Survival (4.4)", title: "HEAT IN THE SKY", briefSection: BRIEF_SECTIONS[3],
+        intelUpdate: "Donovian SAM batteries are active along the coast. A Gorgan F-16 has been ordered to patrol the area. Your J-2 cell must brief the pilot on IR-guided threats and countermeasures.",
+        activityA: { type: "CLICK_TO_MATCH", title: "Threat-Countermeasure Match", prompt: "Match each incoming threat to the correct countermeasure.", items: ["IR-homing SAM tracking engine exhaust", "Radar-guided SAM with fire-control lock", "Imaging Infrared seeker, flares ineffective", "Beam-riding SAM"], categories: ["Flares", "Chaff + jamming pod", "Tactical maneuver / break lock", "Pre-emptive jamming + maneuver"], correctMap: [0,1,2,3], points: 4 },
+        activityB: { type: "HOT_SPOT_MAP", title: "IR Signature Hunt", prompt: "Click the four objects with prominent IR signatures.", map: "ir", spots: [{id:"tank", label:"Running tank", correct:true}, {id:"bunker", label:"Concrete bunker", correct:false}, {id:"tube", label:"Fired artillery", correct:true}, {id:"helo", label:"Helicopter", correct:true}, {id:"net", label:"Camouflage net", correct:false}, {id:"fire", label:"Campfire", correct:true}, {id:"box", label:"Shipping container", correct:false}, {id:"decoy", label:"Painted decoy", correct:false}], points: 8 },
+        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "Brief the pilot. Select the two most important IR-related warnings.", options: ["Hot engine exhaust is your biggest IR vulnerability. Be ready to deploy flares.", "Activate your radar jammer to defeat IR threats.", "Some Donovian SAMs use IIR seekers. Flares may be insufficient; break lock with maneuver.", "Chaff is your primary countermeasure against IR threats.", "Fly higher to escape IR detection because heat rises."], correct: [0,2], points: 6 },
+        lockText: "IR-guided SAMs confirmed. Flares are primary against hot-spot IR seekers; tactical maneuver is required against IIR seekers."
+      },
+      {
+        id: 5, lesson: "Cyber Intelligence (4.5)", title: "SCARLET MAMBA IN THE WIRE", briefSection: BRIEF_SECTIONS[4],
+        intelUpdate: "The Gorgan Ministry of Defense reported a cyber intrusion. Technical signatures match SCARLET MAMBA, a fictional APT alias previously linked to Donovian state operations.",
+        activityA: { type: "SCENARIO_CLASSIFICATION", title: "Threat Actor Classifier", prompt: "Classify each cyber incident.", categories: ["Nation-State Actor", "Criminal Organization", "Ideological Hacktivist", "Insider Threat"], scenarios: [{text:"Custom zero-day malware, multi-month dwell time, government targets, no monetization", correct:0}, {text:"Ransomware demanding cryptocurrency, opportunistic targets, mass scanning", correct:1}, {text:"Website defacement with political slogans, no data theft", correct:2}, {text:"Data exfiltration by an authorized system administrator", correct:3}], points: 4 },
+        activityB: { type: "SEQUENCE_PUZZLE", title: "Cyber Kill Chain Reconstruction", prompt: "Click each event in Cyber Kill Chain order.", items: ["Attacker scrapes LinkedIn for Gorgan MOD personnel", "Weaponized PDF arrives in target inbox", "Target opens PDF; malware installs", "Compromised workstation connects to attacker server", "Malware exfiltrates planning documents"], correctOrder: [0,1,2,3,4], points: 5 },
+        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "Are the SCARLET MAMBA intrusion and the Donovian disinformation campaign the same kind of threat? Select all true statements.", options: ["Yes, both are cyber attacks against infrastructure.", "No. The intrusion is a cyber threat that attacks the network.", "No. The disinformation is a cyber-enabled threat that uses the network for influence.", "They require different responses: network defense and counter-messaging.", "They should be treated as a single combined operation in the brief."], correct: [1,2,3], points: 6 },
+        lockText: "SCARLET MAMBA is attributed to Donovia. Network intrusion and cyber-enabled disinformation are both active and require separate response tracks."
+      },
+      {
+        id: 6, lesson: "Information Operations (4.6)", title: "OPERATION QUIET TIDE", briefSection: BRIEF_SECTIONS[5],
+        intelUpdate: "Donovian state media is running OPERATION QUIET TIDE, claiming Gorgas committed war crimes, mobilized first, and that international support is illegitimate.",
+        activityA: { type: "SCENARIO_CLASSIFICATION", title: "Dimension Sort", prompt: "Sort each item into an Information Environment dimension.", categories: ["Physical", "Informational", "Cognitive"], scenarios: [{text:"Cellular phone", correct:0}, {text:"Video file content", correct:1}, {text:"Public belief that Gorgas fired first", correct:2}, {text:"Cell tower hardware", correct:0}, {text:"GPS signal frequency", correct:1}, {text:"Gorgan civilian fear of invasion", correct:2}], points: 6 },
+        activityB: { type: "SCENARIO_CLASSIFICATION", title: "Mis/Dis/Mal-Information Triage", prompt: "Classify each information scenario.", categories: ["Misinformation", "Disinformation", "Malinformation"], scenarios: [{text:"Donovian state TV airs fabricated war-crime footage knowing it is fake", correct:1}, {text:"A well-meaning Gorgan citizen shares a wrong story believing it is true", correct:0}, {text:"A leaked but real memo is released to embarrass Gorgas defense leaders", correct:2}, {text:"Donovian-paid bots amplify a fake atrocity hashtag", correct:1}, {text:"A confused diplomat tweets the wrong nation's flag", correct:0}], points: 5 },
+        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "In one sentence, state the intelligence officer's role in IO planning and name one exploitable Donovian vulnerability.", keywordSets: [["analyze","identify","assess"],["vulnerabilities","weakness","fingerprints","fabricated"],["information","ie","cognitive","informational","adversary"]], points: 6, fallback: "J-2 should identify adversary IE vulnerabilities, including fabricated imagery and bot fingerprints, to support counter-messaging." },
+        lockText: "OPERATION QUIET TIDE is a Donovian disinformation campaign. Vulnerabilities include fabricated atrocity claims and identifiable bot fingerprints."
+      },
+      {
+        id: 7, lesson: "ISR Fundamentals (4.7)", title: "FROM QUESTION TO ANSWER", briefSection: BRIEF_SECTIONS[6],
+        intelUpdate: "The JFC issued PIR-04: What indicators show Donovian forces will conduct an amphibious assault on the Gorgan coast within the next 96 hours?",
+        activityA: { type: "SCENARIO_CLASSIFICATION", title: "ISR Stage Classifier", prompt: "Classify each activity into the correct ISR stage.", categories: ["Planning & Direction", "Collection", "Processing & Exploitation", "Analysis & Production", "Dissemination & Integration"], scenarios: [{text:"ISR cell receives PIR-04 and drafts a collection plan", correct:0}, {text:"Drone flies over the Donovian coast collecting FMV", correct:1}, {text:"DCGS analysts convert raw FMV into geo-tagged products", correct:2}, {text:"All-source analyst writes indicators-and-warning brief", correct:3}, {text:"Finished brief is pushed to the JFC", correct:4}], points: 5 },
+        activityB: { type: "MULTI_SELECT", title: "Collection Plan", prompt: "To answer PIR-04, select the three collection assets to task first.", options: ["WAMI overhead the Donovian port", "HUMINT in Donovia's capital", "SIGINT against Donovian naval comms in the port", "Cyber penetration of the MOD", "MTI overhead the coastal road network", "Open-source monitoring of veteran forums"], correct: [0,2,4], points: 6 },
+        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "Where in the ISR cycle does PIR-04 enter, and what system turns raw data into intel for the JFC?", keywordSets: [["planning","direction","p&d"],["dcgs","distributed common ground system","p&e","processing","exploitation"]], points: 6, fallback: "PIR-04 enters at Planning and Direction, and DCGS supports Processing and Exploitation of raw collection." },
+        lockText: "PIR-04 enters at P&D. Task WAMI, SIGINT, and MTI; process raw data through DCGS."
+      },
+      {
+        id: 8, lesson: "Space Operations (4.8)", title: "DRAGON'S EYE AWAKENS", briefSection: BRIEF_SECTIONS[7],
+        intelUpdate: "DRAGON'S EYE-3, a Donovian GEO MASINT satellite, re-pointed at the Gorgan coast 30 minutes ago. A separate satellite approached Gorgas primary military SATCOM satellite at close range.",
+        activityA: { type: "CLICK_TO_MATCH", title: "Orbit-Mission Match", prompt: "Match each mission requirement to the best orbit.", items: ["Stay over the same fixed point for communications", "Provide GPS-style precision navigation worldwide", "High-resolution imaging with short revisit time", "Cover both polar regions"], categories: ["Geostationary (GEO)", "Medium Earth Orbit (MEO)", "Low Earth Orbit (LEO)", "Polar"], correctMap: [0,1,2,3], points: 4 },
+        activityB: { type: "SCENARIO_CLASSIFICATION", title: "Counterspace Threat Triage", prompt: "Classify each counterspace threat.", categories: ["Kinetic", "Non-Kinetic", "Natural Hazard"], scenarios: [{text:"ASAT missile destroys a satellite by impact", correct:0}, {text:"Cyber attack targets satellite command uplink", correct:1}, {text:"Co-orbital satellite maneuvers for physical interference", correct:0}, {text:"Laser dazzle of optical sensor", correct:1}, {text:"Spoofed GPS signal misleads navigation", correct:1}, {text:"Orbital debris from prior breakup", correct:2}], points: 6 },
+        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "How should we respond to DRAGON'S EYE-3 staring at the coast? Select two recommendations.", options: ["Kinetic ASAT strike on DRAGON'S EYE-3", "Non-kinetic counterspace: directed energy or jamming to disrupt the sensor", "Operational countermeasures: restrict friendly emissions and coordinate with USSF", "Do nothing", "Physical destruction of the satellite ground station"], correct: [1,2], points: 6 },
+        lockText: "DRAGON'S EYE-3 is collecting against the Gorgan coast from GEO. Recommend non-kinetic disruption, emission control, and USSF coordination."
+      }
+    ];
+
+    const CAPSTONE = {
+      mlcoa: {
+        prompt: "Based on everything in your brief, what is Donovia's most likely course of action in the next 96 hours?",
+        options: ["Amphibious assault on the Gorgan coast within 72 hours", "Full-scale invasion of Gorgas via northern land border", "Continued cyber and IO pressure before kinetic action", "Stand down and de-escalate", "Targeted strike against U.S. assets in the region"],
+        correct: [0,2],
+        points: 30
+      },
+      mdcoa: {
+        prompt: "What is Donovia's most dangerous course of action that the JFC must prepare for?",
+        options: ["Kinetic ASAT strike on Gorgan SATCOM, blinding C2", "Coordinated cyber, IO, and amphibious assault to overwhelm decisions", "Donovia surrenders peacefully", "Donovian state media stops broadcasting", "An unrelated third party attacks Donovia"],
+        correct: [0,1],
+        points: 30
+      }
+    };
+
+    const state = {
+      team: "",
+      screen: "intro",
+      phaseIndex: 0,
+      activityKey: "intro",
+      score: 0,
+      brief: Object.fromEntries(BRIEF_SECTIONS.map(s => [s, ""])),
+      skipped: {},
+      instructorLock: false,
+      timerSeconds: 0,
+      timerId: null,
+      paused: false,
+      currentResult: null,
+      capstone: { mlcoa: [], mdcoa: [], indicator: "" }
+    };
+
+    const app = document.getElementById("app");
+    const briefAside = document.getElementById("briefAside");
+    const scoreLine = document.getElementById("scoreLine");
+    const teamLine = document.getElementById("teamLine");
+    const headTitle = document.getElementById("headTitle");
+    const menu = document.getElementById("menu");
+    const pauseOverlay = document.getElementById("pauseOverlay");
+
+    function esc(s) {
+      return String(s || "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    }
+    function updateChrome() {
+      scoreLine.textContent = `Score: ${state.score}`;
+      teamLine.textContent = `Team: ${state.team || "Not Assigned"}`;
+      document.getElementById("toggleLockBtn").textContent = `Instructor Lock: ${state.instructorLock ? "On" : "Off"}`;
+      renderBrief();
+    }
+    function addScore(points) {
+      state.score += Math.max(0, Math.round(points));
+      scoreLine.classList.add("flash");
+      setTimeout(() => scoreLine.classList.remove("flash"), 500);
+      updateChrome();
+    }
+    function render(html) {
+      stopTimer();
+      app.innerHTML = html;
+      menu.classList.add("hidden");
+      updateChrome();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function startTimer() {
+      stopTimer();
+      state.timerSeconds = 0;
+      state.timerId = setInterval(() => {
+        if (state.paused) return;
+        state.timerSeconds += 1;
+        const el = document.getElementById("timerValue");
+        if (el) el.textContent = formatTime(state.timerSeconds);
+        const submit = document.getElementById("submitActivityBtn");
+        if (submit && state.instructorLock && state.timerSeconds < 60) {
+          submit.disabled = true;
+          submit.textContent = `Discuss First (${60 - state.timerSeconds})`;
+        } else if (submit && state.instructorLock) {
+          submit.disabled = false;
+          submit.textContent = "Submit";
+        }
+      }, 1000);
+    }
+    function stopTimer() {
+      if (state.timerId) clearInterval(state.timerId);
+      state.timerId = null;
+    }
+    function formatTime(s) {
+      return `${String(Math.floor(s / 60)).padStart(2,"0")}:${String(s % 60).padStart(2,"0")}`;
+    }
+    function timerHtml() {
+      return `<div class="timer">Discussion Timer <span id="timerValue">00:00</span></div>`;
+    }
+    function renderBrief() {
+      briefAside.innerHTML = `<div class="kicker">Growing J-2 Brief</div><h3>${esc(state.team || "Team Brief")}</h3>${BRIEF_SECTIONS.map(sec => {
+        const content = state.brief[sec] || (state.skipped[sec] ? "[CONTRIBUTION NOT MADE - SKIPPED]" : "Pending");
+        return `<div class="brief-section"><h4>${esc(sec)}</h4><p class="${content.includes("SKIPPED") ? "skipped" : ""}">${esc(content)}</p></div>`;
+      }).join("")}`;
+    }
+    function renderIntro() {
+      headTitle.textContent = "JTF CORAL SHIELD // OPERATION DONOVIAN HORIZON";
+      render(`
+        <div class="kicker">Block 4 Capstone Exercise</div>
+        <h1>OPERATION DONOVIAN HORIZON</h1>
+        <div class="panel">
+          <p>Donovia is applying military, cyber, information, and space pressure against the Republic of Gorgas, a democratic partner seeking Western support.</p>
+          <p>Gorgas has mountain terrain, a vulnerable information environment, and breakaway regions influenced by Donovian proxies. Your team is the J-2 cell for JTF CORAL SHIELD.</p>
+          <p>You will not just answer questions. You will build and export a J-2 intelligence brief.</p>
+        </div>
+        <label for="teamName">Team Name</label>
+        <input id="teamName" maxlength="45" autocomplete="off" placeholder="Enter team name">
+        <div class="button-row"><button id="beginBtn">Begin Mission</button></div>
+      `);
+      document.getElementById("beginBtn").onclick = () => {
+        state.team = document.getElementById("teamName").value.trim() || "CORAL SHIELD TEAM";
+        state.phaseIndex = 0;
+        state.score = 0;
+        state.brief = Object.fromEntries(BRIEF_SECTIONS.map(s => [s, ""]));
+        state.skipped = {};
+        renderIntelUpdate();
+      };
+    }
+    function currentPhase() { return PHASES[state.phaseIndex]; }
+    function activityFor(key) { return key === "A" ? currentPhase().activityA : key === "B" ? currentPhase().activityB : currentPhase().activityC; }
+    function renderIntelUpdate() {
+      const p = currentPhase();
+      state.activityKey = "intel";
+      headTitle.textContent = `Phase ${p.id} // ${p.lesson}`;
+      render(`
+        <div class="kicker">Intel Update // Phase ${p.id}</div>
+        <h2>${esc(p.title)}</h2>
+        <div class="panel"><p>${esc(p.intelUpdate)}</p></div>
+        <div class="button-row"><button id="continueBtn">Activity A</button></div>
+      `);
+      document.getElementById("continueBtn").onclick = () => renderActivity("A");
+    }
+    function renderActivity(key) {
+      state.activityKey = key;
+      state.currentResult = null;
+      const p = currentPhase();
+      const a = activityFor(key);
+      headTitle.textContent = `Phase ${p.id} // Activity ${key}`;
+      render(`
+        <div class="kicker">${p.lesson} // Activity ${key}</div>
+        <h2>${esc(a.title)}</h2>
+        ${timerHtml()}
+        <p>${esc(a.prompt)}</p>
+        <div id="activityHost"></div>
+        <div id="feedback" class="panel hidden"></div>
+        <div class="button-row">
+          <button id="submitActivityBtn">Submit</button>
+          <button id="nextActivityBtn" class="hidden">Continue</button>
+        </div>
+      `);
+      renderMechanic(a);
+      const submit = document.getElementById("submitActivityBtn");
+      if (state.instructorLock) submit.disabled = true;
+      submit.onclick = () => submitActivity(a);
+      document.getElementById("nextActivityBtn").onclick = () => nextAfterActivity();
+      startTimer();
+    }
+    function renderMechanic(a) {
+      if (a.type === "CLICK_TO_MATCH") renderMatch(a);
+      if (a.type === "MULTI_SELECT") renderMulti(a);
+      if (a.type === "SHORT_ANSWER_KEYWORD") renderShort(a);
+      if (a.type === "SEQUENCE_PUZZLE") renderSequence(a);
+      if (a.type === "HOT_SPOT_MAP") renderHotspot(a);
+      if (a.type === "SCENARIO_CLASSIFICATION") renderClassification(a);
+    }
+    function renderMatch(a) {
+      window.matchState = { selected: null, map: {} };
+      document.getElementById("activityHost").innerHTML = `<div class="match-grid"><div>${a.items.map((item,i)=>`<button class="match-item" data-i="${i}">${esc(item)}<div class="assignment" id="assign${i}">No match</div></button>`).join("")}</div><div>${a.categories.map((cat,i)=>`<button class="match-cat" data-i="${i}">${esc(cat)}</button>`).join("")}</div></div>`;
+      document.querySelectorAll(".match-item").forEach(b => b.onclick = () => {
+        window.matchState.selected = Number(b.dataset.i);
+        document.querySelectorAll(".match-item").forEach(x=>x.classList.remove("selected"));
+        b.classList.add("selected");
+      });
+      document.querySelectorAll(".match-cat").forEach(b => b.onclick = () => {
+        if (window.matchState.selected === null) return;
+        window.matchState.map[window.matchState.selected] = Number(b.dataset.i);
+        document.getElementById(`assign${window.matchState.selected}`).textContent = `Matched to: ${a.categories[Number(b.dataset.i)]}`;
+      });
+    }
+    function renderMulti(a) {
+      window.multiState = new Set();
+      document.getElementById("activityHost").innerHTML = `<div class="options">${a.options.map((o,i)=>`<button class="option" data-i="${i}">${esc(o)}</button>`).join("")}</div>`;
+      document.querySelectorAll(".option").forEach(b => b.onclick = () => {
+        const i = Number(b.dataset.i);
+        if (window.multiState.has(i)) window.multiState.delete(i); else window.multiState.add(i);
+        b.classList.toggle("selected");
+      });
+    }
+    function renderShort() {
+      document.getElementById("activityHost").innerHTML = `<textarea id="shortAnswer" placeholder="Write 1-3 clear sentences for the J-2 brief."></textarea>`;
+    }
+    function renderSequence(a) {
+      window.seqState = [];
+      const shuffled = a.items.map((x,i)=>({x,i})).sort((u,v)=>u.x.localeCompare(v.x));
+      document.getElementById("activityHost").innerHTML = `<div class="sequence-slots">${a.items.map((_,i)=>`<div class="slot" id="slot${i}">${i+1}</div>`).join("")}</div><div class="options">${shuffled.map(o=>`<button class="seq-item" data-i="${o.i}">${esc(o.x)}</button>`).join("")}</div>`;
+      document.querySelectorAll(".seq-item").forEach(b => b.onclick = () => {
+        const i = Number(b.dataset.i);
+        if (window.seqState.includes(i)) return;
+        const slot = window.seqState.length;
+        window.seqState.push(i);
+        document.getElementById(`slot${slot}`).textContent = b.textContent;
+        b.classList.add("selected");
+      });
+    }
+    function emSvg() {
+      return `<svg viewBox="0 0 700 360" role="img"><rect width="700" height="360" fill="#10233b"/><line x1="0" y1="300" x2="700" y2="300" stroke="#5c6e2f" stroke-width="7"/><rect x="40" y="185" width="20" height="115" fill="#a0b265"/><circle cx="50" cy="175" r="22" fill="none" stroke="#f5f1e8" stroke-width="4"/><text x="20" y="330" fill="#f5f1e8" font-size="18">Donovian Radar</text><polygon points="220,300 340,78 465,300" fill="#4f5f35" stroke="#a0b265" stroke-width="4"/><text x="286" y="330" fill="#f5f1e8" font-size="18">1500m Mountain</text><circle class="hotspot" data-id="A" cx="575" cy="255" r="26"/><text x="562" y="260" fill="#f5f1e8" font-size="24">A</text><circle class="hotspot" data-id="B" cx="520" cy="120" r="26"/><text x="507" y="126" fill="#f5f1e8" font-size="24">B</text><circle class="hotspot" data-id="C" cx="635" cy="282" r="26"/><text x="622" y="288" fill="#f5f1e8" font-size="24">C</text><path d="M62 175 L520 120" stroke="#a0b265" stroke-width="3" stroke-dasharray="8 8"/></svg>`;
+    }
+    function irSvg() {
+      return `<svg viewBox="0 0 700 360" role="img"><rect width="700" height="360" fill="#10233b"/><text x="32" y="35" fill="#a0b265" font-size="24" font-family="monospace">IR SIGNATURE HUNT</text><rect x="70" y="105" width="90" height="45" fill="#5c6e2f"/><circle class="hotspot" data-id="tank" cx="115" cy="128" r="38"/><text x="82" y="185" fill="#f5f1e8">Tank</text><rect x="230" y="100" width="90" height="60" fill="#777"/><circle class="hotspot" data-id="bunker" cx="275" cy="130" r="38"/><text x="235" y="190" fill="#f5f1e8">Bunker</text><line x1="420" y1="120" x2="500" y2="100" stroke="#b22222" stroke-width="12"/><circle class="hotspot" data-id="tube" cx="460" cy="110" r="38"/><text x="408" y="170" fill="#f5f1e8">Fired tube</text><polygon points="105,250 155,225 205,250 155,275" fill="#f5f1e8"/><circle class="hotspot" data-id="helo" cx="155" cy="250" r="40"/><text x="112" y="315" fill="#f5f1e8">Helicopter</text><rect x="270" y="230" width="85" height="50" fill="#38502b"/><circle class="hotspot" data-id="net" cx="312" cy="255" r="35"/><text x="270" y="315" fill="#f5f1e8">Cam Net</text><circle cx="455" cy="250" r="18" fill="#b22222"/><circle class="hotspot" data-id="fire" cx="455" cy="250" r="36"/><text x="424" y="315" fill="#f5f1e8">Campfire</text><rect x="555" y="100" width="80" height="50" fill="#888"/><circle class="hotspot" data-id="box" cx="595" cy="125" r="35"/><text x="548" y="180" fill="#f5f1e8">Container</text><rect x="560" y="235" width="80" height="38" fill="#5c6e2f"/><circle class="hotspot" data-id="decoy" cx="600" cy="254" r="35"/><text x="568" y="315" fill="#f5f1e8">Decoy</text></svg>`;
+    }
+    function renderHotspot(a) {
+      window.hotState = new Set();
+      document.getElementById("activityHost").innerHTML = `<div class="svg-wrap">${a.map === "em" ? emSvg() : irSvg()}</div>`;
+      document.querySelectorAll(".hotspot").forEach(el => el.onclick = () => {
+        const id = el.dataset.id;
+        if (window.hotState.has(id)) window.hotState.delete(id); else window.hotState.add(id);
+        el.classList.toggle("selected");
+      });
+    }
+    function renderClassification(a) {
+      window.classState = {};
+      document.getElementById("activityHost").innerHTML = `<div class="class-list">${a.scenarios.map((s,i)=>`<div class="class-row"><strong>${esc(s.text)}</strong><div class="class-options">${a.categories.map((c,j)=>`<button class="class-choice" data-row="${i}" data-cat="${j}">${esc(c)}</button>`).join("")}</div></div>`).join("")}</div>`;
+      document.querySelectorAll(".class-choice").forEach(b => b.onclick = () => {
+        const row = Number(b.dataset.row);
+        state.currentResult = null;
+        window.classState[row] = Number(b.dataset.cat);
+        document.querySelectorAll(`.class-choice[data-row="${row}"]`).forEach(x=>x.classList.remove("selected"));
+        b.classList.add("selected");
+      });
+    }
+    function submitActivity(a) {
+      stopTimer();
+      let earned = 0;
+      let summary = "";
+      if (a.type === "CLICK_TO_MATCH") {
+        const total = a.correctMap.length;
+        let correct = 0;
+        a.correctMap.forEach((cat,i)=>{ if (window.matchState.map[i] === cat) correct++; });
+        earned = a.points * correct / total;
+        summary = `${correct} of ${total} matches correct.`;
+      }
+      if (a.type === "MULTI_SELECT") {
+        const selected = [...window.multiState];
+        const correct = a.correct;
+        const good = selected.filter(i=>correct.includes(i)).length;
+        const bad = selected.filter(i=>!correct.includes(i)).length;
+        earned = Math.max(0, a.points * ((good - bad * .5) / correct.length));
+        summary = `${good} correct selections, ${bad} incorrect selections.`;
+      }
+      if (a.type === "SHORT_ANSWER_KEYWORD") {
+        const text = document.getElementById("shortAnswer").value.trim();
+        const hits = a.keywordSets.filter(set => set.some(k => text.toLowerCase().includes(k.toLowerCase()))).length;
+        earned = a.points * hits / a.keywordSets.length;
+        summary = `${hits} of ${a.keywordSets.length} required concept groups found.`;
+        state.currentResult = { text: text || a.fallback };
+      }
+      if (a.type === "SEQUENCE_PUZZLE") {
+        const ok = a.correctOrder.every((v,i)=>window.seqState[i] === v);
+        earned = ok ? a.points : 0;
+        summary = ok ? "Sequence correct." : "Sequence needs review.";
+      }
+      if (a.type === "HOT_SPOT_MAP") {
+        const goodIds = a.spots.filter(s=>s.correct).map(s=>s.id);
+        const selected = [...window.hotState];
+        const good = selected.filter(id=>goodIds.includes(id)).length;
+        const bad = selected.filter(id=>!goodIds.includes(id)).length;
+        earned = Math.max(0, a.points * ((good - bad * .5) / goodIds.length));
+        summary = `${good} correct hot spots, ${bad} incorrect hot spots.`;
+      }
+      if (a.type === "SCENARIO_CLASSIFICATION") {
+        let correct = 0;
+        a.scenarios.forEach((s,i)=>{ if (window.classState[i] === s.correct) correct++; });
+        earned = a.points * correct / a.scenarios.length;
+        summary = `${correct} of ${a.scenarios.length} scenarios classified correctly.`;
+      }
+      addScore(earned);
+      document.getElementById("feedback").classList.remove("hidden");
+      document.getElementById("feedback").innerHTML = `<h3>Activity Feedback</h3><p>${esc(summary)}</p><p>Points earned: ${Math.round(earned)} / ${a.points}</p>`;
+      document.getElementById("submitActivityBtn").classList.add("hidden");
+      document.getElementById("nextActivityBtn").classList.remove("hidden");
+    }
+    function nextAfterActivity() {
+      if (state.activityKey === "A") return renderActivity("B");
+      if (state.activityKey === "B") return renderActivity("C");
+      lockBriefContribution();
+    }
+    function lockBriefContribution() {
+      const p = currentPhase();
+      const a = p.activityC;
+      let content = state.skipped[p.briefSection] ? "[CONTRIBUTION NOT MADE - SKIPPED]" : p.lockText;
+      if (!state.skipped[p.briefSection] && a.type === "SHORT_ANSWER_KEYWORD" && state.currentResult && state.currentResult.text) content = state.currentResult.text;
+      state.brief[p.briefSection] = content;
+      render(`
+        <div class="kicker">Brief Lock-In</div>
+        <h2>${esc(p.briefSection)}</h2>
+        <div class="panel"><p>${esc(content)}</p></div>
+        <div class="button-row"><button id="nextPhaseBtn">${state.phaseIndex === PHASES.length - 1 ? "Begin Capstone" : "Next Phase"}</button></div>
+      `);
+      document.getElementById("nextPhaseBtn").onclick = () => {
+        state.phaseIndex++;
+        if (state.phaseIndex >= PHASES.length) renderCapstoneReview();
+        else renderIntelUpdate();
+      };
+    }
+    function skipActivity() {
+      if (!["A","B","C"].includes(state.activityKey)) return;
+      stopTimer();
+      if (state.activityKey === "C") {
+        const p = currentPhase();
+        state.skipped[p.briefSection] = true;
+        state.brief[p.briefSection] = "[CONTRIBUTION NOT MADE - SKIPPED]";
+        return lockBriefContribution();
+      }
+      nextAfterActivity();
+    }
+    function skipPhase() {
+      const p = currentPhase();
+      state.skipped[p.briefSection] = true;
+      state.brief[p.briefSection] = "[CONTRIBUTION NOT MADE - SKIPPED]";
+      state.phaseIndex++;
+      if (state.phaseIndex >= PHASES.length) renderCapstoneReview();
+      else renderIntelUpdate();
+    }
+    function restartPhase() { renderIntelUpdate(); }
+    function renderCapstoneReview() {
+      headTitle.textContent = "Capstone // Review the J-2 Brief";
+      render(`
+        <div class="kicker">Capstone Stage 1</div>
+        <h2>Review and Edit the Brief</h2>
+        <p>Edits do not change score. They improve the product you hand to the instructor.</p>
+        ${BRIEF_SECTIONS.map(sec=>`<label>${esc(sec)}</label><textarea data-section="${esc(sec)}">${esc(state.brief[sec] || "[CONTRIBUTION NOT MADE - SKIPPED]")}</textarea>`).join("")}
+        <div class="button-row"><button id="saveEditsBtn">Continue to MLCOA</button></div>
+      `);
+      document.getElementById("saveEditsBtn").onclick = () => {
+        document.querySelectorAll("textarea[data-section]").forEach(t => state.brief[t.dataset.section] = t.value.trim());
+        renderCapstoneMlcoa();
+      };
+    }
+    function renderCapstoneMlcoa() {
+      state.activityKey = "capstone";
+      const a = CAPSTONE.mlcoa;
+      render(`
+        <div class="kicker">Capstone Stage 2</div><h2>Most Likely Course of Action</h2>
+        <p>${esc(a.prompt)}</p>
+        <div class="options">${a.options.map((o,i)=>`<button class="option" data-i="${i}">${esc(o)}</button>`).join("")}</div>
+        <label>What one indicator would change your assessment?</label><textarea id="indicator"></textarea>
+        <div class="button-row"><button id="mlcoaSubmit">Submit MLCOA</button></div>
+      `);
+      const selected = new Set();
+      document.querySelectorAll(".option").forEach(b=>b.onclick=()=>{ const i=Number(b.dataset.i); selected.has(i)?selected.delete(i):selected.add(i); b.classList.toggle("selected"); });
+      document.getElementById("mlcoaSubmit").onclick = () => {
+        state.capstone.mlcoa = [...selected];
+        state.capstone.indicator = document.getElementById("indicator").value.trim();
+        scoreSet(selected, a.correct, a.points);
+        renderCapstoneMdcoa();
+      };
+    }
+    function renderCapstoneMdcoa() {
+      const a = CAPSTONE.mdcoa;
+      render(`
+        <div class="kicker">Capstone Stage 3</div><h2>Most Dangerous Course of Action</h2>
+        <p>${esc(a.prompt)}</p>
+        <div class="options">${a.options.map((o,i)=>`<button class="option" data-i="${i}">${esc(o)}</button>`).join("")}</div>
+        <div class="button-row"><button id="mdcoaSubmit">Submit MDCOA</button></div>
+      `);
+      const selected = new Set();
+      document.querySelectorAll(".option").forEach(b=>b.onclick=()=>{ const i=Number(b.dataset.i); selected.has(i)?selected.delete(i):selected.add(i); b.classList.toggle("selected"); });
+      document.getElementById("mdcoaSubmit").onclick = () => {
+        state.capstone.mdcoa = [...selected];
+        scoreSet(selected, a.correct, a.points);
+        renderSubmitBrief();
+      };
+    }
+    function scoreSet(selected, correct, points) {
+      const arr = [...selected];
+      const good = arr.filter(i=>correct.includes(i)).length;
+      const bad = arr.filter(i=>!correct.includes(i)).length;
+      addScore(Math.max(0, points * ((good - bad * .5) / correct.length)));
+    }
+    function renderSubmitBrief() {
+      render(`
+        <div class="kicker">Capstone Stage 4</div>
+        <h2>Submit Final Brief</h2>
+        <div class="panel"><pre style="white-space:pre-wrap">${esc(briefText())}</pre></div>
+        <p id="copyStatus" class="copy-status"></p>
+        <div class="button-row">
+          <button id="printBtn">Print Brief</button>
+          <button id="copyBtn">Copy Brief as Text</button>
+          <button id="finalBtn">Submit Final Brief</button>
+        </div>
+      `);
+      document.getElementById("printBtn").onclick = () => window.print();
+      document.getElementById("copyBtn").onclick = async () => {
+        try { await navigator.clipboard.writeText(briefText()); document.getElementById("copyStatus").textContent = "Brief copied."; }
+        catch { document.getElementById("copyStatus").textContent = "Clipboard blocked. Select the text above and copy it manually."; }
+      };
+      document.getElementById("finalBtn").onclick = renderResults;
+    }
+    function briefText() {
+      const lines = [];
+      lines.push("=========================================================");
+      lines.push("JTF CORAL SHIELD - J-2 INTELLIGENCE BRIEF");
+      lines.push(`TEAM: ${state.team || "Not Assigned"}    DATE: ${new Date().toLocaleDateString()}`);
+      lines.push("=========================================================");
+      BRIEF_SECTIONS.forEach(sec => { lines.push("", sec, "-".repeat(sec.length), state.brief[sec] || "[CONTRIBUTION NOT MADE - SKIPPED]"); });
+      lines.push("", "ASSESSMENT - MOST LIKELY COURSE OF ACTION", "-----------------------------------------");
+      lines.push(state.capstone.mlcoa.map(i=>CAPSTONE.mlcoa.options[i]).join("; ") || "Not submitted");
+      lines.push(`Indicator that would change assessment: ${state.capstone.indicator || "Not stated"}`);
+      lines.push("", "ASSESSMENT - MOST DANGEROUS COURSE OF ACTION", "--------------------------------------------");
+      lines.push(state.capstone.mdcoa.map(i=>CAPSTONE.mdcoa.options[i]).join("; ") || "Not submitted");
+      lines.push("", `FINAL SCORE: ${state.score} / ${totalPossible()}`, `ASSESSED: ${scoreTitle()}`);
+      return lines.join("\n");
+    }
+    function totalPossible() {
+      const phaseTotal = PHASES.reduce((sum,p)=>sum+p.activityA.points+p.activityB.points+p.activityC.points,0);
+      return phaseTotal + CAPSTONE.mlcoa.points + CAPSTONE.mdcoa.points;
+    }
+    function scoreTitle() {
+      const pct = state.score / totalPossible();
+      if (pct >= .9) return "JFC TRUSTED ADVISOR";
+      if (pct >= .7) return "ASSESSED COMPETENT";
+      if (pct >= .5) return "REQUIRES ADDITIONAL TRAINING";
+      return "RECOMMEND REMEDIAL REVIEW WITH INSTRUCTOR";
+    }
+    function renderResults() {
+      localStorage.removeItem("donovianHorizonSave");
+      render(`
+        <div class="kicker">Final Results</div>
+        <h2>${esc(state.team)}</h2>
+        <div class="result-score">${state.score}</div>
+        <div class="panel"><h3>${scoreTitle()}</h3><p>Total possible: ${totalPossible()}</p><p>Write your team name and final score on the leaderboard. Hand your brief to the instructor.</p></div>
+        <div class="button-row"><button id="restartBtn">Restart Exercise</button></div>
+      `);
+      document.getElementById("restartBtn").onclick = resetAll;
+    }
+    function resetAll() {
+      Object.assign(state, { team:"", screen:"intro", phaseIndex:0, activityKey:"intro", score:0, brief:Object.fromEntries(BRIEF_SECTIONS.map(s=>[s,""])), skipped:{}, timerSeconds:0, paused:false, currentResult:null, capstone:{mlcoa:[], mdcoa:[], indicator:""} });
+      renderIntro();
+    }
+    document.getElementById("menuBtn").onclick = () => menu.classList.toggle("hidden");
+    document.getElementById("pauseBtn").onclick = () => { state.paused = true; pauseOverlay.classList.remove("hidden"); menu.classList.add("hidden"); };
+    document.getElementById("resumePauseBtn").onclick = () => { state.paused = false; pauseOverlay.classList.add("hidden"); };
+    document.getElementById("skipActivityBtn").onclick = skipActivity;
+    document.getElementById("skipPhaseBtn").onclick = () => { if (confirm("Skip this phase? Its brief section will be marked skipped.")) skipPhase(); };
+    document.getElementById("restartPhaseBtn").onclick = () => { if (confirm("Restart current phase? Current phase work will be reset.")) restartPhase(); };
+    document.getElementById("quitBtn").onclick = () => { if (confirm("Quit to intro and lose current progress?")) resetAll(); };
+    document.getElementById("toggleLockBtn").onclick = () => { state.instructorLock = !state.instructorLock; updateChrome(); };
+    document.getElementById("saveBtn").onclick = () => { localStorage.setItem("donovianHorizonSave", JSON.stringify(state)); menu.classList.add("hidden"); };
+    document.getElementById("resumeBtn").onclick = () => {
+      const saved = localStorage.getItem("donovianHorizonSave");
+      if (!saved) return alert("No saved progress found.");
+      Object.assign(state, JSON.parse(saved));
+      if (state.phaseIndex >= PHASES.length) renderCapstoneReview(); else if (state.activityKey === "A" || state.activityKey === "B" || state.activityKey === "C") renderActivity(state.activityKey); else renderIntelUpdate();
+    };
+    renderIntro();
+  </script>
+</body>
+</html>
