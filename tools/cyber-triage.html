@@ -286,6 +286,7 @@ body{
   <div class="prog-wrap">
     <div class="prog-meta">
       <span id="prog-label"></span>
+      <span id="prog-timer"></span>
       <span id="prog-score"></span>
     </div>
     <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
@@ -344,15 +345,19 @@ const LANG = {
     home:'Home',
     points:'pts',
     loading:'Building the next incident...',
+    timer:'Mission clock',
     continue:'Continue →',
     nextIncident:'Next Incident →',
     viewResults:'View Results →',
     restart:'↩ Restart Triage',
     correct:'✓ Correct',
     incorrect:'✗ Incorrect',
-    step1:'Step 1 of 3 — Threat Classification',
-    step2:'Step 2 of 3 — Kill Chain Stage',
-    step3:'Step 3 of 3 — Actor Attribution',
+    stepLayer:'Decision 1 of 6 — Cyberspace Layer',
+    stepAttack:'Decision 2 of 6 — Attack Type',
+    step1:'Decision 3 of 6 — Threat Lane',
+    step2:'Decision 4 of 6 — Kill Chain Stage',
+    step3:'Decision 5 of 6 — Actor Attribution',
+    stepIntel:'Decision 6 of 6 — Intelligence Move',
     placeKC:'Place the highlighted indicator on the correct Kill Chain stage:',
     evidence:'EVIDENCE',
     outstanding:'Outstanding Analysis',outstanding_sub:'Excellent triage across all incidents.',
@@ -376,6 +381,25 @@ const LANG = {
       crim:{name:'Cybercriminal',mot:'Financial gain · Ransomware · Data for sale · Criminal forums'},
       hack:{name:'Hacktivist',mot:'Ideological messaging · Public claims · Website defacement'},
       ins:{name:'Insider Threat',mot:'Authorized access abused · Internal employee or contractor'},
+    },
+    layers:{
+      physical:{name:'Physical Network',mot:'Hardware, cables, servers, satellites, devices'},
+      logical:{name:'Logical Network',mot:'Software, protocols, data flows, malware paths'},
+      persona:{name:'Cyber-Persona',mot:'Accounts, users, roles, identities, trust relationships'},
+    },
+    attacks:{
+      malware:{name:'Malware',mot:'Harmful software that damages, disrupts, or gains access'},
+      phishing:{name:'Phishing',mot:'Deceptive message or lure used to harvest access'},
+      ransomware:{name:'Ransomware',mot:'Malware that encrypts systems or data for payment'},
+      ddos:{name:'DoS/DDoS',mot:'Floods a service until it becomes unavailable'},
+      mitm:{name:'MitM',mot:'Intercepts or alters traffic between two parties'},
+      social:{name:'Social Engineering',mot:'Manipulates people into granting access or taking action'},
+    },
+    intelMoves:{
+      warn:{name:'Warn the customer',mot:'Issue timely warning or force-protection guidance'},
+      collect:{name:'Write a collection requirement',mot:'Turn the commander question into taskable collection'},
+      share:{name:'Share indicators',mot:'Disseminate IOCs/TTPs to partners at the right level'},
+      assess:{name:'Assess damage and confidence',mot:'State what changed, what is known, and confidence'},
     },
     kc:['Reconnaissance','Weaponization','Delivery','Exploitation','Installation','C2','Actions on Objectives'],
     kcSub:['Target research','Build exploit','Transmit to target','Trigger exploit','Establish foothold','Malware phones home','Execute final goal'],
@@ -669,6 +693,22 @@ const SCENARIOS = [
     id:'INCID-001', title:'Operation SILENT HARVEST',
     body:`A partner nation's Ministry of Defense discovers that classified personnel files have been copied to an unknown external server over the past <span class="hl">60 days</span>. Three senior officers received targeted emails posing as a conference invitation. One general's workstation was found to contain a <span class="hl">Remote Access Trojan (RAT)</span>. No ransom demand was made. No group claimed responsibility.`,
     questions:[
+      {
+        type:'layer',
+        step:'stepLayer',
+        text:'Start with the domain. Which cyberspace layer gives the attacker the best access clue in this report?',
+        answer:'persona',
+        fc:'Correct — <strong>Cyber-Persona Layer</strong>. The operation began by targeting senior officers through their digital identities and trusted roles. The RAT later operated in the logical layer, but the first access clue is persona-based targeting.',
+        fw:'Best answer: <strong>Cyber-Persona Layer</strong>. The officers, accounts, roles, and trust relationships are the key access clue. The malware later touches the logical layer.',
+      },
+      {
+        type:'attack',
+        step:'stepAttack',
+        text:'What attack type opened the door for the RAT?',
+        answer:'phishing',
+        fc:'Correct — <strong>Phishing</strong>. A targeted conference invitation is a classic spear-phishing lure. It is social engineering delivered through email.',
+        fw:'Best answer: <strong>Phishing</strong>. The conference invitation is the lure that delivered access. Social engineering is involved, but the specific attack type here is phishing.',
+      },
       { // Q1 Threat type
         type:'threat',
         step:'step1',
@@ -695,12 +735,36 @@ const SCENARIOS = [
         fc:'Correct — <strong>Nation-State / APT</strong>. Key indicators: no financial demand, no public claim, long stealthy operation, high-value intelligence target, sophisticated custom RAT. These are hallmarks of state-sponsored espionage.',
         fw:'Correct answer: <strong>Nation-State / APT</strong>. Cybercriminals demand payment. Hacktivists claim responsibility. A 60-day silent operation targeting classified data with no financial motive = state-sponsored intelligence collection.',
       },
+      {
+        type:'intel',
+        step:'stepIntel',
+        text:'You brief the J-2. What is the most useful next intelligence move?',
+        answer:'collect',
+        fc:'Correct — <strong>write a collection requirement</strong>. The commander needs to know who else was targeted, what data left the network, and whether allied ministries share the same indicators.',
+        fw:'Best answer: <strong>write a collection requirement</strong>. This is an intelligence problem now: who, what was taken, who else is exposed, and what collection can answer it?',
+      },
     ],
   },
   {
     id:'INCID-002', title:'Operation LOCKDOWN',
     body:`A regional bank's systems are suddenly <span class="hl">encrypted and completely inaccessible</span>. A message demands 80 Bitcoin within 48 hours. The day before, two employees opened email attachments disguised as vendor invoices. All customer transaction systems are halted. A post on a criminal forum later offers the bank's customer data for sale.`,
     questions:[
+      {
+        type:'layer',
+        step:'stepLayer',
+        text:'Which cyberspace layer is experiencing the main operational effect?',
+        answer:'logical',
+        fc:'Correct — <strong>Logical Network Layer</strong>. The software, data, and transaction systems are encrypted and unavailable. That logical effect creates operational consequences.',
+        fw:'Best answer: <strong>Logical Network Layer</strong>. The attack is affecting software, files, data flows, and transaction systems.',
+      },
+      {
+        type:'attack',
+        step:'stepAttack',
+        text:'Which attack type best describes the final visible effect?',
+        answer:'ransomware',
+        fc:'Correct — <strong>Ransomware</strong>. The systems are encrypted and payment is demanded. The vendor invoice emails were the delivery method.',
+        fw:'Best answer: <strong>Ransomware</strong>. Phishing likely delivered it, but the visible attack effect is encryption for payment.',
+      },
       {
         type:'threat',
         step:'step1',
@@ -727,12 +791,36 @@ const SCENARIOS = [
         fc:'Correct — <strong>Cybercriminal</strong>. Clear financial motivation: ransom + data for sale. No political messaging. Ransomware is the signature tool of criminal organizations. Nation-states rarely issue public ransom demands — it exposes their operations.',
         fw:'Correct answer: <strong>Cybercriminal</strong>. The ransom demand and criminal forum sale are unmistakable financial motives. Nation-states operate quietly. Hacktivists seek publicity, not money.',
       },
+      {
+        type:'intel',
+        step:'stepIntel',
+        text:'What should the first intelligence product emphasize?',
+        answer:'assess',
+        fc:'Correct — <strong>damage and confidence assessment</strong>. Leaders need what systems are down, what data may be exposed, and how confident you are before they decide response options.',
+        fw:'Best answer: <strong>assess damage and confidence</strong>. The immediate commander question is impact: what is down, what was stolen, and what do we know with confidence?',
+      },
     ],
   },
   {
     id:'INCID-003', title:'Operation FREE VOICE',
     body:`A coalition military HQ website is <span class="hl">flooded with traffic</span> and taken offline. Hours later it is defaced with protest messages opposing coalition operations. A group calling itself <span class="hl">"Free Voice"</span> posts screenshots on social media claiming full responsibility. Analysis shows the attack used a network of thousands of compromised devices worldwide.`,
     questions:[
+      {
+        type:'layer',
+        step:'stepLayer',
+        text:'Which layer does the public messaging and claimed identity mostly exploit?',
+        answer:'persona',
+        fc:'Correct — <strong>Cyber-Persona Layer</strong>. The group name, public claim, social posts, and audience effects all operate through digital identities and perception.',
+        fw:'Best answer: <strong>Cyber-Persona Layer</strong>. The traffic flood touches infrastructure, but the claim and influence effect are persona/perception driven.',
+      },
+      {
+        type:'attack',
+        step:'stepAttack',
+        text:'Which attack type took the site offline?',
+        answer:'ddos',
+        fc:'Correct — <strong>DoS/DDoS</strong>. The website was flooded with traffic from thousands of compromised devices, which is distributed denial of service.',
+        fw:'Best answer: <strong>DoS/DDoS</strong>. Thousands of devices flooding the website is distributed denial of service.',
+      },
       {
         type:'threat',
         step:'step1',
@@ -759,6 +847,14 @@ const SCENARIOS = [
         fc:'Correct — <strong>Hacktivist</strong>. Public claim, ideological messaging, and defacement are classic hacktivist signatures. Their goal is attention, not money or data. Intelligence note: analysts must assess whether groups like "Free Voice" are independent or state-directed — the line is often deliberately blurred.',
         fw:'Correct answer: <strong>Hacktivist</strong>. Public claim of responsibility (nations and criminals avoid this), ideological messaging, and DDoS + defacement = hacktivist toolkit.',
       },
+      {
+        type:'intel',
+        step:'stepIntel',
+        text:'What is the strongest intelligence move before leadership responds publicly?',
+        answer:'warn',
+        fc:'Correct — <strong>warn the customer</strong>. Coalition leaders need a fast warning on likely follow-on targeting, influence amplification, and website/brand protection.',
+        fw:'Best answer: <strong>warn the customer</strong>. This is public, fast-moving, and influence-heavy. Leadership needs timely warning before follow-on activity spreads.',
+      },
     ],
   },
 ];
@@ -782,7 +878,7 @@ const SCENARIO_TRANSLATIONS = {
     {title:'Operasi TERKUNCI',body:`Sistem bank regional tiba-tiba <span class="hl">terenkripsi dan tidak dapat diakses</span>. Pesan meminta 80 Bitcoin dalam 48 jam. Sehari sebelumnya dua pegawai membuka lampiran email yang menyamar sebagai faktur vendor. Sistem transaksi berhenti dan data nasabah dijual di forum kriminal.`,questions:[{text:'Infrastruktur operasional bank terenkripsi dan lumpuh. Bagaimana ancaman ini diklasifikasikan?'},{evidenceText:'Ransomware berjalan, mengenkripsi semua file, dan menampilkan permintaan tebusan di setiap layar.',text:'Tahap Kill Chain mana ini?'},{text:'Tebusan Bitcoin. Penjualan data di forum kriminal. Bank sebagai target. Aktor mana yang paling cocok?'}]},
     {title:'Operasi SUARA BEBAS',body:`Situs markas militer koalisi <span class="hl">dibanjiri lalu lintas</span> dan offline. Beberapa jam kemudian situs dirusak dengan pesan protes. Kelompok <span class="hl">"Free Voice"</span> mengunggah tangkapan layar dan mengaku bertanggung jawab. Serangan memakai ribuan perangkat yang dikompromikan.`,questions:[{text:'Tujuannya mengganggu situs dan menyebarkan pesan politik. Bagaimana ancaman ini diklasifikasikan?'},{evidenceText:'Sebelum serangan, kelompok menginfeksi ribuan perangkat dan menyusunnya menjadi botnet terkoordinasi.',text:'Tahap Kill Chain mana yang diwakili pembuatan botnet?'},{text:'Klaim publik. Pesan politik. Defacement. DDoS. Kategori aktor mana yang sesuai?'}]},
   ],
-  fil:[
+  tl:[
     {title:'Operasyon TAHIMIK NA ANI',body:`Natuklasan ng Ministry of Defense ng partner nation na nakopya ang classified personnel files sa hindi kilalang external server sa loob ng <span class="hl">60 araw</span>. Tatlong senior officer ang nakatanggap ng targeted email na mukhang conference invitation. May <span class="hl">Remote Access Trojan (RAT)</span> sa workstation ng isang heneral. Walang ransom at walang umako.`,questions:[{text:'Tahimik na pagkuha ng classified personnel files ang target. Paano mo ito ikakategorya?'},{evidenceText:'Tatlong senior officer ang nakatanggap ng targeted email na mukhang imbitasyon sa military conference.',text:'Anong yugto ng Kill Chain ang aksyong ito?'},{text:'Walang ransom. Walang public claim. 60 araw na tahimik na operasyon. Classified data ang ninakaw. Sino ang malamang na aktor?'}]},
     {title:'Operasyon LOCKDOWN',body:`Biglang <span class="hl">na-encrypt at hindi ma-access</span> ang mga sistema ng regional bank. Humihingi ang mensahe ng 80 Bitcoin sa loob ng 48 oras. Noong nakaraang araw, nagbukas ang dalawang empleyado ng attachment na mukhang vendor invoice. Tumigil ang transaction systems at inalok ang customer data sa criminal forum.`,questions:[{text:'Na-encrypt at napahinto ang operational infrastructure ng bangko. Paano ito ikakategorya?'},{evidenceText:'Tumakbo na ang ransomware, na-encrypt ang files, at lumabas ang ransom demand sa bawat screen.',text:'Anong yugto ng Kill Chain ito?'},{text:'Bitcoin ransom. Data sale sa criminal forum. Bangko ang target. Aling actor category ang tugma?'}]},
     {title:'Operasyon FREE VOICE',body:`Ang website ng coalition military HQ ay <span class="hl">binaha ng traffic</span> at nag-offline. Pagkalipas ng ilang oras, na-deface ito ng protest messages. Ang grupong <span class="hl">"Free Voice"</span> ay nag-post ng screenshots at umako. Gumamit ang attack ng libu-libong compromised devices.`,questions:[{text:'Layunin nitong guluhin ang website at ipakalat ang political message. Paano ito ikakategorya?'},{evidenceText:'Bago ang attack, tahimik na in-infect ng grupo ang libu-libong device at ginawang coordinated botnet.',text:'Anong yugto ng Kill Chain ang pagbuo ng botnet?'},{text:'Public claim. Political messaging. Website defacement. DDoS. Aling actor category ito?'}]},
@@ -813,11 +909,20 @@ function getScenarioCopy(index){
   const base = SCENARIOS[index];
   const localized = (SCENARIO_TRANSLATIONS[selectedLang] || [])[index];
   if(!localized) return base;
+  const localizedQuestions = localized.questions || [];
+  const mappedQuestions = base.questions.map((q,i)=>{
+    if(localizedQuestions.length === 3 && base.questions.length > 3){
+      const legacyTypes = ['threat','killchain','actor'];
+      const legacyIndex = legacyTypes.indexOf(q.type);
+      return {...q,...(legacyIndex >= 0 ? localizedQuestions[legacyIndex] : {})};
+    }
+    return {...q,...(localizedQuestions[i] || {})};
+  });
   return {
     ...base,
     title: localized.title || base.title,
     body: localized.body || base.body,
-    questions: base.questions.map((q,i)=>({...q,...((localized.questions || [])[i] || {})})),
+    questions: mappedQuestions,
   };
 }
 
@@ -826,6 +931,7 @@ let L = LANG.en;
 let scenarioIdx = 0, questionIdx = 0, score = 0, answered = false;
 let results = [];
 let typeTimer = null;
+let missionTimer = null, missionStartedAt = null;
 
 // ════════════════════════════════════════════════════
 //  INIT
@@ -881,14 +987,37 @@ function ui(key){
   return L[key] || LANG.en[key] || fallback[key] || key;
 }
 
+function vocab(group, key){
+  return (L[group] && L[group][key]) || LANG.en[group][key];
+}
+
 // ════════════════════════════════════════════════════
 //  GAME START / SCENARIO LOAD
 // ════════════════════════════════════════════════════
 function startSim(){
   scenarioIdx=0; questionIdx=0; score=0; results=[];
   show('screen-game');
+  startMissionClock();
   updateScorePill();
   loadScenario();
+}
+
+function startMissionClock(){
+  missionStartedAt = Date.now();
+  clearInterval(missionTimer);
+  updateMissionClock();
+  missionTimer = setInterval(updateMissionClock, 1000);
+}
+
+function updateMissionClock(){
+  const el = document.getElementById('prog-timer');
+  if(!el || !missionStartedAt) return;
+  const limit = 10 * 60;
+  const elapsed = Math.floor((Date.now() - missionStartedAt) / 1000);
+  const remaining = Math.max(0, limit - elapsed);
+  const mm = String(Math.floor(remaining / 60)).padStart(2,'0');
+  const ss = String(remaining % 60).padStart(2,'0');
+  el.textContent = `${ui('timer')}: ${mm}:${ss}`;
 }
 
 function loadScenario(){
@@ -947,7 +1076,7 @@ function loadQuestion(){
   const q = sc.questions[questionIdx];
   answered = false;
   updateProgress();
-  document.getElementById('q-step').textContent = L[q.step];
+  document.getElementById('q-step').textContent = ui(q.step);
   document.getElementById('q-text').textContent = q.text;
   document.getElementById('feedback').style.display='none';
   document.getElementById('feedback').className='feedback';
@@ -956,12 +1085,58 @@ function loadQuestion(){
   const area = document.getElementById('q-area');
   area.innerHTML = '';
 
-  if(q.type==='threat') renderThreat(area,q);
+  if(q.type==='layer') renderLayer(area,q);
+  else if(q.type==='attack') renderAttack(area,q);
+  else if(q.type==='threat') renderThreat(area,q);
   else if(q.type==='killchain') renderKillchain(area,q);
   else if(q.type==='actor') renderActor(area,q);
+  else if(q.type==='intel') renderIntel(area,q);
 
   // scroll question card into view
   setTimeout(()=>document.getElementById('q-card').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+// ── CYBERSPACE LAYER ──
+function renderLayer(area,q){
+  const grid = document.createElement('div');
+  grid.className='actor-grid';
+  const defs = [
+    {key:'physical',icon:'🛰️'},
+    {key:'logical',icon:'🧬'},
+    {key:'persona',icon:'👤'},
+  ];
+  defs.forEach(({key,icon})=>{
+    const item = vocab('layers', key);
+    const c = document.createElement('div');
+    c.className='actor-card';
+    c.innerHTML=`<div class="ac-icon">${icon}</div><div><div class="ac-name">${item.name}</div><div class="ac-mot">${item.mot}</div></div>`;
+    c.onclick=()=>selectKeyAnswer(key,q,c,grid,'layers');
+    grid.appendChild(c);
+  });
+  area.appendChild(grid);
+}
+
+// ── ATTACK TYPE ──
+function renderAttack(area,q){
+  const grid = document.createElement('div');
+  grid.className='actor-grid';
+  const defs = [
+    {key:'malware',icon:'🧫'},
+    {key:'phishing',icon:'🎣'},
+    {key:'ransomware',icon:'🔒'},
+    {key:'ddos',icon:'🌊'},
+    {key:'mitm',icon:'🕵️'},
+    {key:'social',icon:'🗣️'},
+  ];
+  defs.forEach(({key,icon})=>{
+    const item = vocab('attacks', key);
+    const c = document.createElement('div');
+    c.className='actor-card';
+    c.innerHTML=`<div class="ac-icon">${icon}</div><div><div class="ac-name">${item.name}</div><div class="ac-mot">${item.mot}</div></div>`;
+    c.onclick=()=>selectKeyAnswer(key,q,c,grid,'attacks');
+    grid.appendChild(c);
+  });
+  area.appendChild(grid);
 }
 
 // ── THREAT CLASSIFICATION ──
@@ -977,6 +1152,27 @@ function renderThreat(area,q){
     c.className='threat-card';
     c.innerHTML=`<div class="tc-icon">${item.icon}</div><div class="tc-name">${item.name}</div><div class="tc-sub">${item.sub}</div>`;
     c.onclick=()=>selectAnswer(i,q,c,grid);
+    grid.appendChild(c);
+  });
+  area.appendChild(grid);
+}
+
+// ── INTELLIGENCE MOVE ──
+function renderIntel(area,q){
+  const grid = document.createElement('div');
+  grid.className='actor-grid';
+  const defs = [
+    {key:'warn',icon:'⚑'},
+    {key:'collect',icon:'⌕'},
+    {key:'share',icon:'⇄'},
+    {key:'assess',icon:'◉'},
+  ];
+  defs.forEach(({key,icon})=>{
+    const item = vocab('intelMoves', key);
+    const c = document.createElement('div');
+    c.className='actor-card';
+    c.innerHTML=`<div class="ac-icon">${icon}</div><div><div class="ac-name">${item.name}</div><div class="ac-mot">${item.mot}</div></div>`;
+    c.onclick=()=>selectKeyAnswer(key,q,c,grid,'intelMoves');
     grid.appendChild(c);
   });
   area.appendChild(grid);
@@ -1034,6 +1230,23 @@ function renderActor(area,q){
 // ════════════════════════════════════════════════════
 //  ANSWER SELECTION
 // ════════════════════════════════════════════════════
+function selectKeyAnswer(key,q,clickedCard,grid,group){
+  if(answered) return;
+  answered = true;
+  const isCorrect = key===q.answer;
+  if(isCorrect) score++;
+  const keys = Object.keys(LANG.en[group]);
+  Array.from(grid.children).forEach((c,i)=>{
+    const k = keys[i];
+    c.classList.add('disabled');
+    if(k===q.answer) c.classList.add('correct');
+    else if(k===key && !isCorrect) c.classList.add('incorrect');
+    else c.classList.add('dimmed');
+  });
+  recordResult(q,isCorrect, vocab(group,key).name, vocab(group,q.answer).name);
+  showFeedback(isCorrect,q);
+}
+
 function selectAnswer(idx,q,clickedEl,container){
   if(answered) return;
   answered = true;
@@ -1082,7 +1295,7 @@ function selectActorAnswer(key,q,clickedCard,grid){
 }
 
 function recordResult(q,isCorrect,selectedText,correctText){
-  results[scenarioIdx].qs.push({step:L[q.step], correct:isCorrect, sel:selectedText, cor:correctText});
+  results[scenarioIdx].qs.push({step:ui(q.step), correct:isCorrect, sel:selectedText, cor:correctText});
 }
 
 function showFeedback(isCorrect,q){
@@ -1131,6 +1344,7 @@ function updateScorePill(){
 
 function goHome(){
   clearInterval(typeTimer);
+  clearInterval(missionTimer);
   scenarioIdx=0; questionIdx=0; score=0; answered=false; results=[];
   clearQuestionCard();
   document.getElementById('inc-body').innerHTML = '';
@@ -1145,6 +1359,7 @@ function goHome(){
 // ════════════════════════════════════════════════════
 function showResults(){
   clearInterval(typeTimer);
+  clearInterval(missionTimer);
   const total = SCENARIOS.reduce((a,s)=>a+s.questions.length,0);
   const pct = Math.round(score/total*100);
   document.getElementById('res-score').textContent = score;
