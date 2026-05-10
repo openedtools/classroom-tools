@@ -624,11 +624,12 @@
       stopTimer();
       let earned = 0;
       let summary = "";
+      const maxPoints = activityPoints();
       if (a.type === "CLICK_TO_MATCH") {
         const total = a.correctMap.length;
         let correct = 0;
         a.correctMap.forEach((cat,i)=>{ if (window.matchState.map[i] === cat) correct++; });
-        earned = a.points * correct / total;
+        earned = maxPoints * correct / total;
         summary = `${correct} of ${total} matches correct.`;
       }
       if (a.type === "MULTI_SELECT") {
@@ -636,19 +637,19 @@
         const correct = a.correct;
         const good = selected.filter(i=>correct.includes(i)).length;
         const bad = selected.filter(i=>!correct.includes(i)).length;
-        earned = Math.max(0, a.points * ((good - bad * .5) / correct.length));
+        earned = Math.max(0, maxPoints * ((good - bad * .5) / correct.length));
         summary = `${good} correct selections, ${bad} incorrect selections.`;
       }
       if (a.type === "SHORT_ANSWER_KEYWORD") {
         const text = document.getElementById("shortAnswer").value.trim();
         const hits = a.keywordSets.filter(set => set.some(k => text.toLowerCase().includes(k.toLowerCase()))).length;
-        earned = a.points * hits / a.keywordSets.length;
+        earned = maxPoints * hits / a.keywordSets.length;
         summary = `${hits} of ${a.keywordSets.length} required concept groups found.`;
         state.currentResult = { text: text || a.fallback };
       }
       if (a.type === "SEQUENCE_PUZZLE") {
         const ok = a.correctOrder.every((v,i)=>window.seqState[i] === v);
-        earned = ok ? a.points : 0;
+        earned = ok ? maxPoints : 0;
         summary = ok ? "Sequence correct." : "Sequence needs review.";
       }
       if (a.type === "HOT_SPOT_MAP") {
@@ -656,18 +657,18 @@
         const selected = [...window.hotState];
         const good = selected.filter(id=>goodIds.includes(id)).length;
         const bad = selected.filter(id=>!goodIds.includes(id)).length;
-        earned = Math.max(0, a.points * ((good - bad * .5) / goodIds.length));
+        earned = Math.max(0, maxPoints * ((good - bad * .5) / goodIds.length));
         summary = `${good} correct hot spots, ${bad} incorrect hot spots.`;
       }
       if (a.type === "SCENARIO_CLASSIFICATION") {
         let correct = 0;
         a.scenarios.forEach((s,i)=>{ if (window.classState[i] === s.correct) correct++; });
-        earned = a.points * correct / a.scenarios.length;
+        earned = maxPoints * correct / a.scenarios.length;
         summary = `${correct} of ${a.scenarios.length} scenarios classified correctly.`;
       }
       addScore(earned);
       document.getElementById("feedback").classList.remove("hidden");
-      document.getElementById("feedback").innerHTML = `<h3>Activity Feedback</h3><p>${esc(summary)}</p><p>Points earned: ${Math.round(earned)} / ${a.points}</p>`;
+      document.getElementById("feedback").innerHTML = `<h3>Activity Feedback</h3><p>${esc(summary)}</p><p>Points earned: ${Math.round(earned)} / ${maxPoints}</p>`;
       document.getElementById("submitActivityBtn").classList.add("hidden");
       document.getElementById("nextActivityBtn").classList.remove("hidden");
     }
@@ -804,9 +805,10 @@
       return lines.join("\n");
     }
     function totalPossible() {
-      const phaseTotal = PHASES.reduce((sum,p)=>sum+p.activityA.points+p.activityB.points+p.activityC.points,0);
+      const phaseTotal = PHASES.length * 3 * activityPoints();
       return phaseTotal + CAPSTONE.mlcoa.points + CAPSTONE.mdcoa.points;
     }
+    function activityPoints() { return 20; }
     function scoreTitle() {
       const pct = state.score / totalPossible();
       if (pct >= .9) return "JFC TRUSTED ADVISOR";
