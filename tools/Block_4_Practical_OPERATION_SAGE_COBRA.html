@@ -82,6 +82,14 @@
       text-transform: uppercase;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
     .score {
       padding: 0.32rem 0.6rem;
       border: 1px solid var(--line);
@@ -89,6 +97,15 @@
       min-width: 8rem;
       text-align: center;
       transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .exit-btn {
+      min-height: 38px;
+      padding: 0.36rem 0.58rem;
+      background: transparent;
+      border-color: rgba(178, 34, 34, 0.75);
+      color: var(--cream);
+      font-size: 0.72rem;
     }
 
     .score.flash {
@@ -203,6 +220,18 @@
       margin: 1rem 0;
     }
 
+    .decision-grid {
+      display: grid;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .decision-set {
+      border: 1px solid var(--line);
+      background: rgba(7, 16, 31, 0.58);
+      padding: 1rem;
+    }
+
     .option {
       width: 100%;
       text-align: left;
@@ -310,7 +339,9 @@
     @media (max-width: 650px) {
       body { font-size: 15pt; }
       header { align-items: flex-start; flex-direction: column; }
+      .header-actions { width: 100%; justify-content: stretch; }
       .score { width: 100%; }
+      .exit-btn { width: 100%; }
       .stamp { position: static; display: inline-block; margin-bottom: 1rem; }
     }
   </style>
@@ -321,7 +352,10 @@
     <header>
       <div id="headerTitle">JTF CORAL SHIELD // OPERATION SAGE COBRA</div>
       <div id="teamHeader">Team: Not Assigned</div>
-      <div id="scoreHeader" class="score">Score: 0</div>
+      <div class="header-actions">
+        <div id="scoreHeader" class="score">Score: 0</div>
+        <button id="exitBtn" class="exit-btn" type="button">Exit</button>
+      </div>
     </header>
     <section id="app"></section>
   </main>
@@ -333,7 +367,7 @@
         id: 1,
         lesson: "GEOINT (4.1)",
         title: "First Light Over the Sea of Azure",
-        brief: "JTF CORAL SHIELD has been activated. Krasnovian forces are conducting unusual movements along the western coast of the Sea of Azure. Your J-2 cell needs immediate situational awareness.\n\nLast night, a Krasnovian armored brigade was reported moving from a garrison toward the coast through 200 kilometers of empty desert. Aurican leadership wants to know: where are these vehicles right now, and what route did they take?",
+        brief: "JTF CORAL SHIELD has been activated. Donovian forces are conducting unusual movements along the western coast of the Sea of Azure. Your J-2 cell needs immediate situational awareness.\n\nLast night, a Donovian armored brigade was reported moving from a garrison toward the coast through 200 kilometers of empty desert. Aurican leadership wants to know: where are these vehicles right now, and what route did they take?",
         visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Desert map with route to coast"><rect width="600" height="360" fill="#10233b"/><rect x="390" y="0" width="210" height="360" fill="#1b4b63"/><path d="M392 0 C360 70 430 130 382 205 C350 260 400 310 382 360" fill="none" stroke="#f5f1e8" stroke-width="5"/><circle cx="105" cy="260" r="20" fill="#a0b265"/><text x="62" y="305" fill="#f5f1e8" font-size="19">GARRISON</text><rect x="430" y="78" width="70" height="45" fill="#5c6e2f"/><text x="409" y="150" fill="#f5f1e8" font-size="19">COASTAL PORT</text><path d="M125 247 C205 185 260 205 318 145 C350 112 390 110 432 103" fill="none" stroke="#b22222" stroke-width="6" stroke-dasharray="12 10"/><polygon points="432,103 410,92 414,119" fill="#b22222"/><text x="42" y="47" fill="#a0b265" font-size="23" font-family="monospace">GEOINT REQUEST PENDING</text><text x="250" y="235" fill="#f5f1e8" font-size="18">MTI SEARCH AREA</text></svg>`,
         questions: [
           {
@@ -343,7 +377,7 @@
             explanations: ["DTED gives you elevation, not movement detection. Useful for line-of-sight planning, not vehicle tracking.", "SAR is excellent for all-weather imaging and change detection, but for continuous tracking of moving objects the right tool is MTI.", "MTI is purpose-built to detect movement across wide areas. It filters out stationary returns and shows you only what is moving. Perfect for tracking a vehicle column across open terrain.", "Spectral analysis tells you the chemical or material composition of a target. It does not track movement."]
           },
           {
-            prompt: "Three days from now, leadership wants forensic look-back capability over the Krasnovian port of Vladivostov. They want to scrub backwards through hours of imagery covering the entire port to see how vehicles moved through it. Which GEOINT capability provides this?",
+            prompt: "Three days from now, leadership wants forensic look-back capability over the Donovian port of Vladivostov. They want to scrub backwards through hours of imagery covering the entire port to see how vehicles moved through it. Which GEOINT capability provides this?",
             options: ["Full Motion Video (FMV)", "Wide Area Motion Imagery (WAMI)", "Imagery Intelligence (IMINT)", "Geospatial Information (GI)"],
             correct: 1,
             explanations: ["FMV gives you continuous video of a small area, typically a single building or compound, not an entire port.", "WAMI is the only GEOINT capability that provides continuous coverage of a large area with forensic look-back. You can scrub backward in time to see how every vehicle moved.", "IMINT is the broader analytical discipline. WAMI is a specific collection capability.", "GI is foundational map and feature data, not motion imagery."]
@@ -355,17 +389,17 @@
         id: 2,
         lesson: "Electromagnetic Theory (4.2)",
         title: "The Invisible Battlefield",
-        brief: "Your collection planners want to position a SIGINT collection asset to detect emissions from Krasnovian air defense radars. They have proposed placing the collector on a hilltop 80 kilometers south of the suspected radar site. Between the collector and the radar lies a 1,500-meter mountain ridge.\n\nBefore you approve this collection plan, you need to evaluate whether the proposed site will actually work.",
+        brief: "Your collection planners want to position a SIGINT collection asset to detect emissions from Donovian air defense radars. They have proposed placing the collector on a hilltop 80 kilometers south of the suspected radar site. Between the collector and the radar lies a 1,500-meter mountain ridge.\n\nBefore you approve this collection plan, you need to evaluate whether the proposed site will actually work.",
         visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Radar waves blocked by mountain"><rect width="600" height="360" fill="#10233b"/><line x1="0" y1="300" x2="600" y2="300" stroke="#5c6e2f" stroke-width="8"/><rect x="55" y="180" width="22" height="120" fill="#a0b265"/><circle cx="66" cy="170" r="22" fill="none" stroke="#f5f1e8" stroke-width="5"/><text x="25" y="330" fill="#f5f1e8" font-size="18">RADAR EMITTER</text><polygon points="225,300 330,95 445,300" fill="#4f5f35" stroke="#a0b265" stroke-width="4"/><text x="276" y="330" fill="#f5f1e8" font-size="18">MOUNTAIN RIDGE</text><path d="M88 170 C130 145 160 195 202 170 C220 158 238 157 258 166" fill="none" stroke="#b22222" stroke-width="5"/><path d="M88 195 C135 170 170 222 220 195 C238 185 254 184 272 191" fill="none" stroke="#b22222" stroke-width="5"/><rect x="502" y="220" width="40" height="80" fill="#a0b265"/><path d="M475 214 Q525 150 575 214" fill="none" stroke="#f5f1e8" stroke-width="5"/><text x="454" y="330" fill="#f5f1e8" font-size="18">SIGINT COLLECTOR</text><text x="238" y="58" fill="#f5f1e8" font-size="22">LINE OF SIGHT BLOCKED</text></svg>`,
         questions: [
           {
-            prompt: "Why does the mountain ridge create a blind spot between the Krasnovian radar and your SIGINT collector?",
+            prompt: "Why does the mountain ridge create a blind spot between the Donovian radar and your SIGINT collector?",
             options: ["The terrain physically blocks the line of sight (LOS) of the electromagnetic waves", "The moisture in the terrain absorbs the radar signal", "The terrain generates excessive interference", "The radar signal bounces off the ground too quickly"],
             correct: 0,
             explanations: ["Radar and most SIGINT-relevant emissions in the radio/microwave spectrum travel in straight lines (line of sight). Solid terrain blocks them. This is why radar coverage maps always show terrain shadows.", "Atmospheric moisture causes some attenuation but does not fully block signals. The dominant effect here is geometry, not absorption.", "Terrain does not generate RF interference. Other emitters do.", "This is not a real phenomenon."]
           },
           {
-            prompt: "The Krasnovian early-warning radar operates at a very low frequency, around 150 MHz. Compared to a higher-frequency radar, such as 10 GHz, what is true about its wavelength?",
+            prompt: "The Donovian early-warning radar operates at a very low frequency, around 150 MHz. Compared to a higher-frequency radar, such as 10 GHz, what is true about its wavelength?",
             options: ["The 150 MHz radar has a shorter wavelength", "The 150 MHz radar has a longer wavelength", "Wavelength does not change with frequency", "Wavelength only depends on the radar's power output"],
             correct: 1,
             explanations: ["This is the inverse of the relationship. Lower frequency equals longer wavelength.", "Wavelength is inversely proportional to frequency. Lower frequency means longer wavelength. Long wavelengths travel farther with less atmospheric loss. That is why early-warning radars use them.", "They are inversely related. This is a foundational EM principle.", "Wavelength is a property of the wave's frequency, not its power."]
@@ -377,11 +411,11 @@
         id: 3,
         lesson: "RADAR and Kill Chain (4.3)",
         title: "GREAT EAGLE Wakes Up",
-        brief: "SIGINT just collected a strong emission from a Krasnovian radar designated GREAT EAGLE-1. The signal characteristics show very high power, very long range, low frequency, long wavelength, and a wide, slow-rotating beam.\n\nTwo hours later, a second radar, IRON FANG, activated in the same area with a narrower beam, higher frequency, and a much more focused search pattern.",
+        brief: "SIGINT just collected a strong emission from a Donovian radar designated GREAT EAGLE-1. The signal characteristics show very high power, very long range, low frequency, long wavelength, and a wide, slow-rotating beam.\n\nTwo hours later, a second radar, IRON FANG, activated in the same area with a narrower beam, higher frequency, and a much more focused search pattern.",
         visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="IADS defensive radar arc"><rect width="600" height="360" fill="#10233b"/><path d="M72 300 Q248 70 520 62" fill="none" stroke="#5c6e2f" stroke-width="3" stroke-dasharray="8 10"/><path d="M120 300 Q287 132 515 122" fill="none" stroke="#5c6e2f" stroke-width="3" stroke-dasharray="8 10"/><path d="M175 300 Q330 190 515 186" fill="none" stroke="#5c6e2f" stroke-width="3" stroke-dasharray="8 10"/><g fill="#a0b265" stroke="#f5f1e8" stroke-width="3"><circle cx="112" cy="252" r="15"/><circle cx="215" cy="205" r="15"/><circle cx="318" cy="158" r="15"/><circle cx="420" cy="112" r="15"/></g><g fill="#f5f1e8" font-size="16"><text x="62" y="285">GREAT EAGLE-1</text><text x="177" y="238">IRON FANG</text><text x="280" y="190">STEEL CLAW</text><text x="382" y="145">DEATH VIPER</text></g><polygon points="535,245 578,259 535,273 547,259" fill="#f5f1e8"/><text x="444" y="300" fill="#f5f1e8" font-size="18">FRIENDLY AIRCRAFT</text><text x="57" y="45" fill="#a0b265" font-size="24" font-family="monospace">LAYERED IADS</text></svg>`,
         questions: [
           {
-            prompt: "What is the most likely functional role of GREAT EAGLE-1 in the Krasnovian Integrated Air Defense System?",
+            prompt: "What is the most likely functional role of GREAT EAGLE-1 in the Donovian Integrated Air Defense System?",
             options: ["Target Tracking", "Early Warning", "Ground Control Intercept (GCI)", "Fire Control"],
             correct: 1,
             explanations: ["Tracking radars are narrow-beam, high-frequency, high-precision. GREAT EAGLE's wide beam and low frequency are wrong for tracking.", "Early warning radars are exactly this: very high power, very long range, low frequency, wide beam. Their job is to detect targets at maximum range and cue the rest of the IADS.", "GCI is a command-and-control function, not a long-range detection role.", "Fire control radars are extremely narrow-beam and high-frequency to provide the precision a missile needs. Wrong characteristics."]
@@ -394,7 +428,7 @@
           },
           {
             prompt: "An ELINT analyst at your unit is exploiting GREAT EAGLE-1's emissions. What is the analyst primarily trying to identify and characterize?",
-            options: ["The communication encryption keys used by Krasnovia", "The radar's frequency, power output, and operational patterns", "The financial transactions of the radar operator", "The physical size and altitude of the radar"],
+            options: ["The communication encryption keys used by Donovia", "The radar's frequency, power output, and operational patterns", "The financial transactions of the radar operator", "The physical size and altitude of the radar"],
             correct: 1,
             explanations: ["That is COMINT cryptanalysis, not ELINT.", "ELINT analysis characterizes non-communications electromagnetic signals. The deliverables are the emitter's technical fingerprint: frequency, PRF, power, scan rate, modulation, and operational behavior.", "Not the role of ELINT.", "Those come from GEOINT, not ELINT."]
           }
@@ -405,7 +439,7 @@
         id: 4,
         lesson: "Infrared and Airframe Survival (4.4)",
         title: "Heat in the Sky",
-        brief: "An Aurican F-16 flying a routine patrol detects a Krasnovian SAM launch. The missile is climbing rapidly toward the aircraft. Your J-2 cell is monitoring in real time. The pilot has roughly 8 seconds to defeat the threat.\n\nYour tech analyst tells you: The seeker is IR-homing. It is tracking the aircraft's hot engine exhaust.",
+        brief: "An Aurican F-16 flying a routine patrol detects a Donovian SAM launch. The missile is climbing rapidly toward the aircraft. Your J-2 cell is monitoring in real time. The pilot has roughly 8 seconds to defeat the threat.\n\nYour tech analyst tells you: The seeker is IR-homing. It is tracking the aircraft's hot engine exhaust.",
         visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="IR missile targeting fighter exhaust"><rect width="600" height="360" fill="#10233b"/><polygon points="165,150 355,130 410,158 355,186 165,166 88,205 112,164 88,124" fill="#f5f1e8" stroke="#a0b265" stroke-width="3"/><polygon points="255,130 305,72 327,136" fill="#c9c0a9"/><polygon points="250,185 305,238 326,180" fill="#c9c0a9"/><circle cx="95" cy="164" r="28" fill="#b22222" opacity="0.75"/><circle cx="95" cy="164" r="46" fill="none" stroke="#b22222" stroke-width="3" opacity="0.45"/><text x="42" y="92" fill="#f5f1e8" font-size="20">HOT ENGINE EXHAUST</text><path d="M445 280 L330 205" stroke="#b22222" stroke-width="6"/><polygon points="320,198 348,202 332,221" fill="#b22222"/><rect x="430" y="270" width="70" height="15" fill="#a0b265" transform="rotate(-33 430 270)"/><text x="350" y="315" fill="#f5f1e8" font-size="21">IR-GUIDED THREAT</text></svg>`,
         questions: [
           {
@@ -421,7 +455,7 @@
             explanations: ["Chaff is for radar-guided threats. It creates false radar returns. It does nothing against IR.", "Jamming pods defeat radar threats, not IR. Wrong tool.", "Flares are hotter than the engine exhaust and burn brightly in the IR spectrum. The seeker is fooled into tracking the flare instead of the aircraft. This is the standard IR countermeasure.", "A JEZ is an airspace control measure, not a missile countermeasure."]
           },
           {
-            prompt: "A more advanced Krasnovian SAM uses an Imaging Infrared (IIR) seeker rather than a simple hot-spot tracker. Why is the IIR seeker harder to defeat with flares?",
+            prompt: "A more advanced Donovian SAM uses an Imaging Infrared (IIR) seeker rather than a simple hot-spot tracker. Why is the IIR seeker harder to defeat with flares?",
             options: ["IIR seekers do not see in the infrared spectrum", "IIR seekers build a picture of the target and can distinguish an aircraft shape from a flare's hot point", "Flares only work at night", "IIR seekers are radar-based"],
             correct: 1,
             explanations: ["They absolutely do. That is what IIR means.", "An imaging IR seeker compares what it sees to a target template. A flare looks like a bright dot. An aircraft has a recognizable thermal silhouette. The seeker rejects the dot and stays locked on the aircraft.", "Flares are spectrally hot regardless of ambient light.", "IIR is infrared. Different physics entirely."]
@@ -433,7 +467,7 @@
         id: 5,
         lesson: "Cyber Intelligence (4.5)",
         title: "Black Lotus in the Wire",
-        brief: "The Aurican Ministry of Defense has reported a cyber intrusion. Day 1: a targeted phishing email arrived at a senior MOD planner and contained a malicious attachment. Day 1: the planner opened it and custom malware installed. Day 2: the malware established a connection to an external server controlled by the attacker. Day 5: encrypted MOD planning documents were exfiltrated.\n\nThe technical signatures match APT-41 (BLACK LOTUS), previously linked to Krasnovian state-sponsored operations.",
+        brief: "The Aurican Ministry of Defense has reported a cyber intrusion. Day 1: a targeted phishing email arrived at a senior MOD planner and contained a malicious attachment. Day 1: the planner opened it and custom malware installed. Day 2: the malware established a connection to an external server controlled by the attacker. Day 5: encrypted MOD planning documents were exfiltrated.\n\nThe technical signatures match APT-41 (BLACK LOTUS), previously linked to Donovian state-sponsored operations.",
         visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Cyber kill chain"><rect width="600" height="360" fill="#10233b"/><text x="50" y="48" fill="#a0b265" font-size="24" font-family="monospace">CYBER KILL CHAIN</text><g font-size="15" font-family="Arial" text-anchor="middle"><rect x="30" y="125" width="96" height="75" fill="#5c6e2f" stroke="#f5f1e8"/><text x="78" y="156" fill="#f5f1e8">Recon</text><text x="78" y="178" fill="#f5f1e8">Targeting</text><rect x="142" y="125" width="96" height="75" fill="#5c6e2f" stroke="#f5f1e8"/><text x="190" y="153" fill="#f5f1e8">Weapon</text><text x="190" y="175" fill="#f5f1e8">Delivery</text><rect x="254" y="125" width="96" height="75" fill="#b22222" stroke="#f5f1e8"/><text x="302" y="153" fill="#f5f1e8">Exploit</text><text x="302" y="175" fill="#f5f1e8">Install</text><rect x="366" y="125" width="96" height="75" fill="#b22222" stroke="#f5f1e8"/><text x="414" y="153" fill="#f5f1e8">Command</text><text x="414" y="175" fill="#f5f1e8">Control</text><rect x="478" y="125" width="96" height="75" fill="#b22222" stroke="#f5f1e8"/><text x="526" y="153" fill="#f5f1e8">Actions on</text><text x="526" y="175" fill="#f5f1e8">Objectives</text></g><g stroke="#a0b265" stroke-width="4"><line x1="126" y1="163" x2="142" y2="163"/><line x1="238" y1="163" x2="254" y2="163"/><line x1="350" y1="163" x2="366" y2="163"/><line x1="462" y1="163" x2="478" y2="163"/></g><text x="208" y="254" fill="#f5f1e8" font-size="20">Scenario highlights intrusion stages</text></svg>`,
         questions: [
           {
@@ -449,7 +483,7 @@
             explanations: ["Reconnaissance is the first stage, gathering target information before any access is gained. By Day 2, the intruder was already inside.", "That happened on Day 1 when the malicious email was crafted and sent.", "C2 is when the attacker establishes persistent two-way communication with the compromised system to issue commands and conduct lateral movement. That is exactly what is described on Day 2.", "That happened on Day 1 when the malware installed itself on the planner's workstation."]
           },
           {
-            prompt: "Krasnovian state media is also amplifying false news stories about Aurican leadership corruption to demoralize the Aurican public. This is not an attack on a network. It uses cyberspace to influence opinion. What category does this represent?",
+            prompt: "Donovian state media is also amplifying false news stories about Aurican leadership corruption to demoralize the Aurican public. This is not an attack on a network. It uses cyberspace to influence opinion. What category does this represent?",
             options: ["A traditional cyber attack", "A cyber-enabled threat", "A denial-of-service attack", "A supply chain attack"],
             correct: 1,
             explanations: ["A traditional cyber attack targets infrastructure or data. This targets minds.", "Cyber-enabled threats use cyberspace as a delivery mechanism for traditional activities like influence operations or propaganda. They do not break the network. They use it to break trust.", "DoS attacks take systems offline. This campaign uses systems normally to spread content.", "Supply chain attacks compromise software or hardware before it reaches the target."]
@@ -461,7 +495,7 @@
         id: 6,
         lesson: "Information Operations (4.6)",
         title: "OPERATION QUIET TIDE",
-        brief: "Krasnovian state media has launched a coordinated campaign against Aurica. The campaign posts fabricated videos claiming Aurican forces committed war crimes, pays local users to share genuine but misleading photos with false captions, and conducts cyber-enabled DDoS attacks against Aurican news websites to prevent counter-messaging.\n\nYour J-2 cell needs to characterize this campaign for the JFC.",
+        brief: "Donovian state media has launched a coordinated campaign against Aurica. The campaign posts fabricated videos claiming Aurican forces committed war crimes, pays local users to share genuine but misleading photos with false captions, and conducts cyber-enabled DDoS attacks against Aurican news websites to prevent counter-messaging.\n\nYour J-2 cell needs to characterize this campaign for the JFC.",
         visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Information environment dimensions"><rect width="600" height="360" fill="#10233b"/><circle cx="300" cy="180" r="145" fill="none" stroke="#5c6e2f" stroke-width="5"/><circle cx="300" cy="180" r="100" fill="none" stroke="#a0b265" stroke-width="5"/><circle cx="300" cy="180" r="56" fill="none" stroke="#b22222" stroke-width="5"/><rect x="268" y="129" width="64" height="102" rx="8" fill="#f5f1e8"/><rect x="277" y="143" width="46" height="68" fill="#0a1628"/><circle cx="300" cy="220" r="4" fill="#0a1628"/><text x="252" y="38" fill="#f5f1e8" font-size="21">PHYSICAL</text><text x="232" y="80" fill="#f5f1e8" font-size="21">INFORMATIONAL</text><text x="246" y="116" fill="#f5f1e8" font-size="21">COGNITIVE</text><text x="198" y="300" fill="#a0b265" font-size="22" font-family="monospace">PHONE - DATA - MIND</text></svg>`,
         questions: [
           {
@@ -471,13 +505,13 @@
             explanations: ["These are levels of war, not dimensions of the IE.", "Plausible-sounding but not the doctrinal answer.", "The IE has three dimensions: Physical, Informational, and Cognitive. Memorize this triad.", "These are functional domains, not IE dimensions."]
           },
           {
-            prompt: "The Krasnovians are deliberately fabricating videos of Aurican war crimes, knowing they are false, in order to deceive Aurican and international audiences. What is the correct term for this?",
+            prompt: "The Donovians are deliberately fabricating videos of Aurican war crimes, knowing they are false, in order to deceive Aurican and international audiences. What is the correct term for this?",
             options: ["Misinformation", "Propaganda (MILDEC)", "Disinformation", "Cognitive Bias"],
             correct: 2,
             explanations: ["Misinformation is false information shared without intent to deceive. Someone shares a wrong story believing it is true.", "MILDEC is targeted at adversary military decision-makers, not general public audiences, and is governed by stricter doctrine.", "Disinformation is false information deliberately created and spread to deceive. The intent is the discriminator. Fabricated videos with intent to deceive equal disinformation.", "Cognitive bias is a property of the receiver's reasoning, not a category of information operation."]
           },
           {
-            prompt: "Aurican forces are preparing a counter-messaging campaign aimed at influencing the emotions, motives, and conduct of Krasnovian-aligned populations in border regions. Which IO core capability is this?",
+            prompt: "Aurican forces are preparing a counter-messaging campaign aimed at influencing the emotions, motives, and conduct of Donovian-aligned populations in border regions. Which IO core capability is this?",
             options: ["Operations Security (OPSEC)", "Military Information Support Operations (MISO)", "Cyberspace Operations", "Military Deception (MILDEC)"],
             correct: 1,
             explanations: ["OPSEC protects friendly information from adversary collection. It is defensive, not influencing.", "MISO is the doctrinal capability for conveying selected information to foreign audiences to influence their emotions, motives, and conduct. That is the literal definition.", "Cyber ops act in cyberspace. MISO is broader. It can use any medium.", "MILDEC targets adversary decision-makers, not foreign populations broadly."]
@@ -489,7 +523,7 @@
         id: 7,
         lesson: "ISR Fundamentals (4.7)",
         title: "From Question to Answer",
-        brief: "The JFC has issued a new Priority Intelligence Requirement (PIR): PIR-04 asks what indicators show Krasnovian forces will conduct an amphibious assault on the Aurican coast within the next 96 hours.\n\nYour ISR cell now needs to convert this question into actionable collection.",
+        brief: "The JFC has issued a new Priority Intelligence Requirement (PIR): PIR-04 asks what indicators show Donovian forces will conduct an amphibious assault on the Aurican coast within the next 96 hours.\n\nYour ISR cell now needs to convert this question into actionable collection.",
         visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="ISR process cycle"><rect width="600" height="360" fill="#10233b"/><circle cx="300" cy="180" r="55" fill="#5c6e2f" stroke="#f5f1e8" stroke-width="3"/><text x="281" y="188" fill="#f5f1e8" font-size="27" font-family="monospace">PIR</text><g text-anchor="middle" font-size="16" font-family="Arial"><rect x="230" y="35" width="140" height="54" fill="#b22222" stroke="#f5f1e8"/><text x="300" y="58" fill="#f5f1e8">Planning and</text><text x="300" y="78" fill="#f5f1e8">Direction</text><rect x="420" y="125" width="120" height="54" fill="#5c6e2f" stroke="#f5f1e8"/><text x="480" y="158" fill="#f5f1e8">Collection</text><rect x="360" y="260" width="150" height="54" fill="#5c6e2f" stroke="#f5f1e8"/><text x="435" y="282" fill="#f5f1e8">Processing and</text><text x="435" y="302" fill="#f5f1e8">Exploitation</text><rect x="90" y="260" width="150" height="54" fill="#5c6e2f" stroke="#f5f1e8"/><text x="165" y="282" fill="#f5f1e8">Analysis and</text><text x="165" y="302" fill="#f5f1e8">Production</text><rect x="60" y="125" width="150" height="54" fill="#5c6e2f" stroke="#f5f1e8"/><text x="135" y="147" fill="#f5f1e8">Dissemination and</text><text x="135" y="167" fill="#f5f1e8">Integration</text></g><path d="M365 76 C430 85 466 103 484 126" fill="none" stroke="#a0b265" stroke-width="4"/><path d="M489 180 C496 222 475 244 449 260" fill="none" stroke="#a0b265" stroke-width="4"/><path d="M360 292 C310 328 252 324 215 307" fill="none" stroke="#a0b265" stroke-width="4"/><path d="M118 260 C89 226 82 196 91 177" fill="none" stroke="#a0b265" stroke-width="4"/><path d="M139 125 C163 93 197 78 230 67" fill="none" stroke="#a0b265" stroke-width="4"/></svg>`,
         questions: [
           {
@@ -499,13 +533,13 @@
             explanations: ["P&E is where collected raw data is converted into usable form. You have not collected anything yet.", "A&P is where analysts produce intelligence products. Still further downstream.", "P&D is where the intelligence team converts a PIR into a collection plan. Every PIR enters the cycle here. This is always the first step when a new requirement comes in.", "D&I happens at the end, when the finished product reaches the consumer."]
           },
           {
-            prompt: "Aurican drones have been collecting full-motion video over the Krasnovian coast for six hours. The raw video files now sit on a server. Which ISR stage uses systems like the Distributed Common Ground System (DCGS) to convert that raw video into usable intelligence?",
+            prompt: "Aurican drones have been collecting full-motion video over the Donovian coast for six hours. The raw video files now sit on a server. Which ISR stage uses systems like the Distributed Common Ground System (DCGS) to convert that raw video into usable intelligence?",
             options: ["Processing and Exploitation (P&E)", "Planning and Direction", "Analysis and Production", "Dissemination and Integration"],
             correct: 0,
             explanations: ["P&E is exactly this: turning raw collected data into a usable product through systems like DCGS. The product then flows into A&P.", "P&D is upstream. It tasks the collection.", "A&P comes after P&E and produces finished intelligence.", "D&I delivers the finished product to the consumer."]
           },
           {
-            prompt: "Your cell decides to use Aurican Navy ships to maintain a 24-hour radar watch on a 200 km stretch of Krasnovian coast. This is best described as surveillance rather than reconnaissance. Why?",
+            prompt: "Your cell decides to use Aurican Navy ships to maintain a 24-hour radar watch on a 200 km stretch of Donovian coast. This is best described as surveillance rather than reconnaissance. Why?",
             options: ["Surveillance is systematic and continuous observation of an area; reconnaissance is a discrete mission to obtain specific information", "Surveillance only happens in the air", "Reconnaissance is illegal", "The two terms mean the same thing"],
             correct: 0,
             explanations: ["This is the doctrinal distinction. A continuous radar watch is the textbook definition of surveillance. A specific drone overflight to confirm one specific target would be reconnaissance.", "Surveillance can happen in any domain.", "Reconnaissance is a normal military activity.", "They are doctrinally distinct."]
@@ -517,7 +551,7 @@
         id: 8,
         lesson: "Space Operations (4.8)",
         title: "DRAGON'S EYE Awakens",
-        brief: "A Krasnovian satellite designated DRAGON'S EYE-3 was placed in geostationary orbit above the equator three months ago. Your space intelligence cell has now confirmed its payload type.\n\nMeanwhile, Aurican leadership has reported a new threat: an unidentified satellite has approached Aurica's primary military communications satellite at unusually close range and appears to have a maneuvering capability.",
+        brief: "A Donovian satellite designated DRAGON'S EYE-3 was placed in geostationary orbit above the equator three months ago. Your space intelligence cell has now confirmed its payload type.\n\nMeanwhile, Aurican leadership has reported a new threat: an unidentified satellite has approached Aurica's primary military communications satellite at unusually close range and appears to have a maneuvering capability.",
         visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Earth and orbital rings"><rect width="600" height="360" fill="#10233b"/><circle cx="300" cy="180" r="45" fill="#1b4b63" stroke="#f5f1e8" stroke-width="3"/><circle cx="300" cy="180" r="80" fill="none" stroke="#5c6e2f" stroke-width="2"/><circle cx="300" cy="180" r="115" fill="none" stroke="#5c6e2f" stroke-width="2"/><circle cx="300" cy="180" r="152" fill="none" stroke="#a0b265" stroke-width="3"/><ellipse cx="300" cy="180" rx="58" ry="154" fill="none" stroke="#b22222" stroke-width="3"/><circle cx="452" cy="180" r="10" fill="#f5f1e8"/><rect x="430" y="174" width="14" height="12" fill="#a0b265"/><rect x="461" y="174" width="14" height="12" fill="#a0b265"/><text x="64" y="103" fill="#f5f1e8" font-size="18">LEO</text><text x="72" y="74" fill="#f5f1e8" font-size="18">MEO</text><text x="450" y="161" fill="#f5f1e8" font-size="18">GEO: DRAGON'S EYE-3</text><text x="352" y="48" fill="#f5f1e8" font-size="18">POLAR</text><text x="244" y="186" fill="#f5f1e8" font-size="20">EARTH</text></svg>`,
         questions: [
           {
@@ -545,10 +579,10 @@
 
     const CAPSTONE = {
       title: "JFC Intelligence Brief - 20 Minutes To Go",
-      brief: "The JFC has been notified by Aurican leadership of imminent Krasnovian aggression. You have 15 minutes to assemble the J-2 brief. Your cell has gathered raw intelligence in the last hour.\n\nGEOINT: WAMI coverage shows 14 amphibious vessels loading vehicles. MTI shows a 60-vehicle armored column moving toward the port.\n\nSIGINT: Three radars are active: early warning, acquisition, and fire control.\n\nIR: OPIR detected three SAM launches from coastal sites.\n\nCYBER: BLACK LOTUS reactivated infrastructure linked to last month's MOD intrusion. Lateral movement is detected in the Aurican logistics network.\n\nIO: Krasnovian state media claims Aurica fired first.\n\nSPACE: DRAGON'S EYE-3, a GEO MASINT satellite, re-pointed its sensor and is staring at the Aurican coast.",
+      brief: "The JFC has been notified by Aurican leadership of imminent Donovian aggression. You have 15 minutes to assemble the J-2 brief. Your cell has gathered raw intelligence in the last hour.\n\nGEOINT: WAMI coverage shows 14 amphibious vessels loading vehicles. MTI shows a 60-vehicle armored column moving toward the port.\n\nSIGINT: Three radars are active: early warning, acquisition, and fire control.\n\nIR: OPIR detected three SAM launches from coastal sites.\n\nCYBER: BLACK LOTUS reactivated infrastructure linked to last month's MOD intrusion. Lateral movement is detected in the Aurican logistics network.\n\nIO: Donovian state media claims Aurica fired first.\n\nSPACE: DRAGON'S EYE-3, a GEO MASINT satellite, re-pointed its sensor and is staring at the Aurican coast.",
       questions: [
         {
-          prompt: "Based on the radar pattern, with early warning, acquisition, and fire control all active, where is the Krasnovian air defense kill chain right now?",
+          prompt: "Based on the radar pattern, with early warning, acquisition, and fire control all active, where is the Donovian air defense kill chain right now?",
           options: ["Find / Search", "Fix / Detection", "Track / Target - fire control radar locked means target stage", "Assess"],
           correct: 2,
           explanations: ["Find/Search is earlier. The IADS has already moved past broad detection.", "Fix/Detection is earlier. Acquisition has already happened.", "Correct. A fire-control radar lock indicates the system has moved into the Track/Target portion of the kill chain.", "Assess happens after engagement, not before."]
@@ -560,7 +594,7 @@
           explanations: ["Planning and Direction sets requirements before collection.", "Correct. Processing and Exploitation turns raw data into usable intelligence through systems such as DCGS.", "Dissemination and Integration delivers finished intelligence after it has been processed and analyzed.", "Targeting is not the ISR processing stage described here."]
         },
         {
-          prompt: "The Krasnovian narrative that Aurica fired first is being deliberately spread to manipulate international audiences. What is it?",
+          prompt: "The Donovian narrative that Aurica fired first is being deliberately spread to manipulate international audiences. What is it?",
           options: ["Misinformation", "Disinformation", "MISO", "OPSEC"],
           correct: 1,
           explanations: ["Misinformation lacks intent to deceive. This campaign is deliberate.", "Correct. Disinformation is false information deliberately created and spread to deceive.", "MISO is a friendly capability to influence foreign audiences. This question asks how to categorize the adversary's false narrative.", "OPSEC protects friendly information."]
@@ -572,7 +606,7 @@
           explanations: ["A kinetic ASAT strike creates escalation and debris risks.", "Destroying a ground station is a physical strike and may escalate the conflict.", "Correct. Non-kinetic counterspace can disrupt collection while preserving international norms better than physical destruction.", "Doing nothing allows the collection to continue uncontested."]
         },
         {
-          prompt: "BLACK LOTUS is moving laterally in the Aurican logistics network and Krasnovia is amplifying disinformation online. The JFC asks: are these the same kind of threat?",
+          prompt: "BLACK LOTUS is moving laterally in the Aurican logistics network and Donovia is amplifying disinformation online. The JFC asks: are these the same kind of threat?",
           options: ["Yes - both are cyber attacks", "No - lateral movement is a cyber attack on infrastructure; disinformation amplification is a cyber-enabled influence threat. Different categories, different responses.", "No - only the disinformation is real", "Yes - both are kinetic threats"],
           correct: 1,
           explanations: ["The disinformation campaign uses cyberspace but does not attack the network itself.", "Correct. Lateral movement is a cyber attack on infrastructure. Disinformation amplification is cyber-enabled influence. They require different responses.", "Both are real threats, but they belong to different categories.", "Neither is a kinetic threat."]
@@ -580,8 +614,56 @@
       ]
     };
 
+    const CAPSTONE_DECISIONS = [
+      {
+        prompt: "Primary JFC assessment",
+        options: [
+          "Donovia is posturing, but indicators do not yet support imminent action.",
+          "Donovia is preparing a near-term amphibious operation supported by IADS, cyber, IO, and space collection.",
+          "The main threat is only the cyber intrusion; the military indicators are unrelated.",
+          "The main threat is only the satellite; surface activity is routine."
+        ],
+        correct: 1,
+        explanation: "The feeds converge: amphibious loading, armored movement, active IADS, SAM launches, cyber access, IO shaping, and GEO MASINT collection all point to a coordinated near-term operation."
+      },
+      {
+        prompt: "First recommendation to the JFC",
+        options: [
+          "Wait for one more day of collection before warning Aurican leadership.",
+          "Prioritize defensive posture, protect logistics networks, counter the false narrative, and reduce Donovian collection.",
+          "Strike every radar immediately before confirming the air picture.",
+          "Ignore the IO campaign because it is not kinetic."
+        ],
+        correct: 1,
+        explanation: "The best first recommendation integrates domains: force protection, cyber defense, counter-IO, and non-kinetic counterspace options without overcommitting to a single feed."
+      },
+      {
+        prompt: "Most important collection gap",
+        options: [
+          "Whether Donovian intent has crossed from coercion into execution, including final launch indicators and command authority.",
+          "The exact paint color of the amphibious vehicles.",
+          "Whether the false narrative has spelling errors.",
+          "The altitude of every aircraft in the region."
+        ],
+        correct: 0,
+        explanation: "The commander needs intent and execution indicators. The intelligence picture is strong, but the decisive gap is whether Donovia is about to launch or still coercing."
+      },
+      {
+        prompt: "Confidence statement",
+        options: [
+          "Low confidence: all feeds contradict each other.",
+          "Moderate-to-high confidence: multiple independent feeds align, but intent and timing still require confirmation.",
+          "Complete certainty: no additional collection is needed.",
+          "No assessment possible because the feeds are from different domains."
+        ],
+        correct: 1,
+        explanation: "Capstone work should show confidence and limits. Multiple independent feeds align, but analysts should still identify uncertainty around intent and timing."
+      }
+    ];
+
     const PHASE_POINTS = 20;
     const CAPSTONE_POINTS = 30;
+    const DECISION_POINTS = 25;
     const DISCUSSION_SECONDS = 60;
     const NEXT_COOLDOWN_SECONDS = 5;
     const CAPSTONE_SECONDS = 240;
@@ -597,6 +679,8 @@
       lastExplanation: "",
       phaseCorrect: 0,
       capstoneIndex: 0,
+      decisionSelections: [],
+      decisionFeedback: [],
       timerId: null,
       locked: true,
       finalShown: false
@@ -606,6 +690,7 @@
     const scoreHeader = document.getElementById("scoreHeader");
     const teamHeader = document.getElementById("teamHeader");
     const headerTitle = document.getElementById("headerTitle");
+    const exitBtn = document.getElementById("exitBtn");
 
     function clearTimer() {
       if (state.timerId) {
@@ -651,6 +736,33 @@
       updateHeader();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+
+    function resetExercise() {
+      clearTimer();
+      Object.assign(state, {
+        screen: "intro",
+        teamName: "",
+        score: 0,
+        phaseIndex: 0,
+        questionIndex: 0,
+        selected: null,
+        lastCorrect: false,
+        lastExplanation: "",
+        phaseCorrect: 0,
+        capstoneIndex: 0,
+        decisionSelections: [],
+        decisionFeedback: [],
+        timerId: null,
+        locked: true
+      });
+      updateHeader();
+      renderIntro();
+    }
+
+    exitBtn.addEventListener("click", () => {
+      const shouldExit = confirm("Exit this mission and return to the start screen? Current score will reset.");
+      if (shouldExit) resetExercise();
+    });
 
     function startCountdown(total, options) {
       let remaining = total;
@@ -701,10 +813,11 @@
       render(`
         <div class="kicker">Block 4 Integration Exercise</div>
         <h1>OPERATION SAGE COBRA</h1>
-        <p>Work in pairs. Read each scenario. Discuss with your partner before submitting. Points are for friendly competition only.</p>
+        <p>Work in pairs. Read each scenario. Use the advisory timer to discuss when you need it. Move faster when your team is ready.</p>
+        <p>The phase questions are warm-up checks. The capstone asks your team to build an integrated JFC assessment before answering final questions.</p>
         <div class="grid meta-grid panel">
           <div>Mode: Local single-file app</div>
-          <div>Duration: 120 minutes</div>
+          <div>Duration: 45 to 90 minutes</div>
           <div>Max Score: ${totalPossible()}</div>
         </div>
         <div class="panel">
@@ -728,8 +841,8 @@
       render(`
         <div class="kicker">Joint Task Force CORAL SHIELD</div>
         <h2>Scenario Backstory</h2>
-        <p>The People's Republic of Krasnovia has begun aggressive military posturing against the Republic of Aurica in the Sea of Azure region.</p>
-        <p>Krasnovia has fielded a coastal air defense system, activated suspicious satellite assets, launched an information campaign, and been linked to a cyber intrusion at the Aurican defense ministry.</p>
+        <p>Donovia has begun aggressive military posturing against the Republic of Aurica in the Sea of Azure region.</p>
+        <p>Donovia has fielded a coastal air defense system, activated suspicious satellite assets, launched an information campaign, and been linked to a cyber intrusion at the Aurican defense ministry.</p>
         <p>Your team is assigned to the J-2 intelligence cell. Build the intelligence picture across all collection disciplines and prepare the JFC brief.</p>
         <div class="button-row">
           <button id="phaseBtn">Begin Phase 1</button>
@@ -751,16 +864,15 @@
         <h2 id="typeTitle"></h2>
         <div class="visual">${phase.visualSVG}</div>
         <div class="panel">${textBlock(phase.brief)}</div>
-        ${timerMarkup("discussion", "Discuss with your partner", false)}
+        ${timerMarkup("discussion", "Advisory discussion timer", false)}
         <div class="button-row">
-          <button id="continueBtn" disabled title="Discuss with your partner first">Continue to Questions</button>
+          <button id="continueBtn">Continue to Questions</button>
         </div>
       `);
       typeTitle(phase.title);
       startCountdown(DISCUSSION_SECONDS, {
         countId: "discussionCount",
-        barId: "discussionBar",
-        buttonId: "continueBtn"
+        barId: "discussionBar"
       });
       document.getElementById("continueBtn").addEventListener("click", () => renderPhaseQuestion());
     }
@@ -775,12 +887,12 @@
         <div class="kicker">${phase.lesson}</div>
         <h2>${phase.title}</h2>
         <p class="question-text">${escapeHtml(question.prompt)}</p>
-        ${timerMarkup("question", "Question discussion lock", false)}
+        ${timerMarkup("question", "Advisory discussion timer", false)}
         <div class="options">
           ${question.options.map((option, index) => `<button class="option" data-index="${index}">${String.fromCharCode(65 + index)}. ${escapeHtml(option)}</button>`).join("")}
         </div>
         <div class="button-row">
-          <button id="submitBtn" disabled title="Discuss with your partner first">Submit Answer</button>
+          <button id="submitBtn" disabled>Select an Answer</button>
         </div>
       `);
       document.querySelectorAll(".option").forEach(button => {
@@ -789,17 +901,14 @@
           document.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
           button.classList.add("selected");
           const submit = document.getElementById("submitBtn");
-          submit.disabled = state.locked;
+          submit.disabled = false;
+          submit.textContent = "Submit Answer";
         });
       });
       document.getElementById("submitBtn").addEventListener("click", submitPhaseAnswer);
       startCountdown(DISCUSSION_SECONDS, {
         countId: "questionCount",
-        barId: "questionBar",
-        buttonId: "submitBtn",
-        onDone: () => {
-          if (state.selected === null) document.getElementById("submitBtn").disabled = true;
-        }
+        barId: "questionBar"
       });
     }
 
@@ -870,15 +979,83 @@
         <div class="kicker">Capstone Integrative Challenge</div>
         <h2>${CAPSTONE.title}</h2>
         <div class="panel">${textBlock(CAPSTONE.brief)}</div>
-        <p>Five questions follow. Each has a 4-minute countdown. If time expires before you submit, the answer is counted as incorrect.</p>
+        <p>First, build the JFC brief from the raw feeds. Then answer five quick-fire checks. The capstone is where your team should argue, prioritize, and defend an assessment.</p>
         <div class="button-row">
-          <button id="beginCapstoneBtn">Begin Capstone</button>
+          <button id="beginCapstoneBtn">Build JFC Brief</button>
         </div>
       `);
       document.getElementById("beginCapstoneBtn").addEventListener("click", () => {
         state.capstoneIndex = 0;
-        renderCapstoneQuestion();
+        state.decisionSelections = [];
+        state.decisionFeedback = [];
+        renderCapstoneBoard();
       });
+    }
+
+    function renderCapstoneBoard() {
+      headerTitle.textContent = "Capstone // Build the JFC Brief";
+      render(`
+        <div class="kicker">JFC Brief Builder</div>
+        <h2>Make the Assessment</h2>
+        <p>Your team has multiple feeds, but the JFC needs one integrated assessment. Select the best answer for each staff decision.</p>
+        <div class="decision-grid">
+          ${CAPSTONE_DECISIONS.map((decision, decisionIndex) => `
+            <div class="decision-set">
+              <h3>${escapeHtml(decision.prompt)}</h3>
+              <div class="options">
+                ${decision.options.map((option, optionIndex) => `<button class="option decision-option" data-decision="${decisionIndex}" data-index="${optionIndex}">${String.fromCharCode(65 + optionIndex)}. ${escapeHtml(option)}</button>`).join("")}
+              </div>
+            </div>
+          `).join("")}
+        </div>
+        <div class="button-row">
+          <button id="submitBriefBtn" disabled>Complete All Decisions</button>
+        </div>
+      `);
+      document.querySelectorAll(".decision-option").forEach(button => {
+        button.addEventListener("click", () => {
+          const decisionIndex = Number(button.dataset.decision);
+          state.decisionSelections[decisionIndex] = Number(button.dataset.index);
+          document.querySelectorAll(`.decision-option[data-decision="${decisionIndex}"]`).forEach(opt => opt.classList.remove("selected"));
+          button.classList.add("selected");
+          const complete = CAPSTONE_DECISIONS.every((_, index) => state.decisionSelections[index] !== undefined);
+          const submit = document.getElementById("submitBriefBtn");
+          submit.disabled = !complete;
+          submit.textContent = complete ? "Submit JFC Brief" : "Complete All Decisions";
+        });
+      });
+      document.getElementById("submitBriefBtn").addEventListener("click", submitCapstoneBoard);
+    }
+
+    function submitCapstoneBoard() {
+      let correctCount = 0;
+      state.decisionFeedback = CAPSTONE_DECISIONS.map((decision, index) => {
+        const correct = state.decisionSelections[index] === decision.correct;
+        if (correct) correctCount += 1;
+        return { prompt: decision.prompt, correct, explanation: decision.explanation };
+      });
+      if (correctCount > 0) addPoints(correctCount * DECISION_POINTS);
+      renderCapstoneBoardFeedback(correctCount);
+    }
+
+    function renderCapstoneBoardFeedback(correctCount) {
+      render(`
+        <div class="kicker">JFC Brief Builder Feedback</div>
+        <h2>${correctCount} of ${CAPSTONE_DECISIONS.length} Decisions Aligned</h2>
+        <div class="decision-grid">
+          ${state.decisionFeedback.map(item => `
+            <div class="panel feedback ${item.correct ? "correct" : "incorrect"}">
+              <h3>${escapeHtml(item.prompt)} // ${item.correct ? "Aligned" : "Review"}</h3>
+              <p>${escapeHtml(item.explanation)}</p>
+            </div>
+          `).join("")}
+        </div>
+        <p>Now answer five quick-fire checks tied to the same intelligence picture. Each has a suggested 4-minute timer, but it will not auto-submit. Use it as a pacing cue.</p>
+        <div class="button-row">
+          <button id="beginQuickFireBtn">Begin Quick-Fire Checks</button>
+        </div>
+      `);
+      document.getElementById("beginQuickFireBtn").addEventListener("click", () => renderCapstoneQuestion());
     }
 
     function renderCapstoneQuestion() {
@@ -889,7 +1066,7 @@
       render(`
         <div class="kicker">Capstone // Quick-Fire Assessment</div>
         <p class="question-text">${escapeHtml(question.prompt)}</p>
-        ${timerMarkup("capstone", "Capstone countdown", true)}
+        ${timerMarkup("capstone", "Advisory capstone timer", true)}
         <div class="options">
           ${question.options.map((option, index) => `<button class="option" data-index="${index}">${String.fromCharCode(65 + index)}. ${escapeHtml(option)}</button>`).join("")}
         </div>
@@ -908,12 +1085,7 @@
       document.getElementById("submitCapstoneBtn").addEventListener("click", submitCapstoneAnswer);
       startCountdown(CAPSTONE_SECONDS, {
         countId: "capstoneCount",
-        barId: "capstoneBar",
-        onDone: () => {
-          state.lastCorrect = false;
-          state.lastExplanation = "Time expired. No points awarded. Review the intelligence picture and keep moving.";
-          renderFeedback(true);
-        }
+        barId: "capstoneBar"
       });
     }
 
@@ -949,22 +1121,7 @@
       `);
       animateScore(state.score);
       document.getElementById("restartBtn").addEventListener("click", () => {
-        Object.assign(state, {
-          screen: "intro",
-          teamName: "",
-          score: 0,
-          phaseIndex: 0,
-          questionIndex: 0,
-          selected: null,
-          lastCorrect: false,
-          lastExplanation: "",
-          phaseCorrect: 0,
-          capstoneIndex: 0,
-          timerId: null,
-          locked: true
-        });
-        updateHeader();
-        renderIntro();
+        resetExercise();
       });
     }
 
@@ -1004,7 +1161,7 @@
 
     function totalPossible() {
       const phaseQuestions = PHASES.reduce((sum, phase) => sum + phase.questions.length, 0);
-      return phaseQuestions * PHASE_POINTS + CAPSTONE.questions.length * CAPSTONE_POINTS;
+      return phaseQuestions * PHASE_POINTS + CAPSTONE.questions.length * CAPSTONE_POINTS + CAPSTONE_DECISIONS.length * DECISION_POINTS;
     }
 
     window.addEventListener("beforeunload", clearTimer);
@@ -1012,3 +1169,4 @@
   </script>
 </body>
 </html>
+
