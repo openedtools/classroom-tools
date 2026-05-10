@@ -227,6 +227,25 @@ body{
 .tk .tt{color:var(--dim)}
 .tk .tt strong{color:var(--text)}
 .results-foot{text-align:center;padding:24px 0 12px}
+.review-top{width:100%;max-width:900px;margin-bottom:14px}
+.review-top h2{font-size:24px;margin-bottom:6px}
+.review-top p{color:var(--dim);font-size:14px;line-height:1.5}
+.review-block{
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  box-shadow:var(--shadow);padding:18px 20px;margin-bottom:14px;
+}
+.review-block h3{font-size:16px;margin-bottom:6px}
+.review-meta{font-size:12px;color:var(--dim);line-height:1.5;margin-bottom:12px}
+.review-row{border-top:1px solid var(--border);padding:12px 0}
+.review-row:first-of-type{border-top:0}
+.review-step{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:4px}
+.review-q{font-size:14px;font-weight:650;margin-bottom:6px;line-height:1.4}
+.review-answer{font-size:13px;color:var(--text);line-height:1.5}
+.review-answer strong{color:var(--green)}
+.review-discuss{
+  margin-top:8px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 12px;font-size:13px;color:var(--dim);line-height:1.45;
+}
 .discussion{
   background:#fff;border:1px solid var(--border);border-radius:8px;
   padding:20px 22px;margin-top:12px;box-shadow:var(--shadow);
@@ -278,6 +297,7 @@ body{
   <div class="lang-grid" id="lang-grid"></div>
   <div class="start-row">
     <button class="btn btn-primary btn-lg" id="start-btn" onclick="startSim()">Begin Triage →</button>
+    <button class="btn btn-ghost btn-lg" id="review-start-btn" onclick="showInstructorReview()" style="margin-left:8px">Instructor Review</button>
   </div>
 </div>
 
@@ -311,6 +331,18 @@ body{
 </div>
 
 <!-- ══ RESULTS SCREEN ══════════════════════════════ -->
+<div id="screen-review" class="hidden" style="width:100%;max-width:900px">
+  <div class="review-top">
+    <h2>Instructor Review</h2>
+    <p>Use this after the 10-minute mission to walk the room through the decisions. The point is not just the answer; it is the reasoning that separates technical detail from intelligence judgment.</p>
+  </div>
+  <div id="review-content"></div>
+  <div class="results-foot">
+    <button class="btn btn-ghost" onclick="goHome()" style="font-size:15px;padding:12px 24px;margin-right:8px">Home</button>
+    <button class="btn btn-primary" onclick="startSim()" style="font-size:15px;padding:12px 30px">Run Activity</button>
+  </div>
+</div>
+
 <div id="screen-results" class="hidden">
   <div class="results-top">
     <div class="score-ring">
@@ -325,6 +357,7 @@ body{
   <div class="discussion" id="discussion-block"></div>
   <div class="results-foot">
     <button class="btn btn-ghost" id="home-results-btn" onclick="goHome()" style="font-size:15px;padding:12px 24px;margin-right:8px">Home</button>
+    <button class="btn btn-ghost" id="review-results-btn" onclick="showInstructorReview()" style="font-size:15px;padding:12px 24px;margin-right:8px">Instructor Review</button>
     <button class="btn btn-primary" id="restart-btn" onclick="startSim()" style="font-size:15px;padding:12px 30px"></button>
   </div>
 </div>
@@ -704,10 +737,12 @@ const SCENARIOS = [
       {
         type:'attack',
         step:'stepAttack',
-        text:'What attack type opened the door for the RAT?',
+        text:'Which specific attack type opened the door for the RAT?',
         answer:'phishing',
-        fc:'Correct — <strong>Phishing</strong>. A targeted conference invitation is a classic spear-phishing lure. It is social engineering delivered through email.',
-        fw:'Best answer: <strong>Phishing</strong>. The conference invitation is the lure that delivered access. Social engineering is involved, but the specific attack type here is phishing.',
+        accepted:['phishing','social'],
+        fc:'Correct — <strong>Phishing</strong>. A targeted conference invitation is a classic spear-phishing lure. It is also social engineering; phishing is the more specific subtype.',
+        altFeedback:{social:'Also correct — <strong>Social Engineering</strong> is the parent category. The more specific label is <strong>phishing</strong>, because the manipulation arrived as a deceptive email lure.'},
+        fw:'Best answer: <strong>Phishing</strong>. Social engineering is involved, but phishing is the specific subtype used to deliver the lure.',
       },
       { // Q1 Threat type
         type:'threat',
@@ -962,7 +997,7 @@ function applyLang(){
 }
 
 function show(id){
-  ['screen-lang','screen-game','screen-results'].forEach(s=>document.getElementById(s).classList.add('hidden'));
+  ['screen-lang','screen-game','screen-review','screen-results'].forEach(s=>document.getElementById(s).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
   const active = id !== 'screen-lang';
   document.getElementById('home-btn').classList.toggle('hidden', !active);
@@ -1233,18 +1268,19 @@ function renderActor(area,q){
 function selectKeyAnswer(key,q,clickedCard,grid,group){
   if(answered) return;
   answered = true;
-  const isCorrect = key===q.answer;
+  const accepted = q.accepted || [q.answer];
+  const isCorrect = accepted.includes(key);
   if(isCorrect) score++;
   const keys = Object.keys(LANG.en[group]);
   Array.from(grid.children).forEach((c,i)=>{
     const k = keys[i];
     c.classList.add('disabled');
-    if(k===q.answer) c.classList.add('correct');
+    if(accepted.includes(k)) c.classList.add('correct');
     else if(k===key && !isCorrect) c.classList.add('incorrect');
     else c.classList.add('dimmed');
   });
-  recordResult(q,isCorrect, vocab(group,key).name, vocab(group,q.answer).name);
-  showFeedback(isCorrect,q);
+  recordResult(q,isCorrect, vocab(group,key).name, accepted.map(k=>vocab(group,k).name).join(' / '));
+  showFeedback(isCorrect,q,key);
 }
 
 function selectAnswer(idx,q,clickedEl,container){
@@ -1298,10 +1334,11 @@ function recordResult(q,isCorrect,selectedText,correctText){
   results[scenarioIdx].qs.push({step:ui(q.step), correct:isCorrect, sel:selectedText, cor:correctText});
 }
 
-function showFeedback(isCorrect,q){
+function showFeedback(isCorrect,q,selectedKey){
   const fb = document.getElementById('feedback');
   fb.className = 'feedback '+(isCorrect?'correct':'incorrect');
-  fb.innerHTML = `<strong>${isCorrect?L.correct:L.incorrect}</strong>${isCorrect?q.fc:q.fw}`;
+  const msg = isCorrect && q.altFeedback && q.altFeedback[selectedKey] ? q.altFeedback[selectedKey] : (isCorrect?q.fc:q.fw);
+  fb.innerHTML = `<strong>${isCorrect?L.correct:L.incorrect}</strong>${msg}`;
   fb.style.display='block';
   updateProgress();
   const btn = document.getElementById('next-btn');
@@ -1351,6 +1388,57 @@ function goHome(){
   document.getElementById('prog-fill').style.width = '0%';
   updateScorePill();
   show('screen-lang');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function stripHtml(html){
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html || '';
+  return tmp.textContent || tmp.innerText || '';
+}
+
+function reviewAnswerLabel(q){
+  const accepted = q.accepted || [q.answer];
+  if(q.type==='threat') return accepted.map(a=>a===0?LANG.en.cyberThreat:LANG.en.cyberEnabled).join(' / ');
+  if(q.type==='killchain') return accepted.map(a=>`${a+1}. ${LANG.en.kc[a]}`).join(' / ');
+  if(q.type==='actor') return accepted.map(a=>LANG.en.actors[a].name).join(' / ');
+  const groupByType = {layer:'layers', attack:'attacks', intel:'intelMoves'};
+  const group = groupByType[q.type];
+  if(group) return accepted.map(a=>LANG.en[group][a].name).join(' / ');
+  return String(q.answer);
+}
+
+function reviewWhy(q){
+  if(q.accepted && q.altFeedback){
+    return `${stripHtml(q.fc)} ${Object.values(q.altFeedback).map(stripHtml).join(' ')}`;
+  }
+  return stripHtml(q.fc || q.fw);
+}
+
+function showInstructorReview(){
+  clearInterval(typeTimer);
+  clearInterval(missionTimer);
+  const review = document.getElementById('review-content');
+  review.innerHTML = SCENARIOS.map((sc,si)=>{
+    const rows = sc.questions.map((q,qi)=>`<div class="review-row">
+      <div class="review-step">${ui(q.step)}</div>
+      <div class="review-q">${q.text}</div>
+      <div class="review-answer"><strong>Answer:</strong> ${reviewAnswerLabel(q)}</div>
+      <div class="review-discuss">${reviewWhy(q)}</div>
+    </div>`).join('');
+    const prompt = [
+      'Ask: Which clue mattered most, and which clue was tempting but weaker?',
+      'Ask: If you had to brief this in one sentence, what would you say?',
+      'Ask: What would you collect or share next?'
+    ][si] || 'Ask: What would you do next as the intelligence officer?';
+    return `<section class="review-block">
+      <h3>${sc.id} — ${sc.title}</h3>
+      <div class="review-meta">${stripHtml(sc.body)}</div>
+      ${rows}
+      <div class="review-discuss"><strong>Group discussion:</strong> ${prompt}</div>
+    </section>`;
+  }).join('');
+  show('screen-review');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
