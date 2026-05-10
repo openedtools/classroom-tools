@@ -1,0 +1,1014 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OPERATION SAGE COBRA | Block 4 Practical</title>
+  <style>
+    :root {
+      --navy: #0a1628;
+      --navy-2: #10233b;
+      --olive: #5c6e2f;
+      --green: #a0b265;
+      --red: #b22222;
+      --cream: #f5f1e8;
+      --muted: #c9c0a9;
+      --line: rgba(160, 178, 101, 0.55);
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(160, 178, 101, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(160, 178, 101, 0.035) 1px, transparent 1px),
+        radial-gradient(circle at 75% 10%, rgba(92, 110, 47, 0.16), transparent 34rem),
+        var(--navy);
+      background-size: 32px 32px, 32px 32px, auto;
+      color: var(--cream);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18pt;
+      line-height: 1.45;
+    }
+
+    .banner {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 0.45rem 1rem;
+      background: var(--red);
+      color: var(--cream);
+      text-align: center;
+      font: 700 0.9rem/1.2 "Courier New", monospace;
+      letter-spacing: 0.08em;
+      animation: bannerPulse 3.5s ease-in-out infinite;
+    }
+
+    .banner.bottom {
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    @keyframes bannerPulse {
+      0%, 100% { opacity: 0.86; }
+      50% { opacity: 1; }
+    }
+
+    main {
+      width: min(980px, calc(100vw - 28px));
+      margin: 1rem auto 3.7rem;
+      border: 1px solid var(--line);
+      background: rgba(10, 22, 40, 0.9);
+      box-shadow: 0 24px 70px var(--shadow);
+      min-height: calc(100vh - 7.1rem);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(16, 35, 59, 0.9);
+      font-family: "Courier New", monospace;
+      font-size: 0.86rem;
+      text-transform: uppercase;
+    }
+
+    .score {
+      padding: 0.32rem 0.6rem;
+      border: 1px solid var(--line);
+      color: var(--green);
+      min-width: 8rem;
+      text-align: center;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .score.flash {
+      background: var(--green);
+      color: var(--navy);
+    }
+
+    section {
+      padding: clamp(1rem, 3vw, 2rem);
+      position: relative;
+    }
+
+    h1, h2, h3 {
+      font-family: "Courier New", monospace;
+      letter-spacing: 0;
+      line-height: 1.1;
+      margin: 0 0 1rem;
+    }
+
+    h1 { font-size: clamp(2.1rem, 6vw, 4rem); }
+    h2 { font-size: clamp(1.6rem, 4vw, 2.7rem); }
+    h3 { font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--green); }
+
+    p { margin: 0 0 1rem; }
+    strong { color: var(--green); }
+
+    .kicker {
+      color: var(--green);
+      font-family: "Courier New", monospace;
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.7rem;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: rgba(16, 35, 59, 0.72);
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      font-family: "Courier New", monospace;
+      font-size: 0.86rem;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-family: "Courier New", monospace;
+      font-size: 0.86rem;
+      color: var(--green);
+      text-transform: uppercase;
+    }
+
+    input {
+      width: 100%;
+      min-height: 60px;
+      border: 1px solid var(--line);
+      background: #07101f;
+      color: var(--cream);
+      padding: 0.7rem 0.85rem;
+      font: 1rem Arial, Helvetica, sans-serif;
+    }
+
+    button {
+      min-height: 60px;
+      border: 1px solid rgba(245, 241, 232, 0.14);
+      background: var(--olive);
+      color: var(--cream);
+      padding: 0.7rem 1rem;
+      font: 700 0.95rem/1.2 "Courier New", monospace;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover:not(:disabled), button:focus-visible:not(:disabled) {
+      background: var(--green);
+      color: var(--navy);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .button-row button { flex: 1 1 240px; }
+
+    .options {
+      display: grid;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      background: rgba(16, 35, 59, 0.95);
+      border-color: var(--line);
+      text-transform: none;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .option.selected {
+      background: var(--green);
+      color: var(--navy);
+      border-color: var(--cream);
+    }
+
+    .question-text {
+      font-size: clamp(1.25rem, 3vw, 1.65rem);
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .timer {
+      border: 1px solid var(--line);
+      padding: 0.75rem;
+      background: rgba(7, 16, 31, 0.72);
+      margin: 1rem 0;
+      font-family: "Courier New", monospace;
+    }
+
+    .timer.red { border-color: rgba(178, 34, 34, 0.8); }
+    .timer .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .progress {
+      width: 100%;
+      height: 8px;
+      margin-top: 0.5rem;
+      background: rgba(245, 241, 232, 0.12);
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--green);
+      transition: width 0.2s linear;
+    }
+
+    .timer.red .progress span { background: var(--red); }
+
+    .visual {
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: rgba(7, 16, 31, 0.8);
+      margin: 1rem auto;
+      padding: 0.75rem;
+      max-width: 660px;
+    }
+
+    .visual svg {
+      width: 100%;
+      max-width: 600px;
+      max-height: 400px;
+      height: auto;
+      display: block;
+    }
+
+    .stamp {
+      position: absolute;
+      top: 1.1rem;
+      right: 1rem;
+      transform: rotate(6deg);
+      border: 2px solid rgba(178, 34, 34, 0.55);
+      color: rgba(245, 241, 232, 0.72);
+      padding: 0.4rem 0.55rem;
+      font: 700 0.7rem/1 "Courier New", monospace;
+      text-transform: uppercase;
+    }
+
+    .feedback.correct { border-color: var(--green); }
+    .feedback.incorrect { border-color: var(--red); }
+    .feedback h2.correct { color: var(--green); }
+    .feedback h2.incorrect { color: #ff8989; }
+
+    .result-score {
+      font: 700 clamp(3rem, 14vw, 7rem)/1 "Courier New", monospace;
+      color: var(--green);
+      margin: 1rem 0;
+    }
+
+    .small { font-size: 0.82rem; color: var(--muted); }
+    .hidden { display: none; }
+
+    @media (max-width: 650px) {
+      body { font-size: 15pt; }
+      header { align-items: flex-start; flex-direction: column; }
+      .score { width: 100%; }
+      .stamp { position: static; display: inline-block; margin-bottom: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">UNCLASSIFIED // FOR TRAINING USE ONLY</div>
+  <main>
+    <header>
+      <div id="headerTitle">JTF CORAL SHIELD // OPERATION SAGE COBRA</div>
+      <div id="teamHeader">Team: Not Assigned</div>
+      <div id="scoreHeader" class="score">Score: 0</div>
+    </header>
+    <section id="app"></section>
+  </main>
+  <div class="banner bottom">UNCLASSIFIED // FOR TRAINING USE ONLY</div>
+
+  <script>
+    const PHASES = [
+      {
+        id: 1,
+        lesson: "GEOINT (4.1)",
+        title: "First Light Over the Sea of Azure",
+        brief: "JTF CORAL SHIELD has been activated. Krasnovian forces are conducting unusual movements along the western coast of the Sea of Azure. Your J-2 cell needs immediate situational awareness.\n\nLast night, a Krasnovian armored brigade was reported moving from a garrison toward the coast through 200 kilometers of empty desert. Aurican leadership wants to know: where are these vehicles right now, and what route did they take?",
+        visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Desert map with route to coast"><rect width="600" height="360" fill="#10233b"/><rect x="390" y="0" width="210" height="360" fill="#1b4b63"/><path d="M392 0 C360 70 430 130 382 205 C350 260 400 310 382 360" fill="none" stroke="#f5f1e8" stroke-width="5"/><circle cx="105" cy="260" r="20" fill="#a0b265"/><text x="62" y="305" fill="#f5f1e8" font-size="19">GARRISON</text><rect x="430" y="78" width="70" height="45" fill="#5c6e2f"/><text x="409" y="150" fill="#f5f1e8" font-size="19">COASTAL PORT</text><path d="M125 247 C205 185 260 205 318 145 C350 112 390 110 432 103" fill="none" stroke="#b22222" stroke-width="6" stroke-dasharray="12 10"/><polygon points="432,103 410,92 414,119" fill="#b22222"/><text x="42" y="47" fill="#a0b265" font-size="23" font-family="monospace">GEOINT REQUEST PENDING</text><text x="250" y="235" fill="#f5f1e8" font-size="18">MTI SEARCH AREA</text></svg>`,
+        questions: [
+          {
+            prompt: "Which type of GEOINT collection is best suited to detect and track moving vehicles across a large, sparsely populated desert area over several hours?",
+            options: ["Digital Terrain Elevation Data (DTED)", "Synthetic Aperture Radar (SAR) imagery", "Moving Target Indicator (MTI)", "Spectral Analysis"],
+            correct: 2,
+            explanations: ["DTED gives you elevation, not movement detection. Useful for line-of-sight planning, not vehicle tracking.", "SAR is excellent for all-weather imaging and change detection, but for continuous tracking of moving objects the right tool is MTI.", "MTI is purpose-built to detect movement across wide areas. It filters out stationary returns and shows you only what is moving. Perfect for tracking a vehicle column across open terrain.", "Spectral analysis tells you the chemical or material composition of a target. It does not track movement."]
+          },
+          {
+            prompt: "Three days from now, leadership wants forensic look-back capability over the Krasnovian port of Vladivostov. They want to scrub backwards through hours of imagery covering the entire port to see how vehicles moved through it. Which GEOINT capability provides this?",
+            options: ["Full Motion Video (FMV)", "Wide Area Motion Imagery (WAMI)", "Imagery Intelligence (IMINT)", "Geospatial Information (GI)"],
+            correct: 1,
+            explanations: ["FMV gives you continuous video of a small area, typically a single building or compound, not an entire port.", "WAMI is the only GEOINT capability that provides continuous coverage of a large area with forensic look-back. You can scrub backward in time to see how every vehicle moved.", "IMINT is the broader analytical discipline. WAMI is a specific collection capability.", "GI is foundational map and feature data, not motion imagery."]
+          }
+        ],
+        debriefTakeaway: "GEOINT is more than just pictures. The three foundational elements are Imagery, Imagery Intelligence, and Geospatial Information. Within imagery, motion products (FMV, MTI, WAMI) each solve different problems. Match the tool to the question."
+      },
+      {
+        id: 2,
+        lesson: "Electromagnetic Theory (4.2)",
+        title: "The Invisible Battlefield",
+        brief: "Your collection planners want to position a SIGINT collection asset to detect emissions from Krasnovian air defense radars. They have proposed placing the collector on a hilltop 80 kilometers south of the suspected radar site. Between the collector and the radar lies a 1,500-meter mountain ridge.\n\nBefore you approve this collection plan, you need to evaluate whether the proposed site will actually work.",
+        visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Radar waves blocked by mountain"><rect width="600" height="360" fill="#10233b"/><line x1="0" y1="300" x2="600" y2="300" stroke="#5c6e2f" stroke-width="8"/><rect x="55" y="180" width="22" height="120" fill="#a0b265"/><circle cx="66" cy="170" r="22" fill="none" stroke="#f5f1e8" stroke-width="5"/><text x="25" y="330" fill="#f5f1e8" font-size="18">RADAR EMITTER</text><polygon points="225,300 330,95 445,300" fill="#4f5f35" stroke="#a0b265" stroke-width="4"/><text x="276" y="330" fill="#f5f1e8" font-size="18">MOUNTAIN RIDGE</text><path d="M88 170 C130 145 160 195 202 170 C220 158 238 157 258 166" fill="none" stroke="#b22222" stroke-width="5"/><path d="M88 195 C135 170 170 222 220 195 C238 185 254 184 272 191" fill="none" stroke="#b22222" stroke-width="5"/><rect x="502" y="220" width="40" height="80" fill="#a0b265"/><path d="M475 214 Q525 150 575 214" fill="none" stroke="#f5f1e8" stroke-width="5"/><text x="454" y="330" fill="#f5f1e8" font-size="18">SIGINT COLLECTOR</text><text x="238" y="58" fill="#f5f1e8" font-size="22">LINE OF SIGHT BLOCKED</text></svg>`,
+        questions: [
+          {
+            prompt: "Why does the mountain ridge create a blind spot between the Krasnovian radar and your SIGINT collector?",
+            options: ["The terrain physically blocks the line of sight (LOS) of the electromagnetic waves", "The moisture in the terrain absorbs the radar signal", "The terrain generates excessive interference", "The radar signal bounces off the ground too quickly"],
+            correct: 0,
+            explanations: ["Radar and most SIGINT-relevant emissions in the radio/microwave spectrum travel in straight lines (line of sight). Solid terrain blocks them. This is why radar coverage maps always show terrain shadows.", "Atmospheric moisture causes some attenuation but does not fully block signals. The dominant effect here is geometry, not absorption.", "Terrain does not generate RF interference. Other emitters do.", "This is not a real phenomenon."]
+          },
+          {
+            prompt: "The Krasnovian early-warning radar operates at a very low frequency, around 150 MHz. Compared to a higher-frequency radar, such as 10 GHz, what is true about its wavelength?",
+            options: ["The 150 MHz radar has a shorter wavelength", "The 150 MHz radar has a longer wavelength", "Wavelength does not change with frequency", "Wavelength only depends on the radar's power output"],
+            correct: 1,
+            explanations: ["This is the inverse of the relationship. Lower frequency equals longer wavelength.", "Wavelength is inversely proportional to frequency. Lower frequency means longer wavelength. Long wavelengths travel farther with less atmospheric loss. That is why early-warning radars use them.", "They are inversely related. This is a foundational EM principle.", "Wavelength is a property of the wave's frequency, not its power."]
+          }
+        ],
+        debriefTakeaway: "EM waves travel in straight lines. Lower frequency means longer wavelength, longer range, and less detail. Higher frequency means shorter wavelength, shorter range, and more detail. Every radar is a trade-off between these two."
+      },
+      {
+        id: 3,
+        lesson: "RADAR and Kill Chain (4.3)",
+        title: "GREAT EAGLE Wakes Up",
+        brief: "SIGINT just collected a strong emission from a Krasnovian radar designated GREAT EAGLE-1. The signal characteristics show very high power, very long range, low frequency, long wavelength, and a wide, slow-rotating beam.\n\nTwo hours later, a second radar, IRON FANG, activated in the same area with a narrower beam, higher frequency, and a much more focused search pattern.",
+        visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="IADS defensive radar arc"><rect width="600" height="360" fill="#10233b"/><path d="M72 300 Q248 70 520 62" fill="none" stroke="#5c6e2f" stroke-width="3" stroke-dasharray="8 10"/><path d="M120 300 Q287 132 515 122" fill="none" stroke="#5c6e2f" stroke-width="3" stroke-dasharray="8 10"/><path d="M175 300 Q330 190 515 186" fill="none" stroke="#5c6e2f" stroke-width="3" stroke-dasharray="8 10"/><g fill="#a0b265" stroke="#f5f1e8" stroke-width="3"><circle cx="112" cy="252" r="15"/><circle cx="215" cy="205" r="15"/><circle cx="318" cy="158" r="15"/><circle cx="420" cy="112" r="15"/></g><g fill="#f5f1e8" font-size="16"><text x="62" y="285">GREAT EAGLE-1</text><text x="177" y="238">IRON FANG</text><text x="280" y="190">STEEL CLAW</text><text x="382" y="145">DEATH VIPER</text></g><polygon points="535,245 578,259 535,273 547,259" fill="#f5f1e8"/><text x="444" y="300" fill="#f5f1e8" font-size="18">FRIENDLY AIRCRAFT</text><text x="57" y="45" fill="#a0b265" font-size="24" font-family="monospace">LAYERED IADS</text></svg>`,
+        questions: [
+          {
+            prompt: "What is the most likely functional role of GREAT EAGLE-1 in the Krasnovian Integrated Air Defense System?",
+            options: ["Target Tracking", "Early Warning", "Ground Control Intercept (GCI)", "Fire Control"],
+            correct: 1,
+            explanations: ["Tracking radars are narrow-beam, high-frequency, high-precision. GREAT EAGLE's wide beam and low frequency are wrong for tracking.", "Early warning radars are exactly this: very high power, very long range, low frequency, wide beam. Their job is to detect targets at maximum range and cue the rest of the IADS.", "GCI is a command-and-control function, not a long-range detection role.", "Fire control radars are extremely narrow-beam and high-frequency to provide the precision a missile needs. Wrong characteristics."]
+          },
+          {
+            prompt: "The fact that IRON FANG activated after GREAT EAGLE-1 detected the inbound aircraft tells you the IADS is moving from the Find/Search stage to which next stage of the radar kill chain?",
+            options: ["Assess/Review", "Fix/Detection", "Engage/Strike", "Target/Track"],
+            correct: 1,
+            explanations: ["Assess happens at the very end of the kill chain, after engagement.", "The kill chain progresses Find, Fix, Track, Target, Engage, Assess. Once the early warning radar finds something, an acquisition radar like IRON FANG fixes its location more precisely.", "Engagement is the actual missile launch, much later in the sequence.", "Target and Track come after Fix, when a fire-control radar is locked."]
+          },
+          {
+            prompt: "An ELINT analyst at your unit is exploiting GREAT EAGLE-1's emissions. What is the analyst primarily trying to identify and characterize?",
+            options: ["The communication encryption keys used by Krasnovia", "The radar's frequency, power output, and operational patterns", "The financial transactions of the radar operator", "The physical size and altitude of the radar"],
+            correct: 1,
+            explanations: ["That is COMINT cryptanalysis, not ELINT.", "ELINT analysis characterizes non-communications electromagnetic signals. The deliverables are the emitter's technical fingerprint: frequency, PRF, power, scan rate, modulation, and operational behavior.", "Not the role of ELINT.", "Those come from GEOINT, not ELINT."]
+          }
+        ],
+        debriefTakeaway: "An IADS is a system of systems. Each radar has a job. The kill chain progresses from broad detection to precision engagement. Knowing the stage tells you what the adversary will do next."
+      },
+      {
+        id: 4,
+        lesson: "Infrared and Airframe Survival (4.4)",
+        title: "Heat in the Sky",
+        brief: "An Aurican F-16 flying a routine patrol detects a Krasnovian SAM launch. The missile is climbing rapidly toward the aircraft. Your J-2 cell is monitoring in real time. The pilot has roughly 8 seconds to defeat the threat.\n\nYour tech analyst tells you: The seeker is IR-homing. It is tracking the aircraft's hot engine exhaust.",
+        visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="IR missile targeting fighter exhaust"><rect width="600" height="360" fill="#10233b"/><polygon points="165,150 355,130 410,158 355,186 165,166 88,205 112,164 88,124" fill="#f5f1e8" stroke="#a0b265" stroke-width="3"/><polygon points="255,130 305,72 327,136" fill="#c9c0a9"/><polygon points="250,185 305,238 326,180" fill="#c9c0a9"/><circle cx="95" cy="164" r="28" fill="#b22222" opacity="0.75"/><circle cx="95" cy="164" r="46" fill="none" stroke="#b22222" stroke-width="3" opacity="0.45"/><text x="42" y="92" fill="#f5f1e8" font-size="20">HOT ENGINE EXHAUST</text><path d="M445 280 L330 205" stroke="#b22222" stroke-width="6"/><polygon points="320,198 348,202 332,221" fill="#b22222"/><rect x="430" y="270" width="70" height="15" fill="#a0b265" transform="rotate(-33 430 270)"/><text x="350" y="315" fill="#f5f1e8" font-size="21">IR-GUIDED THREAT</text></svg>`,
+        questions: [
+          {
+            prompt: "Why is the aircraft's hot engine exhaust the primary vulnerability against this kind of missile?",
+            options: ["The hot exhaust degrades the aircraft's aerodynamic stability", "The hot exhaust confuses the pilot's internal navigation", "The high heat signature makes it a prominent target for IR-homing guidance systems", "The hot exhaust makes the aircraft vulnerable to radar-guided missiles"],
+            correct: 2,
+            explanations: ["This is a survivability issue but not relevant to IR seekers.", "Not a real effect.", "IR seekers see heat. The engine exhaust is the brightest, most concentrated heat source on the aircraft. To an IR seeker, it lights up like a flare.", "Radar seekers see RF returns, not heat."]
+          },
+          {
+            prompt: "Which countermeasure should the pilot deploy first to defeat an IR-guided missile?",
+            options: ["Deploy chaff", "Activate the radar jamming pod", "Deploy flares", "Enter a Joint Engagement Zone (JEZ)"],
+            correct: 2,
+            explanations: ["Chaff is for radar-guided threats. It creates false radar returns. It does nothing against IR.", "Jamming pods defeat radar threats, not IR. Wrong tool.", "Flares are hotter than the engine exhaust and burn brightly in the IR spectrum. The seeker is fooled into tracking the flare instead of the aircraft. This is the standard IR countermeasure.", "A JEZ is an airspace control measure, not a missile countermeasure."]
+          },
+          {
+            prompt: "A more advanced Krasnovian SAM uses an Imaging Infrared (IIR) seeker rather than a simple hot-spot tracker. Why is the IIR seeker harder to defeat with flares?",
+            options: ["IIR seekers do not see in the infrared spectrum", "IIR seekers build a picture of the target and can distinguish an aircraft shape from a flare's hot point", "Flares only work at night", "IIR seekers are radar-based"],
+            correct: 1,
+            explanations: ["They absolutely do. That is what IIR means.", "An imaging IR seeker compares what it sees to a target template. A flare looks like a bright dot. An aircraft has a recognizable thermal silhouette. The seeker rejects the dot and stays locked on the aircraft.", "Flares are spectrally hot regardless of ambient light.", "IIR is infrared. Different physics entirely."]
+          }
+        ],
+        debriefTakeaway: "IR threats see heat. Defeat them with flares. Radar threats see RF returns. Defeat them with chaff and jamming. Match the countermeasure to the threat type. They are not interchangeable."
+      },
+      {
+        id: 5,
+        lesson: "Cyber Intelligence (4.5)",
+        title: "Black Lotus in the Wire",
+        brief: "The Aurican Ministry of Defense has reported a cyber intrusion. Day 1: a targeted phishing email arrived at a senior MOD planner and contained a malicious attachment. Day 1: the planner opened it and custom malware installed. Day 2: the malware established a connection to an external server controlled by the attacker. Day 5: encrypted MOD planning documents were exfiltrated.\n\nThe technical signatures match APT-41 (BLACK LOTUS), previously linked to Krasnovian state-sponsored operations.",
+        visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Cyber kill chain"><rect width="600" height="360" fill="#10233b"/><text x="50" y="48" fill="#a0b265" font-size="24" font-family="monospace">CYBER KILL CHAIN</text><g font-size="15" font-family="Arial" text-anchor="middle"><rect x="30" y="125" width="96" height="75" fill="#5c6e2f" stroke="#f5f1e8"/><text x="78" y="156" fill="#f5f1e8">Recon</text><text x="78" y="178" fill="#f5f1e8">Targeting</text><rect x="142" y="125" width="96" height="75" fill="#5c6e2f" stroke="#f5f1e8"/><text x="190" y="153" fill="#f5f1e8">Weapon</text><text x="190" y="175" fill="#f5f1e8">Delivery</text><rect x="254" y="125" width="96" height="75" fill="#b22222" stroke="#f5f1e8"/><text x="302" y="153" fill="#f5f1e8">Exploit</text><text x="302" y="175" fill="#f5f1e8">Install</text><rect x="366" y="125" width="96" height="75" fill="#b22222" stroke="#f5f1e8"/><text x="414" y="153" fill="#f5f1e8">Command</text><text x="414" y="175" fill="#f5f1e8">Control</text><rect x="478" y="125" width="96" height="75" fill="#b22222" stroke="#f5f1e8"/><text x="526" y="153" fill="#f5f1e8">Actions on</text><text x="526" y="175" fill="#f5f1e8">Objectives</text></g><g stroke="#a0b265" stroke-width="4"><line x1="126" y1="163" x2="142" y2="163"/><line x1="238" y1="163" x2="254" y2="163"/><line x1="350" y1="163" x2="366" y2="163"/><line x1="462" y1="163" x2="478" y2="163"/></g><text x="208" y="254" fill="#f5f1e8" font-size="20">Scenario highlights intrusion stages</text></svg>`,
+        questions: [
+          {
+            prompt: "Based on the technical sophistication, custom malware, and likely state sponsorship, which threat actor category does BLACK LOTUS represent?",
+            options: ["Insider Threat", "Criminal Organization", "Ideological Hacktivist", "Nation-State Actor"],
+            correct: 3,
+            explanations: ["An insider has authorized access and works from inside. This was an external intrusion.", "Criminal groups are typically financially motivated. The target was government planning data, not money.", "Hacktivists usually deface sites or leak data publicly. This was quiet espionage.", "Nation-state actors are highly skilled, politically motivated, well-resourced, and use custom tooling for long-term espionage. The technical sophistication and state linkage point to this category."]
+          },
+          {
+            prompt: "When BLACK LOTUS established that connection to the external server on Day 2 and began mapping internal systems, which stage of the Cyber Kill Chain were they operating in?",
+            options: ["Reconnaissance", "Weaponization/Delivery", "Command and Control (C2)", "Exploitation/Installation"],
+            correct: 2,
+            explanations: ["Reconnaissance is the first stage, gathering target information before any access is gained. By Day 2, the intruder was already inside.", "That happened on Day 1 when the malicious email was crafted and sent.", "C2 is when the attacker establishes persistent two-way communication with the compromised system to issue commands and conduct lateral movement. That is exactly what is described on Day 2.", "That happened on Day 1 when the malware installed itself on the planner's workstation."]
+          },
+          {
+            prompt: "Krasnovian state media is also amplifying false news stories about Aurican leadership corruption to demoralize the Aurican public. This is not an attack on a network. It uses cyberspace to influence opinion. What category does this represent?",
+            options: ["A traditional cyber attack", "A cyber-enabled threat", "A denial-of-service attack", "A supply chain attack"],
+            correct: 1,
+            explanations: ["A traditional cyber attack targets infrastructure or data. This targets minds.", "Cyber-enabled threats use cyberspace as a delivery mechanism for traditional activities like influence operations or propaganda. They do not break the network. They use it to break trust.", "DoS attacks take systems offline. This campaign uses systems normally to spread content.", "Supply chain attacks compromise software or hardware before it reaches the target."]
+          }
+        ],
+        debriefTakeaway: "Cyber intelligence distinguishes between attacks on the network and operations through the network. Both matter. Both have stages. Both can be attributed."
+      },
+      {
+        id: 6,
+        lesson: "Information Operations (4.6)",
+        title: "OPERATION QUIET TIDE",
+        brief: "Krasnovian state media has launched a coordinated campaign against Aurica. The campaign posts fabricated videos claiming Aurican forces committed war crimes, pays local users to share genuine but misleading photos with false captions, and conducts cyber-enabled DDoS attacks against Aurican news websites to prevent counter-messaging.\n\nYour J-2 cell needs to characterize this campaign for the JFC.",
+        visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Information environment dimensions"><rect width="600" height="360" fill="#10233b"/><circle cx="300" cy="180" r="145" fill="none" stroke="#5c6e2f" stroke-width="5"/><circle cx="300" cy="180" r="100" fill="none" stroke="#a0b265" stroke-width="5"/><circle cx="300" cy="180" r="56" fill="none" stroke="#b22222" stroke-width="5"/><rect x="268" y="129" width="64" height="102" rx="8" fill="#f5f1e8"/><rect x="277" y="143" width="46" height="68" fill="#0a1628"/><circle cx="300" cy="220" r="4" fill="#0a1628"/><text x="252" y="38" fill="#f5f1e8" font-size="21">PHYSICAL</text><text x="232" y="80" fill="#f5f1e8" font-size="21">INFORMATIONAL</text><text x="246" y="116" fill="#f5f1e8" font-size="21">COGNITIVE</text><text x="198" y="300" fill="#a0b265" font-size="22" font-family="monospace">PHONE - DATA - MIND</text></svg>`,
+        questions: [
+          {
+            prompt: "The Information Environment is composed of which three interconnected dimensions?",
+            options: ["Strategic, Operational, and Tactical", "Electronic, Human, and Data", "Physical, Informational, and Cognitive", "Communications, Sensing, and Computing"],
+            correct: 2,
+            explanations: ["These are levels of war, not dimensions of the IE.", "Plausible-sounding but not the doctrinal answer.", "The IE has three dimensions: Physical, Informational, and Cognitive. Memorize this triad.", "These are functional domains, not IE dimensions."]
+          },
+          {
+            prompt: "The Krasnovians are deliberately fabricating videos of Aurican war crimes, knowing they are false, in order to deceive Aurican and international audiences. What is the correct term for this?",
+            options: ["Misinformation", "Propaganda (MILDEC)", "Disinformation", "Cognitive Bias"],
+            correct: 2,
+            explanations: ["Misinformation is false information shared without intent to deceive. Someone shares a wrong story believing it is true.", "MILDEC is targeted at adversary military decision-makers, not general public audiences, and is governed by stricter doctrine.", "Disinformation is false information deliberately created and spread to deceive. The intent is the discriminator. Fabricated videos with intent to deceive equal disinformation.", "Cognitive bias is a property of the receiver's reasoning, not a category of information operation."]
+          },
+          {
+            prompt: "Aurican forces are preparing a counter-messaging campaign aimed at influencing the emotions, motives, and conduct of Krasnovian-aligned populations in border regions. Which IO core capability is this?",
+            options: ["Operations Security (OPSEC)", "Military Information Support Operations (MISO)", "Cyberspace Operations", "Military Deception (MILDEC)"],
+            correct: 1,
+            explanations: ["OPSEC protects friendly information from adversary collection. It is defensive, not influencing.", "MISO is the doctrinal capability for conveying selected information to foreign audiences to influence their emotions, motives, and conduct. That is the literal definition.", "Cyber ops act in cyberspace. MISO is broader. It can use any medium.", "MILDEC targets adversary decision-makers, not foreign populations broadly."]
+          }
+        ],
+        debriefTakeaway: "IO works in three dimensions: Physical, Informational, Cognitive. The intelligence officer's job is to identify adversary vulnerabilities in the IE so friendly capabilities can exploit them."
+      },
+      {
+        id: 7,
+        lesson: "ISR Fundamentals (4.7)",
+        title: "From Question to Answer",
+        brief: "The JFC has issued a new Priority Intelligence Requirement (PIR): PIR-04 asks what indicators show Krasnovian forces will conduct an amphibious assault on the Aurican coast within the next 96 hours.\n\nYour ISR cell now needs to convert this question into actionable collection.",
+        visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="ISR process cycle"><rect width="600" height="360" fill="#10233b"/><circle cx="300" cy="180" r="55" fill="#5c6e2f" stroke="#f5f1e8" stroke-width="3"/><text x="281" y="188" fill="#f5f1e8" font-size="27" font-family="monospace">PIR</text><g text-anchor="middle" font-size="16" font-family="Arial"><rect x="230" y="35" width="140" height="54" fill="#b22222" stroke="#f5f1e8"/><text x="300" y="58" fill="#f5f1e8">Planning and</text><text x="300" y="78" fill="#f5f1e8">Direction</text><rect x="420" y="125" width="120" height="54" fill="#5c6e2f" stroke="#f5f1e8"/><text x="480" y="158" fill="#f5f1e8">Collection</text><rect x="360" y="260" width="150" height="54" fill="#5c6e2f" stroke="#f5f1e8"/><text x="435" y="282" fill="#f5f1e8">Processing and</text><text x="435" y="302" fill="#f5f1e8">Exploitation</text><rect x="90" y="260" width="150" height="54" fill="#5c6e2f" stroke="#f5f1e8"/><text x="165" y="282" fill="#f5f1e8">Analysis and</text><text x="165" y="302" fill="#f5f1e8">Production</text><rect x="60" y="125" width="150" height="54" fill="#5c6e2f" stroke="#f5f1e8"/><text x="135" y="147" fill="#f5f1e8">Dissemination and</text><text x="135" y="167" fill="#f5f1e8">Integration</text></g><path d="M365 76 C430 85 466 103 484 126" fill="none" stroke="#a0b265" stroke-width="4"/><path d="M489 180 C496 222 475 244 449 260" fill="none" stroke="#a0b265" stroke-width="4"/><path d="M360 292 C310 328 252 324 215 307" fill="none" stroke="#a0b265" stroke-width="4"/><path d="M118 260 C89 226 82 196 91 177" fill="none" stroke="#a0b265" stroke-width="4"/><path d="M139 125 C163 93 197 78 230 67" fill="none" stroke="#a0b265" stroke-width="4"/></svg>`,
+        questions: [
+          {
+            prompt: "Where in the ISR process does your cell first address PIR-04?",
+            options: ["Processing and Exploitation", "Analysis and Production", "Planning and Direction (P&D)", "Dissemination and Integration"],
+            correct: 2,
+            explanations: ["P&E is where collected raw data is converted into usable form. You have not collected anything yet.", "A&P is where analysts produce intelligence products. Still further downstream.", "P&D is where the intelligence team converts a PIR into a collection plan. Every PIR enters the cycle here. This is always the first step when a new requirement comes in.", "D&I happens at the end, when the finished product reaches the consumer."]
+          },
+          {
+            prompt: "Aurican drones have been collecting full-motion video over the Krasnovian coast for six hours. The raw video files now sit on a server. Which ISR stage uses systems like the Distributed Common Ground System (DCGS) to convert that raw video into usable intelligence?",
+            options: ["Processing and Exploitation (P&E)", "Planning and Direction", "Analysis and Production", "Dissemination and Integration"],
+            correct: 0,
+            explanations: ["P&E is exactly this: turning raw collected data into a usable product through systems like DCGS. The product then flows into A&P.", "P&D is upstream. It tasks the collection.", "A&P comes after P&E and produces finished intelligence.", "D&I delivers the finished product to the consumer."]
+          },
+          {
+            prompt: "Your cell decides to use Aurican Navy ships to maintain a 24-hour radar watch on a 200 km stretch of Krasnovian coast. This is best described as surveillance rather than reconnaissance. Why?",
+            options: ["Surveillance is systematic and continuous observation of an area; reconnaissance is a discrete mission to obtain specific information", "Surveillance only happens in the air", "Reconnaissance is illegal", "The two terms mean the same thing"],
+            correct: 0,
+            explanations: ["This is the doctrinal distinction. A continuous radar watch is the textbook definition of surveillance. A specific drone overflight to confirm one specific target would be reconnaissance.", "Surveillance can happen in any domain.", "Reconnaissance is a normal military activity.", "They are doctrinally distinct."]
+          }
+        ],
+        debriefTakeaway: "ISR is a cycle: Plan, Collect, Process, Analyze, Disseminate, repeat. Every PIR enters at P&D. Every raw collection passes through P&E. Know the stages."
+      },
+      {
+        id: 8,
+        lesson: "Space Operations (4.8)",
+        title: "DRAGON'S EYE Awakens",
+        brief: "A Krasnovian satellite designated DRAGON'S EYE-3 was placed in geostationary orbit above the equator three months ago. Your space intelligence cell has now confirmed its payload type.\n\nMeanwhile, Aurican leadership has reported a new threat: an unidentified satellite has approached Aurica's primary military communications satellite at unusually close range and appears to have a maneuvering capability.",
+        visualSVG: `<svg viewBox="0 0 600 360" role="img" aria-label="Earth and orbital rings"><rect width="600" height="360" fill="#10233b"/><circle cx="300" cy="180" r="45" fill="#1b4b63" stroke="#f5f1e8" stroke-width="3"/><circle cx="300" cy="180" r="80" fill="none" stroke="#5c6e2f" stroke-width="2"/><circle cx="300" cy="180" r="115" fill="none" stroke="#5c6e2f" stroke-width="2"/><circle cx="300" cy="180" r="152" fill="none" stroke="#a0b265" stroke-width="3"/><ellipse cx="300" cy="180" rx="58" ry="154" fill="none" stroke="#b22222" stroke-width="3"/><circle cx="452" cy="180" r="10" fill="#f5f1e8"/><rect x="430" y="174" width="14" height="12" fill="#a0b265"/><rect x="461" y="174" width="14" height="12" fill="#a0b265"/><text x="64" y="103" fill="#f5f1e8" font-size="18">LEO</text><text x="72" y="74" fill="#f5f1e8" font-size="18">MEO</text><text x="450" y="161" fill="#f5f1e8" font-size="18">GEO: DRAGON'S EYE-3</text><text x="352" y="48" fill="#f5f1e8" font-size="18">POLAR</text><text x="244" y="186" fill="#f5f1e8" font-size="20">EARTH</text></svg>`,
+        questions: [
+          {
+            prompt: "What operational advantage does GEO orbit give DRAGON'S EYE-3 that other orbits do not?",
+            options: ["The highest possible image resolution", "The ability to remain over the same fixed spot on the equator, providing continuous long-term coverage", "The cheapest possible launch cost", "The shortest revisit time over a tactical target"],
+            correct: 1,
+            explanations: ["LEO satellites get higher resolution because they are closer to Earth.", "GEO satellites orbit at the same speed Earth rotates, so they appear stationary over a fixed point. This is ideal for continuous communications, weather, and persistent surveillance, but only over the equatorial belt.", "GEO is the most expensive orbit to reach because it requires the most energy.", "LEO has the shortest revisit because the satellite passes overhead frequently."]
+          },
+          {
+            prompt: "DRAGON'S EYE-3's payload is designed to detect and measure naturally emitted or reflected energy from objects on Earth, including IR signatures and radar emissions. Which payload category is this?",
+            options: ["Communications (SATCOM)", "Navigation (GPS/Galileo)", "Remote Sensing / MASINT", "Human Intelligence (HUMINT)"],
+            correct: 2,
+            explanations: ["SATCOM relays signals. It does not measure environmental energy.", "PNT payloads broadcast precise timing and position signals. They do not observe Earth.", "MASINT and remote sensing payloads detect and measure naturally emitted or reflected energy: IR, radar, and spectral signatures. This is exactly what is described.", "HUMINT is collected by people, not satellites."]
+          },
+          {
+            prompt: "The unidentified satellite approaching Aurica's communications satellite at close range with maneuvering capability is best categorized as which type of counterspace threat?",
+            options: ["A non-kinetic cyber threat", "A kinetic counterspace threat, a co-orbital ASAT capability designed to physically interfere with or destroy the target satellite", "An electronic warfare jamming threat", "A natural orbital debris event"],
+            correct: 1,
+            explanations: ["Cyber threats target the satellite through code, not physical proximity.", "Co-orbital ASATs maneuver close to the target and can disable or destroy it through physical means such as collision, robotic arm, or projectile. The maneuvering close-approach behavior is the signature of a kinetic counterspace threat.", "EW jamming does not require physical proximity.", "Debris does not maneuver."]
+          }
+        ],
+        debriefTakeaway: "Match orbit to mission. GEO equals persistent coverage of the equator. LEO equals high resolution and short revisit. MEO equals navigation. Polar equals global coverage. Threats can be kinetic or non-kinetic."
+      }
+    ];
+
+    const CAPSTONE = {
+      title: "JFC Intelligence Brief - 20 Minutes To Go",
+      brief: "The JFC has been notified by Aurican leadership of imminent Krasnovian aggression. You have 15 minutes to assemble the J-2 brief. Your cell has gathered raw intelligence in the last hour.\n\nGEOINT: WAMI coverage shows 14 amphibious vessels loading vehicles. MTI shows a 60-vehicle armored column moving toward the port.\n\nSIGINT: Three radars are active: early warning, acquisition, and fire control.\n\nIR: OPIR detected three SAM launches from coastal sites.\n\nCYBER: BLACK LOTUS reactivated infrastructure linked to last month's MOD intrusion. Lateral movement is detected in the Aurican logistics network.\n\nIO: Krasnovian state media claims Aurica fired first.\n\nSPACE: DRAGON'S EYE-3, a GEO MASINT satellite, re-pointed its sensor and is staring at the Aurican coast.",
+      questions: [
+        {
+          prompt: "Based on the radar pattern, with early warning, acquisition, and fire control all active, where is the Krasnovian air defense kill chain right now?",
+          options: ["Find / Search", "Fix / Detection", "Track / Target - fire control radar locked means target stage", "Assess"],
+          correct: 2,
+          explanations: ["Find/Search is earlier. The IADS has already moved past broad detection.", "Fix/Detection is earlier. Acquisition has already happened.", "Correct. A fire-control radar lock indicates the system has moved into the Track/Target portion of the kill chain.", "Assess happens after engagement, not before."]
+        },
+        {
+          prompt: "The raw GEOINT, SIGINT, and IR data above are sitting on servers. Before a JFC can act, which ISR stage must first turn it into usable intelligence?",
+          options: ["Planning and Direction", "Processing and Exploitation (DCGS)", "Dissemination and Integration", "Targeting"],
+          correct: 1,
+          explanations: ["Planning and Direction sets requirements before collection.", "Correct. Processing and Exploitation turns raw data into usable intelligence through systems such as DCGS.", "Dissemination and Integration delivers finished intelligence after it has been processed and analyzed.", "Targeting is not the ISR processing stage described here."]
+        },
+        {
+          prompt: "The Krasnovian narrative that Aurica fired first is being deliberately spread to manipulate international audiences. What is it?",
+          options: ["Misinformation", "Disinformation", "MISO", "OPSEC"],
+          correct: 1,
+          explanations: ["Misinformation lacks intent to deceive. This campaign is deliberate.", "Correct. Disinformation is false information deliberately created and spread to deceive.", "MISO is a friendly capability to influence foreign audiences. This question asks how to categorize the adversary's false narrative.", "OPSEC protects friendly information."]
+        },
+        {
+          prompt: "DRAGON'S EYE-3 is now staring at the Aurican coast from GEO. Which response option preserves international norms while disrupting its collection?",
+          options: ["Kinetic ASAT strike on the satellite", "Physical destruction of the ground station", "Non-kinetic counterspace - directed energy or jamming to disrupt sensor", "Do nothing"],
+          correct: 2,
+          explanations: ["A kinetic ASAT strike creates escalation and debris risks.", "Destroying a ground station is a physical strike and may escalate the conflict.", "Correct. Non-kinetic counterspace can disrupt collection while preserving international norms better than physical destruction.", "Doing nothing allows the collection to continue uncontested."]
+        },
+        {
+          prompt: "BLACK LOTUS is moving laterally in the Aurican logistics network and Krasnovia is amplifying disinformation online. The JFC asks: are these the same kind of threat?",
+          options: ["Yes - both are cyber attacks", "No - lateral movement is a cyber attack on infrastructure; disinformation amplification is a cyber-enabled influence threat. Different categories, different responses.", "No - only the disinformation is real", "Yes - both are kinetic threats"],
+          correct: 1,
+          explanations: ["The disinformation campaign uses cyberspace but does not attack the network itself.", "Correct. Lateral movement is a cyber attack on infrastructure. Disinformation amplification is cyber-enabled influence. They require different responses.", "Both are real threats, but they belong to different categories.", "Neither is a kinetic threat."]
+        }
+      ]
+    };
+
+    const PHASE_POINTS = 20;
+    const CAPSTONE_POINTS = 30;
+    const DISCUSSION_SECONDS = 60;
+    const NEXT_COOLDOWN_SECONDS = 5;
+    const CAPSTONE_SECONDS = 240;
+
+    const state = {
+      screen: "intro",
+      teamName: "",
+      score: 0,
+      phaseIndex: 0,
+      questionIndex: 0,
+      selected: null,
+      lastCorrect: false,
+      lastExplanation: "",
+      phaseCorrect: 0,
+      capstoneIndex: 0,
+      timerId: null,
+      locked: true,
+      finalShown: false
+    };
+
+    const app = document.getElementById("app");
+    const scoreHeader = document.getElementById("scoreHeader");
+    const teamHeader = document.getElementById("teamHeader");
+    const headerTitle = document.getElementById("headerTitle");
+
+    function clearTimer() {
+      if (state.timerId) {
+        clearInterval(state.timerId);
+        state.timerId = null;
+      }
+    }
+
+    function updateHeader() {
+      teamHeader.textContent = `Team: ${state.teamName || "Not Assigned"}`;
+      scoreHeader.textContent = `Score: ${state.score}`;
+    }
+
+    function addPoints(points) {
+      state.score += points;
+      updateHeader();
+      scoreHeader.classList.add("flash");
+      setTimeout(() => scoreHeader.classList.remove("flash"), 650);
+    }
+
+    function formatTime(total) {
+      const min = Math.floor(total / 60).toString().padStart(2, "0");
+      const sec = (total % 60).toString().padStart(2, "0");
+      return `${min}:${sec}`;
+    }
+
+    function textBlock(text) {
+      return text.split("\n\n").map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join("");
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function render(html) {
+      clearTimer();
+      app.innerHTML = html;
+      updateHeader();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function startCountdown(total, options) {
+      let remaining = total;
+      const count = document.getElementById(options.countId);
+      const bar = document.getElementById(options.barId);
+      const targetButton = options.buttonId ? document.getElementById(options.buttonId) : null;
+
+      function tick() {
+        if (count) count.textContent = formatTime(remaining);
+        if (bar) bar.style.width = `${((total - remaining) / total) * 100}%`;
+        if (remaining <= 0) {
+          clearTimer();
+          if (bar) bar.style.width = "100%";
+          if (targetButton) {
+            targetButton.disabled = false;
+            targetButton.removeAttribute("title");
+          }
+          state.locked = false;
+          if (options.onDone) options.onDone();
+          return;
+        }
+        remaining -= 1;
+      }
+
+      tick();
+      state.timerId = setInterval(tick, 1000);
+    }
+
+    function startCooldown(buttonId, seconds, label, readyLabel) {
+      let remaining = seconds;
+      const button = document.getElementById(buttonId);
+      button.disabled = true;
+      button.textContent = `${label} (${remaining})`;
+      const id = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(id);
+          button.disabled = false;
+          button.textContent = readyLabel;
+          return;
+        }
+        button.textContent = `${label} (${remaining})`;
+      }, 1000);
+    }
+
+    function renderIntro() {
+      headerTitle.textContent = "JTF CORAL SHIELD // OPERATION SAGE COBRA";
+      render(`
+        <div class="kicker">Block 4 Integration Exercise</div>
+        <h1>OPERATION SAGE COBRA</h1>
+        <p>Work in pairs. Read each scenario. Discuss with your partner before submitting. Points are for friendly competition only.</p>
+        <div class="grid meta-grid panel">
+          <div>Mode: Local single-file app</div>
+          <div>Duration: 120 minutes</div>
+          <div>Max Score: ${totalPossible()}</div>
+        </div>
+        <div class="panel">
+          <label for="teamName">Team Name</label>
+          <input id="teamName" autocomplete="off" maxlength="40" placeholder="Enter team name">
+        </div>
+        <div class="button-row">
+          <button id="beginBtn">Begin Mission</button>
+        </div>
+      `);
+      document.getElementById("beginBtn").addEventListener("click", () => {
+        const name = document.getElementById("teamName").value.trim();
+        state.teamName = name || "CORAL SHIELD TEAM";
+        updateHeader();
+        renderBriefing();
+      });
+    }
+
+    function renderBriefing() {
+      headerTitle.textContent = "Mission Briefing";
+      render(`
+        <div class="kicker">Joint Task Force CORAL SHIELD</div>
+        <h2>Scenario Backstory</h2>
+        <p>The People's Republic of Krasnovia has begun aggressive military posturing against the Republic of Aurica in the Sea of Azure region.</p>
+        <p>Krasnovia has fielded a coastal air defense system, activated suspicious satellite assets, launched an information campaign, and been linked to a cyber intrusion at the Aurican defense ministry.</p>
+        <p>Your team is assigned to the J-2 intelligence cell. Build the intelligence picture across all collection disciplines and prepare the JFC brief.</p>
+        <div class="button-row">
+          <button id="phaseBtn">Begin Phase 1</button>
+        </div>
+      `);
+      document.getElementById("phaseBtn").addEventListener("click", () => renderPhaseBrief());
+    }
+
+    function renderPhaseBrief() {
+      state.selected = null;
+      state.questionIndex = 0;
+      state.phaseCorrect = 0;
+      state.locked = true;
+      const phase = PHASES[state.phaseIndex];
+      headerTitle.textContent = `Phase ${phase.id} // ${phase.lesson}`;
+      render(`
+        <div class="stamp">FOR JTF CORAL SHIELD EYES ONLY</div>
+        <div class="kicker">Phase ${phase.id} // ${phase.lesson}</div>
+        <h2 id="typeTitle"></h2>
+        <div class="visual">${phase.visualSVG}</div>
+        <div class="panel">${textBlock(phase.brief)}</div>
+        ${timerMarkup("discussion", "Discuss with your partner", false)}
+        <div class="button-row">
+          <button id="continueBtn" disabled title="Discuss with your partner first">Continue to Questions</button>
+        </div>
+      `);
+      typeTitle(phase.title);
+      startCountdown(DISCUSSION_SECONDS, {
+        countId: "discussionCount",
+        barId: "discussionBar",
+        buttonId: "continueBtn"
+      });
+      document.getElementById("continueBtn").addEventListener("click", () => renderPhaseQuestion());
+    }
+
+    function renderPhaseQuestion() {
+      state.selected = null;
+      state.locked = true;
+      const phase = PHASES[state.phaseIndex];
+      const question = phase.questions[state.questionIndex];
+      headerTitle.textContent = `Phase ${phase.id} Question ${state.questionIndex + 1} of ${phase.questions.length}`;
+      render(`
+        <div class="kicker">${phase.lesson}</div>
+        <h2>${phase.title}</h2>
+        <p class="question-text">${escapeHtml(question.prompt)}</p>
+        ${timerMarkup("question", "Question discussion lock", false)}
+        <div class="options">
+          ${question.options.map((option, index) => `<button class="option" data-index="${index}">${String.fromCharCode(65 + index)}. ${escapeHtml(option)}</button>`).join("")}
+        </div>
+        <div class="button-row">
+          <button id="submitBtn" disabled title="Discuss with your partner first">Submit Answer</button>
+        </div>
+      `);
+      document.querySelectorAll(".option").forEach(button => {
+        button.addEventListener("click", () => {
+          state.selected = Number(button.dataset.index);
+          document.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
+          button.classList.add("selected");
+          const submit = document.getElementById("submitBtn");
+          submit.disabled = state.locked;
+        });
+      });
+      document.getElementById("submitBtn").addEventListener("click", submitPhaseAnswer);
+      startCountdown(DISCUSSION_SECONDS, {
+        countId: "questionCount",
+        barId: "questionBar",
+        buttonId: "submitBtn",
+        onDone: () => {
+          if (state.selected === null) document.getElementById("submitBtn").disabled = true;
+        }
+      });
+    }
+
+    function submitPhaseAnswer() {
+      if (state.selected === null) return;
+      const phase = PHASES[state.phaseIndex];
+      const question = phase.questions[state.questionIndex];
+      state.lastCorrect = state.selected === question.correct;
+      state.lastExplanation = question.explanations[state.selected];
+      if (state.lastCorrect) {
+        state.phaseCorrect += 1;
+        addPoints(PHASE_POINTS);
+      }
+      renderFeedback(false);
+    }
+
+    function renderFeedback(isCapstone) {
+      const resultClass = state.lastCorrect ? "correct" : "incorrect";
+      const label = state.lastCorrect ? "CORRECT" : "INCORRECT";
+      render(`
+        <div class="panel feedback ${resultClass}">
+          <h2 class="${resultClass}">${label}</h2>
+          <p>${escapeHtml(state.lastExplanation)}</p>
+        </div>
+        <div class="button-row">
+          <button id="nextBtn">Continue</button>
+        </div>
+      `);
+      startCooldown("nextBtn", NEXT_COOLDOWN_SECONDS, "Review feedback", "Continue");
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        if (isCapstone) {
+          state.capstoneIndex += 1;
+          if (state.capstoneIndex >= CAPSTONE.questions.length) renderResults();
+          else renderCapstoneQuestion();
+          return;
+        }
+        const phase = PHASES[state.phaseIndex];
+        state.questionIndex += 1;
+        if (state.questionIndex >= phase.questions.length) renderPhaseDebrief();
+        else renderPhaseQuestion();
+      });
+    }
+
+    function renderPhaseDebrief() {
+      const phase = PHASES[state.phaseIndex];
+      render(`
+        <div class="kicker">Mission Debrief // Phase ${phase.id}</div>
+        <h2>${phase.title}</h2>
+        <div class="panel">
+          <h3>Key Takeaway</h3>
+          <p>${escapeHtml(phase.debriefTakeaway)}</p>
+          <p class="small">Phase score: ${state.phaseCorrect} of ${phase.questions.length} correct.</p>
+        </div>
+        <div class="button-row">
+          <button id="nextPhaseBtn">${state.phaseIndex === PHASES.length - 1 ? "Continue to Capstone" : "Continue to Next Phase"}</button>
+        </div>
+      `);
+      document.getElementById("nextPhaseBtn").addEventListener("click", () => {
+        state.phaseIndex += 1;
+        if (state.phaseIndex >= PHASES.length) renderCapstoneBrief();
+        else renderPhaseBrief();
+      });
+    }
+
+    function renderCapstoneBrief() {
+      headerTitle.textContent = "Capstone // JFC Intelligence Brief";
+      render(`
+        <div class="kicker">Capstone Integrative Challenge</div>
+        <h2>${CAPSTONE.title}</h2>
+        <div class="panel">${textBlock(CAPSTONE.brief)}</div>
+        <p>Five questions follow. Each has a 4-minute countdown. If time expires before you submit, the answer is counted as incorrect.</p>
+        <div class="button-row">
+          <button id="beginCapstoneBtn">Begin Capstone</button>
+        </div>
+      `);
+      document.getElementById("beginCapstoneBtn").addEventListener("click", () => {
+        state.capstoneIndex = 0;
+        renderCapstoneQuestion();
+      });
+    }
+
+    function renderCapstoneQuestion() {
+      state.selected = null;
+      state.locked = false;
+      const question = CAPSTONE.questions[state.capstoneIndex];
+      headerTitle.textContent = `Capstone Question ${state.capstoneIndex + 1} of ${CAPSTONE.questions.length}`;
+      render(`
+        <div class="kicker">Capstone // Quick-Fire Assessment</div>
+        <p class="question-text">${escapeHtml(question.prompt)}</p>
+        ${timerMarkup("capstone", "Capstone countdown", true)}
+        <div class="options">
+          ${question.options.map((option, index) => `<button class="option" data-index="${index}">${String.fromCharCode(65 + index)}. ${escapeHtml(option)}</button>`).join("")}
+        </div>
+        <div class="button-row">
+          <button id="submitCapstoneBtn" disabled>Submit Answer</button>
+        </div>
+      `);
+      document.querySelectorAll(".option").forEach(button => {
+        button.addEventListener("click", () => {
+          state.selected = Number(button.dataset.index);
+          document.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
+          button.classList.add("selected");
+          document.getElementById("submitCapstoneBtn").disabled = false;
+        });
+      });
+      document.getElementById("submitCapstoneBtn").addEventListener("click", submitCapstoneAnswer);
+      startCountdown(CAPSTONE_SECONDS, {
+        countId: "capstoneCount",
+        barId: "capstoneBar",
+        onDone: () => {
+          state.lastCorrect = false;
+          state.lastExplanation = "Time expired. No points awarded. Review the intelligence picture and keep moving.";
+          renderFeedback(true);
+        }
+      });
+    }
+
+    function submitCapstoneAnswer() {
+      if (state.selected === null) return;
+      const question = CAPSTONE.questions[state.capstoneIndex];
+      state.lastCorrect = state.selected === question.correct;
+      state.lastExplanation = question.explanations[state.selected];
+      if (state.lastCorrect) addPoints(CAPSTONE_POINTS);
+      renderFeedback(true);
+    }
+
+    function renderResults() {
+      const total = totalPossible();
+      const pct = state.score / total;
+      let title = "RECOMMEND REMEDIAL REVIEW WITH INSTRUCTOR";
+      if (pct >= 0.9) title = "JFC TRUSTED ADVISOR";
+      else if (pct >= 0.7) title = "ASSESSED COMPETENT";
+      else if (pct >= 0.5) title = "REQUIRES ADDITIONAL TRAINING";
+      headerTitle.textContent = "Mission Complete";
+      render(`
+        <div class="kicker">Final Results</div>
+        <h2>${escapeHtml(state.teamName)}</h2>
+        <div id="animatedScore" class="result-score">0</div>
+        <div class="panel">
+          <h3>${title}</h3>
+          <p>Total possible score: ${total}</p>
+          <p>Write your team name, score, and title on the instructor leaderboard.</p>
+        </div>
+        <div class="button-row">
+          <button id="restartBtn">Restart Exercise</button>
+        </div>
+      `);
+      animateScore(state.score);
+      document.getElementById("restartBtn").addEventListener("click", () => {
+        Object.assign(state, {
+          screen: "intro",
+          teamName: "",
+          score: 0,
+          phaseIndex: 0,
+          questionIndex: 0,
+          selected: null,
+          lastCorrect: false,
+          lastExplanation: "",
+          phaseCorrect: 0,
+          capstoneIndex: 0,
+          timerId: null,
+          locked: true
+        });
+        updateHeader();
+        renderIntro();
+      });
+    }
+
+    function animateScore(finalScore) {
+      const el = document.getElementById("animatedScore");
+      const duration = 3000;
+      const start = performance.now();
+      function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        el.textContent = Math.round(finalScore * progress);
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function timerMarkup(id, label, red) {
+      return `
+        <div class="timer ${red ? "red" : ""}">
+          <div class="row">
+            <span>${label}</span>
+            <strong id="${id}Count">00:00</strong>
+          </div>
+          <div class="progress" aria-hidden="true"><span id="${id}Bar"></span></div>
+        </div>
+      `;
+    }
+
+    function typeTitle(title) {
+      const el = document.getElementById("typeTitle");
+      let index = 0;
+      const id = setInterval(() => {
+        el.textContent = title.slice(0, index);
+        index += 1;
+        if (index > title.length) clearInterval(id);
+      }, Math.max(18, Math.floor(1000 / title.length)));
+    }
+
+    function totalPossible() {
+      const phaseQuestions = PHASES.reduce((sum, phase) => sum + phase.questions.length, 0);
+      return phaseQuestions * PHASE_POINTS + CAPSTONE.questions.length * CAPSTONE_POINTS;
+    }
+
+    window.addEventListener("beforeunload", clearTimer);
+    renderIntro();
+  </script>
+</body>
+</html>
