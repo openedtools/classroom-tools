@@ -15,6 +15,8 @@
       --cream: #f5f1e8;
       --muted: #c9c0a9;
       --line: rgba(160, 178, 101, 0.55);
+      --glass: rgba(245, 241, 232, 0.07);
+      --glow: rgba(160, 178, 101, 0.38);
     }
     * { box-sizing: border-box; }
     body {
@@ -23,6 +25,8 @@
       background:
         linear-gradient(rgba(160,178,101,.035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(160,178,101,.035) 1px, transparent 1px),
+        radial-gradient(circle at 12% 8%, rgba(160,178,101,.13), transparent 23rem),
+        radial-gradient(circle at 78% 0%, rgba(178,34,34,.10), transparent 20rem),
         var(--navy);
       background-size: 32px 32px;
       color: var(--cream);
@@ -47,6 +51,7 @@
       margin: 1rem auto 3.6rem;
       border: 1px solid var(--line);
       background: rgba(10,22,40,.94);
+      box-shadow: 0 28px 90px rgba(0,0,0,.38);
       min-height: calc(100vh - 7rem);
     }
     header {
@@ -57,6 +62,7 @@
       padding: .75rem 1rem;
       border-bottom: 1px solid var(--line);
       background: rgba(16,35,59,.96);
+      backdrop-filter: blur(8px);
       font-family: "Courier New", monospace;
       text-transform: uppercase;
       font-size: .76rem;
@@ -77,6 +83,14 @@
       border: 1px solid var(--line);
       color: var(--cream);
       font-size: 1.2rem;
+    }
+    .help-btn {
+      min-height: 42px;
+      padding: .25rem .7rem;
+      background: var(--glass);
+      border: 1px solid var(--line);
+      color: var(--cream);
+      font-size: .78rem;
     }
     .layout {
       display: grid;
@@ -110,9 +124,10 @@
     }
     .panel, .card {
       border: 1px solid var(--line);
-      background: rgba(16,35,59,.76);
+      background: linear-gradient(180deg, rgba(245,241,232,.08), rgba(16,35,59,.72));
       padding: .85rem;
       margin: .85rem 0;
+      box-shadow: inset 0 1px 0 rgba(245,241,232,.06);
     }
     .brief-section {
       border: 1px solid rgba(160,178,101,.32);
@@ -120,6 +135,12 @@
       margin-bottom: .55rem;
       background: rgba(16,35,59,.45);
       font-size: .72rem;
+      transition: box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .brief-section.active {
+      border-color: var(--green);
+      background: rgba(160,178,101,.12);
+      box-shadow: 0 0 0 1px rgba(160,178,101,.22), 0 0 24px var(--glow);
     }
     .brief-section h4 {
       margin: 0 0 .35rem;
@@ -211,6 +232,27 @@
       display: grid;
       place-items: center;
     }
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: .55rem;
+      margin-top: .6rem;
+    }
+    .review-chip {
+      border: 1px solid rgba(160,178,101,.35);
+      background: rgba(7,16,31,.55);
+      padding: .55rem;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+    .sentence-frame {
+      border-left: 4px solid var(--green);
+      padding: .6rem .75rem;
+      margin: .75rem 0;
+      background: rgba(160,178,101,.10);
+      color: var(--cream);
+      font-size: .86rem;
+    }
     svg { max-width: 100%; height: auto; }
     .hotspot { cursor: pointer; fill: rgba(160,178,101,.05); stroke: rgba(160,178,101,.2); stroke-width: 2; }
     .hotspot.selected { fill: rgba(160,178,101,.38); stroke: var(--green); }
@@ -255,6 +297,42 @@
     }
     .pause.hidden { display: none; }
     .pause .panel { max-width: 560px; background: var(--panel); }
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(0,0,0,.72);
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+    .modal.hidden { display: none; }
+    .modal-card {
+      width: min(880px, calc(100vw - 2rem));
+      max-height: min(82vh, 820px);
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #142a47, #07101f);
+      padding: 1rem;
+      box-shadow: 0 30px 100px rgba(0,0,0,.55);
+    }
+    .term-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: .55rem;
+    }
+    .term-card {
+      border: 1px solid rgba(160,178,101,.35);
+      background: rgba(245,241,232,.06);
+      padding: .65rem;
+      font-size: .78rem;
+    }
+    .term-card strong {
+      display: block;
+      color: var(--green);
+      font-family: "Courier New", monospace;
+      margin-bottom: .25rem;
+    }
     .result-score {
       font: 700 clamp(3rem, 12vw, 6.5rem)/1 "Courier New", monospace;
       color: var(--green);
@@ -267,7 +345,7 @@
     }
     @media print {
       body { background: white; color: black; font-size: 12pt; }
-      .banner, header, aside, .button-row, .menu, .pause, .timer { display: none !important; }
+      .banner, header, aside, .button-row, .menu, .pause, .modal, .timer { display: none !important; }
       .shell { border: 0; margin: 0; width: 100%; background: white; }
       .layout { display: block; }
       main { padding: 0; }
@@ -284,6 +362,7 @@
       <div id="teamLine">Team: Not Assigned</div>
       <div style="display:flex;gap:.5rem;align-items:center;justify-content:flex-end">
         <div id="scoreLine" class="score">Score: 0</div>
+        <button id="helpBtn" class="help-btn" type="button">Help</button>
         <button id="menuBtn" class="hamburger" type="button">MENU</button>
       </div>
     </header>
@@ -309,6 +388,16 @@
       <button id="resumePauseBtn">Resume Mission</button>
     </div>
   </div>
+  <div id="helpModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="button-row" style="margin-top:0">
+        <button id="lessonHelpTab">Lesson Help</button>
+        <button id="glossaryTab">Definition Log</button>
+        <button id="closeHelpBtn">Close</button>
+      </div>
+      <div id="helpContent"></div>
+    </div>
+  </div>
   <div class="banner bottom">UNCLASSIFIED // FOR TRAINING USE ONLY</div>
 
   <script>
@@ -321,6 +410,131 @@
       "INFLUENCE / IO",
       "ISR PLAN",
       "SPACE ASSESSMENT"
+    ];
+
+    const LESSON_HELP = {
+      1: {
+        title: "GEOINT Review",
+        bullets: [
+          "GEOINT uses imagery, imagery intelligence, and geospatial information to describe activity in space and time.",
+          "MTI detects moving targets over wide areas.",
+          "FMV is continuous video of a smaller area.",
+          "WAMI covers a large area and supports forensic look-back.",
+          "GEOINT cannot see through solid structures. It can show activity around a building."
+        ],
+        sentence: "Suggested brief shape: Donovian forces are [moving/deploying] toward [coast/port] with [brigade/vehicle column/number] indicators."
+      },
+      2: {
+        title: "Electromagnetic Theory Review",
+        bullets: [
+          "Lower frequency means longer wavelength and generally longer range.",
+          "Higher frequency means shorter wavelength and usually better detail.",
+          "Terrain blocks line of sight for many radar and SIGINT-relevant signals.",
+          "A collector site must have usable line of sight to the emitter.",
+          "ELINT focuses on non-communications electromagnetic signals such as radar."
+        ],
+        sentence: "Suggested brief shape: Recommend Site B because it has [line of sight] and the other sites are [terrain-shadowed/blocked]."
+      },
+      3: {
+        title: "Radar and Kill Chain Review",
+        bullets: [
+          "An IADS is a system of systems. Each radar has a job.",
+          "Early warning finds targets at long range.",
+          "Acquisition radars fix the target location more precisely.",
+          "Fire-control radars support tracking, targeting, and engagement.",
+          "Kill chain order: Find, Fix, Track, Target, Engage, Assess."
+        ],
+        sentence: "Suggested brief shape: Donovian IADS is in [Track/Target] because [STEEL CLAW is locked], which means [imminent engagement threat]."
+      },
+      4: {
+        title: "Infrared Threats Review",
+        bullets: [
+          "IR systems detect heat signatures.",
+          "Hot engine exhaust is a major aircraft vulnerability.",
+          "Flares are used against many IR-guided missiles.",
+          "Chaff and radar jamming are for radar-guided threats, not IR threats.",
+          "IIR seekers form an image and may reject simple flares."
+        ],
+        sentence: "Suggested brief shape: IR SAM threat confirmed. Pilot should use [flares] and [maneuver] for IIR or advanced seekers."
+      },
+      5: {
+        title: "Cyber Intelligence Review",
+        bullets: [
+          "Nation-state actors are resourced, patient, and politically motivated.",
+          "Cyber kill chain order: Reconnaissance, Weaponization/Delivery, Exploitation/Installation, Command and Control, Actions on Objectives.",
+          "A cyber threat attacks networks, systems, or data.",
+          "A cyber-enabled threat uses cyberspace to do something else, such as influence.",
+          "Network defense and counter-messaging are different response tracks."
+        ],
+        sentence: "Suggested brief shape: SCARLET MAMBA is a [nation-state/cyber threat], while disinformation is [cyber-enabled influence]."
+      },
+      6: {
+        title: "Information Operations Review",
+        bullets: [
+          "The Information Environment has physical, informational, and cognitive dimensions.",
+          "Disinformation is false information spread deliberately to deceive.",
+          "Misinformation is false information shared without intent to deceive.",
+          "Malinformation is true information used to cause harm.",
+          "J-2 supports IO by identifying adversary vulnerabilities in the IE."
+        ],
+        sentence: "Suggested brief shape: J-2 should [identify/analyze] Donovian IE vulnerabilities such as [fabricated imagery/bot fingerprints]."
+      },
+      7: {
+        title: "ISR Fundamentals Review",
+        bullets: [
+          "ISR means Intelligence, Surveillance, and Reconnaissance.",
+          "A PIR enters the ISR cycle at Planning and Direction.",
+          "Collection gathers raw data.",
+          "Processing and Exploitation turns raw data into usable information.",
+          "DCGS is a system associated with Processing and Exploitation."
+        ],
+        sentence: "Suggested brief shape: PIR-04 enters at [Planning and Direction], and raw data is processed through [DCGS/P&E]."
+      },
+      8: {
+        title: "Space Operations Review",
+        bullets: [
+          "GEO satellites appear fixed over a point on the equator.",
+          "LEO supports high resolution and short revisit.",
+          "MEO is commonly associated with navigation.",
+          "Counterspace threats can be kinetic or non-kinetic.",
+          "Co-orbital ASAT behavior is a kinetic counterspace concern."
+        ],
+        sentence: "Suggested brief shape: DRAGON'S EYE-3 is collecting from [GEO]. Recommend [non-kinetic disruption] and [emission control/USSF coordination]."
+      }
+    };
+
+    const GLOSSARY = [
+      ["ACQ", "Target acquisition. A radar role that fixes a target location after broad detection."],
+      ["ASAT", "Anti-satellite capability. Can be kinetic, such as a missile or co-orbital system."],
+      ["C2", "Command and Control. Also a cyber kill chain stage where malware communicates with an attacker."],
+      ["COA", "Course of Action. A possible adversary plan."],
+      ["DCGS", "Distributed Common Ground System. Used to process and exploit raw ISR data."],
+      ["Disinformation", "False information deliberately created or spread to deceive."],
+      ["ELINT", "Electronic Intelligence. Characterizes non-communications electromagnetic emitters such as radar."],
+      ["FMV", "Full Motion Video. Continuous video of a focused area."],
+      ["GEO", "Geostationary Orbit. Appears fixed over one point on the equator."],
+      ["GEOINT", "Geospatial Intelligence. Intelligence about activity and features on Earth using imagery and geospatial data."],
+      ["GI", "Geospatial Information. Foundational map, feature, and elevation data."],
+      ["IADS", "Integrated Air Defense System. A linked system of sensors, command functions, and weapons."],
+      ["IE", "Information Environment. Physical, informational, and cognitive dimensions."],
+      ["IIR", "Imaging Infrared. An IR seeker that sees a target image, not just a hot spot."],
+      ["IR", "Infrared. Heat-based energy outside visible light."],
+      ["ISR", "Intelligence, Surveillance, and Reconnaissance."],
+      ["LEO", "Low Earth Orbit. Useful for high-resolution imagery and revisit."],
+      ["MASINT", "Measurement and Signature Intelligence. Detects and measures signatures such as IR, radar, spectral, or nuclear signatures."],
+      ["MDCOA", "Most Dangerous Course of Action. The worst plausible adversary action to prepare against."],
+      ["MEO", "Medium Earth Orbit. Often used for navigation constellations."],
+      ["MISO", "Military Information Support Operations. Influence activities aimed at foreign audiences."],
+      ["Misinformation", "False information shared without intent to deceive."],
+      ["MLCOA", "Most Likely Course of Action. The adversary action assessed as most probable."],
+      ["MTI", "Moving Target Indicator. Detects movement over an area."],
+      ["OPIR", "Overhead Persistent Infrared. Space-based detection of heat events such as missile launches."],
+      ["P&D", "Planning and Direction. The ISR stage where requirements become collection plans."],
+      ["P&E", "Processing and Exploitation. The ISR stage that converts raw data into usable information."],
+      ["PIR", "Priority Intelligence Requirement. A commander question that drives collection and analysis."],
+      ["SATCOM", "Satellite Communications."],
+      ["SIGINT", "Signals Intelligence. Intelligence from electromagnetic signals."],
+      ["WAMI", "Wide Area Motion Imagery. Large-area motion imagery with forensic look-back."]
     ];
 
     const PHASES = [
@@ -428,6 +642,8 @@
     const headTitle = document.getElementById("headTitle");
     const menu = document.getElementById("menu");
     const pauseOverlay = document.getElementById("pauseOverlay");
+    const helpModal = document.getElementById("helpModal");
+    const helpContent = document.getElementById("helpContent");
 
     function esc(s) {
       return String(s || "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
@@ -482,8 +698,35 @@
     function renderBrief() {
       briefAside.innerHTML = `<div class="kicker">Growing J-2 Brief</div><h3>${esc(state.team || "Team Brief")}</h3>${BRIEF_SECTIONS.map(sec => {
         const content = state.brief[sec] || (state.skipped[sec] ? "[CONTRIBUTION NOT MADE - SKIPPED]" : "Pending");
-        return `<div class="brief-section"><h4>${esc(sec)}</h4><p class="${content.includes("SKIPPED") ? "skipped" : ""}">${esc(content)}</p></div>`;
+        const active = currentPhaseSafe() && currentPhaseSafe().briefSection === sec ? " active" : "";
+        return `<div class="brief-section${active}"><h4>${esc(sec)}</h4><p class="${content.includes("SKIPPED") ? "skipped" : ""}">${esc(content)}</p></div>`;
       }).join("")}`;
+    }
+    function currentPhaseSafe() {
+      return PHASES[state.phaseIndex] || null;
+    }
+    function lessonReviewHtml() {
+      const phase = currentPhaseSafe();
+      const help = phase ? LESSON_HELP[phase.id] : null;
+      if (!help) return `<h2>Lesson Help</h2><p>Lesson review appears during the mission phases.</p>`;
+      return `
+        <div class="kicker">Phase ${phase.id} Help</div>
+        <h2>${esc(help.title)}</h2>
+        <div class="review-grid">${help.bullets.map(b => `<div class="review-chip">${esc(b)}</div>`).join("")}</div>
+        <div class="sentence-frame">${esc(help.sentence)}</div>
+      `;
+    }
+    function glossaryHtml() {
+      return `
+        <div class="kicker">Reference Guide</div>
+        <h2>Definition Log</h2>
+        <p>Use this when an acronym or term slows you down.</p>
+        <div class="term-grid">${GLOSSARY.map(([term, def]) => `<div class="term-card"><strong>${esc(term)}</strong>${esc(def)}</div>`).join("")}</div>
+      `;
+    }
+    function showHelp(mode = "lesson") {
+      helpModal.classList.remove("hidden");
+      helpContent.innerHTML = mode === "glossary" ? glossaryHtml() : lessonReviewHtml();
     }
     function renderIntro() {
       headTitle.textContent = "JTF CORAL SHIELD // OPERATION DONOVIAN HORIZON";
@@ -532,6 +775,7 @@
         <div class="kicker">${p.lesson} // Activity ${key}</div>
         <h2>${esc(a.title)}</h2>
         ${timerHtml()}
+        ${key === "C" ? contributionReviewHtml(p) : ""}
         <p>${esc(a.prompt)}</p>
         <div id="activityHost"></div>
         <div id="feedback" class="panel hidden"></div>
@@ -546,6 +790,17 @@
       submit.onclick = () => submitActivity(a);
       document.getElementById("nextActivityBtn").onclick = () => nextAfterActivity();
       startTimer();
+    }
+    function contributionReviewHtml(phase) {
+      const help = LESSON_HELP[phase.id];
+      return `
+        <div class="panel">
+          <h3>Before You Write the Brief Contribution</h3>
+          <p>This is where your team turns the lesson into a short J-2 brief section. Use simple English. Grammar is less important than the right intelligence concepts.</p>
+          <div class="review-grid">${help.bullets.slice(0, 4).map(b => `<div class="review-chip">${esc(b)}</div>`).join("")}</div>
+          <div class="sentence-frame">${esc(help.sentence)}</div>
+        </div>
+      `;
     }
     function renderMechanic(a) {
       if (a.type === "CLICK_TO_MATCH") renderMatch(a);
@@ -832,6 +1087,13 @@
       renderIntro();
     }
     document.getElementById("menuBtn").onclick = () => menu.classList.toggle("hidden");
+    document.getElementById("helpBtn").onclick = () => showHelp("lesson");
+    document.getElementById("lessonHelpTab").onclick = () => showHelp("lesson");
+    document.getElementById("glossaryTab").onclick = () => showHelp("glossary");
+    document.getElementById("closeHelpBtn").onclick = () => helpModal.classList.add("hidden");
+    helpModal.addEventListener("click", event => {
+      if (event.target === helpModal) helpModal.classList.add("hidden");
+    });
     document.getElementById("pauseBtn").onclick = () => { state.paused = true; pauseOverlay.classList.remove("hidden"); menu.classList.add("hidden"); };
     document.getElementById("resumePauseBtn").onclick = () => { state.paused = false; pauseOverlay.classList.add("hidden"); };
     document.getElementById("skipActivityBtn").onclick = skipActivity;
