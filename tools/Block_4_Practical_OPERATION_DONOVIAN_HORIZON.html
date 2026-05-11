@@ -31,24 +31,24 @@
       background-size: 32px 32px;
       color: var(--cream);
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 18pt;
+      font-size: 15.5pt;
       line-height: 1.42;
     }
     .banner {
       position: sticky;
       top: 0;
       z-index: 30;
-      padding: .42rem;
+      padding: .18rem .42rem;
       background: #2f6f3a;
       color: var(--cream);
       text-align: center;
-      font: 700 .82rem/1.1 "Courier New", monospace;
+      font: 700 .66rem/1 "Courier New", monospace;
       letter-spacing: .08em;
     }
     .banner.bottom { position: fixed; top: auto; bottom: 0; left: 0; right: 0; }
     .shell {
       width: min(1280px, calc(100vw - 24px));
-      margin: 1rem auto 3.6rem;
+      margin: .65rem auto 2.55rem;
       border: 1px solid var(--line);
       background: rgba(10,22,40,.94);
       box-shadow: 0 28px 90px rgba(0,0,0,.38);
@@ -94,10 +94,10 @@
     }
     .layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 320px;
-      min-height: calc(100vh - 11rem);
+      grid-template-columns: minmax(0, 1fr) 300px;
+      min-height: calc(100vh - 8rem);
     }
-    main { padding: clamp(1rem, 2.4vw, 1.6rem); }
+    main { padding: clamp(.75rem, 1.7vw, 1.15rem); }
     aside {
       border-left: 1px solid var(--line);
       background: rgba(7,16,31,.72);
@@ -111,9 +111,9 @@
       line-height: 1.08;
       margin: 0 0 1rem;
     }
-    h1 { font-size: clamp(2.2rem, 5vw, 4rem); }
-    h2 { font-size: clamp(1.55rem, 3.4vw, 2.4rem); }
-    h3 { font-size: 1.08rem; color: var(--green); }
+    h1 { font-size: clamp(1.85rem, 4vw, 3.2rem); }
+    h2 { font-size: clamp(1.28rem, 2.8vw, 1.9rem); }
+    h3 { font-size: .96rem; color: var(--green); }
     p { margin: 0 0 .85rem; }
     .kicker {
       color: var(--green);
@@ -125,8 +125,8 @@
     .panel, .card {
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(245,241,232,.08), rgba(16,35,59,.72));
-      padding: .85rem;
-      margin: .85rem 0;
+      padding: .68rem;
+      margin: .65rem 0;
       box-shadow: inset 0 1px 0 rgba(245,241,232,.06);
     }
     .brief-section {
@@ -160,11 +160,11 @@
       font: inherit;
     }
     button {
-      min-height: 56px;
+      min-height: 46px;
       border: 1px solid rgba(245,241,232,.16);
       background: var(--olive);
       color: var(--cream);
-      padding: .62rem .85rem;
+      padding: .48rem .68rem;
       font-family: "Courier New", monospace;
       font-weight: 700;
       cursor: pointer;
@@ -239,12 +239,21 @@
     }
     .phase-image {
       width: 100%;
-      max-height: 360px;
+      max-height: 230px;
       object-fit: cover;
       border: 1px solid var(--line);
       display: block;
       margin: .85rem 0;
       background: var(--panel2);
+    }
+    .activity-image {
+      width: 100%;
+      max-height: 420px;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      background: var(--panel2);
+      display: block;
+      margin: .65rem 0;
     }
     .review-grid {
       display: grid;
@@ -375,6 +384,7 @@
       <div id="headTitle">JTF CORAL SHIELD // OPERATION DONOVIAN HORIZON</div>
       <div id="teamLine">Team: Not Assigned</div>
       <div style="display:flex;gap:.5rem;align-items:center;justify-content:flex-end">
+        <button id="backBtn" class="help-btn" type="button">Back</button>
         <div id="scoreLine" class="score">Score: 0</div>
         <button id="helpBtn" class="help-btn" type="button">Help</button>
         <button id="sourcesBtn" class="help-btn" type="button">Sources</button>
@@ -611,7 +621,7 @@
         id: 2, lesson: "Electromagnetic Theory (4.2)", title: "THE INVISIBLE BATTLEFIELD", briefSection: BRIEF_SECTIONS[1],
         intelUpdate: "Collection planners are evaluating sites for a SIGINT collector tasked against a new Donovian air defense radar near the Gorgan coast. Three candidate sites are on the table.",
         activityA: { type: "CLICK_TO_MATCH", title: "Wave Properties Match", prompt: "Match each frequency range to its primary military use.", items: ["Very Low Frequency (3-30 kHz)", "HF (3-30 MHz)", "Microwave (1-30 GHz)", "Visible Light (400-700 THz)"], categories: ["Submarine communication", "Long-range radio, beyond line-of-sight", "Modern fire-control radar", "Electro-optical imagery"], correctMap: [0,1,2,3], points: 4 },
-        activityB: { type: "HOT_SPOT_MAP", title: "Site Selection", prompt: "Click the site that has viable line of sight to the Donovian radar.", map: "em", spots: [{id:"A", label:"Site A", correct:false}, {id:"B", label:"Site B", correct:true}, {id:"C", label:"Site C", correct:false}], points: 5 },
+        activityB: { type: "MULTI_SELECT", title: "Site Selection", prompt: "Study the site-selection image. Which site has viable line of sight to the Donovian radar?", image: IMAGE_PATHS[2], options: ["Site A", "Site B", "Site C"], correct: [1], points: 5 },
         activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "Your collection plan recommends Site B. Select the two strongest justifications for the brief.", options: ["Site B has the lowest moisture, so the signal will not be absorbed.", "Site B has unobstructed line of sight to the radar emitter.", "Site B is closer to the radar. Proximity is the dominant factor.", "Site A and C are terrain-shadowed and would receive no usable signal.", "Site B is the only location with adequate power supply."], correct: [1,3], points: 6 },
         lockText: "Recommend Site B for the SIGINT collector. It has unobstructed line of sight; Sites A and C are terrain-shadowed."
       },
@@ -627,7 +637,7 @@
         id: 4, lesson: "Infrared and Airframe Survival (4.4)", title: "HEAT IN THE SKY", briefSection: BRIEF_SECTIONS[3],
         intelUpdate: "Donovian SAM batteries are active along the coast. A Gorgan F-16 has been ordered to patrol the area. Your J-2 cell must brief the pilot on IR-guided threats and countermeasures.",
         activityA: { type: "CLICK_TO_MATCH", title: "Threat-Countermeasure Match", prompt: "Match each incoming threat to the correct countermeasure.", items: ["IR-homing SAM tracking engine exhaust", "Radar-guided SAM with fire-control lock", "Imaging Infrared seeker, flares ineffective", "Beam-riding SAM"], categories: ["Flares", "Chaff + jamming pod", "Tactical maneuver / break lock", "Pre-emptive jamming + maneuver"], correctMap: [0,1,2,3], points: 4 },
-        activityB: { type: "HOT_SPOT_MAP", title: "IR Signature Hunt", prompt: "Click the four objects with prominent IR signatures.", map: "ir", spots: [{id:"tank", label:"Running tank", correct:true}, {id:"bunker", label:"Concrete bunker", correct:false}, {id:"tube", label:"Fired artillery", correct:true}, {id:"helo", label:"Helicopter", correct:true}, {id:"net", label:"Camouflage net", correct:false}, {id:"fire", label:"Campfire", correct:true}, {id:"box", label:"Shipping container", correct:false}, {id:"decoy", label:"Painted decoy", correct:false}], points: 8 },
+        activityB: { type: "MULTI_SELECT", title: "IR Signature Hunt", prompt: "Study the IR training image. Select the four objects that should show prominent infrared heat signatures.", image: IMAGE_PATHS[4], options: ["Running tank", "Concrete bunker", "Recently fired artillery tube", "Helicopter", "Camouflage netting with no heat source", "Campfire", "Static shipping container", "Painted vehicle decoy with no engine"], correct: [0,2,3,5], points: 8 },
         activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "Brief the pilot. Select the two most important IR-related warnings.", options: ["Hot engine exhaust is your biggest IR vulnerability. Be ready to deploy flares.", "Activate your radar jammer to defeat IR threats.", "Some Donovian SAMs use IIR seekers. Flares may be insufficient; break lock with maneuver.", "Chaff is your primary countermeasure against IR threats.", "Fly higher to escape IR detection because heat rises."], correct: [0,2], points: 6 },
         lockText: "IR-guided SAMs confirmed. Flares are primary against hot-spot IR seekers; tactical maneuver is required against IIR seekers."
       },
@@ -694,6 +704,7 @@
       paused: false,
       currentResult: null,
       activityLog: {},
+      history: [],
       capstone: { mlcoa: [], mdcoa: [], indicator: "" }
     };
 
@@ -728,6 +739,22 @@
       menu.classList.add("hidden");
       updateChrome();
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function navTo(fn) {
+      state.history.push({ phaseIndex: state.phaseIndex, activityKey: state.activityKey });
+      fn();
+    }
+    function goBack() {
+      const previous = state.history.pop();
+      if (!previous) return;
+      state.phaseIndex = previous.phaseIndex;
+      if (previous.activityKey === "intro") renderIntro();
+      else if (previous.activityKey === "intel") renderIntelUpdate();
+      else if (["A","B","C"].includes(previous.activityKey)) renderActivity(previous.activityKey);
+      else if (previous.activityKey === "capstoneReview") renderCapstoneReview();
+      else if (previous.activityKey === "capstoneMlcoa") renderCapstoneMlcoa();
+      else if (previous.activityKey === "capstoneMdcoa") renderCapstoneMdcoa();
+      else renderIntro();
     }
     function startTimer() {
       stopTimer();
@@ -804,12 +831,18 @@
     function showActivityReview() {
       const p = currentPhaseSafe();
       if (!p) return;
+      const activity = activityFor(state.activityKey);
+      const help = LESSON_HELP[p.id];
       helpModal.classList.remove("hidden");
       const logs = ["A","B"].map(key => (state.activityLog[p.id] || {})[key]).filter(Boolean);
       helpContent.innerHTML = `
         <div class="kicker">Current Phase Review</div>
         <h2>${esc(p.title)}</h2>
-        <p>Use this to write your Brief Contribution. It shows what your team already answered in this phase.</p>
+        <div class="panel">
+          <h3>What This Assessment Is Asking For</h3>
+          <p>${esc(activity.prompt)}</p>
+          <div class="sentence-frame">${esc(help.sentence)}</div>
+        </div>
         ${logs.length ? logs.map(log => `
           <div class="panel">
             <h3>Activity ${esc(log.key)} - ${esc(log.title)}</h3>
@@ -843,6 +876,7 @@
         state.brief = Object.fromEntries(BRIEF_SECTIONS.map(s => [s, ""]));
         state.skipped = {};
         state.activityLog = {};
+        state.history = [{ phaseIndex: 0, activityKey: "intro" }];
         renderIntelUpdate();
       };
     }
@@ -859,7 +893,7 @@
         <div class="panel"><p>${esc(p.intelUpdate)}</p></div>
         <div class="button-row"><button id="continueBtn">Activity A</button></div>
       `);
-      document.getElementById("continueBtn").onclick = () => renderActivity("A");
+      document.getElementById("continueBtn").onclick = () => navTo(() => renderActivity("A"));
     }
     function renderActivity(key) {
       state.activityKey = key;
@@ -886,7 +920,7 @@
       submit.onclick = () => submitActivity(a);
       const reviewBtn = document.getElementById("reviewActivityBtn");
       if (reviewBtn) reviewBtn.onclick = showActivityReview;
-      document.getElementById("nextActivityBtn").onclick = () => nextAfterActivity();
+      document.getElementById("nextActivityBtn").onclick = () => navTo(nextAfterActivity);
       startTimer();
     }
     function contributionReviewHtml(phase) {
@@ -925,7 +959,7 @@
     }
     function renderMulti(a) {
       window.multiState = new Set();
-      document.getElementById("activityHost").innerHTML = `<div class="options">${a.options.map((o,i)=>`<button class="option" data-i="${i}">${esc(o)}</button>`).join("")}</div>`;
+      document.getElementById("activityHost").innerHTML = `${a.image ? `<img class="activity-image" src="${esc(a.image)}" alt="Visual reference for ${esc(a.title)}">` : ""}<div class="options">${a.options.map((o,i)=>`<button class="option" data-i="${i}">${esc(o)}</button>`).join("")}</div>`;
       document.querySelectorAll(".option").forEach(b => b.onclick = () => {
         const i = Number(b.dataset.i);
         if (window.multiState.has(i)) window.multiState.delete(i); else window.multiState.add(i);
@@ -1060,6 +1094,7 @@
         <div class="button-row"><button id="nextPhaseBtn">${state.phaseIndex === PHASES.length - 1 ? "Begin Capstone" : "Next Phase"}</button></div>
       `);
       document.getElementById("nextPhaseBtn").onclick = () => {
+        state.history.push({ phaseIndex: state.phaseIndex, activityKey: "C" });
         state.phaseIndex++;
         if (state.phaseIndex >= PHASES.length) renderCapstoneReview();
         else renderIntelUpdate();
@@ -1086,6 +1121,7 @@
     }
     function restartPhase() { renderIntelUpdate(); }
     function renderCapstoneReview() {
+      state.activityKey = "capstoneReview";
       headTitle.textContent = "Capstone // Review the J-2 Brief";
       render(`
         <div class="kicker">Capstone Stage 1</div>
@@ -1097,7 +1133,7 @@
       `);
       document.getElementById("saveEditsBtn").onclick = () => {
         document.querySelectorAll("textarea[data-section]").forEach(t => state.brief[t.dataset.section] = t.value.trim());
-        renderCapstoneMlcoa();
+        navTo(renderCapstoneMlcoa);
       };
     }
     function renderCapstoneMlcoa() {
@@ -1116,10 +1152,11 @@
         state.capstone.mlcoa = [...selected];
         state.capstone.indicator = document.getElementById("indicator").value.trim();
         scoreSet(selected, a.correct, a.points);
-        renderCapstoneMdcoa();
+        navTo(renderCapstoneMdcoa);
       };
     }
     function renderCapstoneMdcoa() {
+      state.activityKey = "capstoneMdcoa";
       const a = CAPSTONE.mdcoa;
       render(`
         <div class="kicker">Capstone Stage 3</div><h2>Most Dangerous Course of Action</h2>
@@ -1132,7 +1169,7 @@
       document.getElementById("mdcoaSubmit").onclick = () => {
         state.capstone.mdcoa = [...selected];
         scoreSet(selected, a.correct, a.points);
-        renderSubmitBrief();
+        navTo(renderSubmitBrief);
       };
     }
     function scoreSet(selected, correct, points) {
@@ -1142,6 +1179,7 @@
       addScore(Math.max(0, points * ((good - bad * .5) / correct.length)));
     }
     function renderSubmitBrief() {
+      state.activityKey = "capstoneSubmit";
       render(`
         <div class="kicker">Capstone Stage 4</div>
         <h2>Submit Final Brief</h2>
@@ -1233,10 +1271,11 @@
       document.getElementById("restartBtn").onclick = resetAll;
     }
     function resetAll() {
-      Object.assign(state, { team:"", screen:"intro", phaseIndex:0, activityKey:"intro", score:0, brief:Object.fromEntries(BRIEF_SECTIONS.map(s=>[s,""])), skipped:{}, timerSeconds:0, paused:false, currentResult:null, activityLog:{}, capstone:{mlcoa:[], mdcoa:[], indicator:""} });
+      Object.assign(state, { team:"", screen:"intro", phaseIndex:0, activityKey:"intro", score:0, brief:Object.fromEntries(BRIEF_SECTIONS.map(s=>[s,""])), skipped:{}, timerSeconds:0, paused:false, currentResult:null, activityLog:{}, history:[], capstone:{mlcoa:[], mdcoa:[], indicator:""} });
       renderIntro();
     }
     document.getElementById("menuBtn").onclick = () => menu.classList.toggle("hidden");
+    document.getElementById("backBtn").onclick = goBack;
     document.getElementById("helpBtn").onclick = () => showHelp("lesson");
     document.getElementById("sourcesBtn").onclick = () => showHelp("sources");
     document.getElementById("lessonHelpTab").onclick = () => showHelp("lesson");
