@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Operation Donovian Horizon | Block 4 Capstone</title>
+  <title>Operation Northern Veil | Block 4 Capstone</title>
   <style>
     :root {
       --navy: #0a1628;
@@ -159,6 +159,38 @@
       margin-bottom: .2rem;
       text-transform: uppercase;
       font-size: .72rem;
+    }
+    .intro-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 1.25fr) minmax(240px, .95fr);
+      gap: .85rem;
+      align-items: start;
+    }
+    .intro-map {
+      width: 100%;
+      display: block;
+      border: 1px solid var(--line);
+      background: var(--panel2);
+      margin: 0 0 .75rem;
+    }
+    .visual-placeholder {
+      border: 1px solid rgba(160,178,101,.35);
+      background: rgba(7,16,31,.66);
+      padding: .7rem;
+      margin: .7rem 0;
+    }
+    .visual-placeholder strong {
+      display: block;
+      color: var(--green);
+      font-family: "Courier New", monospace;
+      text-transform: uppercase;
+      font-size: .72rem;
+      margin-bottom: .35rem;
+    }
+    .visual-placeholder p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .86rem;
     }
     .brief-section {
       border: 1px solid rgba(160,178,101,.32);
@@ -334,6 +366,8 @@
       font-size: .78rem;
       color: var(--muted);
     }
+    .review-right { color: var(--green); font-weight: 700; margin-bottom: .2rem; }
+    .review-wrong { color: #ff9c9c; font-weight: 700; margin-bottom: .2rem; }
     .sentence-frame {
       border-left: 4px solid var(--green);
       padding: .6rem .75rem;
@@ -563,105 +597,91 @@
 
   <script>
     const BRIEF_SECTIONS = [
-      "GEOINT ASSESSMENT",
-      "EM / SIGINT POSTURE",
-      "RADAR & AIR THREATS",
-      "AIR SURVIVAL POSTURE",
-      "CYBER POSTURE",
-      "INFLUENCE / IO",
-      "ISR PLAN",
-      "SPACE ASSESSMENT"
+      "SCENARIO BASELINE",
+      "INFORMATION SHAPING",
+      "CYBER DISRUPTION",
+      "BORDER / GEOINT",
+      "EMS / IR THREATS",
+      "SPACE / ISR ANGLE"
     ];
 
     const LESSON_HELP = {
       1: {
-        title: "GEOINT Review",
+        title: "Scenario Baseline",
         bullets: [
-          "GEOINT uses imagery, imagery intelligence, and geospatial information to describe activity in space and time.",
-          "MTI detects moving targets over wide areas.",
-          "FMV is continuous video of a smaller area.",
-          "WAMI covers a large area and supports forensic look-back.",
-          "GEOINT cannot see through solid structures. It can show activity around a building."
+          "Gorgas is the partner nation at the center of the exercise, and Donovia is the tense neighbor applying pressure.",
+          "Zabzimek is the flashpoint district where the border story, cyber activity, and influence activity all converge.",
+          "The opening picture is intentionally ambiguous because the first clues do not yet prove intent.",
+          "The J-2 must separate the 5Ws from the noise before jumping to a conclusion."
         ],
-        sentence: "Suggested brief shape: Donovian forces are [moving/deploying] toward [coast/port] with [brigade/vehicle column/number] indicators."
+        sentence: "Suggested brief shape: Donovia and Gorgas are contesting Zabzimek, and the opening picture is ambiguous enough that the J-2 still needs collection before intent is clear."
       },
       2: {
-        title: "Electromagnetic Theory Review",
-        bullets: [
-          "Lower frequency means longer wavelength and generally longer range.",
-          "Higher frequency means shorter wavelength and usually better detail.",
-          "Terrain and coastal clutter can block or weaken signals in different ways.",
-          "A collector site should be chosen for the cleanest reception path to the emitter.",
-          "ELINT focuses on non-communications electromagnetic signals such as radar."
-        ],
-        sentence: "Suggested brief shape: Recommend Site B because it has the cleanest reception path and the other sites are more blocked by terrain and clutter."
-      },
-      3: {
-        title: "Radar and Kill Chain Review",
-        bullets: [
-          "An IADS is a system of systems. Each radar has a job.",
-          "Early warning finds targets at long range.",
-          "Acquisition radars fix the target location more precisely.",
-          "Fire-control radars support tracking, targeting, and engagement.",
-          "Kill chain order: Find, Fix, Track, Target, Engage, Assess."
-        ],
-        sentence: "Suggested brief shape: Donovian IADS is in [Track/Target] because [STEEL CLAW is locked], which means [imminent engagement threat]."
-      },
-      4: {
-        title: "Infrared Threats Review",
-        bullets: [
-          "IR systems detect heat signatures.",
-          "Hot engine exhaust is a major aircraft vulnerability.",
-          "Flares are used against many IR-guided missiles.",
-          "Chaff and radar jamming are for radar-guided threats, not IR threats.",
-          "IIR seekers form an image and may reject simple flares."
-        ],
-        sentence: "Suggested brief shape: IR SAM threat confirmed. Pilot should use [flares] and [maneuver] for IIR or advanced seekers."
-      },
-      5: {
-        title: "Cyber Intelligence Review",
-        bullets: [
-          "Nation-state actors are resourced, patient, and politically motivated.",
-          "Cyber kill chain order: Reconnaissance, Weaponization/Delivery, Exploitation/Installation, Command and Control, Actions on Objectives.",
-          "A cyber threat attacks networks, systems, or data.",
-          "A cyber-enabled threat uses cyberspace to do something else, such as influence.",
-          "Network defense and counter-messaging are different response tracks."
-        ],
-        sentence: "Suggested brief shape: SCARLET MAMBA is a [nation-state/cyber threat], while disinformation is [cyber-enabled influence]."
-      },
-      6: {
-        title: "Information Operations Review",
+        title: "Information Shaping",
         bullets: [
           "The Information Environment has physical, informational, and cognitive dimensions.",
           "Disinformation is false information spread deliberately to deceive.",
           "Misinformation is false information shared without intent to deceive.",
           "Malinformation is true information used to cause harm.",
-          "J-2 supports IO by identifying adversary vulnerabilities in the IE."
+          "The J-2 supports IO by identifying adversary vulnerabilities in the IE."
         ],
-        sentence: "Suggested brief shape: J-2 should [identify/analyze] Donovian IE vulnerabilities such as [fabricated imagery/bot fingerprints]."
+        sentence: "Suggested brief shape: Donovian influence activity is deliberate disinformation aimed at shaping what audiences believe about Zabzimek."
       },
-      7: {
-        title: "ISR Fundamentals Review",
+      3: {
+        title: "Cyber Disruption",
         bullets: [
-          "ISR means Intelligence, Surveillance, and Reconnaissance.",
-          "A PIR enters the ISR cycle at Planning and Direction.",
-          "Collection gathers raw data.",
-          "Processing and Exploitation turns raw data into usable information.",
-          "DCGS is a system associated with Processing and Exploitation."
+          "Nation-state cyber actors are usually patient, resourced, and politically motivated.",
+          "Cyber kill chain order: Reconnaissance, Weaponization/Delivery, Exploitation/Installation, Command and Control, Actions on Objectives.",
+          "A cyber threat attacks networks, systems, or data.",
+          "A cyber-enabled threat uses cyberspace to do something else, such as influence.",
+          "Network defense and counter-messaging are different response tracks."
         ],
-        sentence: "Suggested brief shape: PIR-04 enters at [Planning and Direction], and raw data is processed through [DCGS/P&E]."
+        sentence: "Suggested brief shape: SCARLET MAMBA is the cyber threat against the network, while the rumor campaign is cyber-enabled influence and needs a separate response."
       },
-      8: {
-        title: "Space Operations Review",
+      4: {
+        title: "Border / GEOINT",
         bullets: [
-          "GEO satellites appear fixed over a point on the equator.",
+          "GEOINT uses imagery, imagery intelligence, and geospatial information to describe activity in space and time.",
+          "MTI detects movement across a wide area.",
+          "FMV watches a smaller area continuously.",
+          "WAMI gives wide-area coverage and forensic look-back.",
+          "GEOINT can show activity around a building or route, but not inside solid structures."
+        ],
+        sentence: "Suggested brief shape: Donovian ground movement is building near Zabzimek and GEOINT can confirm the route, staging, and pattern of life around the flashpoint."
+      },
+      5: {
+        title: "EMS / IR Threats",
+        bullets: [
+          "Lower frequency means longer wavelength and generally longer range.",
+          "Higher frequency means shorter wavelength and usually better detail.",
+          "Terrain blocks line of sight for radar and SIGINT collection.",
+          "IR systems detect heat signatures, especially engine exhaust and launch plumes.",
+          "Flares help against many IR seekers, but IIR seekers may require maneuver plus other tactics."
+        ],
+        sentence: "Suggested brief shape: The radar picture suggests an imminent threat, and the IR picture means the pilot must treat hot engine exhaust and IIR seekers as the primary danger."
+      },
+      6: {
+        title: "Space / ISR Angle",
+        bullets: [
+          "GEO satellites appear fixed over one point on the equator.",
           "LEO supports high resolution and short revisit.",
           "MEO is commonly associated with navigation.",
-          "Counterspace threats can be kinetic or non-kinetic.",
-          "Co-orbital ASAT behavior is a kinetic counterspace concern."
+          "A PIR enters the ISR cycle at Planning and Direction.",
+          "DCGS is used in Processing and Exploitation to turn raw data into usable intelligence."
         ],
-        sentence: "Suggested brief shape: DRAGON'S EYE-3 is collecting from [GEO]. Recommend [non-kinetic disruption] and [emission control/USSF coordination]."
+        sentence: "Suggested brief shape: DRAGON'S EYE-3 is collecting from GEO, PIR-04 belongs in Planning and Direction, and raw data should move through DCGS in Processing and Exploitation."
       }
+    };
+
+    const SCENARIO_MAP_PATH = "Imagery/Eurasia Scenario Map.png";
+
+    const PHASE_VISUALS = {
+      1: "Placeholder visual: a clean scenario board showing Zabzimek, the Gorgas-Donovia border, and simple 5W callouts.",
+      2: "Placeholder visual: a messaging cascade or narrative board showing false claims, bot amplification, and counter-message hooks.",
+      3: "Placeholder visual: a border corridor map showing road movement, staging, and a route toward Zabzimek with MTI/WAMI callouts.",
+      4: "Placeholder visual: a side-view EMS graphic showing a radar emitter, terrain masking, line-of-sight, and kill-chain labels.",
+      5: "Placeholder visual: a FLIR-style aircraft threat diagram with hot exhaust, launch plume, flares, and IIR seeker cues.",
+      6: "Placeholder visual: a space layer diagram showing GEO stare, a co-orbital approach, and the ISR tasking chain."
     };
 
     const GLOSSARY = [
@@ -670,10 +690,12 @@
       ["C2", "Command and Control. Also a cyber kill chain stage where malware communicates with an attacker."],
       ["COA", "Course of Action. A possible adversary plan."],
       ["DCGS", "Distributed Common Ground System. Used to process and exploit raw ISR data."],
+      ["Donovia", "The fictional DATE adversary applying military, cyber, information, and space pressure."],
       ["Disinformation", "False information deliberately created or spread to deceive."],
       ["ELINT", "Electronic Intelligence. Characterizes non-communications electromagnetic emitters such as radar."],
       ["FMV", "Full Motion Video. Continuous video of a focused area."],
       ["GEO", "Geostationary Orbit. Appears fixed over one point on the equator."],
+      ["Gorgas", "The fictional partner nation in Operation Northern Veil."],
       ["GEOINT", "Geospatial Intelligence. Intelligence about activity and features on Earth using imagery and geospatial data."],
       ["GI", "Geospatial Information. Foundational map, feature, and elevation data."],
       ["IADS", "Integrated Air Defense System. A linked system of sensors, command functions, and weapons."],
@@ -689,26 +711,16 @@
       ["Misinformation", "False information shared without intent to deceive."],
       ["MLCOA", "Most Likely Course of Action. The adversary action assessed as most probable."],
       ["MTI", "Moving Target Indicator. Detects movement over an area."],
+      ["Northern Veil", "The scenario spine used for this exercise. It centers the Gorgas-Donovia tension around Zabzimek."],
       ["OPIR", "Overhead Persistent Infrared. Space-based detection of heat events such as missile launches."],
       ["P&D", "Planning and Direction. The ISR stage where requirements become collection plans."],
       ["P&E", "Processing and Exploitation. The ISR stage that converts raw data into usable information."],
       ["PIR", "Priority Intelligence Requirement. A commander question that drives collection and analysis."],
+      ["Zabzimek", "The flashpoint district in this scenario where the border and collection problem converge."],
       ["SATCOM", "Satellite Communications."],
       ["SIGINT", "Signals Intelligence. Intelligence from electromagnetic signals."],
       ["WAMI", "Wide Area Motion Imagery. Large-area motion imagery with forensic look-back."]
     ];
-
-    const IMAGE_PATHS = {
-      1: "Imagery/Phase 1 - GEOINT.png",
-      2: "Imagery/Phase 2 - EM Theory.png",
-      3: "Imagery/Phase 3 - Radar Kill Chain.png",
-      4: "Imagery/Phase 4 - Infrared Threats.png",
-      5: "Imagery/Phase 5 - Cyber Intelligence.png",
-      6: "Imagery/Phase 6 - Information Operations.png",
-      7: "Imagery/Phase 7 - ISR Fundamentals.png",
-      8: "Imagery/Phase 8 - Space Operations.png",
-      capstone: "Imagery/Capstone - Hero Shot.png"
-    };
 
     const SOURCES = [
       {
@@ -745,82 +757,313 @@
 
     const PHASES = [
       {
-        id: 1, lesson: "GEOINT (4.1)", title: "FIRST LIGHT OVER THE SEA OF AZURE", briefSection: BRIEF_SECTIONS[0],
-        intelUpdate: "JTF CORAL SHIELD has been activated. Donovian forces are conducting unusual movements along the Gorgan coast. A Donovian armored brigade was reported moving from a garrison toward the Sea of Azure through 200 kilometers of open desert overnight.",
-        activityA: { type: "CLICK_TO_MATCH", title: "Sensor Match", prompt: "Match each collection scenario to the GEOINT capability that best supports it.", items: ["Track every moving vehicle across a 500 km2 desert at night", "Provide foundational maps and elevation for mission planning", "Continuous video of a single Donovian command compound", "Forensic look-back across an entire port for the past 4 hours"], categories: ["MTI", "Geospatial Information (GI)", "FMV", "WAMI"], correctMap: [0,1,2,3], points: 4 },
-        activityB: { type: "MULTI_SELECT", title: "Sensor Selection", prompt: "Donovian forces are reportedly building a hardened command bunker inside a city block. Select all true statements about GEOINT options.", options: ["GEOINT sensors cannot penetrate solid structures.", "SAR can see through buildings as long as cloud cover is present.", "GEOINT can confirm activity around the building but not inside.", "HUMINT or SIGINT will be required to characterize what is inside.", "WAMI will provide interior imagery if you watch long enough."], correct: [0,2,3], points: 6 },
-        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "In 1-2 sentences, write your J-2 assessment of Donovian ground force movement based on the GEOINT picture so far.", keywordSets: [["movement","moving","deploying","repositioning","advancing"],["coast","port","sea of azure","beach","staging","gorgan"],["brigade","column","vehicles","force","battalion","60","200"]], points: 6, fallback: "Donovian ground forces are moving toward the Gorgan coast, with a brigade-sized vehicle column likely staging near the port." },
-        lockText: "Donovian ground movement indicates a brigade-sized force moving toward the Gorgan coast and port staging areas."
+        id: 1,
+        lesson: "Phase 1 | Information Shaping",
+        title: "THE STORY AROUND ZABZIMEK",
+        briefSection: BRIEF_SECTIONS[0],
+        bridge: "Start with the 5Ws and the Gorgas-Donovia relationship before you judge anything else.",
+        visualHint: PHASE_VISUALS[1],
+        intelUpdate: "Operation Northern Veil opens with contradictory reporting around Zabzimek. Donovia calls the movement routine border security; Gorgas says the same activity, plus coordinated messaging, looks like pressure on a disputed corridor. The J-2 cell must establish the baseline story and decide what matters first.",
+        activityA: {
+          type: "SCENARIO_CLASSIFICATION",
+          title: "Information Environment Sort",
+          prompt: "Sort each opening clue into the Information Environment dimension it most affects.",
+          categories: ["Physical", "Informational", "Cognitive"],
+          scenarios: [
+            { text: "Border checkpoint cameras and antenna masts", correct: 0 },
+            { text: "A doctored clip showing Gorgas troops at Zabzimek", correct: 1 },
+            { text: "Civilian belief that Donovia fired first", correct: 2 },
+            { text: "Cell towers and fiber backhaul", correct: 0 },
+            { text: "A rumor thread pushed by anonymous accounts", correct: 1 },
+            { text: "Local fear that the border will close tonight", correct: 2 }
+          ],
+          points: 4
+        },
+        activityB: {
+          type: "SCENARIO_CLASSIFICATION",
+          title: "Mis / Dis / Mal Triage",
+          prompt: "Classify each opening narrative example.",
+          categories: ["Misinformation", "Disinformation", "Malinformation"],
+          scenarios: [
+            { text: "A well-meaning shop owner repeats a false story about a border crossing", correct: 0 },
+            { text: "Donovian state media airs fabricated footage knowing it is fake", correct: 1 },
+            { text: "A leaked but real memo is released to embarrass Gorgas leaders", correct: 2 },
+            { text: "Donovian-paid bots amplify a fake atrocity hashtag", correct: 1 },
+            { text: "A confused diplomat tweets the wrong nation's flag", correct: 0 }
+          ],
+          points: 5
+        },
+        activityC: {
+          type: "SHORT_ANSWER_KEYWORD",
+          title: "Brief Contribution",
+          prompt: "In one sentence, brief the opening relationship between Gorgas and Donovia and the question the J-2 still has about Zabzimek.",
+          target: "One sentence",
+          keywordSets: [["gorgas", "donovia"], ["zabzimek", "border", "corridor"], ["tense", "ambiguous", "pressure", "question"]],
+          points: 6,
+          fallback: "Gorgas and Donovia have a tense border relationship around Zabzimek, and the opening picture is still ambiguous enough that the J-2 needs more collection before intent is clear."
+        },
+        lockText: "The opening picture is tense and ambiguous: Donovia and Gorgas are contesting Zabzimek, and the first J-2 task is to separate rumor from evidence."
       },
       {
-        id: 2, lesson: "Electromagnetic Theory (4.2)", title: "THE INVISIBLE BATTLEFIELD", briefSection: BRIEF_SECTIONS[1],
-        intelUpdate: "Collection planners are evaluating sites for a SIGINT collector tasked against a new Donovian air defense radar near the Gorgan coast. Three candidate sites are on the table.",
-        activityA: { type: "CLICK_TO_MATCH", title: "Wave Properties Match", prompt: "CC's coffee-brew crew is trying to keep the comms net alive during a Donovian weather surge. Match each frequency range to its primary military use.", items: ["Very Low Frequency (3-30 kHz)", "HF (3-30 MHz)", "Microwave (1-30 GHz)", "Visible Light (400-700 THz)"], categories: ["Submarine communication", "Long-range radio, beyond line-of-sight", "Modern fire-control radar", "Electro-optical imagery"], correctMap: [0,1,2,3], points: 4 },
-        activityB: { type: "CLICK_TO_MATCH", title: "Propagation Match", prompt: "CC's receiver keeps acting strange on the coast. Match each EM problem to the idea that best explains it.", items: ["A signal bends around a ridge and is still heard beyond it", "Rain and sea spray weaken the link more at higher frequencies", "A city block makes copies of the same signal arrive at different times", "A weak echo only appears after the receiver gain is raised"], categories: ["Diffraction", "Attenuation", "Multipath", "Sensitivity / gain"], correctMap: [0,1,2,3], points: 5 },
-        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "CC needs a short J-2 line for the collection brief. Select the two strongest statements that explain why the lower-frequency plan is more resilient in this scenario.", options: ["Lower frequencies bend around terrain better than shorter waves.", "Higher frequencies always travel farther through storms.", "Sea spray and moisture can reduce higher-frequency performance.", "A longer wavelength automatically means more detail.", "If the ridge is tall enough, all frequencies behave the same."], correct: [0,2], points: 6 },
-        lockText: "CC's lower-frequency plan is more resilient because longer waves bend around terrain better and coastal moisture hits higher frequencies harder."
+        id: 2,
+        lesson: "Phase 2 | Cyber Disruption",
+        title: "SCARLET MAMBA IN THE WIRE",
+        briefSection: BRIEF_SECTIONS[1],
+        bridge: "The narrative pressure now becomes a network problem and a separate influence problem.",
+        visualHint: PHASE_VISUALS[2],
+        intelUpdate: "The Gorgas Ministry of Defense reports a cyber intrusion at the same time Donovian channels begin amplifying the Zabzimek rumor cycle. Technical signatures match SCARLET MAMBA, a fictional APT alias previously linked to Donovian state operations.",
+        activityA: {
+          type: "SCENARIO_CLASSIFICATION",
+          title: "Threat Actor Classifier",
+          prompt: "Classify each cyber incident from the Northern Veil picture.",
+          categories: ["Nation-State Actor", "Criminal Organization", "Ideological Hacktivist", "Insider Threat"],
+          scenarios: [
+            { text: "Custom malware, multi-month dwell time, government targets, no monetization", correct: 0 },
+            { text: "Ransomware demanding cryptocurrency, opportunistic targets, mass scanning", correct: 1 },
+            { text: "Website defacement with political slogans, no data theft", correct: 2 },
+            { text: "Data exfiltration by an authorized system administrator", correct: 3 }
+          ],
+          points: 4
+        },
+        activityB: {
+          type: "SEQUENCE_PUZZLE",
+          title: "Cyber Kill Chain Reconstruction",
+          prompt: "Put the intrusion timeline into the right cyber kill chain order.",
+          items: [
+            "Attacker scrapes personnel names and emails tied to Gorgas MOD",
+            "Weaponized PDF arrives in the target inbox",
+            "Target opens PDF; malware installs",
+            "Compromised workstation connects to attacker server",
+            "Planning documents are exfiltrated"
+          ],
+          correctOrder: [0, 1, 2, 3, 4],
+          points: 5
+        },
+        activityC: {
+          type: "SHORT_ANSWER_KEYWORD",
+          title: "Brief Contribution",
+          prompt: "In one sentence, distinguish the cyber threat from the cyber-enabled influence threat.",
+          target: "One sentence",
+          keywordSets: [["cyber threat", "network"], ["cyber-enabled", "influence"], ["separate", "different", "response"]],
+          points: 6,
+          fallback: "SCARLET MAMBA is the cyber threat against the network, while the rumor campaign is cyber-enabled influence and needs a separate response."
+        },
+        lockText: "SCARLET MAMBA is the cyber threat against the network, and the rumor campaign is cyber-enabled influence that needs a separate response track."
       },
       {
-        id: 3, lesson: "Radar and Kill Chain (4.3)", title: "GREAT EAGLE WAKES UP", briefSection: BRIEF_SECTIONS[2],
-        intelUpdate: "SIGINT collected emissions from four Donovian radars along the coast: GREAT EAGLE-1, IRON FANG, STEEL CLAW, and DEATH VIPER. Each has a different role in the IADS.",
-        activityA: { type: "CLICK_TO_MATCH", title: "Radar Role Classifier", prompt: "Match each radar to its IADS role.", items: ["GREAT EAGLE-1: high power, long range, low frequency, wide beam", "IRON FANG: narrower beam, mid-frequency, focused search", "STEEL CLAW: narrow beam, high frequency, precision tracking", "DEATH VIPER: communications-style emissions tied to fighters"], categories: ["Early Warning", "Target Acquisition", "Fire Control / Target Tracking", "Ground Control Intercept"], correctMap: [0,1,2,3], points: 4 },
-        activityB: { type: "DRAG_SEQUENCE", title: "Kill Chain Sequence", prompt: "Drag each event into the correct radar kill chain order.", items: ["GREAT EAGLE-1 detects unknown contact at 350 km", "IRON FANG narrows location to a 5 km grid square", "STEEL CLAW achieves precision lock", "DEATH VIPER vectors interceptor toward target", "Donovian SAM launches against target", "Battle damage assessment confirms target destroyed"], correctOrder: [0,1,2,3,4,5], points: 6 },
-        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "STEEL CLAW is locked. In one sentence, tell the JFC what this stage means for Donovian intent.", keywordSets: [["track","target","lock","locked"],["imminent","engage","fire","attack","threat"]], points: 6, fallback: "The Donovian IADS is in Track/Target, which indicates an imminent engagement threat." },
-        lockText: "Donovian IADS is in Track/Target. STEEL CLAW lock indicates an imminent engagement threat."
+        id: 3,
+        lesson: "Phase 3 | Border / GEOINT",
+        title: "THE BORDER MOVES FIRST",
+        briefSection: BRIEF_SECTIONS[2],
+        bridge: "Now the team needs a map-based assessment of who is moving, where, and how much it matters.",
+        visualHint: PHASE_VISUALS[3],
+        intelUpdate: "Border reporting now shows vehicle movement feeding the Zabzimek corridor. Analysts are asked to decide whether the pattern looks like routine security, staging, or something more deliberate.",
+        activityA: {
+          type: "CLICK_TO_MATCH",
+          title: "GEOINT Capability Match",
+          prompt: "Match each scenario to the GEOINT capability that best supports it.",
+          items: [
+            "Track every moving vehicle across a wide desert area overnight",
+            "Provide foundational maps and elevation for mission planning",
+            "Continuous video of a single border compound",
+            "Forensic look-back across an entire port or crossing for several hours"
+          ],
+          categories: ["MTI", "Geospatial Information (GI)", "FMV", "WAMI"],
+          correctMap: [0, 1, 2, 3],
+          points: 4
+        },
+        activityB: {
+          type: "MULTI_SELECT",
+          title: "Border Picture",
+          prompt: "The J-2 believes Donovia is building around Zabzimek. Select the statements the brief should keep.",
+          options: [
+            "GEOINT can show activity around a structure or route but not inside a solid building.",
+            "WAMI gives a wide-area look-back that can show movement through the corridor.",
+            "MTI is better than FMV for tracking vehicles over a wide area.",
+            "HUMINT or SIGINT may still be needed to confirm intent inside a bunker or command post.",
+            "GEOINT can definitively read intent with no other sources."
+          ],
+          correct: [0, 1, 2, 3],
+          points: 6
+        },
+        activityC: {
+          type: "SHORT_ANSWER_KEYWORD",
+          title: "Brief Contribution",
+          prompt: "In one sentence, write the border-movement assessment the J-2 should brief from the GEOINT picture.",
+          target: "One sentence",
+          keywordSets: [["movement", "moving", "deploying", "staging"], ["zabzimek", "border", "corridor", "route"], ["vehicles", "column", "force", "brigade", "buildup"]],
+          points: 6,
+          fallback: "Donovian ground forces are staging around the Zabzimek corridor, and GEOINT shows a vehicle pattern that looks like deliberate buildup rather than a random drive."
+        },
+        lockText: "Donovian ground movement is building around Zabzimek, and GEOINT can confirm the route, staging, and pattern of life around the flashpoint."
       },
       {
-        id: 4, lesson: "Infrared and Airframe Survival (4.4)", title: "HEAT IN THE SKY", briefSection: BRIEF_SECTIONS[3],
-        intelUpdate: "Donovian SAM batteries are active along the coast. A Gorgan F-16 has been ordered to patrol the area. Your J-2 cell must brief the pilot on IR-guided threats and countermeasures.",
-        activityA: { type: "CLICK_TO_MATCH", title: "Threat-Countermeasure Match", prompt: "Match each incoming threat to the correct countermeasure.", items: ["IR-homing SAM tracking engine exhaust", "Radar-guided SAM with fire-control lock", "Imaging Infrared seeker, flares ineffective", "Beam-riding SAM"], categories: ["Flares", "Chaff + jamming pod", "Tactical maneuver / break lock", "Pre-emptive jamming + maneuver"], correctMap: [0,1,2,3], points: 4 },
-        activityB: { type: "MULTI_SELECT", title: "IR Signature Hunt", prompt: "Study the IR training image. Select the four objects that should show prominent infrared heat signatures.", image: IMAGE_PATHS[4], options: ["Running tank", "Concrete bunker", "Recently fired artillery tube", "Helicopter", "Camouflage netting with no heat source", "Campfire", "Static shipping container", "Painted vehicle decoy with no engine"], correct: [0,2,3,5], points: 8 },
-        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "Brief the pilot. Select the two most important IR-related warnings.", options: ["Hot engine exhaust is your biggest IR vulnerability. Be ready to deploy flares.", "Activate your radar jammer to defeat IR threats.", "Some Donovian SAMs use IIR seekers. Flares may be insufficient; break lock with maneuver.", "Chaff is your primary countermeasure against IR threats.", "Fly higher to escape IR detection because heat rises."], correct: [0,2], points: 6 },
-        lockText: "IR-guided SAMs confirmed. Flares are primary against hot-spot IR seekers; tactical maneuver is required against IIR seekers."
+        id: 4,
+        lesson: "Phase 4 | EMS and Radar Indicators",
+        title: "THE INVISIBLE BATTLEFIELD",
+        briefSection: BRIEF_SECTIONS[3],
+        bridge: "The border picture now has an electromagnetic layer, so the team has to judge what the emitters and terrain are telling them.",
+        visualHint: PHASE_VISUALS[4],
+        intelUpdate: "Signals intelligence picks up Donovian emitters near the border. The team needs to separate long-range warning systems from fire-control behavior and decide whether the collection geometry actually works.",
+        activityA: {
+          type: "CLICK_TO_MATCH",
+          title: "Frequency and Use",
+          prompt: "Match each frequency range to the most likely military use from the lesson.",
+          items: [
+            "Very Low Frequency (3-30 kHz)",
+            "HF (3-30 MHz)",
+            "Microwave (1-30 GHz)",
+            "Visible Light (400-700 THz)"
+          ],
+          categories: ["Submarine communication", "Long-range radio, beyond line-of-sight", "Modern fire-control radar", "Electro-optical imagery"],
+          correctMap: [0, 1, 2, 3],
+          points: 4
+        },
+        activityB: {
+          type: "SEQUENCE_PUZZLE",
+          title: "Radar Kill Chain",
+          prompt: "Put the radar events in the right order from first detection to assessment.",
+          items: [
+            "Great Eagle detects an unknown contact at long range",
+            "Iron Fang narrows the contact to a smaller area",
+            "Steel Claw achieves precision lock",
+            "Donovian interceptor vectors toward the target",
+            "Donovian SAM launches",
+            "Battle damage assessment confirms the result"
+          ],
+          correctOrder: [0, 1, 2, 3, 4, 5],
+          points: 6
+        },
+        activityC: {
+          type: "SHORT_ANSWER_KEYWORD",
+          title: "Brief Contribution",
+          prompt: "In one sentence, explain what the terrain and radar posture mean for the J-2 warning.",
+          target: "One sentence",
+          keywordSets: [["line of sight", "los", "blocked", "terrain"], ["track", "target", "lock", "locked"], ["imminent", "threat", "engage", "warning"]],
+          points: 6,
+          fallback: "The terrain blocks line of sight for some collection sites, and STEEL CLAW lock means the Donovian IADS is in Track/Target with an imminent engagement threat."
+        },
+        lockText: "The terrain blocks line of sight for some collection sites, and STEEL CLAW lock means the Donovian IADS is in Track/Target with an imminent engagement threat."
       },
       {
-        id: 5, lesson: "Cyber Intelligence (4.5)", title: "SCARLET MAMBA IN THE WIRE", briefSection: BRIEF_SECTIONS[4],
-        intelUpdate: "The Gorgan Ministry of Defense reported a cyber intrusion. Technical signatures match SCARLET MAMBA, a fictional APT alias previously linked to Donovian state operations.",
-        activityA: { type: "SCENARIO_CLASSIFICATION", title: "Threat Actor Classifier", prompt: "Classify each cyber incident.", categories: ["Nation-State Actor", "Criminal Organization", "Ideological Hacktivist", "Insider Threat"], scenarios: [{text:"Custom zero-day malware, multi-month dwell time, government targets, no monetization", correct:0}, {text:"Ransomware demanding cryptocurrency, opportunistic targets, mass scanning", correct:1}, {text:"Website defacement with political slogans, no data theft", correct:2}, {text:"Data exfiltration by an authorized system administrator", correct:3}], points: 4 },
-        activityB: { type: "SEQUENCE_PUZZLE", title: "Cyber Kill Chain Reconstruction", prompt: "Click each event in Cyber Kill Chain order.", items: ["Attacker scrapes LinkedIn for Gorgan MOD personnel", "Weaponized PDF arrives in target inbox", "Target opens PDF; malware installs", "Compromised workstation connects to attacker server", "Malware exfiltrates planning documents"], correctOrder: [0,1,2,3,4], points: 5 },
-        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "Are the SCARLET MAMBA intrusion and the Donovian disinformation campaign the same kind of threat? Select all true statements.", options: ["Yes, both are cyber attacks against infrastructure.", "No. The intrusion is a cyber threat that attacks the network.", "No. The disinformation is a cyber-enabled threat that uses the network for influence.", "They require different responses: network defense and counter-messaging.", "They should be treated as a single combined operation in the brief."], correct: [1,2,3], points: 6 },
-        lockText: "SCARLET MAMBA is attributed to Donovia. Network intrusion and cyber-enabled disinformation are both active and require separate response tracks."
+        id: 5,
+        lesson: "Phase 5 | IR Threat Reporting",
+        title: "HEAT IN THE SKY",
+        briefSection: BRIEF_SECTIONS[4],
+        bridge: "The radar layer shifts to the pilot's survival problem, where heat signatures matter more than radar pings.",
+        visualHint: PHASE_VISUALS[5],
+        intelUpdate: "A Gorgas fighter is ordered to patrol the border zone while Donovian SAM batteries and launch vehicles heat up nearby. The J-2 must brief the pilot on the primary IR threat, not just label the objects in the scene.",
+        activityA: {
+          type: "MULTI_SELECT",
+          title: "Primary IR Threat",
+          prompt: "The pilot sees engine exhaust, launch plume, and a possible IIR seeker. Select the cues that make IR the primary threat.",
+          options: [
+            "Hot engine exhaust is a strong IR vulnerability.",
+            "An IIR seeker can reject simple flares if the pilot does nothing else.",
+            "Radar jamming alone is the best answer to an IR seeker.",
+            "Chaff is the primary countermeasure against heat-seeking missiles.",
+            "Maneuver plus flares is part of the correct survival response."
+          ],
+          correct: [0, 1, 4],
+          points: 5
+        },
+        activityB: {
+          type: "SCENARIO_CLASSIFICATION",
+          title: "IR Cue Triage",
+          prompt: "Classify each cue as the strongest IR issue in the scenario.",
+          categories: ["Primary IR threat", "Not the primary IR threat", "Countermeasure cue"],
+          scenarios: [
+            { text: "Hot engine exhaust from the fighter", correct: 0 },
+            { text: "Radar jammer on the wing root", correct: 1 },
+            { text: "Flares loaded on the aircraft", correct: 2 },
+            { text: "Imaging Infrared seeker on a Donovian SAM", correct: 0 },
+            { text: "Chaff bundle", correct: 1 }
+          ],
+          points: 5
+        },
+        activityC: {
+          type: "SHORT_ANSWER_KEYWORD",
+          title: "Brief Contribution",
+          prompt: "In one sentence, warn the pilot about the primary IR threat and the best immediate response.",
+          target: "One sentence",
+          keywordSets: [["hot exhaust", "engine exhaust", "heat signature"], ["iir", "imaging infrared", "flares", "maneuver"], ["primary", "threat", "warning"]],
+          points: 6,
+          fallback: "The primary IR threat is the hot engine exhaust or IIR seeker, so the pilot should use flares plus maneuver and not rely on radar jamming alone."
+        },
+        lockText: "The primary IR threat is the hot engine exhaust or IIR seeker, so the pilot should use flares plus maneuver and not rely on radar jamming alone."
       },
       {
-        id: 6, lesson: "Information Operations (4.6)", title: "OPERATION QUIET TIDE", briefSection: BRIEF_SECTIONS[5],
-        intelUpdate: "Donovian state media is running OPERATION QUIET TIDE, claiming Gorgas committed war crimes, mobilized first, and that international support is illegitimate.",
-        activityA: { type: "SCENARIO_CLASSIFICATION", title: "Dimension Sort", prompt: "Sort each item into an Information Environment dimension.", categories: ["Physical", "Informational", "Cognitive"], scenarios: [{text:"Cellular phone", correct:0}, {text:"Video file content", correct:1}, {text:"Public belief that Gorgas fired first", correct:2}, {text:"Cell tower hardware", correct:0}, {text:"GPS signal frequency", correct:1}, {text:"Gorgan civilian fear of invasion", correct:2}], points: 6 },
-        activityB: { type: "SCENARIO_CLASSIFICATION", title: "Mis/Dis/Mal-Information Triage", prompt: "Classify each information scenario.", categories: ["Misinformation", "Disinformation", "Malinformation"], scenarios: [{text:"Donovian state TV airs fabricated war-crime footage knowing it is fake", correct:1}, {text:"A well-meaning Gorgan citizen shares a wrong story believing it is true", correct:0}, {text:"A leaked but real memo is released to embarrass Gorgas defense leaders", correct:2}, {text:"Donovian-paid bots amplify a fake atrocity hashtag", correct:1}, {text:"A confused diplomat tweets the wrong nation's flag", correct:0}], points: 5 },
-        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "The Donovian narrative uses fabricated atrocity footage and bot amplification. In one sentence, give the J-2's assessment and name one cognitive and one informational weakness that make the campaign exploitable.", keywordSets: [["analyze","identify","assess"],["vulnerabilities","weakness","fingerprints","fabricated"],["information","ie","cognitive","informational","adversary"]], points: 6, fallback: "J-2 should identify adversary IE vulnerabilities, including fabricated imagery and bot fingerprints, to support counter-messaging." },
-        lockText: "OPERATION QUIET TIDE is a Donovian disinformation campaign. Vulnerabilities include fabricated atrocity claims and identifiable bot fingerprints."
-      },
-      {
-        id: 7, lesson: "ISR Fundamentals (4.7)", title: "FROM QUESTION TO ANSWER", briefSection: BRIEF_SECTIONS[6],
-        intelUpdate: "The JFC issued PIR-04: What indicators show Donovian forces will conduct an amphibious assault on the Gorgan coast within the next 96 hours?",
-        activityA: { type: "SCENARIO_CLASSIFICATION", title: "ISR Stage Classifier", prompt: "Classify each activity into the correct ISR stage.", categories: ["Planning & Direction", "Collection", "Processing & Exploitation", "Analysis & Production", "Dissemination & Integration"], scenarios: [{text:"ISR cell receives PIR-04 and drafts a collection plan", correct:0}, {text:"Drone flies over the Donovian coast collecting FMV", correct:1}, {text:"DCGS analysts convert raw FMV into geo-tagged products", correct:2}, {text:"All-source analyst writes indicators-and-warning brief", correct:3}, {text:"Finished brief is pushed to the JFC", correct:4}], points: 5 },
-        activityB: { type: "MULTI_SELECT", title: "Collection Plan", prompt: "To answer PIR-04, select the three collection assets to task first.", options: ["WAMI overhead the Donovian port", "HUMINT in Donovia's capital", "SIGINT against Donovian naval comms in the port", "Cyber penetration of the MOD", "MTI overhead the coastal road network", "Open-source monitoring of veteran forums"], correct: [0,2,4], points: 6 },
-        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "PIR-04 asks for indicators of an amphibious assault on the Gorgan coast. In one sentence, state where that requirement enters the ISR cycle and what system turns raw collection into something the JFC can use.", keywordSets: [["planning","direction","p&d"],["dcgs","distributed common ground system","p&e","processing","exploitation"]], points: 6, fallback: "PIR-04 enters at Planning and Direction, and DCGS supports Processing and Exploitation of raw collection." },
-        lockText: "PIR-04 enters at P&D. Task WAMI, SIGINT, and MTI; process raw data through DCGS."
-      },
-      {
-        id: 8, lesson: "Space Operations (4.8)", title: "DRAGON'S EYE AWAKENS", briefSection: BRIEF_SECTIONS[7],
-        intelUpdate: "DRAGON'S EYE-3, a Donovian GEO MASINT satellite, re-pointed at the Gorgan coast 30 minutes ago. A separate satellite approached Gorgas primary military SATCOM satellite at close range.",
-        activityA: { type: "CLICK_TO_MATCH", title: "Orbit-Mission Match", prompt: "Match each mission requirement to the best orbit.", items: ["Stay over the same fixed point for communications", "Provide GPS-style precision navigation worldwide", "High-resolution imaging with short revisit time", "Cover both polar regions"], categories: ["Geostationary (GEO)", "Medium Earth Orbit (MEO)", "Low Earth Orbit (LEO)", "Polar"], correctMap: [0,1,2,3], points: 4 },
-        activityB: { type: "SCENARIO_CLASSIFICATION", title: "Counterspace Threat Triage", prompt: "Classify each counterspace threat.", categories: ["Kinetic", "Non-Kinetic", "Natural Hazard"], scenarios: [{text:"ASAT missile destroys a satellite by impact", correct:0}, {text:"Cyber attack targets satellite command uplink", correct:1}, {text:"Co-orbital satellite maneuvers for physical interference", correct:0}, {text:"Laser dazzle of optical sensor", correct:1}, {text:"Spoofed GPS signal misleads navigation", correct:1}, {text:"Orbital debris from prior breakup", correct:2}], points: 6 },
-        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "How should we respond to DRAGON'S EYE-3 staring at the coast? Select two recommendations.", options: ["Kinetic ASAT strike on DRAGON'S EYE-3", "Non-kinetic counterspace: directed energy or jamming to disrupt the sensor", "Operational countermeasures: restrict friendly emissions and coordinate with USSF", "Do nothing", "Physical destruction of the satellite ground station"], correct: [1,2], points: 6 },
-        lockText: "DRAGON'S EYE-3 is collecting against the Gorgan coast from GEO. Recommend non-kinetic disruption, emission control, and USSF coordination."
+        id: 6,
+        lesson: "Phase 6 | Space / ISR Angle",
+        title: "DRAGON'S EYE AWAKENS",
+        briefSection: BRIEF_SECTIONS[5],
+        bridge: "The final layer is overhead collection and the tasking chain that turns the new requirement into a usable answer.",
+        visualHint: PHASE_VISUALS[6],
+        intelUpdate: "DRAGON'S EYE-3, a Donovian GEO MASINT satellite, re-pointed at the border corridor 30 minutes ago. At the same time, a separate satellite closed on Gorgas' military communications satellite, which means the J-2 has to think about both collection and counterspace.",
+        activityA: {
+          type: "CLICK_TO_MATCH",
+          title: "Orbit-Mission Match",
+          prompt: "Match each mission requirement to the best orbit.",
+          items: [
+            "Stay over the same fixed point for communications",
+            "Provide GPS-style precision navigation worldwide",
+            "High-resolution imaging with short revisit time",
+            "Cover both polar regions"
+          ],
+          categories: ["Geostationary (GEO)", "Medium Earth Orbit (MEO)", "Low Earth Orbit (LEO)", "Polar"],
+          correctMap: [0, 1, 2, 3],
+          points: 4
+        },
+        activityB: {
+          type: "SCENARIO_CLASSIFICATION",
+          title: "ISR Stage Classifier",
+          prompt: "Classify each task into the correct ISR stage for the new space question.",
+          categories: ["Planning & Direction", "Collection", "Processing & Exploitation", "Analysis & Production", "Dissemination & Integration"],
+          scenarios: [
+            { text: "ISR cell receives PIR-04 and drafts a collection plan", correct: 0 },
+            { text: "Satellite collects raw imagery over the border corridor", correct: 1 },
+            { text: "DCGS analysts turn raw data into usable products", correct: 2 },
+            { text: "All-source analyst writes an indicators-and-warning brief", correct: 3 },
+            { text: "Finished brief is pushed to the JFC", correct: 4 }
+          ],
+          points: 5
+        },
+        activityC: {
+          type: "SHORT_ANSWER_KEYWORD",
+          title: "Brief Contribution",
+          prompt: "In one sentence, tie together the space threat and the ISR tasking step the J-2 must brief.",
+          target: "One sentence",
+          keywordSets: [["geo", "geostationary"], ["p&d", "planning and direction", "pir"], ["dcgs", "processing", "exploitation", "space"]],
+          points: 6,
+          fallback: "DRAGON'S EYE-3 is collecting from GEO, PIR-04 belongs in Planning and Direction, and raw data should move through DCGS in Processing and Exploitation."
+        },
+        lockText: "DRAGON'S EYE-3 is collecting from GEO, PIR-04 belongs in Planning and Direction, and raw data should move through DCGS in Processing and Exploitation."
       }
     ];
 
     const CAPSTONE = {
       mlcoa: {
-        prompt: "Based on everything in your brief, what is Donovia's most likely course of action in the next 96 hours?",
-        options: ["Amphibious assault on the Gorgan coast within 72 hours", "Full-scale invasion of Gorgas via northern land border", "Continued cyber and IO pressure before kinetic action", "Stand down and de-escalate", "Targeted strike against U.S. assets in the region"],
-        correct: [0,2],
+        prompt: "Based on everything in your brief, which assessment best matches Donovia's most likely course of action in the next 96 hours?",
+        options: [
+          "Donovia is only conducting routine border security and will quickly disengage.",
+          "Donovia is building coordinated pressure around Zabzimek while keeping open the option for a near-term cross-border move.",
+          "Donovia is launching a full-scale invasion on every border at once.",
+          "Donovia is focusing only on space collection and has no ground or cyber plan.",
+          "Donovia is preparing a humanitarian relief mission."
+        ],
+        correct: [1],
         points: 30
       },
       mdcoa: {
         prompt: "What is Donovia's most dangerous course of action that the JFC must prepare for?",
-        options: ["Kinetic ASAT strike on Gorgan SATCOM, blinding C2", "Coordinated cyber, IO, and amphibious assault to overwhelm decisions", "Donovia surrenders peacefully", "Donovian state media stops broadcasting", "An unrelated third party attacks Donovia"],
-        correct: [0,1],
+        options: [
+          "A coordinated cross-border operation that combines cyber disruption, IO, radar pressure, and a move through the Zabzimek corridor.",
+          "Donovia surrenders peacefully.",
+          "Donovian state media stops broadcasting.",
+          "An unrelated third party attacks Donovia.",
+          "A harmless training event with no impact on the border."
+        ],
+        correct: [0],
         points: 30
       }
     };
@@ -909,12 +1152,15 @@
         <div class="scenario-panel">
           <h3>Scenario Now</h3>
           <div class="scenario-grid">
-            <div class="scenario-chip"><strong>Current phase</strong>${esc(phase.intelUpdate)}</div>
-            <div class="scenario-chip"><strong>Question focus</strong>${esc(currentScenarioFocus(phase))}</div>
-            <div class="scenario-chip"><strong>Brief carry-forward</strong>${esc(priorEntries.length ? priorEntries.map(entry => entry.content).join(" | ") : "Earlier phase findings will accumulate here as the exercise continues.")}</div>
+            <div class="scenario-chip"><strong>Current picture</strong>${esc(phase.intelUpdate)}</div>
+            <div class="scenario-chip"><strong>How this phase advances the case</strong>${esc(phase.bridge || currentScenarioFocus(phase))}</div>
+            <div class="scenario-chip"><strong>Brief carry-forward</strong>${esc(priorEntries.length ? priorEntries.join(" | ") : "Earlier phase findings will accumulate here as the exercise continues.")}</div>
           </div>
         </div>
       `;
+    }
+    function phaseVisualHtml(phase) {
+      return phase && phase.visualHint ? `<div class="visual-placeholder"><strong>Suggested placeholder visual</strong><p>${esc(phase.visualHint)}</p></div>` : "";
     }
     function currentScenarioFocus(phase) {
       if (state.activityKey === "C" && phase.activityC && phase.activityC.prompt) return phase.activityC.prompt;
@@ -931,6 +1177,7 @@
           <p>This screen is the bridge from the current scenario to the J-2 brief. Use the intelligence picture above, then write the part of the brief that answers the commander in plain language.</p>
           <div class="scenario-grid">
             <div class="scenario-chip"><strong>What to write</strong>${esc(activity.prompt)}</div>
+            <div class="scenario-chip"><strong>Target length</strong>${esc(activity.target || "One short sentence")}</div>
             <div class="scenario-chip"><strong>Good example</strong>${esc(help ? help.sentence : activity.fallback || "Write a short assessment tied to the scenario.")}</div>
           </div>
           <div class="action-row">
@@ -1057,14 +1304,29 @@
       `;
     }
     function renderIntro() {
-      headTitle.textContent = "JTF CORAL SHIELD // OPERATION DONOVIAN HORIZON";
+      headTitle.textContent = "JTF CORAL SHIELD // OPERATION NORTHERN VEIL";
       render(`
         <div class="kicker">Block 4 Capstone Exercise</div>
-        <h1>OPERATION DONOVIAN HORIZON</h1>
-        <div class="panel">
-          <p>Donovia is applying military, cyber, information, and space pressure against the Republic of Gorgas, a democratic partner seeking Western support.</p>
-          <p>Gorgas has mountain terrain, a vulnerable information environment, and breakaway regions influenced by Donovian proxies. Your team is the J-2 cell for JTF CORAL SHIELD.</p>
-          <p>You will not just answer questions. You will build and export a J-2 intelligence brief.</p>
+        <h1>OPERATION NORTHERN VEIL</h1>
+        <div class="intro-grid">
+          <div>
+            <img class="intro-map" src="${esc(SCENARIO_MAP_PATH)}" alt="Eurasia Scenario Map showing Gorgas, Donovia, and the Zabzimek flashpoint">
+            <div class="panel">
+              <p><strong>Who:</strong> Gorgas is the partner nation in the exercise, and Donovia is the tense neighbor applying pressure.</p>
+              <p><strong>Where:</strong> The flashpoint is centered on Zabzimek, a border district where the ground, air, and information picture meet.</p>
+              <p><strong>What:</strong> The coalition J-2 cell must decide whether the mixed reporting points to routine security, coercion, or a near-term move.</p>
+              <p><strong>Why it is tense:</strong> Donovia is combining border movement, cyber disruption, and influence activity, but the opening picture is still ambiguous.</p>
+            </div>
+          </div>
+          <div>
+            <div class="panel">
+              <p><strong>What the J-2 is being asked to determine:</strong> what Donovia is preparing around Zabzimek, which indicators matter most, and how the picture changes across the six phases.</p>
+              <p><strong>Why the opening is ambiguous:</strong> not every report is confirmed, and several cues could still be routine unless they are read together.</p>
+            </div>
+            <div class="panel">
+              <p><strong>Exercise path:</strong> Information shaping, cyber disruption, border/GEOINT, EMS and radar indicators, IR threat reporting, then the space and ISR angle.</p>
+            </div>
+          </div>
         </div>
         <label for="teamName">Team Name</label>
         <input id="teamName" maxlength="45" autocomplete="off" placeholder="Enter team name">
@@ -1090,7 +1352,7 @@
       render(`
         <div class="kicker">Intel Update // Phase ${p.id}</div>
         <h2>${esc(p.title)}</h2>
-        <img class="phase-image" src="${esc(IMAGE_PATHS[p.id])}" alt="Training image for ${esc(p.title)}">
+        ${phaseVisualHtml(p)}
         <div class="panel"><p>${esc(p.intelUpdate)}</p></div>
         ${currentScenarioHtml(p)}
         <div class="button-row"><button id="continueBtn">Activity A</button></div>
@@ -1107,6 +1369,7 @@
         <div class="kicker">${p.lesson} // Activity ${key}</div>
         <h2>${esc(a.title)}</h2>
         ${currentScenarioHtml(p)}
+        ${phaseVisualHtml(p)}
         ${key === "C" ? briefGuideHtml(p, a) : `<div class="panel"><p>${esc(a.prompt)}</p></div>`}
         <div id="activityHost"></div>
         <div id="feedback" class="panel hidden"></div>
@@ -1370,6 +1633,11 @@
         return {
           total,
           rows,
+          reviews: rowData.map(row => ({
+            label: row.label,
+            verdict: row.score > 0 ? "Right" : "Wrong",
+            explanation: row.note
+          })),
           response,
           summary: total >= 15 ? "Good brief contribution." : `Missing ${missing.join(", ")}.`,
           max: 20
@@ -1415,7 +1683,14 @@
     }
     function renderFeedbackPanel(result) {
       const tone = result.total >= 15 ? "good" : "bad";
-      const details = result.rows.map(row => `
+      const reviewItems = (result.reviews || []).map(row => `
+        <div class="review-chip">
+          <strong>${esc(row.label)}</strong>
+          <div class="${row.verdict === "Right" ? "review-right" : "review-wrong"}">${esc(row.verdict)}</div>
+          <div>${esc(row.explanation)}</div>
+        </div>
+      `).join("");
+      const details = (result.rows || []).map(row => `
         <div class="rubric-row">
           <div>
             <strong>${esc(row.label)}</strong>
@@ -1428,8 +1703,8 @@
         <div class="feedback-panel ${tone}">
           <h3>${result.total >= 15 ? "Strong answer" : "Needs revision"}</h3>
           <p>${esc(result.summary)}</p>
-          <p><strong>Response captured:</strong> ${esc(result.response)}</p>
           <p><strong>Score:</strong> ${result.total}/20</p>
+          ${reviewItems ? `<div class="review-grid">${reviewItems}</div>` : ""}
           <div class="rubric-grid">${details}</div>
         </div>
       `;
@@ -1438,12 +1713,7 @@
       const box = document.getElementById("feedback");
       if (!box) return;
       box.classList.remove("hidden");
-      box.innerHTML = `
-        <h3>Activity Feedback</h3>
-        <p>${esc(result.summary)}</p>
-        <p>Points earned: ${Math.round(result.total)} / ${maxPoints}</p>
-        ${result.rows && result.rows.length ? renderFeedbackPanel(result) : ""}
-      `;
+      box.innerHTML = renderFeedbackPanel(result);
     }
     function submitActivity(a) {
       let earned = 0;
@@ -1456,7 +1726,6 @@
         let correct = 0;
         a.correctMap.forEach((cat,i)=>{ if (window.matchState.map[i] === cat) correct++; });
         earned = maxPoints * correct / total;
-        summary = `${correct} of ${total} matches correct.`;
         response = a.items.map((item,i) => `${item} -> ${a.categories[window.matchState.map[i]] || "No match"}`).join("; ");
         a.correctMap.forEach((cat, i) => {
           const btn = document.querySelector(`.match-item[data-i="${i}"]`);
@@ -1464,10 +1733,22 @@
         });
         document.querySelectorAll(".match-cat").forEach(b => b.disabled = true);
         const missed = a.items.filter((_, i) => window.matchState.map[i] !== a.correctMap[i]);
+        const reviews = a.items.map((item, i) => {
+          const chosen = window.matchState.map[i];
+          const right = chosen === a.correctMap[i];
+          return {
+            label: item,
+            verdict: right ? "Right" : "Wrong",
+            explanation: right
+              ? `Right: this cue belongs with ${a.categories[a.correctMap[i]]}.`
+              : `Wrong: you chose ${a.categories[chosen] || "nothing"}, but the better choice is ${a.categories[a.correctMap[i]]}.`
+          };
+        });
         result = {
           total: Math.round(earned),
-          summary: missed.length ? `Review the missed match(es): ${missed.map((item, idx) => item).join("; ")}.` : "All matches correct.",
+          summary: missed.length ? "Some matches need a correction." : "All matches fit the scenario.",
           response,
+          reviews,
           rows: [
             { label: "Correct matches", score: Math.round(earned / 4), note: "Matched the right scenario to the right capability." },
             { label: "Scenario linkage", score: Math.round(earned / 4), note: "The choices reflect the phase scenario." },
@@ -1475,6 +1756,7 @@
             { label: "Brief value", score: Math.round(earned / 4), note: "The output can be used in the brief." }
           ]
         };
+        summary = result.summary;
       }
       if (a.type === "MULTI_SELECT") {
         const selected = [...window.multiState];
@@ -1482,7 +1764,6 @@
         const good = selected.filter(i=>correct.includes(i)).length;
         const bad = selected.filter(i=>!correct.includes(i)).length;
         earned = Math.max(0, maxPoints * ((good - bad * .5) / correct.length));
-        summary = `${good} correct selections, ${bad} incorrect selections.`;
         response = selected.length ? selected.map(i => a.options[i]).join("; ") : "No selections.";
         a.options.forEach((_, i) => {
           const btn = document.querySelector(`.option[data-i="${i}"]`);
@@ -1493,10 +1774,22 @@
           else if (isCorrect && !isSelected) btn.classList.add("reveal-correct");
           btn.disabled = true;
         });
+        const reviews = selected.map(i => {
+          const right = correct.includes(i);
+          const correctText = correct.map(ci => a.options[ci]).join(" | ");
+          return {
+            label: a.options[i],
+            verdict: right ? "Right" : "Wrong",
+            explanation: right
+              ? "Right: this choice supports the scenario and belongs in the brief."
+              : `Wrong: this choice does not fit the scenario. Better choice(s): ${correctText}.`
+          };
+        });
         result = {
           total: Math.round(earned),
-          summary: bad || selected.length !== correct.length ? `Selected ${good} correct and ${bad} incorrect choice(s).` : "All required choices selected.",
+          summary: bad || selected.length !== correct.length ? "One or more selected choices do not fit the scenario." : "All selected choices fit the scenario.",
           response,
+          reviews,
           rows: [
             { label: "Correct recommendations", score: Math.round((good / correct.length) * 5), note: good === correct.length ? "All required recommendations were selected." : "Pick every required recommendation tied to the scenario." },
             { label: "Avoided distractors", score: bad ? 0 : 5, note: bad ? "Remove unsupported choices before submitting the brief." : "No unsupported choices were selected." },
@@ -1504,6 +1797,7 @@
             { label: "Brief-ready recommendation", score: good === correct.length && bad === 0 ? 5 : 0, note: good === correct.length && bad === 0 ? "This could go straight into the J-2 brief." : "Make the recommendation sharper and more selective." }
           ]
         };
+        summary = result.summary;
       }
       if (a.type === "SHORT_ANSWER_KEYWORD") {
         result = evaluateBriefContribution(a, currentPhase());
@@ -1517,7 +1811,6 @@
       if (a.type === "SEQUENCE_PUZZLE") {
         const ok = a.correctOrder.every((v,i)=>window.seqState[i] === v);
         earned = ok ? maxPoints : 0;
-        summary = ok ? "Sequence correct." : "Sequence needs review.";
         response = window.seqState.map(i => a.items[i]).join(" -> ") || "No sequence selected.";
         a.correctOrder.forEach((correctIdx, pos) => {
           const slot = document.querySelector(`.drop-slot[data-slot="${pos}"]`);
@@ -1525,10 +1818,22 @@
         });
         document.querySelectorAll(".seq-item").forEach(b => b.disabled = true);
         document.querySelectorAll(".drop-slot").forEach(slot => slot.style.pointerEvents = "none");
+        const reviews = a.items.map((item, pos) => {
+          const chosen = window.seqState[pos];
+          const right = chosen === a.correctOrder[pos];
+          return {
+            label: item,
+            verdict: right ? "Right" : "Wrong",
+            explanation: right
+              ? `Right: ${item} belongs at step ${pos + 1}.`
+              : `Wrong: this step should be ${a.items[a.correctOrder[pos]]}.`
+          };
+        });
         result = {
           total: Math.round(earned),
-          summary: ok ? "Sequence correct." : "Reorder the events into the kill-chain flow.",
+          summary: ok ? "The sequence matches the scenario flow." : "Reorder the events so the brief follows the scenario flow.",
           response,
+          reviews,
           rows: [
             { label: "Correct order", score: ok ? 5 : 0, note: ok ? "The sequence matches the doctrinal order." : "Put the stages in the order they occur." },
             { label: "Scenario linkage", score: ok ? 5 : 0, note: "The ordering tracks the current phase scenario." },
@@ -1536,6 +1841,7 @@
             { label: "Brief-ready flow", score: ok ? 5 : 0, note: "The answer can be used to brief the chain of events." }
           ]
         };
+        summary = result.summary;
       }
       if (a.type === "HOT_SPOT_MAP") {
         const goodIds = a.spots.filter(s=>s.correct).map(s=>s.id);
@@ -1567,7 +1873,6 @@
         let correct = 0;
         a.scenarios.forEach((s,i)=>{ if (window.classState[i] === s.correct) correct++; });
         earned = maxPoints * correct / a.scenarios.length;
-        summary = `${correct} of ${a.scenarios.length} scenarios classified correctly.`;
         response = a.scenarios.map((s,i) => `${s.text} -> ${a.categories[window.classState[i]] || "No category"}`).join("; ");
         a.scenarios.forEach((s, i) => {
           document.querySelectorAll(`.class-choice[data-row="${i}"]`).forEach(btn => {
@@ -1577,10 +1882,22 @@
           const sel = document.querySelector(`.class-choice.selected[data-row="${i}"]`);
           if (sel) { sel.classList.remove("reveal-correct"); sel.classList.add(window.classState[i] === s.correct ? "correct" : "incorrect"); }
         });
+        const reviews = a.scenarios.map((s, i) => {
+          const chosen = window.classState[i];
+          const right = chosen === s.correct;
+          return {
+            label: s.text,
+            verdict: right ? "Right" : "Wrong",
+            explanation: right
+              ? `Right: ${a.categories[s.correct]} is the best fit for this cue.`
+              : `Wrong: you chose ${a.categories[chosen] || "nothing"}, but the better choice is ${a.categories[s.correct]}.`
+          };
+        });
         result = {
           total: Math.round(earned),
-          summary: `${correct} of ${a.scenarios.length} scenarios classified correctly.`,
+          summary: correct === a.scenarios.length ? "All scenario classifications fit the phase." : "One or more rows need a different category.",
           response,
+          reviews,
           rows: [
             { label: "Correct classifications", score: Math.round((correct / a.scenarios.length) * 5), note: "The rows were placed in the right category." },
             { label: "Scenario linkage", score: correct ? 5 : 0, note: "The classifications are grounded in the phase scenario." },
@@ -1588,6 +1905,7 @@
             { label: "Brief-ready triage", score: correct === a.scenarios.length ? 5 : 0, note: "The output can be used directly in the brief." }
           ]
         };
+        summary = result.summary;
       }
       if (!state.activityLog[currentPhase().id]) state.activityLog[currentPhase().id] = {};
       state.activityLog[currentPhase().id][state.activityKey] = {
@@ -1652,7 +1970,7 @@
       render(`
         <div class="kicker">Capstone Stage 1</div>
         <h2>Review and Edit the Brief</h2>
-        <img class="phase-image" src="${esc(IMAGE_PATHS.capstone)}" alt="Training image for capstone J-2 brief">
+        <div class="visual-placeholder"><strong>Suggested placeholder visual</strong><p>Placeholder visual: a wall display with the six Northern Veil layers assembled into a single J-2 brief.</p></div>
         <p>Edits do not change score. They improve the product you hand to the instructor.</p>
         ${BRIEF_SECTIONS.map(sec=>`<label>${esc(sec)}</label><textarea data-section="${esc(sec)}">${esc(state.brief[sec] || "[CONTRIBUTION NOT MADE - SKIPPED]")}</textarea>`).join("")}
         <div class="button-row"><button id="saveEditsBtn">Continue to MLCOA</button></div>
@@ -1729,7 +2047,7 @@
     function briefText() {
       const lines = [];
       lines.push("=========================================================");
-      lines.push("JTF CORAL SHIELD - J-2 INTELLIGENCE BRIEF");
+      lines.push("JTF CORAL SHIELD - OPERATION NORTHERN VEIL J-2 INTELLIGENCE BRIEF");
       lines.push(`TEAM: ${state.team || "Not Assigned"}    DATE: ${new Date().toLocaleDateString()}`);
       lines.push("=========================================================");
       BRIEF_SECTIONS.forEach(sec => { lines.push("", sec, "-".repeat(sec.length), state.brief[sec] || "[CONTRIBUTION NOT MADE - SKIPPED]"); });
@@ -1766,7 +2084,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${safeTeam}_Donovian_Horizon_J2_Assessment.txt`;
+      a.download = `${safeTeam}_Northern_Veil_J2_Assessment.txt`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -1785,7 +2103,7 @@
       return "RECOMMEND REMEDIAL REVIEW WITH INSTRUCTOR";
     }
     function renderResults() {
-      localStorage.removeItem("donovianHorizonSave");
+      localStorage.removeItem("northernVeilSave");
       render(`
         <div class="kicker">Final Results</div>
         <h2>${esc(state.team)}</h2>
@@ -1817,9 +2135,9 @@
     document.getElementById("skipPhaseBtn").onclick = () => { if (confirm("Skip this phase? Its brief section will be marked skipped.")) skipPhase(); };
     document.getElementById("restartPhaseBtn").onclick = () => { if (confirm("Restart current phase? Current phase work will be reset.")) restartPhase(); };
     document.getElementById("quitBtn").onclick = () => { if (confirm("Quit to intro and lose current progress?")) resetAll(); };
-document.getElementById("saveBtn").onclick = () => { localStorage.setItem("donovianHorizonSave", JSON.stringify(state)); menu.classList.add("hidden"); };
+document.getElementById("saveBtn").onclick = () => { localStorage.setItem("northernVeilSave", JSON.stringify(state)); menu.classList.add("hidden"); };
     document.getElementById("resumeBtn").onclick = () => {
-      const saved = localStorage.getItem("donovianHorizonSave");
+      const saved = localStorage.getItem("northernVeilSave");
       if (!saved) return alert("No saved progress found.");
       Object.assign(state, JSON.parse(saved));
       if (state.phaseIndex >= PHASES.length) renderCapstoneReview(); else if (state.activityKey === "A" || state.activityKey === "B" || state.activityKey === "C") renderActivity(state.activityKey); else renderIntelUpdate();
