@@ -39,7 +39,7 @@
       top: 0;
       z-index: 30;
       padding: .42rem;
-      background: var(--red);
+      background: #2f6f3a;
       color: var(--cream);
       text-align: center;
       font: 700 .82rem/1.1 "Courier New", monospace;
@@ -141,6 +141,11 @@
       border-color: var(--green);
       background: rgba(160,178,101,.12);
       box-shadow: 0 0 0 1px rgba(160,178,101,.22), 0 0 24px var(--glow);
+      animation: activeBriefPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes activeBriefPulse {
+      0%, 100% { box-shadow: 0 0 0 1px rgba(160,178,101,.2), 0 0 16px rgba(160,178,101,.26); }
+      50% { box-shadow: 0 0 0 1px rgba(160,178,101,.55), 0 0 34px rgba(160,178,101,.55); }
     }
     .brief-section h4 {
       margin: 0 0 .35rem;
@@ -231,6 +236,15 @@
       margin: .8rem 0;
       display: grid;
       place-items: center;
+    }
+    .phase-image {
+      width: 100%;
+      max-height: 360px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      display: block;
+      margin: .85rem 0;
+      background: var(--panel2);
     }
     .review-grid {
       display: grid;
@@ -363,6 +377,7 @@
       <div style="display:flex;gap:.5rem;align-items:center;justify-content:flex-end">
         <div id="scoreLine" class="score">Score: 0</div>
         <button id="helpBtn" class="help-btn" type="button">Help</button>
+        <button id="sourcesBtn" class="help-btn" type="button">Sources</button>
         <button id="menuBtn" class="hamburger" type="button">MENU</button>
       </div>
     </header>
@@ -393,6 +408,7 @@
       <div class="button-row" style="margin-top:0">
         <button id="lessonHelpTab">Lesson Help</button>
         <button id="glossaryTab">Definition Log</button>
+        <button id="sourcesTab">Sources</button>
         <button id="closeHelpBtn">Close</button>
       </div>
       <div id="helpContent"></div>
@@ -537,6 +553,56 @@
       ["WAMI", "Wide Area Motion Imagery. Large-area motion imagery with forensic look-back."]
     ];
 
+    const IMAGE_PATHS = {
+      1: "Imagery/Phase 1 - GEOINT.png",
+      2: "Imagery/Phase 2 - EM Theory.png",
+      3: "Imagery/Phase 3 - Radar Kill Chain.png",
+      4: "Imagery/Phase 4 - Infrared Threats.png",
+      5: "Imagery/Phase 5 - Cyber Intelligence.png",
+      6: "Imagery/Phase 6 - Information Operations.png",
+      7: "Imagery/Phase 7 - ISR Fundamentals.png",
+      8: "Imagery/Phase 8 - Space Operations.png",
+      capstone: "Imagery/Capstone - Hero Shot.png"
+    };
+
+    const SOURCES = [
+      {
+        title: "TRADOC G-2 DATE",
+        url: "https://oe.tradoc.army.mil/date-decisive-action-training-environment/",
+        note: "DATE is described by TRADOC G-2 as the U.S. Army official tool for scenario development and an unclassified foundation for training."
+      },
+      {
+        title: "TRADOC G-2 Donovia Update",
+        url: "https://oe.tradoc.army.mil/2024/05/21/decisive-action-training-environment-date-update-one-donovia/",
+        note: "Public TRADOC article describing Donovia as a DATE training country and training adversary."
+      },
+      {
+        title: "U.S. Army DATE World article",
+        url: "https://www.army.mil/article/242997/decisive_action_training_environment_world_the_armys_authoritative_training_environment",
+        note: "Public U.S. Army article describing DATE World as a simulated web-based training environment."
+      },
+      {
+        title: "JP 2-0 Joint Intelligence",
+        url: "https://irp.fas.org/doddir/dod/jp2_0.pdf",
+        note: "Public joint doctrine source for intelligence disciplines, GEOINT, ISR, and all-source intelligence concepts."
+      },
+      {
+        title: "JP 3-12 Cyberspace Operations",
+        url: "https://irp.fas.org/doddir/dod/jp3_12.pdf",
+        note: "Public joint doctrine source for cyberspace operations concepts."
+      },
+      {
+        title: "JP 3-13 Information Operations",
+        url: "https://irp.fas.org/doddir/dod/jp3_13.pdf",
+        note: "Public joint doctrine source for the Information Environment dimensions and IO concepts."
+      },
+      {
+        title: "JP 3-14 Space Operations",
+        url: "https://www.jcs.mil/Doctrine/Joint-Doctrine-Pubs/3-0-Operations-Series/",
+        note: "Public Joint Staff doctrine publication library containing space operations doctrine."
+      }
+    ];
+
     const PHASES = [
       {
         id: 1, lesson: "GEOINT (4.1)", title: "FIRST LIGHT OVER THE SEA OF AZURE", briefSection: BRIEF_SECTIONS[0],
@@ -632,6 +698,7 @@
       timerId: null,
       paused: false,
       currentResult: null,
+      activityLog: {},
       capstone: { mlcoa: [], mdcoa: [], indicator: "" }
     };
 
@@ -724,9 +791,41 @@
         <div class="term-grid">${GLOSSARY.map(([term, def]) => `<div class="term-card"><strong>${esc(term)}</strong>${esc(def)}</div>`).join("")}</div>
       `;
     }
+    function sourcesHtml() {
+      return `
+        <div class="kicker">Public Source Statement</div>
+        <h2>Sources and Classification Posture</h2>
+        <div class="panel">
+          <p>This exercise is built only from public, unclassified training and doctrine sources plus fictional instructional content. It contains no CUI, no operational data, no real intelligence reporting, no classified tactics, and no restricted collection requirements.</p>
+          <p>Donovia and Gorgas are fictional DATE training nations. Scenario events, radar names, cyber actor names, and operational details in this app are invented for classroom review.</p>
+        </div>
+        <div class="term-grid">${SOURCES.map(s => `<div class="term-card"><strong>${esc(s.title)}</strong><p>${esc(s.note)}</p><p><a href="${esc(s.url)}" target="_blank" rel="noopener" style="color:var(--green)">Open source</a></p></div>`).join("")}</div>
+      `;
+    }
     function showHelp(mode = "lesson") {
       helpModal.classList.remove("hidden");
-      helpContent.innerHTML = mode === "glossary" ? glossaryHtml() : lessonReviewHtml();
+      helpContent.innerHTML = mode === "glossary" ? glossaryHtml() : mode === "sources" ? sourcesHtml() : lessonReviewHtml();
+    }
+    function showActivityReview() {
+      const p = currentPhaseSafe();
+      if (!p) return;
+      helpModal.classList.remove("hidden");
+      const logs = ["A","B"].map(key => (state.activityLog[p.id] || {})[key]).filter(Boolean);
+      helpContent.innerHTML = `
+        <div class="kicker">Current Phase Review</div>
+        <h2>${esc(p.title)}</h2>
+        <p>Use this to write your Brief Contribution. It shows what your team already answered in this phase.</p>
+        ${logs.length ? logs.map(log => `
+          <div class="panel">
+            <h3>Activity ${esc(log.key)} - ${esc(log.title)}</h3>
+            <p><strong>Prompt:</strong> ${esc(log.prompt)}</p>
+            <p><strong>Your answer:</strong> ${esc(log.response)}</p>
+            <p><strong>Feedback:</strong> ${esc(log.summary)}</p>
+            <p><strong>Score:</strong> ${esc(log.points)} / 20</p>
+          </div>
+        `).join("") : `<div class="panel"><p>No completed activities yet in this phase.</p></div>`}
+        ${lessonReviewHtml()}
+      `;
     }
     function renderIntro() {
       headTitle.textContent = "JTF CORAL SHIELD // OPERATION DONOVIAN HORIZON";
@@ -748,6 +847,7 @@
         state.score = 0;
         state.brief = Object.fromEntries(BRIEF_SECTIONS.map(s => [s, ""]));
         state.skipped = {};
+        state.activityLog = {};
         renderIntelUpdate();
       };
     }
@@ -760,6 +860,7 @@
       render(`
         <div class="kicker">Intel Update // Phase ${p.id}</div>
         <h2>${esc(p.title)}</h2>
+        <img class="phase-image" src="${esc(IMAGE_PATHS[p.id])}" alt="Training image for ${esc(p.title)}">
         <div class="panel"><p>${esc(p.intelUpdate)}</p></div>
         <div class="button-row"><button id="continueBtn">Activity A</button></div>
       `);
@@ -788,6 +889,8 @@
       const submit = document.getElementById("submitActivityBtn");
       if (state.instructorLock) submit.disabled = true;
       submit.onclick = () => submitActivity(a);
+      const reviewBtn = document.getElementById("reviewActivityBtn");
+      if (reviewBtn) reviewBtn.onclick = showActivityReview;
       document.getElementById("nextActivityBtn").onclick = () => nextAfterActivity();
       startTimer();
     }
@@ -797,6 +900,7 @@
         <div class="panel">
           <h3>Before You Write the Brief Contribution</h3>
           <p>This is where your team turns the lesson into a short J-2 brief section. Use simple English. Grammar is less important than the right intelligence concepts.</p>
+          <div class="button-row"><button id="reviewActivityBtn" type="button">Review Current Activity</button></div>
           <div class="review-grid">${help.bullets.slice(0, 4).map(b => `<div class="review-chip">${esc(b)}</div>`).join("")}</div>
           <div class="sentence-frame">${esc(help.sentence)}</div>
         </div>
@@ -879,6 +983,7 @@
       stopTimer();
       let earned = 0;
       let summary = "";
+      let response = "No answer recorded.";
       const maxPoints = activityPoints();
       if (a.type === "CLICK_TO_MATCH") {
         const total = a.correctMap.length;
@@ -886,6 +991,7 @@
         a.correctMap.forEach((cat,i)=>{ if (window.matchState.map[i] === cat) correct++; });
         earned = maxPoints * correct / total;
         summary = `${correct} of ${total} matches correct.`;
+        response = a.items.map((item,i) => `${item} -> ${a.categories[window.matchState.map[i]] || "No match"}`).join("; ");
       }
       if (a.type === "MULTI_SELECT") {
         const selected = [...window.multiState];
@@ -894,6 +1000,7 @@
         const bad = selected.filter(i=>!correct.includes(i)).length;
         earned = Math.max(0, maxPoints * ((good - bad * .5) / correct.length));
         summary = `${good} correct selections, ${bad} incorrect selections.`;
+        response = selected.length ? selected.map(i => a.options[i]).join("; ") : "No selections.";
       }
       if (a.type === "SHORT_ANSWER_KEYWORD") {
         const text = document.getElementById("shortAnswer").value.trim();
@@ -901,11 +1008,13 @@
         earned = maxPoints * hits / a.keywordSets.length;
         summary = `${hits} of ${a.keywordSets.length} required concept groups found.`;
         state.currentResult = { text: text || a.fallback };
+        response = text || "[Blank answer. Suggested fallback used.]";
       }
       if (a.type === "SEQUENCE_PUZZLE") {
         const ok = a.correctOrder.every((v,i)=>window.seqState[i] === v);
         earned = ok ? maxPoints : 0;
         summary = ok ? "Sequence correct." : "Sequence needs review.";
+        response = window.seqState.map(i => a.items[i]).join(" -> ") || "No sequence selected.";
       }
       if (a.type === "HOT_SPOT_MAP") {
         const goodIds = a.spots.filter(s=>s.correct).map(s=>s.id);
@@ -914,13 +1023,24 @@
         const bad = selected.filter(id=>!goodIds.includes(id)).length;
         earned = Math.max(0, maxPoints * ((good - bad * .5) / goodIds.length));
         summary = `${good} correct hot spots, ${bad} incorrect hot spots.`;
+        response = selected.length ? selected.map(id => (a.spots.find(s => s.id === id) || {}).label || id).join("; ") : "No hot spots selected.";
       }
       if (a.type === "SCENARIO_CLASSIFICATION") {
         let correct = 0;
         a.scenarios.forEach((s,i)=>{ if (window.classState[i] === s.correct) correct++; });
         earned = maxPoints * correct / a.scenarios.length;
         summary = `${correct} of ${a.scenarios.length} scenarios classified correctly.`;
+        response = a.scenarios.map((s,i) => `${s.text} -> ${a.categories[window.classState[i]] || "No category"}`).join("; ");
       }
+      if (!state.activityLog[currentPhase().id]) state.activityLog[currentPhase().id] = {};
+      state.activityLog[currentPhase().id][state.activityKey] = {
+        key: state.activityKey,
+        title: a.title,
+        prompt: a.prompt,
+        response,
+        summary,
+        points: Math.round(earned)
+      };
       addScore(earned);
       document.getElementById("feedback").classList.remove("hidden");
       document.getElementById("feedback").innerHTML = `<h3>Activity Feedback</h3><p>${esc(summary)}</p><p>Points earned: ${Math.round(earned)} / ${maxPoints}</p>`;
@@ -975,6 +1095,7 @@
       render(`
         <div class="kicker">Capstone Stage 1</div>
         <h2>Review and Edit the Brief</h2>
+        <img class="phase-image" src="${esc(IMAGE_PATHS.capstone)}" alt="Training image for capstone J-2 brief">
         <p>Edits do not change score. They improve the product you hand to the instructor.</p>
         ${BRIEF_SECTIONS.map(sec=>`<label>${esc(sec)}</label><textarea data-section="${esc(sec)}">${esc(state.brief[sec] || "[CONTRIBUTION NOT MADE - SKIPPED]")}</textarea>`).join("")}
         <div class="button-row"><button id="saveEditsBtn">Continue to MLCOA</button></div>
@@ -1034,6 +1155,7 @@
         <div class="button-row">
           <button id="printBtn">Print Brief</button>
           <button id="copyBtn">Copy Brief as Text</button>
+          <button id="downloadBtn">Download Brief / Assessment</button>
           <button id="finalBtn">Submit Final Brief</button>
         </div>
       `);
@@ -1042,6 +1164,7 @@
         try { await navigator.clipboard.writeText(briefText()); document.getElementById("copyStatus").textContent = "Brief copied."; }
         catch { document.getElementById("copyStatus").textContent = "Clipboard blocked. Select the text above and copy it manually."; }
       };
+      document.getElementById("downloadBtn").onclick = downloadAssessment;
       document.getElementById("finalBtn").onclick = renderResults;
     }
     function briefText() {
@@ -1057,7 +1180,38 @@
       lines.push("", "ASSESSMENT - MOST DANGEROUS COURSE OF ACTION", "--------------------------------------------");
       lines.push(state.capstone.mdcoa.map(i=>CAPSTONE.mdcoa.options[i]).join("; ") || "Not submitted");
       lines.push("", `FINAL SCORE: ${state.score} / ${totalPossible()}`, `ASSESSED: ${scoreTitle()}`);
+      lines.push("", "ACTIVITY PERFORMANCE LOG", "------------------------");
+      PHASES.forEach(phase => {
+        lines.push("", `PHASE ${phase.id}: ${phase.title}`);
+        ["A","B","C"].forEach(key => {
+          const log = (state.activityLog[phase.id] || {})[key];
+          if (!log) {
+            lines.push(`Activity ${key}: Not completed or skipped.`);
+            return;
+          }
+          lines.push(`Activity ${key} - ${log.title}`);
+          lines.push(`Prompt: ${log.prompt}`);
+          lines.push(`Team Answer: ${log.response}`);
+          lines.push(`Feedback: ${log.summary}`);
+          lines.push(`Score: ${log.points} / 20`);
+        });
+      });
+      lines.push("", "SOURCE / CLASSIFICATION STATEMENT", "---------------------------------");
+      lines.push("This classroom exercise was built from public, unclassified training and doctrine sources plus fictional instructional content. It contains no CUI, no operational data, no real intelligence reporting, no classified tactics, and no restricted collection requirements.");
+      SOURCES.forEach(s => lines.push(`${s.title}: ${s.url}`));
       return lines.join("\n");
+    }
+    function downloadAssessment() {
+      const safeTeam = (state.team || "team").replace(/[^a-z0-9_-]+/gi, "_").replace(/^_+|_+$/g, "") || "team";
+      const blob = new Blob([briefText()], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${safeTeam}_Donovian_Horizon_J2_Assessment.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
     }
     function totalPossible() {
       const phaseTotal = PHASES.length * 3 * activityPoints();
@@ -1078,18 +1232,21 @@
         <h2>${esc(state.team)}</h2>
         <div class="result-score">${state.score}</div>
         <div class="panel"><h3>${scoreTitle()}</h3><p>Total possible: ${totalPossible()}</p><p>Write your team name and final score on the leaderboard. Hand your brief to the instructor.</p></div>
-        <div class="button-row"><button id="restartBtn">Restart Exercise</button></div>
+        <div class="button-row"><button id="downloadFinalBtn">Download Brief / Assessment</button><button id="restartBtn">Restart Exercise</button></div>
       `);
+      document.getElementById("downloadFinalBtn").onclick = downloadAssessment;
       document.getElementById("restartBtn").onclick = resetAll;
     }
     function resetAll() {
-      Object.assign(state, { team:"", screen:"intro", phaseIndex:0, activityKey:"intro", score:0, brief:Object.fromEntries(BRIEF_SECTIONS.map(s=>[s,""])), skipped:{}, timerSeconds:0, paused:false, currentResult:null, capstone:{mlcoa:[], mdcoa:[], indicator:""} });
+      Object.assign(state, { team:"", screen:"intro", phaseIndex:0, activityKey:"intro", score:0, brief:Object.fromEntries(BRIEF_SECTIONS.map(s=>[s,""])), skipped:{}, timerSeconds:0, paused:false, currentResult:null, activityLog:{}, capstone:{mlcoa:[], mdcoa:[], indicator:""} });
       renderIntro();
     }
     document.getElementById("menuBtn").onclick = () => menu.classList.toggle("hidden");
     document.getElementById("helpBtn").onclick = () => showHelp("lesson");
+    document.getElementById("sourcesBtn").onclick = () => showHelp("sources");
     document.getElementById("lessonHelpTab").onclick = () => showHelp("lesson");
     document.getElementById("glossaryTab").onclick = () => showHelp("glossary");
+    document.getElementById("sourcesTab").onclick = () => showHelp("sources");
     document.getElementById("closeHelpBtn").onclick = () => helpModal.classList.add("hidden");
     helpModal.addEventListener("click", event => {
       if (event.target === helpModal) helpModal.classList.add("hidden");
