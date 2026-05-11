@@ -129,6 +129,37 @@
       margin: .65rem 0;
       box-shadow: inset 0 1px 0 rgba(245,241,232,.06);
     }
+    .scenario-panel {
+      border: 1px solid rgba(160,178,101,.4);
+      background: rgba(7,16,31,.58);
+      padding: .75rem;
+      margin: .7rem 0;
+    }
+    .scenario-panel h3 {
+      margin-bottom: .45rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .scenario-grid {
+      display: grid;
+      gap: .5rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .scenario-chip {
+      border: 1px solid rgba(160,178,101,.28);
+      background: rgba(16,35,59,.66);
+      padding: .5rem .58rem;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+    .scenario-chip strong {
+      display: block;
+      color: var(--green);
+      font-family: "Courier New", monospace;
+      margin-bottom: .2rem;
+      text-transform: uppercase;
+      font-size: .72rem;
+    }
     .brief-section {
       border: 1px solid rgba(160,178,101,.32);
       padding: .55rem;
@@ -170,6 +201,11 @@
       cursor: pointer;
       text-transform: uppercase;
     }
+    .icon-button {
+      width: auto;
+      min-width: 46px;
+      padding: .45rem .7rem;
+    }
     button:hover:not(:disabled), button:focus-visible:not(:disabled) {
       background: var(--green);
       color: var(--navy);
@@ -187,17 +223,6 @@
       padding: .65rem;
     }
     textarea { min-height: 140px; resize: vertical; }
-    .timer {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      border: 1px solid var(--line);
-      padding: .35rem .55rem;
-      margin-bottom: .75rem;
-      color: var(--muted);
-      font: 700 .78rem/1 "Courier New", monospace;
-      text-transform: uppercase;
-    }
     .options, .match-grid, .class-list { display: grid; gap: .65rem; margin: .8rem 0; }
     .option, .match-item, .match-cat, .seq-item, .class-choice {
       width: 100%;
@@ -231,6 +256,44 @@
       padding: .35rem;
       color: var(--muted);
       font-size: .78rem;
+    }
+    .sequence-bank, .drag-bank {
+      display: grid;
+      gap: .5rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin: .75rem 0;
+    }
+    .sequence-bank .seq-item, .drag-pill {
+      cursor: grab;
+      user-select: none;
+    }
+    .sequence-bank .seq-item.dragging, .drag-pill.dragging {
+      opacity: .45;
+    }
+    .drop-slot {
+      border: 1px dashed var(--line);
+      min-height: 54px;
+      padding: .45rem;
+      background: rgba(7,16,31,.42);
+      color: var(--muted);
+    }
+    .drop-slot.over {
+      border-color: var(--green);
+      background: rgba(160,178,101,.08);
+    }
+    .drop-slot.filled {
+      color: var(--cream);
+      border-style: solid;
+    }
+    .drag-pill {
+      width: 100%;
+      background: rgba(16,35,59,.94);
+      border: 1px solid var(--line);
+      padding: .55rem .6rem;
+      text-transform: none;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+      min-height: 54px;
     }
     .svg-wrap {
       border: 1px solid var(--line);
@@ -298,6 +361,50 @@
       min-height: 44px;
       padding: .4rem .55rem;
       font-size: .78rem;
+    }
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: .65rem;
+    }
+    .action-row button {
+      flex: 1 1 160px;
+      min-height: 42px;
+      font-size: .74rem;
+    }
+    .feedback-panel {
+      border: 1px solid var(--line);
+      background: rgba(7,16,31,.66);
+      padding: .72rem;
+      margin-top: .75rem;
+    }
+    .feedback-panel.good { border-color: rgba(160,178,101,.5); }
+    .feedback-panel.bad { border-color: rgba(178,34,34,.5); }
+    .rubric-grid {
+      display: grid;
+      gap: .45rem;
+      margin-top: .55rem;
+    }
+    .rubric-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: .45rem;
+      align-items: start;
+      border: 1px solid rgba(160,178,101,.22);
+      background: rgba(16,35,59,.58);
+      padding: .5rem .55rem;
+      font-size: .78rem;
+    }
+    .rubric-row strong {
+      display: block;
+      color: var(--green);
+      margin-bottom: .15rem;
+    }
+    .rubric-score {
+      color: var(--cream);
+      font-family: "Courier New", monospace;
+      white-space: nowrap;
     }
     .menu {
       position: fixed;
@@ -395,7 +502,7 @@
     }
     @media print {
       body { background: white; color: black; font-size: 12pt; }
-      .banner, header, aside, .button-row, .menu, .pause, .modal, .timer { display: none !important; }
+      .banner, header, aside, .button-row, .menu, .pause, .modal { display: none !important; }
       .shell { border: 0; margin: 0; width: 100%; background: white; }
       .layout { display: block; }
       main { padding: 0; }
@@ -437,7 +544,7 @@
   <div id="pauseOverlay" class="pause hidden">
     <div class="panel">
       <h2>Mission Paused</h2>
-      <p>Timers are paused. Resume when the team is ready.</p>
+      <p>Mission flow is paused. Resume when the team is ready.</p>
       <button id="resumePauseBtn">Resume Mission</button>
     </div>
   </div>
@@ -483,11 +590,11 @@
         bullets: [
           "Lower frequency means longer wavelength and generally longer range.",
           "Higher frequency means shorter wavelength and usually better detail.",
-          "Terrain blocks line of sight for many radar and SIGINT-relevant signals.",
-          "A collector site must have usable line of sight to the emitter.",
+          "Terrain and coastal clutter can block or weaken signals in different ways.",
+          "A collector site should be chosen for the cleanest reception path to the emitter.",
           "ELINT focuses on non-communications electromagnetic signals such as radar."
         ],
-        sentence: "Suggested brief shape: Recommend Site B because it has [line of sight] and the other sites are [terrain-shadowed/blocked]."
+        sentence: "Suggested brief shape: Recommend Site B because it has the cleanest reception path and the other sites are more blocked by terrain and clutter."
       },
       3: {
         title: "Radar and Kill Chain Review",
@@ -648,16 +755,16 @@
       {
         id: 2, lesson: "Electromagnetic Theory (4.2)", title: "THE INVISIBLE BATTLEFIELD", briefSection: BRIEF_SECTIONS[1],
         intelUpdate: "Collection planners are evaluating sites for a SIGINT collector tasked against a new Donovian air defense radar near the Gorgan coast. Three candidate sites are on the table.",
-        activityA: { type: "CLICK_TO_MATCH", title: "Wave Properties Match", prompt: "Match each frequency range to its primary military use.", items: ["Very Low Frequency (3-30 kHz)", "HF (3-30 MHz)", "Microwave (1-30 GHz)", "Visible Light (400-700 THz)"], categories: ["Submarine communication", "Long-range radio, beyond line-of-sight", "Modern fire-control radar", "Electro-optical imagery"], correctMap: [0,1,2,3], points: 4 },
-        activityB: { type: "MULTI_SELECT", title: "Site Selection", prompt: "Study the site-selection image. Which site has viable line of sight to the Donovian radar?", image: IMAGE_PATHS[2], options: ["Site A", "Site B", "Site C"], correct: [1], points: 5 },
-        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "Your collection plan recommends Site B. Select the two strongest justifications for the brief.", options: ["Site B has the lowest moisture, so the signal will not be absorbed.", "Site B has unobstructed line of sight to the radar emitter.", "Site B is closer to the radar. Proximity is the dominant factor.", "Site A and C are terrain-shadowed and would receive no usable signal.", "Site B is the only location with adequate power supply."], correct: [1,3], points: 6 },
-        lockText: "Recommend Site B for the SIGINT collector. It has unobstructed line of sight; Sites A and C are terrain-shadowed."
+        activityA: { type: "CLICK_TO_MATCH", title: "Wave Properties Match", prompt: "CC's coffee-brew crew is trying to keep the comms net alive during a Donovian weather surge. Match each frequency range to its primary military use.", items: ["Very Low Frequency (3-30 kHz)", "HF (3-30 MHz)", "Microwave (1-30 GHz)", "Visible Light (400-700 THz)"], categories: ["Submarine communication", "Long-range radio, beyond line-of-sight", "Modern fire-control radar", "Electro-optical imagery"], correctMap: [0,1,2,3], points: 4 },
+        activityB: { type: "CLICK_TO_MATCH", title: "Propagation Match", prompt: "CC's receiver keeps acting strange on the coast. Match each EM problem to the idea that best explains it.", items: ["A signal bends around a ridge and is still heard beyond it", "Rain and sea spray weaken the link more at higher frequencies", "A city block makes copies of the same signal arrive at different times", "A weak echo only appears after the receiver gain is raised"], categories: ["Diffraction", "Attenuation", "Multipath", "Sensitivity / gain"], correctMap: [0,1,2,3], points: 5 },
+        activityC: { type: "MULTI_SELECT", title: "Brief Contribution", prompt: "CC needs a short J-2 line for the collection brief. Select the two strongest statements that explain why the lower-frequency plan is more resilient in this scenario.", options: ["Lower frequencies bend around terrain better than shorter waves.", "Higher frequencies always travel farther through storms.", "Sea spray and moisture can reduce higher-frequency performance.", "A longer wavelength automatically means more detail.", "If the ridge is tall enough, all frequencies behave the same."], correct: [0,2], points: 6 },
+        lockText: "CC's lower-frequency plan is more resilient because longer waves bend around terrain better and coastal moisture hits higher frequencies harder."
       },
       {
         id: 3, lesson: "Radar and Kill Chain (4.3)", title: "GREAT EAGLE WAKES UP", briefSection: BRIEF_SECTIONS[2],
         intelUpdate: "SIGINT collected emissions from four Donovian radars along the coast: GREAT EAGLE-1, IRON FANG, STEEL CLAW, and DEATH VIPER. Each has a different role in the IADS.",
         activityA: { type: "CLICK_TO_MATCH", title: "Radar Role Classifier", prompt: "Match each radar to its IADS role.", items: ["GREAT EAGLE-1: high power, long range, low frequency, wide beam", "IRON FANG: narrower beam, mid-frequency, focused search", "STEEL CLAW: narrow beam, high frequency, precision tracking", "DEATH VIPER: communications-style emissions tied to fighters"], categories: ["Early Warning", "Target Acquisition", "Fire Control / Target Tracking", "Ground Control Intercept"], correctMap: [0,1,2,3], points: 4 },
-        activityB: { type: "SEQUENCE_PUZZLE", title: "Kill Chain Sequence", prompt: "Click each event in the correct radar kill chain order.", items: ["GREAT EAGLE-1 detects unknown contact at 350 km", "IRON FANG narrows location to a 5 km grid square", "STEEL CLAW achieves precision lock", "DEATH VIPER vectors interceptor toward target", "Donovian SAM launches against target", "Battle damage assessment confirms target destroyed"], correctOrder: [0,1,2,3,4,5], points: 6 },
+        activityB: { type: "DRAG_SEQUENCE", title: "Kill Chain Sequence", prompt: "Drag each event into the correct radar kill chain order.", items: ["GREAT EAGLE-1 detects unknown contact at 350 km", "IRON FANG narrows location to a 5 km grid square", "STEEL CLAW achieves precision lock", "DEATH VIPER vectors interceptor toward target", "Donovian SAM launches against target", "Battle damage assessment confirms target destroyed"], correctOrder: [0,1,2,3,4,5], points: 6 },
         activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "STEEL CLAW is locked. In one sentence, tell the JFC what this stage means for Donovian intent.", keywordSets: [["track","target","lock","locked"],["imminent","engage","fire","attack","threat"]], points: 6, fallback: "The Donovian IADS is in Track/Target, which indicates an imminent engagement threat." },
         lockText: "Donovian IADS is in Track/Target. STEEL CLAW lock indicates an imminent engagement threat."
       },
@@ -682,7 +789,7 @@
         intelUpdate: "Donovian state media is running OPERATION QUIET TIDE, claiming Gorgas committed war crimes, mobilized first, and that international support is illegitimate.",
         activityA: { type: "SCENARIO_CLASSIFICATION", title: "Dimension Sort", prompt: "Sort each item into an Information Environment dimension.", categories: ["Physical", "Informational", "Cognitive"], scenarios: [{text:"Cellular phone", correct:0}, {text:"Video file content", correct:1}, {text:"Public belief that Gorgas fired first", correct:2}, {text:"Cell tower hardware", correct:0}, {text:"GPS signal frequency", correct:1}, {text:"Gorgan civilian fear of invasion", correct:2}], points: 6 },
         activityB: { type: "SCENARIO_CLASSIFICATION", title: "Mis/Dis/Mal-Information Triage", prompt: "Classify each information scenario.", categories: ["Misinformation", "Disinformation", "Malinformation"], scenarios: [{text:"Donovian state TV airs fabricated war-crime footage knowing it is fake", correct:1}, {text:"A well-meaning Gorgan citizen shares a wrong story believing it is true", correct:0}, {text:"A leaked but real memo is released to embarrass Gorgas defense leaders", correct:2}, {text:"Donovian-paid bots amplify a fake atrocity hashtag", correct:1}, {text:"A confused diplomat tweets the wrong nation's flag", correct:0}], points: 5 },
-        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "In one sentence, state the intelligence officer's role in IO planning and name one exploitable Donovian vulnerability.", keywordSets: [["analyze","identify","assess"],["vulnerabilities","weakness","fingerprints","fabricated"],["information","ie","cognitive","informational","adversary"]], points: 6, fallback: "J-2 should identify adversary IE vulnerabilities, including fabricated imagery and bot fingerprints, to support counter-messaging." },
+        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "The Donovian narrative uses fabricated atrocity footage and bot amplification. In one sentence, give the J-2's assessment and name one cognitive and one informational weakness that make the campaign exploitable.", keywordSets: [["analyze","identify","assess"],["vulnerabilities","weakness","fingerprints","fabricated"],["information","ie","cognitive","informational","adversary"]], points: 6, fallback: "J-2 should identify adversary IE vulnerabilities, including fabricated imagery and bot fingerprints, to support counter-messaging." },
         lockText: "OPERATION QUIET TIDE is a Donovian disinformation campaign. Vulnerabilities include fabricated atrocity claims and identifiable bot fingerprints."
       },
       {
@@ -690,7 +797,7 @@
         intelUpdate: "The JFC issued PIR-04: What indicators show Donovian forces will conduct an amphibious assault on the Gorgan coast within the next 96 hours?",
         activityA: { type: "SCENARIO_CLASSIFICATION", title: "ISR Stage Classifier", prompt: "Classify each activity into the correct ISR stage.", categories: ["Planning & Direction", "Collection", "Processing & Exploitation", "Analysis & Production", "Dissemination & Integration"], scenarios: [{text:"ISR cell receives PIR-04 and drafts a collection plan", correct:0}, {text:"Drone flies over the Donovian coast collecting FMV", correct:1}, {text:"DCGS analysts convert raw FMV into geo-tagged products", correct:2}, {text:"All-source analyst writes indicators-and-warning brief", correct:3}, {text:"Finished brief is pushed to the JFC", correct:4}], points: 5 },
         activityB: { type: "MULTI_SELECT", title: "Collection Plan", prompt: "To answer PIR-04, select the three collection assets to task first.", options: ["WAMI overhead the Donovian port", "HUMINT in Donovia's capital", "SIGINT against Donovian naval comms in the port", "Cyber penetration of the MOD", "MTI overhead the coastal road network", "Open-source monitoring of veteran forums"], correct: [0,2,4], points: 6 },
-        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "Where in the ISR cycle does PIR-04 enter, and what system turns raw data into intel for the JFC?", keywordSets: [["planning","direction","p&d"],["dcgs","distributed common ground system","p&e","processing","exploitation"]], points: 6, fallback: "PIR-04 enters at Planning and Direction, and DCGS supports Processing and Exploitation of raw collection." },
+        activityC: { type: "SHORT_ANSWER_KEYWORD", title: "Brief Contribution", prompt: "PIR-04 asks for indicators of an amphibious assault on the Gorgan coast. In one sentence, state where that requirement enters the ISR cycle and what system turns raw collection into something the JFC can use.", keywordSets: [["planning","direction","p&d"],["dcgs","distributed common ground system","p&e","processing","exploitation"]], points: 6, fallback: "PIR-04 enters at Planning and Direction, and DCGS supports Processing and Exploitation of raw collection." },
         lockText: "PIR-04 enters at P&D. Task WAMI, SIGINT, and MTI; process raw data through DCGS."
       },
       {
@@ -726,8 +833,6 @@
       score: 0,
       brief: Object.fromEntries(BRIEF_SECTIONS.map(s => [s, ""])),
       skipped: {},
-      timerSeconds: 0,
-      timerId: null,
       paused: false,
       currentResult: null,
       activityLog: {},
@@ -772,7 +877,6 @@
       }).join("");
     }
     function render(html) {
-      stopTimer();
       app.innerHTML = html;
       menu.classList.add("hidden");
       updateChrome();
@@ -795,25 +899,75 @@
       else if (previous.activityKey === "capstoneMdcoa") renderCapstoneMdcoa();
       else renderIntro();
     }
-    function startTimer() {
-      stopTimer();
-      state.timerSeconds = 0;
-      state.timerId = setInterval(() => {
-        if (state.paused) return;
-        state.timerSeconds += 1;
-        const el = document.getElementById("timerValue");
-        if (el) el.textContent = formatTime(state.timerSeconds);
-      }, 1000);
+    function currentScenarioHtml(phase) {
+      const priorEntries = BRIEF_SECTIONS
+        .slice(0, state.phaseIndex)
+        .map(sec => state.brief[sec])
+        .filter(content => content && content !== "Pending" && !String(content).includes("SKIPPED"))
+        .slice(-2);
+      return `
+        <div class="scenario-panel">
+          <h3>Scenario Now</h3>
+          <div class="scenario-grid">
+            <div class="scenario-chip"><strong>Current phase</strong>${esc(phase.intelUpdate)}</div>
+            <div class="scenario-chip"><strong>Question focus</strong>${esc(currentScenarioFocus(phase))}</div>
+            <div class="scenario-chip"><strong>Brief carry-forward</strong>${esc(priorEntries.length ? priorEntries.map(entry => entry.content).join(" | ") : "Earlier phase findings will accumulate here as the exercise continues.")}</div>
+          </div>
+        </div>
+      `;
     }
-    function stopTimer() {
-      if (state.timerId) clearInterval(state.timerId);
-      state.timerId = null;
+    function currentScenarioFocus(phase) {
+      if (state.activityKey === "C" && phase.activityC && phase.activityC.prompt) return phase.activityC.prompt;
+      if (state.activityKey === "intel") return phase.intelUpdate;
+      const activity = activityFor(state.activityKey);
+      return activity && activity.prompt ? activity.prompt : phase.intelUpdate;
     }
-    function formatTime(s) {
-      return `${String(Math.floor(s / 60)).padStart(2,"0")}:${String(s % 60).padStart(2,"0")}`;
+    function briefGuideHtml(phase, activity) {
+      const help = LESSON_HELP[phase.id];
+      const rubric = briefRubricFor(activity, phase);
+      return `
+        <div class="panel">
+          <h3>Before You Write the Brief Contribution</h3>
+          <p>This screen is the bridge from the current scenario to the J-2 brief. Use the intelligence picture above, then write the part of the brief that answers the commander in plain language.</p>
+          <div class="scenario-grid">
+            <div class="scenario-chip"><strong>What to write</strong>${esc(activity.prompt)}</div>
+            <div class="scenario-chip"><strong>Good example</strong>${esc(help ? help.sentence : activity.fallback || "Write a short assessment tied to the scenario.")}</div>
+          </div>
+          <div class="action-row">
+            <button id="reviewActivityBtn" type="button" class="icon-button">Review Current Activity</button>
+          </div>
+          <div class="rubric-grid">
+            ${rubric.map(item => `
+              <div class="rubric-row">
+                <div>
+                  <strong>${esc(item.label)}</strong>
+                  <div>${esc(item.note)}</div>
+                </div>
+                <div class="rubric-score">${item.score} pts</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
     }
-    function timerHtml() {
-      return `<div class="timer">Discussion Timer <span id="timerValue">00:00</span></div>`;
+    function briefRubricFor(activity, phase) {
+      const example = LESSON_HELP[phase.id] ? LESSON_HELP[phase.id].sentence : "";
+      if (activity.type === "SHORT_ANSWER_KEYWORD") {
+        const labels = [
+          { label: "Scenario anchor", note: "Names the phase situation and the specific actor, place, or system being assessed." },
+          { label: "Concept accuracy", note: "Uses the lesson terms correctly and avoids mixing unrelated ideas." },
+          { label: "Actionable assessment", note: "States what the J-2 should conclude or recommend next." },
+          { label: "Clear writing", note: "Short, direct sentences that could be read aloud in the brief." }
+        ];
+        return labels.map((item, idx) => ({ ...item, score: 5, note: item.note + (idx === 0 ? ` Example shape: ${example}` : "") }));
+      }
+      const selectedCount = activity.correct ? activity.correct.length : 0;
+      return [
+        { label: "Right recommendation", note: "Selects the options that fit the scenario and avoids unsupported choices.", score: Math.min(5, selectedCount ? 5 : 0) },
+        { label: "Scenario linkage", note: "The chosen answers tie directly to the phase context and not to a generic definition.", score: 5 },
+        { label: "Decision quality", note: "The final recommendation is something the J-2 can actually brief.", score: 5 },
+        { label: "No distractors", note: "Avoids answers that are false, too narrow, or operationally weak.", score: 5 }
+      ];
     }
     function renderBrief() {
       briefAside.innerHTML = `<div class="kicker">Growing J-2 Brief</div><h3>${esc(state.team || "Team Brief")}</h3>${BRIEF_SECTIONS.map(sec => {
@@ -864,15 +1018,31 @@
       if (!p) return;
       const activity = activityFor(state.activityKey);
       const help = LESSON_HELP[p.id];
+      const briefGuide = briefRubricFor(activity, p);
       helpModal.classList.remove("hidden");
       const logs = ["A","B"].map(key => (state.activityLog[p.id] || {})[key]).filter(Boolean);
       helpContent.innerHTML = `
         <div class="kicker">Current Phase Review</div>
         <h2>${esc(p.title)}</h2>
+        ${currentScenarioHtml(p)}
         <div class="panel">
           <h3>What This Assessment Is Asking For</h3>
           <p>${esc(activity.prompt)}</p>
           <div class="sentence-frame">${esc(help.sentence)}</div>
+        </div>
+        <div class="panel">
+          <h3>Briefing Guide</h3>
+          <div class="rubric-grid">
+            ${briefGuide.map(item => `
+              <div class="rubric-row">
+                <div>
+                  <strong>${esc(item.label)}</strong>
+                  <div>${esc(item.note)}</div>
+                </div>
+                <div class="rubric-score">5 pts</div>
+              </div>
+            `).join("")}
+          </div>
         </div>
         ${logs.length ? logs.map(log => `
           <div class="panel">
@@ -922,6 +1092,7 @@
         <h2>${esc(p.title)}</h2>
         <img class="phase-image" src="${esc(IMAGE_PATHS[p.id])}" alt="Training image for ${esc(p.title)}">
         <div class="panel"><p>${esc(p.intelUpdate)}</p></div>
+        ${currentScenarioHtml(p)}
         <div class="button-row"><button id="continueBtn">Activity A</button></div>
       `);
       document.getElementById("continueBtn").onclick = () => navTo(() => renderActivity("A"));
@@ -935,9 +1106,8 @@
       render(`
         <div class="kicker">${p.lesson} // Activity ${key}</div>
         <h2>${esc(a.title)}</h2>
-        ${timerHtml()}
-        ${key === "C" ? contributionReviewHtml(p) : ""}
-        <p>${esc(a.prompt)}</p>
+        ${currentScenarioHtml(p)}
+        ${key === "C" ? briefGuideHtml(p, a) : `<div class="panel"><p>${esc(a.prompt)}</p></div>`}
         <div id="activityHost"></div>
         <div id="feedback" class="panel hidden"></div>
         <div class="button-row">
@@ -951,66 +1121,151 @@
       const reviewBtn = document.getElementById("reviewActivityBtn");
       if (reviewBtn) reviewBtn.onclick = showActivityReview;
       document.getElementById("nextActivityBtn").onclick = () => navTo(nextAfterActivity);
-      startTimer();
-    }
-    function contributionReviewHtml(phase) {
-      const help = LESSON_HELP[phase.id];
-      return `
-        <div class="panel">
-          <h3>Before You Write the Brief Contribution</h3>
-          <p>This is where your team turns the lesson into a short J-2 brief section. Use simple English. Grammar is less important than the right intelligence concepts.</p>
-          <div class="button-row"><button id="reviewActivityBtn" type="button">Review Current Activity</button></div>
-          <div class="review-grid">${help.bullets.slice(0, 4).map(b => `<div class="review-chip">${esc(b)}</div>`).join("")}</div>
-          <div class="sentence-frame">${esc(help.sentence)}</div>
-        </div>
-      `;
     }
     function renderMechanic(a) {
       if (a.type === "CLICK_TO_MATCH") renderMatch(a);
       if (a.type === "MULTI_SELECT") renderMulti(a);
       if (a.type === "SHORT_ANSWER_KEYWORD") renderShort(a);
       if (a.type === "SEQUENCE_PUZZLE") renderSequence(a);
+      if (a.type === "DRAG_SEQUENCE") renderSequence(a);
       if (a.type === "HOT_SPOT_MAP") renderHotspot(a);
       if (a.type === "SCENARIO_CLASSIFICATION") renderClassification(a);
     }
     function renderMatch(a) {
       window.matchState = { selected: null, map: {} };
-      document.getElementById("activityHost").innerHTML = `<div class="match-grid"><div>${a.items.map((item,i)=>`<button class="match-item" data-i="${i}">${esc(item)}<div class="assignment" id="assign${i}">No match</div></button>`).join("")}</div><div>${a.categories.map((cat,i)=>`<button class="match-cat" data-i="${i}">${esc(cat)}</button>`).join("")}</div></div>`;
+      document.getElementById("activityHost").innerHTML = `
+        <div class="match-grid">
+          <div>${a.items.map((item,i)=>`<button class="match-item" data-i="${i}">${esc(item)}<div class="assignment" id="assign${i}">No match</div></button>`).join("")}</div>
+          <div>${a.categories.map((cat,i)=>`<button class="match-cat" data-i="${i}">${esc(cat)}</button>`).join("")}</div>
+        </div>
+        <div class="action-row"><button id="resetSelectionsBtn" type="button">Reset Selections</button></div>
+      `;
       document.querySelectorAll(".match-item").forEach(b => b.onclick = () => {
-        window.matchState.selected = Number(b.dataset.i);
+        const itemIndex = Number(b.dataset.i);
+        if (window.matchState.selected === itemIndex) {
+          window.matchState.selected = null;
+          b.classList.remove("selected");
+          return;
+        }
+        window.matchState.selected = itemIndex;
         document.querySelectorAll(".match-item").forEach(x=>x.classList.remove("selected"));
         b.classList.add("selected");
       });
       document.querySelectorAll(".match-cat").forEach(b => b.onclick = () => {
         if (window.matchState.selected === null) return;
-        window.matchState.map[window.matchState.selected] = Number(b.dataset.i);
-        document.getElementById(`assign${window.matchState.selected}`).textContent = `Matched to: ${a.categories[Number(b.dataset.i)]}`;
+        const catIndex = Number(b.dataset.i);
+        const selected = window.matchState.selected;
+        if (window.matchState.map[selected] === catIndex) {
+          delete window.matchState.map[selected];
+          document.getElementById(`assign${selected}`).textContent = "No match";
+          window.matchState.selected = null;
+          document.querySelectorAll(".match-item").forEach(x=>x.classList.remove("selected"));
+          return;
+        }
+        window.matchState.map[selected] = catIndex;
+        document.getElementById(`assign${selected}`).textContent = `Matched to: ${a.categories[catIndex]}`;
+        window.matchState.selected = null;
+        document.querySelectorAll(".match-item").forEach(x=>x.classList.remove("selected"));
       });
+      document.getElementById("resetSelectionsBtn").onclick = () => {
+        window.matchState = { selected: null, map: {} };
+        document.querySelectorAll(".match-item").forEach((x, i) => { x.classList.remove("selected"); document.getElementById(`assign${i}`).textContent = "No match"; });
+      };
     }
     function renderMulti(a) {
       window.multiState = new Set();
-      document.getElementById("activityHost").innerHTML = `${a.image ? `<img class="activity-image" src="${esc(a.image)}" alt="Visual reference for ${esc(a.title)}">` : ""}<div class="options">${a.options.map((o,i)=>`<button class="option" data-i="${i}">${esc(o)}</button>`).join("")}</div>`;
+      document.getElementById("activityHost").innerHTML = `
+        ${a.image ? `<img class="activity-image" src="${esc(a.image)}" alt="Visual reference for ${esc(a.title)}">` : ""}
+        <div class="options">${a.options.map((o,i)=>`<button class="option" data-i="${i}">${esc(o)}</button>`).join("")}</div>
+        <div class="action-row"><button id="resetSelectionsBtn" type="button">Reset Selections</button></div>
+      `;
       document.querySelectorAll(".option").forEach(b => b.onclick = () => {
         const i = Number(b.dataset.i);
         if (window.multiState.has(i)) window.multiState.delete(i); else window.multiState.add(i);
         b.classList.toggle("selected");
       });
+      document.getElementById("resetSelectionsBtn").onclick = () => {
+        window.multiState = new Set();
+        document.querySelectorAll(".option").forEach(b => b.classList.remove("selected"));
+      };
     }
     function renderShort() {
-      document.getElementById("activityHost").innerHTML = `<textarea id="shortAnswer" placeholder="Write 1-3 clear sentences for the J-2 brief."></textarea>`;
+      document.getElementById("activityHost").innerHTML = `
+        <textarea id="shortAnswer" placeholder="Write 1-3 clear sentences for the J-2 brief."></textarea>
+        <div class="action-row"><button id="resetSelectionsBtn" type="button">Clear Draft</button></div>
+      `;
+      document.getElementById("resetSelectionsBtn").onclick = () => {
+        const ta = document.getElementById("shortAnswer");
+        if (ta) ta.value = "";
+      };
     }
     function renderSequence(a) {
-      window.seqState = [];
+      window.seqState = Array(a.items.length).fill(null);
       const shuffled = a.items.map((x,i)=>({x,i})).sort((u,v)=>u.x.localeCompare(v.x));
-      document.getElementById("activityHost").innerHTML = `<div class="sequence-slots">${a.items.map((_,i)=>`<div class="slot" id="slot${i}">${i+1}</div>`).join("")}</div><div class="options">${shuffled.map(o=>`<button class="seq-item" data-i="${o.i}">${esc(o.x)}</button>`).join("")}</div>`;
-      document.querySelectorAll(".seq-item").forEach(b => b.onclick = () => {
-        const i = Number(b.dataset.i);
-        if (window.seqState.includes(i)) return;
-        const slot = window.seqState.length;
-        window.seqState.push(i);
-        document.getElementById(`slot${slot}`).textContent = b.textContent;
-        b.classList.add("selected");
+      document.getElementById("activityHost").innerHTML = `
+        <div class="sequence-slots">${a.items.map((_,i)=>`<div class="drop-slot" data-slot="${i}">Drop ${i + 1}</div>`).join("")}</div>
+        <div class="sequence-bank">${shuffled.map(o=>`<button class="seq-item drag-pill" draggable="true" data-i="${o.i}">${esc(o.x)}</button>`).join("")}</div>
+        <div class="action-row"><button id="resetSelectionsBtn" type="button">Reset Selections</button></div>
+      `;
+      const slots = [...document.querySelectorAll(".drop-slot")];
+      const items = [...document.querySelectorAll(".seq-item")];
+      const refreshSlots = () => {
+        slots.forEach((slot, i) => {
+          const value = window.seqState[i];
+          slot.textContent = value === null ? `Drop ${i + 1}` : a.items[value];
+          slot.classList.toggle("filled", value !== null);
+        });
+        items.forEach(btn => btn.classList.toggle("selected", window.seqState.includes(Number(btn.dataset.i))));
+      };
+      const placeItem = (itemIndex, slotIndex) => {
+        const currentSlot = window.seqState.indexOf(itemIndex);
+        if (currentSlot !== -1) window.seqState[currentSlot] = null;
+        const existing = window.seqState[slotIndex];
+        if (existing !== null) window.seqState[window.seqState.indexOf(existing)] = null;
+        window.seqState[slotIndex] = itemIndex;
+        refreshSlots();
+      };
+      slots.forEach(slot => {
+        slot.addEventListener("dragover", e => { e.preventDefault(); slot.classList.add("over"); });
+        slot.addEventListener("dragleave", () => slot.classList.remove("over"));
+        slot.addEventListener("drop", e => {
+          e.preventDefault();
+          slot.classList.remove("over");
+          const itemIndex = Number(e.dataTransfer.getData("text/plain"));
+          const slotIndex = Number(slot.dataset.slot);
+          placeItem(itemIndex, slotIndex);
+        });
+        slot.addEventListener("click", () => {
+          const slotIndex = Number(slot.dataset.slot);
+          if (window.seqState[slotIndex] !== null) {
+            const itemIndex = window.seqState[slotIndex];
+            window.seqState[slotIndex] = null;
+            refreshSlots();
+            const itemBtn = document.querySelector(`.seq-item[data-i="${itemIndex}"]`);
+            if (itemBtn) itemBtn.classList.remove("selected");
+          }
+        });
       });
+      items.forEach(btn => {
+        btn.addEventListener("dragstart", e => {
+          btn.classList.add("dragging");
+          e.dataTransfer.setData("text/plain", btn.dataset.i);
+        });
+        btn.addEventListener("dragend", () => btn.classList.remove("dragging"));
+        btn.addEventListener("click", () => {
+          const itemIndex = Number(btn.dataset.i);
+          const currentSlot = window.seqState.indexOf(itemIndex);
+          if (currentSlot !== -1) {
+            window.seqState[currentSlot] = null;
+            refreshSlots();
+          }
+        });
+      });
+      document.getElementById("resetSelectionsBtn").onclick = () => {
+        window.seqState = Array(a.items.length).fill(null);
+        refreshSlots();
+      };
+      refreshSlots();
     }
     function emSvg() {
       return `<svg viewBox="0 0 700 360" role="img"><rect width="700" height="360" fill="#10233b"/><line x1="0" y1="300" x2="700" y2="300" stroke="#5c6e2f" stroke-width="7"/><rect x="40" y="185" width="20" height="115" fill="#a0b265"/><circle cx="50" cy="175" r="22" fill="none" stroke="#f5f1e8" stroke-width="4"/><text x="20" y="330" fill="#f5f1e8" font-size="18">Donovian Radar</text><polygon points="220,300 340,78 465,300" fill="#4f5f35" stroke="#a0b265" stroke-width="4"/><text x="286" y="330" fill="#f5f1e8" font-size="18">1500m Mountain</text><circle class="hotspot" data-id="A" cx="575" cy="255" r="26"/><text x="562" y="260" fill="#f5f1e8" font-size="24">A</text><circle class="hotspot" data-id="B" cx="520" cy="120" r="26"/><text x="507" y="126" fill="#f5f1e8" font-size="24">B</text><circle class="hotspot" data-id="C" cx="635" cy="282" r="26"/><text x="622" y="288" fill="#f5f1e8" font-size="24">C</text><path d="M62 175 L520 120" stroke="#a0b265" stroke-width="3" stroke-dasharray="8 8"/></svg>`;
@@ -1020,30 +1275,182 @@
     }
     function renderHotspot(a) {
       window.hotState = new Set();
-      document.getElementById("activityHost").innerHTML = `<div class="svg-wrap">${a.map === "em" ? emSvg() : irSvg()}</div>`;
+      document.getElementById("activityHost").innerHTML = `
+        <div class="svg-wrap">${a.map === "em" ? emSvg() : irSvg()}</div>
+        <div class="action-row"><button id="resetSelectionsBtn" type="button">Reset Selections</button></div>
+      `;
       document.querySelectorAll(".hotspot").forEach(el => el.onclick = () => {
         const id = el.dataset.id;
         if (window.hotState.has(id)) window.hotState.delete(id); else window.hotState.add(id);
         el.classList.toggle("selected");
       });
+      document.getElementById("resetSelectionsBtn").onclick = () => {
+        window.hotState = new Set();
+        document.querySelectorAll(".hotspot").forEach(el => el.classList.remove("selected"));
+      };
     }
     function renderClassification(a) {
       window.classState = {};
-      document.getElementById("activityHost").innerHTML = `<div class="class-list">${a.scenarios.map((s,i)=>`<div class="class-row"><strong>${esc(s.text)}</strong><div class="class-options">${a.categories.map((c,j)=>`<button class="class-choice" data-row="${i}" data-cat="${j}">${esc(c)}</button>`).join("")}</div></div>`).join("")}</div>`;
+      document.getElementById("activityHost").innerHTML = `
+        <div class="class-list">${a.scenarios.map((s,i)=>`<div class="class-row"><strong>${esc(s.text)}</strong><div class="class-options">${a.categories.map((c,j)=>`<button class="class-choice" data-row="${i}" data-cat="${j}">${esc(c)}</button>`).join("")}</div></div>`).join("")}</div>
+        <div class="action-row"><button id="resetSelectionsBtn" type="button">Reset Selections</button></div>
+      `;
       document.querySelectorAll(".class-choice").forEach(b => b.onclick = () => {
         const row = Number(b.dataset.row);
         state.currentResult = null;
-        window.classState[row] = Number(b.dataset.cat);
+        const choice = Number(b.dataset.cat);
+        if (window.classState[row] === choice) {
+          delete window.classState[row];
+          document.querySelectorAll(`.class-choice[data-row="${row}"]`).forEach(x=>x.classList.remove("selected"));
+          return;
+        }
+        window.classState[row] = choice;
         document.querySelectorAll(`.class-choice[data-row="${row}"]`).forEach(x=>x.classList.remove("selected"));
         b.classList.add("selected");
       });
+      document.getElementById("resetSelectionsBtn").onclick = () => {
+        window.classState = {};
+        document.querySelectorAll(".class-choice").forEach(x => x.classList.remove("selected"));
+      };
+    }
+    function containsAny(text, terms) {
+      const lower = String(text || "").toLowerCase();
+      return terms.some(term => lower.includes(String(term).toLowerCase()));
+    }
+    function evaluateBriefContribution(a, phase) {
+      const help = LESSON_HELP[phase.id];
+      const responseText = a.type === "SHORT_ANSWER_KEYWORD"
+        ? (document.getElementById("shortAnswer")?.value || "").trim()
+        : [...window.multiState].map(i => a.options[i]).join("; ");
+      const rows = [];
+      let total = 0;
+      let response = responseText || "[No answer submitted.]";
+      if (a.type === "SHORT_ANSWER_KEYWORD") {
+        const text = responseText.toLowerCase();
+        const keywordHits = a.keywordSets.map(set => set.some(k => text.includes(String(k).toLowerCase())));
+        const conceptScore = keywordHits.filter(Boolean).length;
+        const scenarioTerms = [
+          phase.title,
+          phase.lesson,
+          ...String(phase.intelUpdate).split(/[.,;]/).slice(0, 5)
+        ].flatMap(chunk => String(chunk).split(/\s+/)).filter(word => word.length > 4);
+        const anchored = containsAny(text, scenarioTerms.slice(0, 6));
+        const actionWords = ["recommend", "assess", "brief", "report", "confirm", "warn", "task", "support", "identify"];
+        const actionable = containsAny(text, actionWords);
+        const clarity = text.length > 35 ? 1 : 0;
+        const rowData = [
+          {
+            label: "Scenario anchor",
+            score: anchored ? 5 : 0,
+            note: anchored ? "The answer is tied to the current phase situation." : "Add the current actor, place, or system so the brief is clearly about this phase."
+          },
+          {
+            label: "Concept accuracy",
+            score: Math.round((conceptScore / Math.max(1, a.keywordSets.length)) * 5),
+            note: conceptScore ? "The answer includes lesson concepts, though some may still be missing." : "The answer is missing the lesson concepts that should drive the assessment."
+          },
+          {
+            label: "Actionable assessment",
+            score: actionable ? 5 : 0,
+            note: actionable ? "The answer tells the J-2 what to do with the information." : "Add a recommendation, warning, or assessment sentence."
+          },
+          {
+            label: "Clear writing",
+            score: clarity ? 5 : 0,
+            note: clarity ? "The answer is long enough to brief and can be tightened later." : "Write at least one complete sentence so the brief can stand on its own."
+          }
+        ];
+        rowData.forEach(row => total += row.score);
+        rows.push(...rowData);
+        const missing = [];
+        if (!anchored) missing.push("phase scenario");
+        if (!conceptScore) missing.push("lesson terms");
+        if (!actionable) missing.push("a recommendation or assessment");
+        response = responseText || (a.fallback || "[Blank answer.]");
+        return {
+          total,
+          rows,
+          response,
+          summary: total >= 15 ? "Good brief contribution." : `Missing ${missing.join(", ")}.`,
+          max: 20
+        };
+      }
+      const selected = [...window.multiState];
+      const correct = a.correct || [];
+      const good = selected.filter(i => correct.includes(i)).length;
+      const bad = selected.filter(i => !correct.includes(i)).length;
+      const missed = correct.filter(i => !selected.includes(i));
+      const correctShare = correct.length ? good / correct.length : 0;
+      rows.push(
+        {
+          label: "Correct recommendations",
+          score: Math.round(correctShare * 5),
+          note: good === correct.length ? "All required recommendations were selected." : `Select the missing required choice(s): ${missed.map(i => a.options[i]).join("; ")}.`
+        },
+        {
+          label: "Avoided distractors",
+          score: bad ? 0 : 5,
+          note: bad ? `Remove unsupported choice(s): ${selected.filter(i => !correct.includes(i)).map(i => a.options[i]).join("; ")}.` : "No unsupported choices were selected."
+        },
+        {
+          label: "Scenario linkage",
+          score: good ? 5 : 0,
+          note: good ? "At least one correct answer is tied to the current scenario." : "The answer needs to connect back to the situation on screen."
+        },
+        {
+          label: "Brief-ready recommendation",
+          score: good === correct.length && bad === 0 ? 5 : 0,
+          note: good === correct.length && bad === 0 ? "The answer is ready to drop into the J-2 brief." : "Trim the answer to the strongest recommendations only."
+        }
+      );
+      rows.forEach(row => total += row.score);
+      response = selected.length ? selected.map(i => a.options[i]).join("; ") : "[No selections.]";
+      return {
+        total,
+        rows,
+        response,
+        summary: bad || missed.length ? `Missing ${missed.length} required choice(s); ${bad} unsupported choice(s) selected.` : "Correct brief contribution.",
+        max: 20
+      };
+    }
+    function renderFeedbackPanel(result) {
+      const tone = result.total >= 15 ? "good" : "bad";
+      const details = result.rows.map(row => `
+        <div class="rubric-row">
+          <div>
+            <strong>${esc(row.label)}</strong>
+            <div>${esc(row.note)}</div>
+          </div>
+          <div class="rubric-score">${row.score}/5</div>
+        </div>
+      `).join("");
+      return `
+        <div class="feedback-panel ${tone}">
+          <h3>${result.total >= 15 ? "Strong answer" : "Needs revision"}</h3>
+          <p>${esc(result.summary)}</p>
+          <p><strong>Response captured:</strong> ${esc(result.response)}</p>
+          <p><strong>Score:</strong> ${result.total}/20</p>
+          <div class="rubric-grid">${details}</div>
+        </div>
+      `;
+    }
+    function renderFeedbackSummary(a, result, maxPoints) {
+      const box = document.getElementById("feedback");
+      if (!box) return;
+      box.classList.remove("hidden");
+      box.innerHTML = `
+        <h3>Activity Feedback</h3>
+        <p>${esc(result.summary)}</p>
+        <p>Points earned: ${Math.round(result.total)} / ${maxPoints}</p>
+        ${result.rows && result.rows.length ? renderFeedbackPanel(result) : ""}
+      `;
     }
     function submitActivity(a) {
-      stopTimer();
       let earned = 0;
       let summary = "";
       let response = "No answer recorded.";
       const maxPoints = activityPoints();
+      let result = null;
       if (a.type === "CLICK_TO_MATCH") {
         const total = a.correctMap.length;
         let correct = 0;
@@ -1056,6 +1463,18 @@
           if (btn) { btn.classList.add(window.matchState.map[i] === cat ? "correct" : "incorrect"); btn.disabled = true; }
         });
         document.querySelectorAll(".match-cat").forEach(b => b.disabled = true);
+        const missed = a.items.filter((_, i) => window.matchState.map[i] !== a.correctMap[i]);
+        result = {
+          total: Math.round(earned),
+          summary: missed.length ? `Review the missed match(es): ${missed.map((item, idx) => item).join("; ")}.` : "All matches correct.",
+          response,
+          rows: [
+            { label: "Correct matches", score: Math.round(earned / 4), note: "Matched the right scenario to the right capability." },
+            { label: "Scenario linkage", score: Math.round(earned / 4), note: "The choices reflect the phase scenario." },
+            { label: "No unsupported picks", score: Math.round(earned / 4), note: "Did not force a category that did not fit." },
+            { label: "Brief value", score: Math.round(earned / 4), note: "The output can be used in the brief." }
+          ]
+        };
       }
       if (a.type === "MULTI_SELECT") {
         const selected = [...window.multiState];
@@ -1074,14 +1493,24 @@
           else if (isCorrect && !isSelected) btn.classList.add("reveal-correct");
           btn.disabled = true;
         });
+        result = {
+          total: Math.round(earned),
+          summary: bad || selected.length !== correct.length ? `Selected ${good} correct and ${bad} incorrect choice(s).` : "All required choices selected.",
+          response,
+          rows: [
+            { label: "Correct recommendations", score: Math.round((good / correct.length) * 5), note: good === correct.length ? "All required recommendations were selected." : "Pick every required recommendation tied to the scenario." },
+            { label: "Avoided distractors", score: bad ? 0 : 5, note: bad ? "Remove unsupported choices before submitting the brief." : "No unsupported choices were selected." },
+            { label: "Scenario linkage", score: good ? 5 : 0, note: good ? "At least one selection is clearly grounded in the scenario." : "Tie the answer back to the situation on screen." },
+            { label: "Brief-ready recommendation", score: good === correct.length && bad === 0 ? 5 : 0, note: good === correct.length && bad === 0 ? "This could go straight into the J-2 brief." : "Make the recommendation sharper and more selective." }
+          ]
+        };
       }
       if (a.type === "SHORT_ANSWER_KEYWORD") {
-        const text = document.getElementById("shortAnswer").value.trim();
-        const hits = a.keywordSets.filter(set => set.some(k => text.toLowerCase().includes(k.toLowerCase()))).length;
-        earned = maxPoints * hits / a.keywordSets.length;
-        summary = `${hits} of ${a.keywordSets.length} required concept groups found.`;
-        state.currentResult = { text: text || a.fallback };
-        response = text || "[Blank answer. Suggested fallback used.]";
+        result = evaluateBriefContribution(a, currentPhase());
+        earned = result.total;
+        summary = result.summary;
+        response = result.response;
+        state.currentResult = { text: response };
         const ta = document.getElementById("shortAnswer");
         if (ta) ta.disabled = true;
       }
@@ -1091,10 +1520,22 @@
         summary = ok ? "Sequence correct." : "Sequence needs review.";
         response = window.seqState.map(i => a.items[i]).join(" -> ") || "No sequence selected.";
         a.correctOrder.forEach((correctIdx, pos) => {
-          const slot = document.getElementById(`slot${pos}`);
+          const slot = document.querySelector(`.drop-slot[data-slot="${pos}"]`);
           if (slot) slot.classList.add(window.seqState[pos] === correctIdx ? "correct" : "incorrect");
         });
         document.querySelectorAll(".seq-item").forEach(b => b.disabled = true);
+        document.querySelectorAll(".drop-slot").forEach(slot => slot.style.pointerEvents = "none");
+        result = {
+          total: Math.round(earned),
+          summary: ok ? "Sequence correct." : "Reorder the events into the kill-chain flow.",
+          response,
+          rows: [
+            { label: "Correct order", score: ok ? 5 : 0, note: ok ? "The sequence matches the doctrinal order." : "Put the stages in the order they occur." },
+            { label: "Scenario linkage", score: ok ? 5 : 0, note: "The ordering tracks the current phase scenario." },
+            { label: "No missing steps", score: ok ? 5 : 0, note: "All required steps were placed." },
+            { label: "Brief-ready flow", score: ok ? 5 : 0, note: "The answer can be used to brief the chain of events." }
+          ]
+        };
       }
       if (a.type === "HOT_SPOT_MAP") {
         const goodIds = a.spots.filter(s=>s.correct).map(s=>s.id);
@@ -1108,7 +1549,19 @@
           const id = el.dataset.id;
           if (goodIds.includes(id)) el.classList.add("correct");
           else if (window.hotState.has(id)) el.classList.add("incorrect");
+          el.style.pointerEvents = "none";
         });
+        result = {
+          total: Math.round(earned),
+          summary,
+          response,
+          rows: [
+            { label: "Correct hot spots", score: Math.round((good / goodIds.length) * 5), note: "Picked the right areas from the visual." },
+            { label: "Avoided false picks", score: bad ? 0 : 5, note: bad ? "Remove the distractor locations." : "No distractor hot spots were selected." },
+            { label: "Scenario linkage", score: good ? 5 : 0, note: "The selected locations match the situation on screen." },
+            { label: "Brief-ready assessment", score: good === goodIds.length && bad === 0 ? 5 : 0, note: good === goodIds.length && bad === 0 ? "The answer is ready for the brief." : "Be more selective and tie the answer to the prompt." }
+          ]
+        };
       }
       if (a.type === "SCENARIO_CLASSIFICATION") {
         let correct = 0;
@@ -1124,6 +1577,17 @@
           const sel = document.querySelector(`.class-choice.selected[data-row="${i}"]`);
           if (sel) { sel.classList.remove("reveal-correct"); sel.classList.add(window.classState[i] === s.correct ? "correct" : "incorrect"); }
         });
+        result = {
+          total: Math.round(earned),
+          summary: `${correct} of ${a.scenarios.length} scenarios classified correctly.`,
+          response,
+          rows: [
+            { label: "Correct classifications", score: Math.round((correct / a.scenarios.length) * 5), note: "The rows were placed in the right category." },
+            { label: "Scenario linkage", score: correct ? 5 : 0, note: "The classifications are grounded in the phase scenario." },
+            { label: "Avoided false categories", score: correct === a.scenarios.length ? 5 : 0, note: "No rows were forced into the wrong category." },
+            { label: "Brief-ready triage", score: correct === a.scenarios.length ? 5 : 0, note: "The output can be used directly in the brief." }
+          ]
+        };
       }
       if (!state.activityLog[currentPhase().id]) state.activityLog[currentPhase().id] = {};
       state.activityLog[currentPhase().id][state.activityKey] = {
@@ -1135,8 +1599,7 @@
         points: Math.round(earned)
       };
       addScore(earned);
-      document.getElementById("feedback").classList.remove("hidden");
-      document.getElementById("feedback").innerHTML = `<h3>Activity Feedback</h3><p>${esc(summary)}</p><p>Points earned: ${Math.round(earned)} / ${maxPoints}</p>`;
+      renderFeedbackSummary(a, result || { total: Math.round(earned), summary, response, rows: [] }, maxPoints);
       document.getElementById("submitActivityBtn").classList.add("hidden");
       document.getElementById("nextActivityBtn").classList.remove("hidden");
     }
@@ -1166,7 +1629,6 @@
     }
     function skipActivity() {
       if (!["A","B","C"].includes(state.activityKey)) return;
-      stopTimer();
       if (state.activityKey === "C") {
         const p = currentPhase();
         state.skipped[p.briefSection] = true;
@@ -1335,7 +1797,7 @@
       document.getElementById("restartBtn").onclick = resetAll;
     }
     function resetAll() {
-      Object.assign(state, { team:"", screen:"intro", phaseIndex:0, activityKey:"intro", score:0, brief:Object.fromEntries(BRIEF_SECTIONS.map(s=>[s,""])), skipped:{}, timerSeconds:0, paused:false, currentResult:null, activityLog:{}, history:[], capstone:{mlcoa:[], mdcoa:[], indicator:""} });
+      Object.assign(state, { team:"", screen:"intro", phaseIndex:0, activityKey:"intro", score:0, brief:Object.fromEntries(BRIEF_SECTIONS.map(s=>[s,""])), skipped:{}, paused:false, currentResult:null, activityLog:{}, history:[], capstone:{mlcoa:[], mdcoa:[], indicator:""} });
       renderIntro();
     }
     document.getElementById("menuBtn").onclick = () => menu.classList.toggle("hidden");
