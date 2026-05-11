@@ -403,65 +403,6 @@
       h1, h2, h3 { color: black; }
     }
 
-    /* ── LIGHT MODE ─────────────────────────────────────────── */
-    [data-theme="light"] {
-      --navy: #f4f1eb;
-      --panel: #faf8f4;
-      --panel2: #ede9e0;
-      --olive: #4a5225;
-      --green: #2d4a0e;
-      --red: #7a1212;
-      --cream: #1c2333;
-      --muted: #545c6e;
-      --line: rgba(45,74,14,.25);
-      --glass: rgba(0,0,0,.04);
-      --glow: rgba(45,74,14,.16);
-    }
-    [data-theme="light"] body {
-      background:
-        linear-gradient(rgba(45,74,14,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(45,74,14,.025) 1px, transparent 1px),
-        radial-gradient(circle at 12% 8%, rgba(180,160,120,.12), transparent 23rem),
-        radial-gradient(circle at 78% 0%, rgba(122,18,18,.05), transparent 20rem),
-        var(--navy);
-      background-size: 32px 32px;
-    }
-    [data-theme="light"] .banner { color: #f5f1e8; }
-    [data-theme="light"] .shell {
-      background: rgba(250,248,244,.98);
-      box-shadow: 0 28px 90px rgba(0,0,0,.10);
-    }
-    [data-theme="light"] header { background: rgba(237,233,224,.98); border-bottom-color: rgba(45,74,14,.18); }
-    [data-theme="light"] aside { background: rgba(242,239,232,.90); }
-    [data-theme="light"] .brief-section { background: rgba(237,233,224,.6); }
-    [data-theme="light"] .brief-section.active { background: rgba(45,74,14,.09); }
-    [data-theme="light"] .panel, [data-theme="light"] .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(237,233,224,.82));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 1px 4px rgba(0,0,0,.06);
-    }
-    [data-theme="light"] .svg-wrap { background: rgba(237,233,224,.82); }
-    [data-theme="light"] .option,
-    [data-theme="light"] .match-item,
-    [data-theme="light"] .match-cat,
-    [data-theme="light"] .seq-item,
-    [data-theme="light"] .class-choice { background: rgba(237,233,224,.92); }
-    [data-theme="light"] .option.selected,
-    [data-theme="light"] .match-item.selected,
-    [data-theme="light"] .match-cat.selected,
-    [data-theme="light"] .seq-item.selected,
-    [data-theme="light"] .class-choice.selected { background: var(--green); color: #faf8f4; }
-    [data-theme="light"] button:hover:not(:disabled),
-    [data-theme="light"] button:focus-visible:not(:disabled) { background: var(--green); color: #faf8f4; }
-    [data-theme="light"] .score.flash { color: #faf8f4; }
-    [data-theme="light"] .class-row { background: rgba(237,233,224,.65); }
-    [data-theme="light"] .review-chip { background: rgba(237,233,224,.8); color: var(--muted); }
-    [data-theme="light"] .term-card { background: rgba(255,255,255,.92); }
-    [data-theme="light"] .modal-card { background: linear-gradient(180deg, #f0ece2, #e8e3d8); }
-    [data-theme="light"] .menu { background: var(--panel); }
-    [data-theme="light"] .pause .panel { background: var(--panel); }
-    [data-theme="light"] .slot { background: rgba(237,233,224,.5); }
-    [data-theme="light"] .sentence-frame { background: rgba(45,74,14,.07); }
-    [data-theme="light"] .phase-bar { background: rgba(237,233,224,.7); }
   </style>
 </head>
 <body>
@@ -489,8 +430,6 @@
     <button id="skipActivityBtn">Skip Activity</button>
     <button id="skipPhaseBtn">Skip Phase</button>
     <button id="restartPhaseBtn">Restart Phase</button>
-    <button id="toggleLockBtn">Instructor Lock: Off</button>
-    <button id="themeBtn">Light Mode: Off</button>
     <button id="saveBtn">Save Progress</button>
     <button id="resumeBtn">Resume Saved</button>
     <button id="quitBtn">Quit to Intro</button>
@@ -787,7 +726,6 @@
       score: 0,
       brief: Object.fromEntries(BRIEF_SECTIONS.map(s => [s, ""])),
       skipped: {},
-      instructorLock: false,
       timerSeconds: 0,
       timerId: null,
       paused: false,
@@ -813,7 +751,6 @@
     function updateChrome() {
       scoreLine.textContent = `Score: ${state.score}`;
       teamLine.textContent = `Team: ${state.team || "Not Assigned"}`;
-      document.getElementById("toggleLockBtn").textContent = `Instructor Lock: ${state.instructorLock ? "On" : "Off"}`;
       renderBrief();
     }
     function addScore(points) {
@@ -866,14 +803,6 @@
         state.timerSeconds += 1;
         const el = document.getElementById("timerValue");
         if (el) el.textContent = formatTime(state.timerSeconds);
-        const submit = document.getElementById("submitActivityBtn");
-        if (submit && state.instructorLock && state.timerSeconds < 60) {
-          submit.disabled = true;
-          submit.textContent = `Discuss First (${60 - state.timerSeconds})`;
-        } else if (submit && state.instructorLock) {
-          submit.disabled = false;
-          submit.textContent = "Submit";
-        }
       }, 1000);
     }
     function stopTimer() {
@@ -1018,7 +947,6 @@
       `);
       renderMechanic(a);
       const submit = document.getElementById("submitActivityBtn");
-      if (state.instructorLock) submit.disabled = true;
       submit.onclick = () => submitActivity(a);
       const reviewBtn = document.getElementById("reviewActivityBtn");
       if (reviewBtn) reviewBtn.onclick = showActivityReview;
@@ -1427,20 +1355,7 @@
     document.getElementById("skipPhaseBtn").onclick = () => { if (confirm("Skip this phase? Its brief section will be marked skipped.")) skipPhase(); };
     document.getElementById("restartPhaseBtn").onclick = () => { if (confirm("Restart current phase? Current phase work will be reset.")) restartPhase(); };
     document.getElementById("quitBtn").onclick = () => { if (confirm("Quit to intro and lose current progress?")) resetAll(); };
-    document.getElementById("toggleLockBtn").onclick = () => { state.instructorLock = !state.instructorLock; updateChrome(); };
-    const themeBtn = document.getElementById("themeBtn");
-    function applyTheme(light) {
-      document.documentElement.setAttribute("data-theme", light ? "light" : "dark");
-      themeBtn.textContent = `Light Mode: ${light ? "On" : "Off"}`;
-      localStorage.setItem("donovianHorizonTheme", light ? "light" : "dark");
-    }
-    themeBtn.onclick = () => {
-      const isLight = document.documentElement.getAttribute("data-theme") === "light";
-      applyTheme(!isLight);
-    };
-    applyTheme(localStorage.getItem("donovianHorizonTheme") === "light");
-
-    document.getElementById("saveBtn").onclick = () => { localStorage.setItem("donovianHorizonSave", JSON.stringify(state)); menu.classList.add("hidden"); };
+document.getElementById("saveBtn").onclick = () => { localStorage.setItem("donovianHorizonSave", JSON.stringify(state)); menu.classList.add("hidden"); };
     document.getElementById("resumeBtn").onclick = () => {
       const saved = localStorage.getItem("donovianHorizonSave");
       if (!saved) return alert("No saved progress found.");
