@@ -1541,6 +1541,12 @@ body {
   flex-wrap: wrap;
   gap: 8px;
 }
+.feedback-row-expl {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
 .feedback-chip {
   display: inline-flex;
   align-items: center;

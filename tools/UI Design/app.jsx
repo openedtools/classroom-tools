@@ -143,7 +143,7 @@ function ClassificationBar({ level }) {
   );
 }
 
-function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossary, teamName, scoreText }) {
+function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossary, onReset, teamName, scoreText }) {
   return (
     <header className="topbar">
       <div className="topbar-left">
@@ -192,6 +192,7 @@ function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossa
           <span className="lockbtn-text">{instructor ? 'INSTRUCTOR' : 'INSTRUCTOR'}</span>
         </button>
         <button className="iconbtn" title="Glossary" aria-label="Open glossary" onClick={onGlossary}>?</button>
+        <button className="iconbtn" title="Reset Exercise" aria-label="Reset exercise" onClick={onReset}>↺</button>
       </div>
     </header>
   );
@@ -781,6 +782,7 @@ function activityReviewRows(activity, response) {
           user: labelForCategory(activity, user),
           correct: labelForCategory(activity, item.correct),
           ok: user === item.correct,
+          explanation: item.explanation || activity.feedback?.explanations?.[item.id] || "",
         });
       });
       break;
@@ -792,6 +794,7 @@ function activityReviewRows(activity, response) {
         user: selected ? selected.text : "Not selected",
         correct: correct ? correct.text : "No correct option defined",
         ok: Boolean(selected && selected.correct),
+        explanation: selected?.explanation || correct?.explanation || "",
       });
       break;
     }
@@ -803,6 +806,7 @@ function activityReviewRows(activity, response) {
           user: answerText(user),
           correct: answerText(slot.correct),
           ok: user === slot.correct,
+          explanation: slot.explanation || "",
         });
       });
       break;
@@ -816,6 +820,7 @@ function activityReviewRows(activity, response) {
           user: userTarget ? userTarget.text : "Not matched",
           correct: correctTarget ? correctTarget.text : "No correct target defined",
           ok: userTargetId === correctTarget?.id,
+          explanation: item.explanation || correctTarget?.explanation || "",
         });
       });
       break;
@@ -830,6 +835,7 @@ function activityReviewRows(activity, response) {
           user: userItem ? userItem.text : "Missing",
           correct: correctItem ? correctItem.text : "Missing",
           ok: currentOrder[index] === id,
+          explanation: correctItem?.explanation || "",
         });
       });
       break;
@@ -841,6 +847,7 @@ function activityReviewRows(activity, response) {
           user: answerText(response.ranks?.[item.id]),
           correct: String(item.correct),
           ok: Number(response.ranks?.[item.id]) === Number(item.correct),
+          explanation: item.explanation || "",
         });
       });
       break;
@@ -852,6 +859,7 @@ function activityReviewRows(activity, response) {
           user: selected.has(option.id) ? "Selected" : "Not selected",
           correct: option.correct ? "Should be selected" : "Should not be selected",
           ok: selected.has(option.id) === option.correct,
+          explanation: option.explanation || "",
         });
       });
       break;
@@ -975,11 +983,14 @@ function ActivityFeedback({ activity, response }) {
                 <span className={`feedback-chip ${row.ok ? "chip-good" : "chip-bad"}`}>Your answer: {row.user}</span>
                 <span className="feedback-chip chip-good">Correct answer: {row.correct}</span>
               </div>
+              {row.explanation && (
+                <div className="feedback-row-expl">{row.explanation}</div>
+              )}
             </div>
           ))}
         </div>
       )}
-      <div className="feedback-copy subtle">{activity.feedback.whyMatters}</div>
+      {activity.feedback.whyMatters && <div className="feedback-copy subtle">{activity.feedback.whyMatters}</div>}
       {activity.feedback.evidenceClue && <div className="feedback-copy subtle">{activity.feedback.evidenceClue}</div>}
     </div>
   );
@@ -1249,7 +1260,7 @@ const PhaseWorkspace = React.forwardRef(function PhaseWorkspace({ phase, respons
           <button
             type="button"
             className="btn btn-ghost phase-top-btn"
-            onClick={() => ref?.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             Go to Top
           </button>
@@ -1449,6 +1460,21 @@ function App() {
     setActivePhase(studentSession.activePhase || "phase-0-overview");
   };
 
+  const handleResetExercise = () => {
+    const ok = window.confirm("Reset the exercise and clear saved progress for this browser?");
+    if (!ok) return;
+    try { localStorage.removeItem(SESSION_KEY); } catch {}
+    setStudentSession(makeDefaultSession());
+    setStudentReady(false);
+    setTeamName("");
+    setActivePhase("phase-0-overview");
+    setResponses({});
+    setObjectiveStates({});
+    setGlossaryOpen(false);
+    setModalOpen(false);
+    setInstructor(false);
+  };
+
   const handleActivityChange = (kind, activityId, value) => {
     const activity = findTrainingActivity(activityId);
     if (!activity) return;
@@ -1590,6 +1616,7 @@ function App() {
         instructor={instructor}
         onLockClick={onLockClick}
         onGlossary={() => setGlossaryOpen(true)}
+        onReset={handleResetExercise}
         teamName={teamName}
         scoreText={scoreText}
       />

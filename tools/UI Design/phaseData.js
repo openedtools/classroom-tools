@@ -67,9 +67,9 @@ window.NorthernVeilContent = {
           instruction: "Assign each item to the dimension of the Information Environment it primarily represents.",
           objectiveIds: ["4.6-ie-dimensions"],
           items: [
-            { id: "i1", text: "The Donovian broadcast satellite transmitter and television network infrastructure", correct: "physical" },
-            { id: "i2", text: "The fabricated video file distributed across social media platforms", correct: "informational" },
-            { id: "i3", text: "The Gorgas general's decision to postpone a border patrol after watching the broadcast", correct: "cognitive" }
+            { id: "i1", text: "The Donovian broadcast satellite transmitter and television network infrastructure", correct: "physical", explanation: "This is the hardware layer. Physical dimension = transmitters, servers, cables, and other infrastructure." },
+            { id: "i2", text: "The fabricated video file distributed across social media platforms", correct: "informational", explanation: "This is the content being carried. Informational dimension = the data, file, or message itself." },
+            { id: "i3", text: "The Gorgas general's decision to postpone a border patrol after watching the broadcast", correct: "cognitive", explanation: "This is the human decision effect. Cognitive dimension = beliefs, perceptions, and decisions." }
           ],
           categories: [
             { id: "physical", label: "Physical Dimension" },
@@ -91,11 +91,11 @@ window.NorthernVeilContent = {
           instruction: "Classify each item as Disinformation or Misinformation. Use the intent rule: deliberate falsehood = Disinformation; false content shared without intent to deceive = Misinformation.",
           objectiveIds: ["4.6-disinformation"],
           items: [
-            { id: "j1", text: "Donovian state broadcast using footage deliberately fabricated and produced for this campaign", correct: "disinformation" },
-            { id: "j2", text: "Separatist social post sharing recycled footage - the poster appears to believe it is authentic", correct: "misinformation" },
-            { id: "j3", text: "Leaked Gorgas readiness memo - a genuine document published by Donovian media to imply offensive intent", correct: "disinformation" },
-            { id: "j4", text: "Gorgas social-media user reposting an edited clip believing it came from this morning's border crossing", correct: "misinformation" },
-            { id: "j5", text: "Coordinated hashtag amplification - state-directed, knowingly spreading a false narrative", correct: "disinformation" }
+            { id: "j1", text: "Donovian state broadcast using footage deliberately fabricated and produced for this campaign", correct: "disinformation", explanation: "The broadcaster knows the footage is false and is using it to deceive, so this is disinformation." },
+            { id: "j2", text: "Separatist social post sharing recycled footage - the poster appears to believe it is authentic", correct: "misinformation", explanation: "The poster appears to believe the clip is real, so the falsehood is being shared without intent to deceive." },
+            { id: "j3", text: "Leaked Gorgas readiness memo - a genuine document published by Donovian media to imply offensive intent", correct: "disinformation", explanation: "The memo is real, but it is being framed deceptively to push a false narrative. The deception is deliberate, so the activity is disinformation." },
+            { id: "j4", text: "Gorgas social-media user reposting an edited clip believing it came from this morning's border crossing", correct: "misinformation", explanation: "The user believes the edited clip is authentic, so this is an honest but false repost rather than deliberate deception." },
+            { id: "j5", text: "Coordinated hashtag amplification - state-directed, knowingly spreading a false narrative", correct: "disinformation", explanation: "This is coordinated and intentional. The actors know the narrative is false and are spreading it anyway." }
           ],
           categories: [
             { id: "disinformation", label: "Disinformation" },
@@ -116,10 +116,10 @@ window.NorthernVeilContent = {
           instruction: "Coalition IO planners need analytical support from your cell. What is the intelligence officer's primary role in supporting this IO campaign response?",
           objectiveIds: ["4.6-disinformation"],
           options: [
-            { id: "a", text: "Research Donovian audience targeting - identify which populations are being influenced, what psychological vulnerabilities are being exploited, and what the adversary's messaging objectives are. Feed that analysis to MISO planners.", correct: true },
-            { id: "b", text: "Broadcast counter-MISO messages directly to Gorgas and Zabzimeki civilian audiences to rebut the Donovian narrative in real time." },
-            { id: "c", text: "Produce counter-narrative video content to respond to the Donovian state media broadcast segment." },
-            { id: "d", text: "Monitor and manage coalition social media accounts to amplify the Gorgas denial message across the 14 affected countries." }
+            { id: "a", text: "Research Donovian audience targeting - identify which populations are being influenced, what psychological vulnerabilities are being exploited, and what the adversary's messaging objectives are. Feed that analysis to MISO planners.", correct: true, explanation: "The intelligence officer's job is analysis: identify the target audience, vulnerabilities, and intended effect, then pass that to MISO planners." },
+            { id: "b", text: "Broadcast counter-MISO messages directly to Gorgas and Zabzimeki civilian audiences to rebut the Donovian narrative in real time.", explanation: "That is a messaging task, not an intelligence task." },
+            { id: "c", text: "Produce counter-narrative video content to respond to the Donovian state media broadcast segment.", explanation: "Creating the content is MISO work, not the intelligence officer's role." },
+            { id: "d", text: "Monitor and manage coalition social media accounts to amplify the Gorgas denial message across the 14 affected countries.", explanation: "This is a public affairs / messaging function, not the analytical role of the intel cell." }
           ],
           feedback: {
             correct: "Correct. Intelligence officers analyze the target audience, vulnerabilities, and likely effects; MISO uses that analysis to shape messaging.",
@@ -137,9 +137,9 @@ window.NorthernVeilContent = {
           objectiveIds: ["4.6-ie-dimensions"],
           sentence: [
             { type: "text", text: "The ultimate target of the Donovian IO campaign is the " },
-            { type: "slot", id: "slot1", options: ["Physical", "Informational", "Cognitive"], correct: "Cognitive" },
+            { type: "slot", id: "slot1", options: ["Physical", "Informational", "Cognitive"], correct: "Cognitive", explanation: "IO is trying to change beliefs and decisions, so the target is the Cognitive dimension." },
             { type: "text", text: " dimension, because Donovia's objective is not to destroy Gorgas's infrastructure but to change " },
-            { type: "slot", id: "slot2", options: ["network bandwidth", "weapons systems", "beliefs and perceptions"], correct: "beliefs and perceptions" },
+            { type: "slot", id: "slot2", options: ["network bandwidth", "weapons systems", "beliefs and perceptions"], correct: "beliefs and perceptions", explanation: "The campaign is meant to alter what audiences think, not to damage hardware or weapons." },
             { type: "text", text: " about Gorgas's intent among international audiences." }
           ],
           feedback: {
