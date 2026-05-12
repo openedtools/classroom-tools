@@ -771,6 +771,38 @@ function answerText(value) {
   return value ? String(value) : "Not selected";
 }
 
+function ordinal(n) {
+  const num = Number(n);
+  const suffix = (num % 100 >= 11 && num % 100 <= 13) ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[num % 10] || "th");
+  return `${num}${suffix}`;
+}
+
+function buildReviewExplanation(activity, row, context = {}) {
+  const { item, target, option, correctItem, selected, correct, slot } = context;
+  if (row.explanation) return row.explanation;
+
+  switch (activity.type) {
+    case "classification":
+      return `${row.correct} is the right classification for this item.`;
+    case "decision":
+      return correct?.explanation || `The correct answer is ${row.correct} because it best fits the scenario requirement.`;
+    case "fillslot":
+      return `The blank should be ${row.correct} because that completes the assessment sentence accurately.`;
+    case "matching":
+      return `The term ${row.label} matches ${row.correct} because the definition describes that concept.`;
+    case "sequencing":
+      return `${row.correct} belongs in position ${ordinal(context.position)} because the kill chain must proceed in order.`;
+    case "ranking":
+      return `${row.label} belongs at rank ${row.correct} because it places Donovia at that point in the scenario timeline.`;
+    case "multiselect":
+      return context.item.correct
+        ? `This should be selected because it matches the question's requirement.`
+        : `This should not be selected because it does not match the question's requirement.`;
+    default:
+      return "";
+  }
+}
+
 function activityReviewRows(activity, response) {
   const rows = [];
   switch (activity.type) {
@@ -782,7 +814,7 @@ function activityReviewRows(activity, response) {
           user: labelForCategory(activity, user),
           correct: labelForCategory(activity, item.correct),
           ok: user === item.correct,
-          explanation: item.explanation || activity.feedback?.explanations?.[item.id] || "",
+          explanation: item.explanation || activity.feedback?.explanations?.[item.id] || buildReviewExplanation(activity, { label: item.text, correct: labelForCategory(activity, item.correct) }),
         });
       });
       break;
@@ -794,7 +826,7 @@ function activityReviewRows(activity, response) {
         user: selected ? selected.text : "Not selected",
         correct: correct ? correct.text : "No correct option defined",
         ok: Boolean(selected && selected.correct),
-        explanation: selected?.explanation || correct?.explanation || "",
+        explanation: selected?.explanation || correct?.explanation || buildReviewExplanation(activity, { correct: correct ? correct.text : "No correct option defined" }, { selected, correct }),
       });
       break;
     }
@@ -806,7 +838,7 @@ function activityReviewRows(activity, response) {
           user: answerText(user),
           correct: answerText(slot.correct),
           ok: user === slot.correct,
-          explanation: slot.explanation || "",
+          explanation: slot.explanation || buildReviewExplanation(activity, { correct: answerText(slot.correct) }),
         });
       });
       break;
@@ -820,7 +852,7 @@ function activityReviewRows(activity, response) {
           user: userTarget ? userTarget.text : "Not matched",
           correct: correctTarget ? correctTarget.text : "No correct target defined",
           ok: userTargetId === correctTarget?.id,
-          explanation: item.explanation || correctTarget?.explanation || "",
+          explanation: item.explanation || correctTarget?.explanation || buildReviewExplanation(activity, { label: item.text, correct: correctTarget ? correctTarget.text : "No correct target defined" }),
         });
       });
       break;
@@ -835,7 +867,7 @@ function activityReviewRows(activity, response) {
           user: userItem ? userItem.text : "Missing",
           correct: correctItem ? correctItem.text : "Missing",
           ok: currentOrder[index] === id,
-          explanation: correctItem?.explanation || "",
+          explanation: correctItem?.explanation || buildReviewExplanation(activity, { correct: correctItem ? correctItem.text : "Missing" }, { position: index + 1 }),
         });
       });
       break;
@@ -847,7 +879,7 @@ function activityReviewRows(activity, response) {
           user: answerText(response.ranks?.[item.id]),
           correct: String(item.correct),
           ok: Number(response.ranks?.[item.id]) === Number(item.correct),
-          explanation: item.explanation || "",
+          explanation: item.explanation || buildReviewExplanation(activity, { label: item.text, correct: String(item.correct) }),
         });
       });
       break;
@@ -859,7 +891,7 @@ function activityReviewRows(activity, response) {
           user: selected.has(option.id) ? "Selected" : "Not selected",
           correct: option.correct ? "Should be selected" : "Should not be selected",
           ok: selected.has(option.id) === option.correct,
-          explanation: option.explanation || "",
+          explanation: option.explanation || buildReviewExplanation(activity, { correct: option.correct ? "Should be selected" : "Should not be selected" }, { item: option }),
         });
       });
       break;
@@ -990,8 +1022,13 @@ function ActivityFeedback({ activity, response }) {
           ))}
         </div>
       )}
-      {activity.feedback.whyMatters && <div className="feedback-copy subtle">{activity.feedback.whyMatters}</div>}
-      {activity.feedback.evidenceClue && <div className="feedback-copy subtle">{activity.feedback.evidenceClue}</div>}
+      {(activity.feedback.whyMatters || activity.feedback.evidenceClue) && (
+        <details className="feedback-context">
+          <summary>More context</summary>
+          {activity.feedback.whyMatters && <div className="feedback-copy subtle">{activity.feedback.whyMatters}</div>}
+          {activity.feedback.evidenceClue && <div className="feedback-copy subtle">{activity.feedback.evidenceClue}</div>}
+        </details>
+      )}
     </div>
   );
 }
