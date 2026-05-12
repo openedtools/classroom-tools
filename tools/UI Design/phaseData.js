@@ -1,6 +1,6 @@
 /* global window */
 window.NorthernVeilContent = {
-  restoredThrough: "phase-4-emsradar",
+  restoredThrough: "phase-5-ir",
   phases: {
     "phase-0-overview": {
       id: "phase-0-overview",
@@ -583,6 +583,180 @@ Your cell must classify each emission as ELINT or COMINT, apply the kill chain f
             incorrect: "Terrain masking is caused by the loss of electromagnetic line-of-sight - a ridge physically blocks the straight-line path between the sensor and the emitter. Atmospheric conditions do not cause it and cannot resolve it. Moving west increases distance without solving the geometry. The fix is always to restore line-of-sight - and the eastern hilltop does exactly that.",
             whyMatters: "SIGINT collector siting is an intelligence task, not just a logistics decision. A collector placed behind terrain is effectively blind to anything that ridge blocks, regardless of its technical capability. Intelligence officers must understand LOS geometry to correctly advise on collection positioning - and to recognize when a collection gap is a terrain problem versus a system problem.",
             evidenceClue: "Card 5 explains the terrain masking problem explicitly - the ridge creates a physical obstruction, not a signal degradation. Card 6 identifies the solution: the eastern hilltop with confirmed clear LOS to all emitters. The physics determines the answer."
+          }
+        }
+      ]
+    },
+    "phase-5-ir": {
+      id: "phase-5-ir",
+      title: "Phase 5 - Infrared Threats 101",
+      subtitle: "Lesson 4.4 - IR Threats & Airframe Survival",
+      domain: "ir",
+      objectiveIds: ["4.4-ir-signatures"],
+      inject: `As Donovia's border pressure increases, coalition aircrews begin reporting more nighttime missile activity along the same corridor. FLIR passes reveal warm vehicle signatures on unimproved tracks, and a suspected IR-guided MANPADS position has been identified near the route. Analysts also note that one newer missile type appears to use an Imaging Infrared seeker rather than a simple hot-spot tracker.
+
+Your cell must identify the primary IR vulnerability on the aircraft, distinguish hot-spot seekers from IIR seekers, and choose the correct countermeasure for each threat type. Remember: IR sees heat, flares are the classic decoy for hot-spot seekers, and IIR seekers are harder to fool because they see the shape of the target rather than just one bright point.`,
+      evidenceCards: [
+        {
+          id: "e5-1",
+          domain: "ir",
+          title: "Hot Engine Exhaust - Primary IR Vulnerability",
+          summary: "The exhaust plume and nozzle glow are the brightest heat source on the airframe and the easiest thing for an IR seeker to lock.",
+          detail: "IR seekers look for heat. The hottest, most exposed part of an aircraft is the engine exhaust, especially during high power settings and afterburner use. That bright heat source is the primary vulnerability for an IR-homing missile. Aspect angle matters too: the closer the missile looks straight into the exhaust, the stronger the signature becomes."
+        },
+        {
+          id: "e5-2",
+          domain: "ir",
+          title: "IR-Homing MANPADS - Hot-Spot Tracker",
+          summary: "This seeker locks the hottest point it can see and can be seduced by a hotter flare.",
+          detail: "A hot-spot tracker is the classic IR-homing missile seeker. It does not build a full image of the aircraft; it simply chases the hottest point. If a flare is hotter than the aircraft exhaust, the seeker can be pulled away from the airframe and into the decoy. This is why flares remain the standard countermeasure against basic IR-homing threats."
+        },
+        {
+          id: "e5-3",
+          domain: "ir",
+          title: "Imaging Infrared Seeker - Shape Recognition",
+          summary: "IIR seekers build a thermal picture of the target, making them much harder to fool with flares alone.",
+          detail: "An Imaging Infrared seeker sees the whole thermal silhouette, not just a single bright dot. That means it can compare shape, contrast, and target patterning. A flare is still a bright point, but the aircraft remains a recognizable thermal object. Because of that, IIR seekers are much harder to defeat with flares alone and typically require tactical maneuver in addition to decoy use."
+        },
+        {
+          id: "e5-4",
+          domain: "ir",
+          title: "FLIR Overflight - Surface Heat Detection",
+          summary: "A forward-looking infrared sensor detects warm vehicles along the tracks at night.",
+          detail: "FLIR is a thermal imaging sensor used by aircraft and drones to observe the ground in low light or at night. It detects heat signatures on the surface, making it ideal for spotting vehicles, exhaust plumes, and recent movement. FLIR is a passive sensor: it does not emit energy to collect the picture."
+        },
+        {
+          id: "e5-5",
+          domain: "ir",
+          title: "IRST - Passive Fighter Sensor",
+          summary: "An infrared search-and-track system can detect aircraft heat without emitting radar energy.",
+          detail: "IRST is a passive infrared sensor used on fighter aircraft to detect and track other aircraft. Because it does not send out radar energy, it is harder to detect than an active radar system. It is useful for finding hot targets at range and for supporting silent air-to-air search."
+        },
+        {
+          id: "e5-6",
+          domain: "ir",
+          title: "SBIRS - Space-Based Missile Warning",
+          summary: "A satellite sensor watches for launch plumes and rocket exhaust to provide missile warning.",
+          detail: "SBIRS is a space-based infrared system built to detect rocket motor exhaust and launch plumes. Its purpose is missile warning and strategic alerting, not air-to-air guidance. In the lesson context, it is one of the best examples of a space-based IR sensor doing a specific warning mission."
+        }
+      ],
+      activities: [
+        {
+          id: "p5a1",
+          type: "matching",
+          typeLabel: "Activity 1 of 5 - Matching",
+          points: 5,
+          instruction: "Match each IR system or seeker to its best description. Click a term on the left, then the matching description on the right.",
+          objectiveIds: ["4.4-ir-signatures"],
+          items: [
+            { id: "ir1", text: "FLIR" },
+            { id: "ir2", text: "IRST" },
+            { id: "ir3", text: "SBIRS" },
+            { id: "ir4", text: "Hot-spot tracker" },
+            { id: "ir5", text: "IIR seeker" }
+          ],
+          targets: [
+            { id: "irt1", text: "Passive thermal imaging for airborne or ground surveillance", correct: "ir1" },
+            { id: "irt2", text: "Passive fighter sensor used to find and track aircraft heat signatures", correct: "ir2" },
+            { id: "irt3", text: "Space-based missile warning system that detects launch plumes", correct: "ir3" },
+            { id: "irt4", text: "Locks onto the hottest point and can be decoyed by a brighter flare", correct: "ir4" },
+            { id: "irt5", text: "Forms a thermal image of the target and is harder to fool with flares alone", correct: "ir5" }
+          ],
+          feedback: {
+            correct: "Correct. FLIR is for passive thermal imaging, IRST is a passive air-to-air sensor, SBIRS is space-based missile warning, hot-spot trackers chase the brightest point, and IIR seekers build a fuller thermal picture of the target.",
+            incorrect: "Review the difference between an IR sensor and an IR seeker. FLIR, IRST, and SBIRS are sensor systems. Hot-spot trackers and IIR seekers are missile seekers. The key distinction is whether the system is observing or trying to guide a weapon.",
+            whyMatters: "If you can name the sensor or seeker correctly, you can pick the right countermeasure and avoid mixing passive sensors with threat seekers.",
+            evidenceClue: "Cards 4, 5, and 6 cover FLIR, IRST, and SBIRS. Cards 2 and 3 cover the two seeker types you need to distinguish."
+          }
+        },
+        {
+          id: "p5a2",
+          type: "classification",
+          typeLabel: "Activity 2 of 5 - Classification",
+          points: 4,
+          instruction: "Classify each item by what it most accurately is. Use the lesson terms: IR signature, countermeasure, seeker, or sensor/system.",
+          objectiveIds: ["4.4-ir-signatures"],
+          items: [
+            { id: "i5-1", text: "Hot engine exhaust on the aircraft", correct: "signature" },
+            { id: "i5-2", text: "Flares released from the aircraft", correct: "countermeasure" },
+            { id: "i5-3", text: "Chaff bundle released from the aircraft", correct: "radar-countermeasure" },
+            { id: "i5-4", text: "Imaging Infrared seeker on the missile", correct: "seeker" },
+            { id: "i5-5", text: "FLIR sensor on an aircraft or drone", correct: "sensor" }
+          ],
+          categories: [
+            { id: "signature", label: "IR Signature" },
+            { id: "countermeasure", label: "IR Countermeasure" },
+            { id: "radar-countermeasure", label: "Radar Countermeasure" },
+            { id: "seeker", label: "Seeker" },
+            { id: "sensor", label: "Sensor / System" }
+          ],
+          feedback: {
+            correct: "Correct. Hot exhaust is the IR signature, flares are the IR countermeasure, chaff is for radar-guided threats, IIR is a seeker type, and FLIR is a sensor system.",
+            incorrect: "Use the lesson's distinctions. IR sees heat, so the exhaust plume is the signature. Flares are the classic IR decoy. Chaff is for radar threats, not infrared. IIR is a seeker, and FLIR is a passive sensor.",
+            whyMatters: "Knowing which thing is the signature, which thing is the sensor, and which thing is the countermeasure keeps the response matched to the threat instead of wasting the wrong tool.",
+            evidenceClue: "Card 1 identifies the exhaust as the signature. Card 2 explains the hot-spot tracker. Card 5 and Card 6 show passive sensor systems rather than missile seekers."
+          }
+        },
+        {
+          id: "p5a3",
+          type: "decision",
+          typeLabel: "Activity 3 of 5 - Decision",
+          points: 1,
+          instruction: "A basic IR-homing MANPADS has locked onto the aircraft's exhaust plume. What is the best first countermeasure?",
+          objectiveIds: ["4.4-ir-signatures"],
+          options: [
+            { id: "ir-d1", text: "Deploy chaff", correct: false },
+            { id: "ir-d2", text: "Deploy flares", correct: true },
+            { id: "ir-d3", text: "Turn on the radar jammer", correct: false },
+            { id: "ir-d4", text: "Do nothing and rely on speed alone", correct: false }
+          ],
+          feedback: {
+            correct: "Correct. Flares are the standard countermeasure against a basic IR-homing hot-spot seeker because they create a hotter target than the aircraft exhaust.",
+            incorrect: "For a basic IR-homing missile, the correct response is flares. Chaff and radar jamming are for radar threats, and speed alone does not create a hotter decoy.",
+            whyMatters: "The survival tool has to match the guidance method. IR sees heat, so you defeat it with a heat source.",
+            evidenceClue: "Card 2 explains why hot-spot trackers are vulnerable to flares. That is the exact threat this decision is asking about."
+          }
+        },
+        {
+          id: "p5a4",
+          type: "sequencing",
+          typeLabel: "Activity 4 of 5 - Sequencing",
+          points: 4,
+          instruction: "Order the immediate IR-response steps from first to last when a heat-seeking missile threat is detected.",
+          objectiveIds: ["4.4-ir-signatures"],
+          items: [
+            { id: "rs1", text: "Detect the launch cue or missile warning", correct: 1 },
+            { id: "rs2", text: "Dispense flares to create a hotter decoy", correct: 2 },
+            { id: "rs3", text: "Maneuver hard to break the missile's track", correct: 3 },
+            { id: "rs4", text: "Assess whether the seeker has broken away", correct: 4 }
+          ],
+          feedback: {
+            correct: "Correct. Detect the cue, dispense flares, maneuver, then assess whether the missile has broken lock. The exact timing can overlap, but the doctrinal logic is cue, counter, maneuver, assess.",
+            incorrect: "The lesson sequence is simple: detect the threat, create a hotter decoy with flares, maneuver to spoil the track, then assess the result. If the seeker is an IIR type, maneuver becomes even more important.",
+            whyMatters: "IR defense is time-sensitive. The pilot has only seconds to get the missile off the aircraft, so the response has to be immediate and deliberate.",
+            evidenceClue: "Card 3 explains why IIR seekers are harder to fool. Card 2 explains why flares work on hot-spot trackers. The response sequence follows those facts."
+          }
+        },
+        {
+          id: "p5a5",
+          type: "multiselect",
+          typeLabel: "Activity 5 of 5 - Multi-Select",
+          points: 4,
+          instruction: "Select all statements that are true about IR threats, sensors, and countermeasures.",
+          objectiveIds: ["4.4-ir-signatures"],
+          options: [
+            { id: "ms5-1", text: "Hot engine exhaust is the primary IR vulnerability on an aircraft.", correct: true },
+            { id: "ms5-2", text: "Flares are the standard countermeasure against a hot-spot IR seeker.", correct: true },
+            { id: "ms5-3", text: "IIR seekers are easily defeated by flares alone.", correct: false },
+            { id: "ms5-4", text: "Chaff is the standard countermeasure against an IR seeker.", correct: false },
+            { id: "ms5-5", text: "FLIR and IRST are passive thermal sensors.", correct: true },
+            { id: "ms5-6", text: "SBIRS is used for missile warning from space.", correct: true }
+          ],
+          feedback: {
+            correct: "Correct. The true statements are the ones that match the lesson: exhaust is the vulnerability, flares defeat basic IR seekers, FLIR and IRST are passive sensors, and SBIRS provides missile warning.",
+            incorrect: "Review the lesson distinctions: IR sees heat, hot exhaust is the vulnerable point, flares are the classic decoy, IIR seekers are harder to fool, chaff is for radar, and FLIR/IRST/SBIRS are sensor systems rather than missile seekers.",
+            whyMatters: "This is the core IR takeaway: match the countermeasure to the threat type and do not confuse passive sensors with weapon seekers.",
+            evidenceClue: "Cards 1 through 6 break out the vulnerability, the two seeker types, the passive sensors, and the space-based warning system."
           }
         }
       ]
