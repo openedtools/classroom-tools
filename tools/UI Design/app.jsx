@@ -595,7 +595,7 @@ function BeginBar({ onBegin }) {
 }
 
 const TRAINING_PHASES = window.NorthernVeilContent?.phases || {};
-const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar", "phase-5-ir"];
+const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar", "phase-5-ir", "phase-6-isr"];
 const SESSION_KEY = "onv-student-session-v1";
 const STUDENT_PASSWORD = "OperationNorthernV3il";
 

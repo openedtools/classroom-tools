@@ -1,6 +1,6 @@
 /* global window */
 window.NorthernVeilContent = {
-  restoredThrough: "phase-5-ir",
+  restoredThrough: "phase-6-isr",
   phases: {
     "phase-0-overview": {
       id: "phase-0-overview",
@@ -756,6 +756,168 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
             incorrect: "Review the lesson distinctions: IR sees heat, hot exhaust is the vulnerable point, flares are the classic decoy, IIR seekers are harder to fool, chaff is for radar, and FLIR/IRST/SBIRS are sensor systems rather than missile seekers.",
             whyMatters: "This is the core IR takeaway: match the countermeasure to the threat type and do not confuse passive sensors with weapon seekers.",
             evidenceClue: "Cards 1 through 6 break out the vulnerability, the two seeker types, the passive sensors, and the space-based warning system."
+          }
+        }
+      ]
+    }
+    ,
+    "phase-6-isr": {
+      id: "phase-6-isr",
+      title: "Phase 6 - ISR Fundamentals",
+      subtitle: "Lesson 4.7 - ISR Cycle & Tasking",
+      domain: "isr",
+      objectiveIds: ["4.7-isr-cycle", "4.7-pir-entry", "4.7-dcgs", "4.7-surveillance-recon"],
+      inject: `The commander issues a new Priority Intelligence Requirement (PIR): determine whether Donovia is preparing a limited cross-border operation within the next 72 hours. The intelligence cell must turn that question into a collection plan, route raw data through Processing & Exploitation, and keep persistent surveillance separate from directed reconnaissance. The team is not being asked to invent new requirements - it is being asked to convert the commander's question into actionable ISR tasks and then report the results through the correct cycle.`,
+      evidenceCards: [
+        {
+          id: "e6-1",
+          domain: "isr",
+          title: "Commander PIR - Cross-Border Warning Question",
+          summary: "The commander wants a specific answer about Donovia's intent over the next 72 hours.",
+          detail: "A PIR is the commander's priority intelligence question. It does not belong in the processing stage and it is not itself a collection report. It is the starting point that drives the intelligence cycle and tells collectors what to look for."
+        },
+        {
+          id: "e6-2",
+          domain: "isr",
+          title: "ISR Cycle Board - Five Stages",
+          summary: "Planning & Direction, Collection, Processing & Exploitation, Analysis & Production, Dissemination & Integration.",
+          detail: "The ISR cycle converts the commander's requirement into tasking, collects raw information, processes it into usable data, analyzes the result, and then delivers the finished intelligence to the customer. Each stage depends on the one before it."
+        },
+        {
+          id: "e6-3",
+          domain: "isr",
+          title: "DCGS Exploitation Cell",
+          summary: "Raw sensor feeds are ingested and processed in the Processing & Exploitation stage.",
+          detail: "DCGS, the Distributed Common Ground System, is the main processing and exploitation environment for raw collected material. Its job is to turn incoming sensor data into something analysts can review, compare, and assess."
+        },
+        {
+          id: "e6-4",
+          domain: "isr",
+          title: "Persistent Surveillance - Border Corridor",
+          summary: "A continuous watch is being maintained over the border corridor and approaches to Gorgas.",
+          detail: "Surveillance means persistent, continuous watch over an area or subject. It is broad and ongoing, intended to maintain awareness over time rather than answer one narrow question."
+        },
+        {
+          id: "e6-5",
+          domain: "isr",
+          title: "Reconnaissance Task - Route 7",
+          summary: "A task-organized team is sent to probe a specific route for crossing indicators.",
+          detail: "Reconnaissance is directed and time-limited. It is used when the commander needs specific information from a specific place or target set. Unlike surveillance, it is focused and task-organized."
+        }
+      ],
+      activities: [
+        {
+          id: "p6a1",
+          type: "matching",
+          typeLabel: "Activity 1 of 5 - Matching",
+          points: 5,
+          instruction: "Match each ISR cycle stage to its primary function. Click a term on the left, then the correct description on the right.",
+          objectiveIds: ["4.7-isr-cycle"],
+          items: [
+            { id: "isr1", text: "Planning & Direction (P&D)", explanation: "This is where the commander's PIR is converted into intelligence requirements and collection tasks." },
+            { id: "isr2", text: "Collection", explanation: "This is the gathering of raw information from sensors, patrols, and reports." },
+            { id: "isr3", text: "Processing & Exploitation (P&E)", explanation: "This is where raw data is turned into usable information for analysts." },
+            { id: "isr4", text: "Analysis & Production", explanation: "This is where analysts interpret the processed information and create intelligence." },
+            { id: "isr5", text: "Dissemination & Integration", explanation: "This is the delivery of finished intelligence to the customer and its use in planning." }
+          ],
+          targets: [
+            { id: "ist1", text: "Convert the commander's question into collection tasks and priorities", correct: "isr1" },
+            { id: "ist2", text: "Gather raw data from sensors, reporting, and other sources", correct: "isr2" },
+            { id: "ist3", text: "Turn raw collection into usable information for analysis", correct: "isr3" },
+            { id: "ist4", text: "Interpret the processed information and produce intelligence", correct: "isr4" },
+            { id: "ist5", text: "Deliver the finished product and put it into use", correct: "isr5" }
+          ],
+          feedback: {
+            correct: "All five matched correctly. The ISR cycle moves from direction, to collection, to processing, to analysis, to dissemination.",
+            incorrect: "The ISR cycle is a sequence. Planning & Direction turns the PIR into tasks. Collection gathers raw data. Processing & Exploitation turns raw data into usable form. Analysis & Production interprets it. Dissemination & Integration gets it to the customer and into use.",
+            whyMatters: "If you place the PIR in the wrong stage, you break the tasking chain. If you confuse processing with analysis, you risk sending raw data straight to the commander without making it usable.",
+            evidenceClue: "Card 2 lays out the five stages directly. Card 3 shows DCGS in the processing stage. Card 1 shows the commander question that starts the cycle."
+          }
+        },
+        {
+          id: "p6a2",
+          type: "sequencing",
+          typeLabel: "Activity 2 of 5 - Sequencing",
+          points: 4,
+          instruction: "Place the five ISR cycle stages in the correct order from first to last. Use the up/down arrows to reorder.",
+          objectiveIds: ["4.7-isr-cycle"],
+          items: [
+            { id: "s1", text: "Planning & Direction (P&D)", correct: 1, explanation: "The commander's PIR enters the cycle here and becomes a collection requirement." },
+            { id: "s2", text: "Collection", correct: 2, explanation: "This is where the tasked sensors and collectors gather raw information." },
+            { id: "s3", text: "Processing & Exploitation (P&E)", correct: 3, explanation: "DCGS and similar systems process the raw material here." },
+            { id: "s4", text: "Analysis & Production", correct: 4, explanation: "Analysts turn processed data into intelligence at this stage." },
+            { id: "s5", text: "Dissemination & Integration", correct: 5, explanation: "The finished intelligence is delivered to the customer and used in planning." }
+          ],
+          feedback: {
+            correct: "Correct. The sequence is P&D -> Collection -> P&E -> Analysis & Production -> Dissemination & Integration.",
+            incorrect: "The cycle begins with Planning & Direction, then moves to Collection, then Processing & Exploitation, then Analysis & Production, and finally Dissemination & Integration. If you move the stages out of order, the intelligence process breaks down.",
+            whyMatters: "The ISR cycle is a workflow. Each stage produces the input for the next stage. The commander's question does not jump straight to analysis; it starts with tasking.",
+            evidenceClue: "Card 1 is the PIR, Card 3 is the processing node, and Card 2 shows the five-stage board in order."
+          }
+        },
+        {
+          id: "p6a3",
+          type: "decision",
+          typeLabel: "Activity 3 of 5 - Decision",
+          points: 1,
+          instruction: "Where does the commander's PIR enter the ISR cycle?",
+          objectiveIds: ["4.7-pir-entry"],
+          options: [
+            { id: "d1", text: "Planning & Direction (P&D) - the PIR is converted into collection tasks here", correct: true, explanation: "PIRs are routed into the cycle at Planning & Direction because that is where requirements become tasking." },
+            { id: "d2", text: "Collection - the PIR is already a finished report at this point", correct: false, explanation: "Collection gathers raw data, but it does not start the cycle." },
+            { id: "d3", text: "Processing & Exploitation (P&E) - the PIR waits until DCGS receives the feed", correct: false, explanation: "P&E handles raw collection after tasking has already happened." },
+            { id: "d4", text: "Dissemination & Integration - the PIR is briefed after the intelligence is finished", correct: false, explanation: "Dissemination is the end of the process, not the starting point." }
+          ],
+          feedback: {
+            correct: "Correct. The PIR enters at Planning & Direction, where the commander's question becomes a collection requirement.",
+            incorrect: "The commander's PIR starts the cycle at Planning & Direction. That is the stage where analysts and planners turn the question into collection tasks. The PIR is not a report that appears after analysis; it is the requirement that drives the work.",
+            whyMatters: "If you start at the wrong stage, you can collect the wrong information or deliver the answer too late. ISR works because the requirement is translated into tasking from the beginning.",
+            evidenceClue: "Card 1 is the PIR itself. Card 2 shows the cycle board. The starting point is Planning & Direction."
+          }
+        },
+        {
+          id: "p6a4",
+          type: "classification",
+          typeLabel: "Activity 4 of 5 - Classification",
+          points: 3,
+          instruction: "Classify each activity as Surveillance or Reconnaissance.",
+          objectiveIds: ["4.7-surveillance-recon"],
+          items: [
+            { id: "sur1", text: "A continuous feed watching the border corridor all day and all night", correct: "surveillance", explanation: "This is persistent watch over an area, which is surveillance." },
+            { id: "sur2", text: "A task-organized patrol sent to probe Route 7 for crossing indicators", correct: "reconnaissance", explanation: "This is a directed, time-limited probe for specific information, which is reconnaissance." },
+            { id: "sur3", text: "A long-term watch on the motor pool to spot pattern changes over time", correct: "surveillance", explanation: "Continuous observation over time is surveillance." },
+            { id: "sur4", text: "A one-day collection mission sent to answer the commander's specific question about a bridge", correct: "reconnaissance", explanation: "Focused, time-limited collection to answer a specific question is reconnaissance." }
+          ],
+          categories: [
+            { id: "surveillance", label: "Surveillance" },
+            { id: "reconnaissance", label: "Reconnaissance" }
+          ],
+          feedback: {
+            correct: "All four classified correctly. Surveillance is continuous watch over an area or subject. Reconnaissance is a directed mission to answer a specific question.",
+            incorrect: "Use the scope and purpose test. Surveillance is broad, continuous, and persistent. Reconnaissance is narrow, task-organized, and time-limited. If the mission is to keep watch, it is surveillance. If the mission is to go get a specific answer, it is reconnaissance.",
+            whyMatters: "These are different collection modes with different tasking logic. Confusing them leads to poor sensor use and wasted coverage.",
+            evidenceClue: "Card 4 is surveillance. Card 5 is reconnaissance. Card 1 and Card 2 show the commander's requirement that drives both."
+          }
+        },
+        {
+          id: "p6a5",
+          type: "multiselect",
+          typeLabel: "Activity 5 of 5 - Multi-Select",
+          points: 4,
+          instruction: "Select all statements that are true about ISR, DCGS, and the PIR process.",
+          objectiveIds: ["4.7-dcgs"],
+          options: [
+            { id: "ms6-1", text: "Planning & Direction is where the commander's PIR is turned into tasking.", correct: true, explanation: "Planning & Direction is the entry point for the PIR." },
+            { id: "ms6-2", text: "DCGS is used during Processing & Exploitation.", correct: true, explanation: "DCGS is a processing and exploitation system." },
+            { id: "ms6-3", text: "Reconnaissance is the same thing as continuous surveillance.", correct: false, explanation: "Reconnaissance is specific and time-limited; surveillance is continuous." },
+            { id: "ms6-4", text: "Surveillance means persistent watch over an area or subject.", correct: true, explanation: "That is the defining feature of surveillance." },
+            { id: "ms6-5", text: "The ISR cycle begins with dissemination.", correct: false, explanation: "Dissemination is the last stage, not the first." }
+          ],
+          feedback: {
+            correct: "Correct. The true statements are the ones that match the lesson: Planning & Direction starts the cycle, DCGS belongs in Processing & Exploitation, and surveillance means persistent watch.",
+            incorrect: "Check each statement against the ISR cycle and the surveillance/recon distinction. The PIR enters at Planning & Direction, DCGS works in Processing & Exploitation, surveillance is continuous watch, and reconnaissance is a task-organized mission for a specific answer.",
+            whyMatters: "ISR works only when the requirement, the collector, the processing tool, and the analyst are all in the right place in the cycle.",
+            evidenceClue: "Cards 1 through 5 cover the PIR, the cycle, DCGS, surveillance, and reconnaissance."
           }
         }
       ]
