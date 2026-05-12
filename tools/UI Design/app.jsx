@@ -923,11 +923,11 @@ function ActivityCard({
   );
 }
 
-function PhaseWorkspace({ phase, responses, onChange, onSubmit }) {
+const PhaseWorkspace = React.forwardRef(function PhaseWorkspace({ phase, responses, onChange, onSubmit }, ref) {
   if (!phase) return null;
   const restored = Boolean(phase.activities && phase.activities.length);
   return (
-    <section className="phase-workspace">
+    <section className="phase-workspace" ref={ref}>
       <div className="phase-banner">
         <div>
           <div className="phase-banner-tag">RESTORED PHASE</div>
@@ -971,7 +971,7 @@ function PhaseWorkspace({ phase, responses, onChange, onSubmit }) {
       )}
     </section>
   );
-}
+});
 
 // ──────────────────────────────────────────────────────────────────────────
 // APP
@@ -1061,6 +1061,8 @@ function App() {
     try { return localStorage.getItem("onv-instructor-v2") === "1"; } catch { return false; }
   });
   const [modalOpen, setModalOpen] = useState(false);
+  const phaseWorkspaceRef = useRef(null);
+  const previousPhaseRef = useRef(activePhase);
   const [pin, setPin] = useState(() => {
     try {
       const raw = localStorage.getItem("onv-pin-v2");
@@ -1100,6 +1102,12 @@ function App() {
     setStudentSession(nextSession);
     saveStudentSession(nextSession);
   }, [studentReady, teamName, activePhase, responses, objectiveStates]);
+  useEffect(() => {
+    if (previousPhaseRef.current !== activePhase) {
+      phaseWorkspaceRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      previousPhaseRef.current = activePhase;
+    }
+  }, [activePhase]);
   const onLockClick = () => {
     if (instructor) setInstructor(false);
     else setModalOpen(true);
@@ -1322,7 +1330,8 @@ function App() {
           {activePhase === "phase-0-overview" && (
             <BeginBar onBegin={() => setActivePhase("phase-1-info")} />
           )}
-          <PhaseWorkspace
+      <PhaseWorkspace
+            ref={phaseWorkspaceRef}
             phase={currentPhase}
             responses={responses}
             onChange={handleActivityChange}
