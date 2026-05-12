@@ -26,7 +26,8 @@ const PHASE_LONG  = ["ORIENTATION", "INFO OPS", "CYBER", "GEOINT", "EMS / RADAR"
 
 function adaptPhases(raw) {
   return raw.map((p, i) => ({
-    id:    p.sequence === 7 ? "FR" : String(p.sequence).padStart(2, "0"),
+    id:    p.id,
+    num:   p.sequence === 7 ? "FR" : String(p.sequence).padStart(2, "0"),
     short: PHASE_SHORT[i] ?? p.shortLabel.slice(0, 3).toUpperCase(),
     long:  PHASE_LONG[i]  ?? p.title.toUpperCase(),
   }));
@@ -199,7 +200,7 @@ function PhaseNav({ active, phases, onChange, doneIds = [] }) {
             className={`phase ${isActive ? "active" : ""} ${isPast ? "past" : ""} ${isDone ? "done" : ""}`}
             onClick={() => onChange(p.id)}
           >
-            <span className="phase-num">{p.id}</span>
+            <span className="phase-num">{p.num}</span>
             <span className="phase-name">{p.long}</span>
             <span className="phase-tick" />
           </button>
@@ -1081,8 +1082,11 @@ function App() {
   useEffect(() => {
     if (!data) return;
     const phases = data?.phases || [];
-    if (!phases.some(phase => phase.id === activePhase)) {
+    const phase = phases.find(phase => phase.id === activePhase || phase.num === activePhase);
+    if (!phase) {
       setActivePhase(phases[0]?.id || "phase-0-overview");
+    } else if (phase.id !== activePhase) {
+      setActivePhase(phase.id);
     }
   }, [data, activePhase]);
   useEffect(() => {
