@@ -767,42 +767,42 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
       subtitle: "Lesson 4.7 - ISR Cycle & Tasking",
       domain: "isr",
       objectiveIds: ["4.7-isr-cycle", "4.7-pir-entry", "4.7-dcgs", "4.7-surveillance-recon"],
-      inject: `The commander issues a new Priority Intelligence Requirement (PIR): determine whether Donovia is preparing a limited cross-border operation within the next 72 hours. The intelligence cell must turn that question into a collection plan, route raw data through Processing & Exploitation, and keep persistent surveillance separate from directed reconnaissance. The team is not being asked to invent new requirements - it is being asked to convert the commander's question into actionable ISR tasks and then report the results through the correct cycle.`,
+      inject: `The commander has issued a new Priority Intelligence Requirement (PIR): determine whether Donovia is preparing a limited cross-border operation within the next 72 hours. The Coalition J2 just released it down to your cell. Your job is to convert that one question into a real collection plan, run incoming sensor feeds through Processing & Exploitation, keep persistent surveillance separate from directed reconnaissance, and route the results back through the cycle. Below is a snapshot of what is already in motion: the PIR tasking memo, the current ISR collection plan, the DCGS exploitation queue, the border surveillance feed, and the Route 7 reconnaissance task order.`,
       evidenceCards: [
         {
           id: "e6-1",
           domain: "isr",
-          title: "Commander PIR - Cross-Border Warning Question",
-          summary: "The commander wants a specific answer about Donovia's intent over the next 72 hours.",
-          detail: "A PIR is the commander's priority intelligence question. It does not belong in the processing stage and it is not itself a collection report. It is the starting point that drives the intelligence cycle and tells collectors what to look for."
+          title: "PIR Tasking Memo - Coalition J2 to Intel Cell",
+          summary: "Released PIR: 'Will Donovia conduct a limited cross-border operation into Gorgas within the next 72 hours?'",
+          detail: "Released by Coalition J2 at 0500Z. Designated as the top-priority intelligence requirement for the next 72 hours. Routing: enters the ISR cycle at Planning & Direction; the intelligence cell converts the PIR into specific intelligence requirements (SIRs), then into specific collection tasks against named sensors and units. The PIR is not itself a collection report and not an intelligence product - it is the question that drives the work. All ISR tasking, processing, and reporting for the next 72 hours should be traceable back to this single line."
         },
         {
           id: "e6-2",
           domain: "isr",
-          title: "ISR Cycle Board - Five Stages",
-          summary: "Planning & Direction, Collection, Processing & Exploitation, Analysis & Production, Dissemination & Integration.",
-          detail: "The ISR cycle converts the commander's requirement into tasking, collects raw information, processes it into usable data, analyzes the result, and then delivers the finished intelligence to the customer. Each stage depends on the one before it."
+          title: "ISR Collection Plan - Current Tasking",
+          summary: "Five-stage cycle in motion: P&D -> Collection -> P&E -> Analysis & Production -> Dissemination & Integration.",
+          detail: "Stage 1 - Planning & Direction: PIR translated into seven domain-specific collection tasks (GEOINT motor pool, EMS emitter watch, IR corridor, cyber attribution, IO monitoring, ISR recon, space PNT). Stage 2 - Collection: assets tasked include commercial EO satellite pass, WAMI window, FMV platform, MTI sweep, SIGINT collector (current hilltop), and a tasked recon team. Stage 3 - Processing & Exploitation: DCGS processing feeds (see Card 3). Stage 4 - Analysis & Production: intelligence cell synthesizing across domains. Stage 5 - Dissemination & Integration: brief to the commander on schedule. The cycle is sequential - each stage depends on the one before it."
         },
         {
           id: "e6-3",
           domain: "isr",
-          title: "DCGS Exploitation Cell",
-          summary: "Raw sensor feeds are ingested and processed in the Processing & Exploitation stage.",
-          detail: "DCGS, the Distributed Common Ground System, is the main processing and exploitation environment for raw collected material. Its job is to turn incoming sensor data into something analysts can review, compare, and assess."
+          title: "DCGS Exploitation Queue - Current State",
+          summary: "Distributed Common Ground System holding three feeds in the P&E stage, awaiting analyst review.",
+          detail: "Queue snapshot: (1) WAMI 48-hour border-town window - exploited, vehicle tracks reconstructed, ready for analyst pickup; (2) FMV Route 7 convoy clip (12 min) - exploited, lead vehicle identified as wheeled armored transport, ready for analyst pickup; (3) MTI Zabzimek corridor overnight - exploited, 15 vehicle tracks plotted, ready for analyst pickup. DCGS is the Distributed Common Ground System - the primary Processing & Exploitation node that turns raw sensor data into something analysts can actually review. DCGS sits in Stage 3 of the ISR cycle. Material does not skip from Collection directly to Analysis - it has to be exploited first."
         },
         {
           id: "e6-4",
           domain: "isr",
-          title: "Persistent Surveillance - Border Corridor",
-          summary: "A continuous watch is being maintained over the border corridor and approaches to Gorgas.",
-          detail: "Surveillance means persistent, continuous watch over an area or subject. It is broad and ongoing, intended to maintain awareness over time rather than answer one narrow question."
+          title: "Persistent Surveillance Feed - Gorgas Border Corridor",
+          summary: "Continuous, broad-area watch maintained 24/7 over the corridor and Donovian approaches.",
+          detail: "Surveillance means persistent, ongoing watch over an area or subject. The border corridor surveillance feed has been live for 11 days and is intended to detect pattern changes over time - not to answer one narrow question on a deadline. Current coverage: WAMI persistent imagery on the border town, MTI overnight sweep on the Zabzimek corridor, and continuous EMS monitoring from the eastern hilltop collector. Surveillance is broad and time-unbounded. Compare to reconnaissance (Card 5), which is narrow and time-limited."
         },
         {
           id: "e6-5",
           domain: "isr",
-          title: "Reconnaissance Task - Route 7",
-          summary: "A task-organized team is sent to probe a specific route for crossing indicators.",
-          detail: "Reconnaissance is directed and time-limited. It is used when the commander needs specific information from a specific place or target set. Unlike surveillance, it is focused and task-organized."
+          title: "Reconnaissance Task Order - Route 7 Probe",
+          summary: "Time-limited recon task issued to probe Route 7 for crossing indicators within 18 hours.",
+          detail: "Task-organized recon team launched in response to the Phase 3 FMV detection of an 8-vehicle southbound convoy on Route 7. Mission: confirm or deny vehicle staging at named grid coordinates along the route, identify unit markings if visible, and report by 2200Z. Reconnaissance is directed and time-limited - it answers one specific intelligence question for one specific commander. That distinguishes it from surveillance (Card 4), which keeps a continuous, broad watch on the area. Both contribute to the same PIR but through different collection logics."
         }
       ],
       activities: [
@@ -929,7 +929,7 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
       subtitle: "Lesson 4.8 - Orbit Regimes & Counterspace",
       domain: "space",
       objectiveIds: ["4.8-orbits", "4.8-counterspace"],
-      inject: `The intelligence cell now shifts to the space domain. Donovia begins interfering with coalition positioning, navigation, and timing (PNT) during the border crisis, and analysts must recommend the right orbital regime for each mission. The commander also wants to know how to characterize space threats: when is an action kinetic, when is it non-kinetic, and which response is more escalatory? Your job is to match orbit to mission, distinguish the counterspace effect, and identify why the United States Space Force protects and enables space capabilities rather than treating space as a passive backdrop.`,
+      inject: `The intelligence cell now shifts to the space domain. Coalition ground units inside the Gorgas border corridor are reporting sudden GPS position errors and loss of timing lock - assessed as Donovian GNSS jamming in the user segment. The MEO navigation constellation itself is unaffected; only forces inside the corridor are degraded. The commander also wants to know how to characterize space threats: when is an action kinetic, when is it non-kinetic, and which response is more escalatory? Your job is to match orbit to mission, distinguish the counterspace effect, identify why kinetic ASAT is the most escalatory option in the lesson set, and confirm that no kinetic counterspace activity has been observed in this scenario.`,
       evidenceCards: [
         {
           id: "e7-1",
@@ -962,16 +962,16 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
         {
           id: "e7-5",
           domain: "space",
-          title: "Non-Kinetic Counterspace - Jamming and Cyber Effects",
-          summary: "An adversary is interfering with GPS and the ground segment without physically destroying the satellite.",
-          detail: "Non-kinetic counterspace denies, degrades, disrupts, or deceives space support without physically destroying the satellite. Examples include jamming GPS, dazzling a sensor with lasers, or using cyber effects against the ground segment. These methods can be serious, but they avoid creating orbital debris."
+          title: "Donovian GNSS Denial Event - Gorgas Border Corridor",
+          summary: "Coalition PNT degraded inside the border corridor; GPS position errors and timing loss reported by ground units.",
+          detail: "Beginning at 0420Z, coalition ground units operating inside the Gorgas border corridor reported sudden GPS position errors, intermittent loss of timing lock, and degraded navigation. The denial footprint is geographically bounded to the corridor and the immediate Zabzimek approaches; coalition forces outside that footprint retain normal PNT. The effect is consistent with a ground-based GNSS jammer in the user segment - non-kinetic counterspace. Non-kinetic counterspace denies, degrades, disrupts, or deceives space support without physically destroying the satellite. The MEO GPS / NAVSTAR constellation itself is unaffected. Attribution to a specific Donovian unit is not yet confirmed. The timing of the denial event coincides with Target Acquisition radar activity from Phase 4, raising the assessed likelihood that the jamming is part of the coordinated multi-domain campaign."
         },
         {
           id: "e7-6",
           domain: "space",
-          title: "Kinetic Anti-Satellite (ASAT) Test - Debris Risk",
-          summary: "A kinetic ASAT intercept physically destroys a satellite and creates long-lived orbital debris.",
-          detail: "A kinetic anti-satellite (ASAT) strike is the most escalatory space action in the lesson set because it physically destroys the target and can create debris that threatens other satellites. Even a single intercept can have long-lasting effects on the orbital environment."
+          title: "Kinetic Counterspace - Escalation Reference (No Indicators)",
+          summary: "Concept reference: kinetic ASAT physically destroys a satellite and creates long-lived debris. No such activity has been observed in this scenario.",
+          detail: "Kinetic counterspace is the most escalatory category of space attack in the lesson set because it physically destroys the target spacecraft and can create debris that threatens other satellites in the same orbit. Even a single kinetic intercept can have long-lasting effects on the orbital environment. Important for this scenario: no Donovian kinetic counterspace activity has been observed. All space-domain interference to date is non-kinetic (Card 5). This card is the escalation reference the commander asks about - what would change if Donovia crossed from jamming to destruction. Today, the answer is: they have not."
         }
       ],
       activities: [
@@ -1023,7 +1023,7 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
             correct: "Correct. Kinetic counterspace physically destroys or damages the satellite. Non-kinetic counterspace disrupts, deceives, jams, dazzles, or degrades without physical destruction.",
             incorrect: "Use the physical-destruction test. If the action breaks the satellite, it is kinetic. If it denies, degrades, disrupts, or deceives without destroying the space object, it is non-kinetic.",
             whyMatters: "Kinetic ASAT is much more escalatory because it creates debris and can threaten other space assets. Non-kinetic options are usually more proportional and more reversible.",
-            evidenceClue: "Card 5 shows the destructive option. Cards 1, 3, and 4 show non-kinetic denial and degradation methods."
+            evidenceClue: "Card 5 shows the observed Donovian non-kinetic event (GNSS denial in the corridor). Card 6 is the kinetic ASAT escalation reference - no such activity is present in this scenario."
           }
         },
         {
@@ -1063,7 +1063,7 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
             correct: "Correct ranking. Cyber against the ground segment is least escalatory here, then GPS jamming, then laser dazzling, and kinetic ASAT is the most escalatory.",
             incorrect: "The lesson logic is based on physical destruction and debris. Non-kinetic actions are generally less escalatory than kinetic ASAT. The more you move toward physically destroying a satellite, the more escalatory the action becomes.",
             whyMatters: "Commanders need to understand escalation before they choose a counterspace response. A kinetic ASAT strike can create debris that affects the wider orbital environment.",
-            evidenceClue: "Card 5 shows non-kinetic effects. Card 6 shows the kinetic ASAT case that creates debris and is therefore most escalatory."
+            evidenceClue: "Card 5 is the actual non-kinetic GNSS denial Donovia is running in the corridor. Card 6 is the kinetic ASAT reference - more escalatory but not observed in this scenario."
           }
         },
         {
@@ -1168,13 +1168,13 @@ Recall the question: "Will Donovia conduct a limited cross-border operation into
           instruction: "Match each domain to its single strongest indicator from this scenario. These are the indicators you will cite in the brief. Click a domain on the left, then the matching indicator on the right.",
           objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.3-radar-kill-chain", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-counterspace"],
           items: [
-            { id: "d-geoint", text: "GEOINT" },
-            { id: "d-ems",    text: "EMS / RADAR" },
-            { id: "d-ir",     text: "Infrared (IR)" },
-            { id: "d-cyber",  text: "Cyber" },
-            { id: "d-io",     text: "Information Operations" },
-            { id: "d-isr",    text: "ISR" },
-            { id: "d-space",  text: "Space" }
+            { id: "d-geoint", text: "GEOINT", explanation: "GEOINT is the imagery and geospatial intelligence domain. In this scenario, the strongest GEOINT signal is the staging footprint: about 40 wheeled vehicles and fuel tankers parked 12 km north of the Gorgas border. That picture matches pre-movement preparation, not routine activity. When you build the indicator matrix, this is your GEOINT line." },
+            { id: "d-ems",    text: "EMS / RADAR", explanation: "EMS and RADAR cover emissions in the electromagnetic spectrum. The key signal here is the 4-second X-band Fire Control radar spike. Fire Control radar is the last step before a weapon is fired, so this places Donovia at the Engage stage of the kill chain. It is the most imminent indicator in the whole picture." },
+            { id: "d-ir",     text: "Infrared (IR)", explanation: "Infrared is the heat-detection domain. The strongest IR signal in this scenario is the suspected IR-guided MANPADS position seen on a nighttime FLIR pass near the same border corridor. MANPADS is a shoulder-fired heat-seeking missile and a real threat to coalition aircraft. Its presence raises the risk for any low-altitude or rotary-wing collection in that corridor." },
+            { id: "d-cyber",  text: "Cyber", explanation: "Cyber covers actions against and through networks. The strongest cyber signal is the custom (non-commercial) malware that sat undetected on Gorgas logistics contractors for six weeks. Custom malware and long dwell time are nation-state signatures, not criminal or hacktivist behavior. This raises confidence that the cyber pressure is part of one coordinated Donovian operation." },
+            { id: "d-io",     text: "Information Operations", explanation: "Information Operations are planned actions that target what audiences believe. The key IO signal here is the synchronized hashtag campaign across 14 countries in 90 minutes, in four languages. That speed and reach is not natural - it is state-directed shaping of the story, framing Gorgas as the aggressor before any Donovian move." },
+            { id: "d-isr",    text: "ISR", explanation: "ISR is the intelligence collection cycle. The strongest ISR fact here is the chain you actually ran: the commander PIR was turned into collection tasks at Planning & Direction, DCGS exploited the incoming feeds, and a Route 7 reconnaissance task was launched. That chain is what allows the indicator matrix to exist at all." },
+            { id: "d-space",  text: "Space", explanation: "Space covers orbital assets and the services they provide. The strongest space-domain signal here is the GNSS / PNT denial in the border corridor. This is non-kinetic counterspace - jamming the user signal, not destroying a satellite. There is no kinetic ASAT activity in this scenario, so the space picture is degradation, not destruction." }
           ],
           targets: [
             { id: "t-geoint", text: "Approximately 40 wheeled vehicles and fuel tankers staged at a motor pool 12 km north of the Gorgas border", correct: "d-geoint" },

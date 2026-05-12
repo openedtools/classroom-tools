@@ -802,32 +802,37 @@ function buildReviewExplanation(activity, row, context = {}) {
 
   switch (activity.type) {
     case "classification":
-      return `${row.correct} is the right classification for this item.`;
+      return `${row.correct} is the right category for this item.`;
     case "decision":
-      return correct?.explanation || `The correct answer is ${row.correct} because it best fits the scenario requirement.`;
+      return correct?.explanation || `The correct answer is ${row.correct}.`;
     case "fillslot":
-      return `The blank should be ${row.correct} because that completes the assessment sentence accurately.`;
-    case "matching":
-      return `The term ${row.label} matches ${row.correct} because the definition describes that concept.`;
+      return `The blank should be ${row.correct}.`;
+    case "matching": {
+      const termText = item?.text || "this term";
+      return `${termText} matches: ${row.correct}.`;
+    }
     case "sequencing":
-      return `${row.correct} belongs in position ${ordinal(context.position)} because the kill chain must proceed in order.`;
-    case "ranking":
-      return `${row.label} belongs at rank ${row.correct} because it places Donovia at that point in the scenario timeline.`;
+      return `${row.correct} belongs in position ${ordinal(context.position)}.`;
+    case "ranking": {
+      const itemText = item?.text || "this item";
+      return `${itemText} belongs at rank ${row.correct}.`;
+    }
     case "multiselect":
       return context.item.correct
-        ? `This should be selected because it matches the question's requirement.`
-        : `This should not be selected because it does not match the question's requirement.`;
+        ? `This statement should be selected.`
+        : `This statement should not be selected.`;
     default:
       return "";
   }
 }
 
 function reviewExplanationText(activity, row, context = {}) {
+  if (row.explanation) return row.explanation;
+
   const base = buildReviewExplanation(activity, row, context).trim();
-  const feedback = activity.feedback || {};
 
   if (row.ok) {
-    return base || feedback.correct || "";
+    return base;
   }
 
   const extraParts = [];
@@ -835,51 +840,48 @@ function reviewExplanationText(activity, row, context = {}) {
 
   switch (activity.type) {
     case "classification":
-      extraParts.push("The lesson is asking what the item really is or does, not just what it mentions.");
+      extraParts.push("Think about what the item really is or does, not just what it mentions.");
       if (correct) extraParts.push(`The correct category is ${correct}.`);
       break;
     case "decision":
-      extraParts.push("This is a role-matching question, so the best answer is the one that fits the intelligence task.");
+      extraParts.push("Pick the option that best fits the intelligence task here.");
       if (correct) extraParts.push(`The correct choice is ${correct}.`);
       break;
     case "fillslot":
-      extraParts.push("Read the whole sentence around the blank. The missing term must make the statement accurate.");
-      if (correct) extraParts.push(`In this case, the sentence needs ${correct}.`);
+      extraParts.push("Read the full sentence. The missing word must make the statement accurate.");
+      if (correct) extraParts.push(`The right word here is ${correct}.`);
       break;
     case "matching":
-      extraParts.push("Match the main idea in the definition, not only a nearby keyword.");
-      if (correct) extraParts.push(`That clue points to ${correct}.`);
+      extraParts.push("Match the main idea in the description, not just a nearby keyword.");
+      if (correct) extraParts.push(`The correct match is: ${correct}.`);
       break;
     case "sequencing": {
       const correctIds = activity.correct || activity.items.map(item => item.id);
       const index = correctIds.indexOf(context.correctId);
       const prevItem = index > 0 ? activity.items.find(item => item.id === correctIds[index - 1]) : null;
       const nextItem = index >= 0 && index < correctIds.length - 1 ? activity.items.find(item => item.id === correctIds[index + 1]) : null;
-      extraParts.push("This stage has to sit in the chain order shown in the lesson.");
+      extraParts.push("This step has to sit in the order shown in the lesson.");
       if (prevItem && nextItem) {
-        extraParts.push(`It comes after ${prevItem.text} and before ${nextItem.text}.`);
+        extraParts.push(`It comes after "${prevItem.text}" and before "${nextItem.text}".`);
       } else if (prevItem) {
-        extraParts.push(`It comes after ${prevItem.text}.`);
+        extraParts.push(`It comes after "${prevItem.text}".`);
       } else if (nextItem) {
-        extraParts.push(`It comes before ${nextItem.text}.`);
+        extraParts.push(`It comes before "${nextItem.text}".`);
       }
       break;
     }
     case "ranking":
-      extraParts.push("The number shows where this item belongs in the sequence or priority order.");
+      extraParts.push("The number is where this item belongs in priority order.");
       if (correct) extraParts.push(`The correct rank is ${correct}.`);
       break;
     case "multiselect":
       extraParts.push(correct === "Should be selected"
-        ? "This statement belongs in the review because it supports the lesson point directly."
-        : "This statement should stay out because it does not support the lesson point.");
+        ? "This statement belongs here because it supports the lesson point."
+        : "This statement does not belong here because it does not support the lesson point.");
       break;
     default:
       break;
   }
-
-  if (feedback.incorrect) extraParts.push(feedback.incorrect);
-  if (feedback.whyMatters) extraParts.push(feedback.whyMatters);
 
   return [base, ...extraParts].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
 }
