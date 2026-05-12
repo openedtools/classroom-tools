@@ -8,17 +8,13 @@ const { useState, useEffect, useRef } = React;
 const DATA_BASE = "../intel-scenario-trainer/scenarios/block-4-operation-northern-veil";
 
 async function loadScenarioData() {
-  const [scenario, phases, objectives, actors, injects, evidenceArr] = await Promise.all([
+  const [scenario, phases, objectives, actors] = await Promise.all([
     fetch(`${DATA_BASE}/scenario.json`).then(r => r.json()),
     fetch(`${DATA_BASE}/phases.json`).then(r => r.json()),
     fetch(`${DATA_BASE}/objectives.json`).then(r => r.json()),
     fetch(`${DATA_BASE}/actors.json`).then(r => r.json()),
-    fetch(`${DATA_BASE}/injects.json`).then(r => r.json()),
-    fetch(`${DATA_BASE}/evidence.json`).then(r => r.json()),
   ]);
-  const evidence = {};
-  evidenceArr.forEach(ev => { evidence[ev.id] = ev; });
-  return { scenario, phases, objectives, actors, injects, evidence };
+  return { scenario, phases, objectives, actors };
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -30,10 +26,9 @@ const PHASE_LONG  = ["ORIENTATION", "INFO OPS", "CYBER", "GEOINT", "EMS / RADAR"
 
 function adaptPhases(raw) {
   return raw.map((p, i) => ({
-    id:      p.sequence === 7 ? "FR" : String(p.sequence).padStart(2, "0"),
-    phaseId: p.id,
-    short:   PHASE_SHORT[i] ?? p.shortLabel.slice(0, 3).toUpperCase(),
-    long:    PHASE_LONG[i]  ?? p.title.toUpperCase(),
+    id:    p.sequence === 7 ? "FR" : String(p.sequence).padStart(2, "0"),
+    short: PHASE_SHORT[i] ?? p.shortLabel.slice(0, 3).toUpperCase(),
+    long:  PHASE_LONG[i]  ?? p.title.toUpperCase(),
   }));
 }
 
@@ -50,7 +45,7 @@ function adaptObjectives(raw) {
     const lessonNum = o.lesson.match(/^(\d+\.\d+)/)?.[1] ?? "0.0";
     const majorNum  = lessonNum.split(".")[0];
     const code = `${majorNum}.${String(counters[domain]).padStart(2, "0")}`;
-    return { id: o.id, domain, code, label: o.title, state: 0 };
+    return { domain, code, label: o.title, state: 0 };
   });
 }
 
@@ -69,34 +64,6 @@ function adaptActors(raw) {
 }
 
 // ──────────────────────────────────────────────────────────────────────────
-// SESSION STATE
-// ──────────────────────────────────────────────────────────────────────────
-
-const SESSION_KEY = "onv-session-v1";
-
-function loadSession() {
-  try {
-    const raw = localStorage.getItem(SESSION_KEY);
-    if (raw) {
-      const p = JSON.parse(raw);
-      return {
-        responses:       p.responses       ?? {},
-        notes:           p.notes           ?? {},
-        submitted:       p.submitted       ?? {},
-        visited:         p.visited         ?? {},
-        finalAssessment: p.finalAssessment ?? {},
-        finalSubmitted:  p.finalSubmitted  ?? false,
-      };
-    }
-  } catch {}
-  return { responses: {}, notes: {}, submitted: {}, visited: {}, finalAssessment: {}, finalSubmitted: false };
-}
-
-function saveSession(s) {
-  try { localStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch {}
-}
-
-// ──────────────────────────────────────────────────────────────────────────
 // DATA HOOK
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -106,14 +73,12 @@ function useScenarioData() {
   useEffect(() => {
     loadScenarioData()
       .then(raw => setData({
-        phases:        adaptPhases(raw.phases),
-        objectives:    adaptObjectives(raw.objectives),
-        actors:        adaptActors(raw.actors),
-        injects:       raw.injects,
-        evidence:      raw.evidence,
-        pirText:       raw.scenario.commanderPIR,
-        pirIssuedBy:   raw.scenario.pirIssuedBy  ?? "COALITION J2",
-        pirIssuedDTG:  raw.scenario.pirIssuedDTG ?? "",
+        phases:       adaptPhases(raw.phases),
+        objectives:   adaptObjectives(raw.objectives),
+        actors:       adaptActors(raw.actors),
+        pirText:      raw.scenario.commanderPIR,
+        pirIssuedBy:  raw.scenario.pirIssuedBy  ?? "COALITION J2",
+        pirIssuedDTG: raw.scenario.pirIssuedDTG ?? "",
         situationText: raw.scenario.situationText ?? [],
       }))
       .catch(err => setError(err));
@@ -122,7 +87,7 @@ function useScenarioData() {
 }
 
 // ──────────────────────────────────────────────────────────────────────────
-// STATIC COPY  (describes the UI, not the scenario)
+// STATIC / UX COPY  (describes the UI, not the scenario)
 // ──────────────────────────────────────────────────────────────────────────
 
 const HOW_STEPS = [
@@ -134,22 +99,12 @@ const HOW_STEPS = [
   { n: "06", title: "SYNTHESIZE",           body: "The final phase fuses all domains into a structured assessment of Donovian intent." },
 ];
 
-const EV_TYPE_COLOR = {
-  'io-report':          'var(--contested)',
-  'osint-note':         'var(--info)',
-  'cyber-report':       'var(--contested)',
-  'imagery-report':     'var(--friendly)',
-  'elint-report':       'var(--accent)',
-  'ir-report':          'var(--hostile)',
-  'space-report':       'var(--info)',
-  'commander-guidance': 'var(--accent)',
-};
-
 // ──────────────────────────────────────────────────────────────────────────
 // PRIMITIVES
 // ──────────────────────────────────────────────────────────────────────────
 
 const StateGlyph = ({ state }) => {
+  // 0 = empty, 1 = half, 2 = full
   if (state === 2) return <span className="glyph glyph-full">●</span>;
   if (state === 1) return <span className="glyph glyph-half">◐</span>;
   return <span className="glyph glyph-empty">○</span>;
@@ -177,7 +132,7 @@ function ClassificationBar({ level }) {
   );
 }
 
-function TopBar({ dtg, opName, opCode, status, instructor, onLockClick }) {
+function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, teamName, scoreText }) {
   return (
     <header className="topbar">
       <div className="topbar-left">
@@ -191,6 +146,18 @@ function TopBar({ dtg, opName, opCode, status, instructor, onLockClick }) {
         </div>
       </div>
       <div className="topbar-right">
+        {teamName && (
+          <div className="team-pill">
+            <span className="team-label">TEAM</span>
+            <span className="team-value">{teamName}</span>
+          </div>
+        )}
+        {scoreText && (
+          <div className="score-pill">
+            <span className="team-label">SCORE</span>
+            <span className="team-value">{scoreText}</span>
+          </div>
+        )}
         <div className="dtg">
           <span className="dtg-label">DTG</span>
           <span className="dtg-value">{dtg}</span>
@@ -217,7 +184,7 @@ function TopBar({ dtg, opName, opCode, status, instructor, onLockClick }) {
   );
 }
 
-function PhaseNav({ active, phases, onChange }) {
+function PhaseNav({ active, phases, onChange, doneIds = [] }) {
   return (
     <nav className="phasenav">
       <div className="phasenav-rail" />
@@ -225,10 +192,11 @@ function PhaseNav({ active, phases, onChange }) {
         const isActive = p.id === active;
         const idx = phases.findIndex(x => x.id === active);
         const isPast = i < idx;
+        const isDone = doneIds.includes(p.id);
         return (
           <button
             key={p.id}
-            className={`phase ${isActive ? "active" : ""} ${isPast ? "past" : ""}`}
+            className={`phase ${isActive ? "active" : ""} ${isPast ? "past" : ""} ${isDone ? "done" : ""}`}
             onClick={() => onChange(p.id)}
           >
             <span className="phase-num">{p.id}</span>
@@ -250,6 +218,7 @@ function ObjectiveSidebar({ objectives }) {
   const done = objectives.filter(o => o.state === 2).length;
   const partial = objectives.filter(o => o.state === 1).length;
 
+  // group by domain
   const groups = {};
   objectives.forEach(o => {
     if (!groups[o.domain]) groups[o.domain] = [];
@@ -284,7 +253,7 @@ function ObjectiveSidebar({ objectives }) {
             <div className="obj-domain">
               <span className="dom-tag">{domain}</span>
               <span className="dom-rule" />
-              <span className="dom-count">{items.filter(i => i.state === 2).length}/{items.length}</span>
+              <span className="dom-count">{items.filter(i=>i.state===2).length}/{items.length}</span>
             </div>
             {items.map(o => (
               <div className={`obj-row state-${o.state}`} key={o.code}>
@@ -299,14 +268,14 @@ function ObjectiveSidebar({ objectives }) {
 
       <div className="sidebar-footer">
         <span className="save-dot" />
-        <span className="save-text">AUTOSAVED · LOCAL SESSION</span>
+        <span className="save-text">AUTOSAVED 06:16Z · LOCAL</span>
       </div>
     </aside>
   );
 }
 
 // ──────────────────────────────────────────────────────────────────────────
-// ORIENTATION SCREEN COMPONENTS
+// MAIN — MAP, ACTORS, BRIEF
 // ──────────────────────────────────────────────────────────────────────────
 
 function MissionBrief() {
@@ -478,7 +447,7 @@ function PIRPanel({ pirText, pirIssuedBy, pirIssuedDTG }) {
   );
 }
 
-function SituationPanel({ situationText }) {
+function SituationPanel({ situationText, evidenceCount, activityCount }) {
   return (
     <section className="panel situation">
       <header className="panel-head">
@@ -492,8 +461,8 @@ function SituationPanel({ situationText }) {
         ))}
         <div className="sit-meta">
           <div><span className="kv-k">DOMAINS</span><span className="kv-v">6</span></div>
-          <div><span className="kv-k">EVIDENCE</span><span className="kv-v">23 CARDS</span></div>
-          <div><span className="kv-k">ACTIVITIES</span><span className="kv-v">18 TASKS</span></div>
+          <div><span className="kv-k">EVIDENCE</span><span className="kv-v">{evidenceCount} CARDS</span></div>
+          <div><span className="kv-k">ACTIVITIES</span><span className="kv-v">{activityCount} TASKS</span></div>
           <div><span className="kv-k">EST. TIME</span><span className="kv-v">45–60 MIN</span></div>
         </div>
       </div>
@@ -546,518 +515,460 @@ function BeginBar({ onBegin }) {
   );
 }
 
-function Phase0Task({ inject, session, onResponse, onSubmit }) {
-  const task = inject.studentTasks[0];
-  if (!task) return null;
-  const resp = (session.responses[inject.id] ?? {})[task.id] ?? '';
-  const submitted = session.submitted[inject.id] ?? false;
+const TRAINING_PHASES = window.NorthernVeilContent?.phases || {};
+const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint"];
+const SESSION_KEY = "onv-student-session-v1";
+const STUDENT_PASSWORD = "OperationalV3il";
+
+function getPhaseContent(phaseId) {
+  return TRAINING_PHASES[phaseId] || null;
+}
+
+function findTrainingActivity(activityId) {
+  for (const phase of Object.values(TRAINING_PHASES)) {
+    const found = phase.activities?.find(activity => activity.id === activityId);
+    if (found) return found;
+  }
+  return null;
+}
+
+function phaseIsComplete(phaseId, responses) {
+  const phase = getPhaseContent(phaseId);
+  if (!phase || !phase.activities || !phase.activities.length) return false;
+  return phase.activities.every(activity => responses[activity.id]?.submitted);
+}
+
+function makeDefaultSession() {
+  return {
+    ready: false,
+    teamName: "",
+    activePhase: "phase-0-overview",
+    responses: {},
+    objectiveStates: {},
+    activityScores: {},
+  };
+}
+
+function loadStudentSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return makeDefaultSession();
+    const parsed = JSON.parse(raw);
+    return { ...makeDefaultSession(), ...parsed };
+  } catch {
+    return makeDefaultSession();
+  }
+}
+
+function saveStudentSession(session) {
+  try {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  } catch {}
+}
+
+function activityKey(activityId) {
+  return activityId;
+}
+
+function emptyResponseFor(activity) {
+  switch (activity.type) {
+    case "classification":
+      return { answers: {}, submitted: false, score: 0, correct: false };
+    case "decision":
+      return { selected: "", submitted: false, score: 0, correct: false };
+    case "fillslot":
+      return { slots: {}, submitted: false, score: 0, correct: false };
+    case "matching":
+      return { pairs: {}, pending: null, submitted: false, score: 0, correct: false };
+    case "sequencing":
+      return { order: [...(activity.correct || activity.items.map(item => item.id))], submitted: false, score: 0, correct: false };
+    case "multiselect":
+      return { selected: [], submitted: false, score: 0, correct: false };
+    default:
+      return { submitted: false, score: 0, correct: false };
+  }
+}
+
+function initResponse(activity, responses) {
+  const key = activityKey(activity.id);
+  if (!responses[key]) return emptyResponseFor(activity);
+  const current = responses[key];
+  const fallback = emptyResponseFor(activity);
+  return { ...fallback, ...current };
+}
+
+function scoreActivity(activity, response) {
+  switch (activity.type) {
+    case "classification": {
+      let score = 0;
+      activity.items.forEach(item => {
+        if (response.answers && response.answers[item.id] === item.correct) score += 1;
+      });
+      return score;
+    }
+    case "decision": {
+      const selected = activity.options.find(option => option.id === response.selected);
+      return selected && selected.correct ? activity.points : 0;
+    }
+    case "fillslot": {
+      let score = 0;
+      activity.sentence.filter(part => part.type === "slot").forEach(slot => {
+        if (response.slots && response.slots[slot.id] === slot.correct) score += 1;
+      });
+      return score;
+    }
+    case "matching": {
+      let score = 0;
+      activity.items.forEach(item => {
+        const target = activity.targets.find(t => t.correct === item.id);
+        if (target && response.pairs && response.pairs[item.id] === target.id) score += 1;
+      });
+      return score;
+    }
+    case "sequencing": {
+      const correctOrder = activity.correct || [...activity.items].map(item => item.id);
+      const matches = (response.order || []).filter((id, index) => id === correctOrder[index]).length;
+      if (matches === correctOrder.length) return activity.points;
+      const pct = matches / correctOrder.length;
+      if (pct >= 0.8) return Math.max(1, activity.points - 1);
+      if (pct >= 0.5) return Math.floor(activity.points * 0.5);
+      return 0;
+    }
+    case "multiselect": {
+      let score = 0;
+      activity.options.forEach(option => {
+        if (option.correct && response.selected && response.selected.includes(option.id)) score += 1;
+      });
+      return Math.min(score, activity.points);
+    }
+    default:
+      return 0;
+  }
+}
+
+function objectiveBoost(activity, submitted) {
+  const ids = activity.objectiveIds || [];
+  const state = submitted ? 2 : 1;
+  return ids.reduce((acc, id) => {
+    acc[id] = Math.max(acc[id] || 0, state);
+    return acc;
+  }, {});
+}
+
+function StudentAccessModal({ open, onSubmit, error }) {
+  const [teamName, setTeamName] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (open) {
+      setTeamName("");
+      setPassword("");
+    }
+  }, [open]);
+
+  if (!open) return null;
+
   return (
-    <section className="panel">
-      <header className="panel-head">
-        <span className="panel-tag">TASK</span>
-        <span className="panel-title">ORIENTATION TASK · PHASE 00</span>
-      </header>
-      <div style={{ padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <p className="task-prompt">{task.prompt}</p>
-        <textarea
-          className="short-answer-input"
-          value={resp}
-          onChange={e => !submitted && onResponse(inject.id, task.id, e.target.value)}
-          disabled={submitted}
-          placeholder="Type your response here…"
-          rows={3}
-        />
-        {!submitted ? (
-          <button className="submit-btn" onClick={() => onSubmit(inject.id)} disabled={!resp.trim()}>
-            <span className="bb-tag">EVAL</span>
-            SUBMIT RESPONSE
-          </button>
-        ) : (
-          <div className="task-feedback fb-info">Response recorded — compare with rubric during debrief.</div>
+    <div className="modal-shade student-shade">
+      <form
+        className="modal student-modal"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit({ teamName, password });
+        }}
+      >
+        <div className="modal-head">
+          <span className="modal-tag">ACCESS</span>
+          <span className="modal-title">WELCOME TO OPERATION NORTHERN VEIL</span>
+        </div>
+        <div className="modal-body">
+          <div className="modal-lede">
+            Enter your team name and the access code to begin the restored trainer.
+            The new UI will keep your score, phase progress, and objective coverage.
+          </div>
+          <label className="modal-field">
+            <span className="field-label">TEAM NAME</span>
+            <input
+              className="field-input"
+              value={teamName}
+              onChange={(e) => setTeamName(e.target.value)}
+              placeholder="Team Falcon"
+              autoFocus
+            />
+          </label>
+          <label className="modal-field">
+            <span className="field-label">ACCESS CODE</span>
+            <input
+              className={`field-input ${error ? "err" : ""}`}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="OperationalV3il"
+            />
+          </label>
+          {error && <span className="field-err">INVALID ACCESS CODE</span>}
+        </div>
+        <div className="modal-foot">
+          <button type="submit" className="btn-solid">BEGIN TRAINING</button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function EvidenceCard({ card }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <button className={`evidence-card ${open ? "open" : ""}`} onClick={() => setOpen(v => !v)} type="button">
+      <div className="evidence-head">
+        <span className="evidence-tag">EVIDENCE</span>
+        <span className="evidence-title">{card.title}</span>
+      </div>
+      <div className="evidence-summary">{card.summary}</div>
+      {open && <div className="evidence-detail">{card.detail}</div>}
+    </button>
+  );
+}
+
+function ActivityHeader({ activity }) {
+  return (
+    <div className="activity-head">
+      <div>
+        <div className="activity-kicker">{activity.typeLabel}</div>
+        <h3 className="activity-title">{activity.instruction}</h3>
+      </div>
+      <div className="activity-points">{activity.points} pts</div>
+    </div>
+  );
+}
+
+function ActivityFeedback({ activity, response }) {
+  if (!response?.submitted) return null;
+  const correct = response.score >= activity.points;
+  return (
+    <div className={`feedback-box ${correct ? "good" : "bad"}`}>
+      <div className="feedback-title">{correct ? "Correct" : "Review"}</div>
+      <div className="feedback-copy">{correct ? activity.feedback.correct : activity.feedback.incorrect}</div>
+      <div className="feedback-copy subtle">{activity.feedback.whyMatters}</div>
+      {activity.feedback.evidenceClue && <div className="feedback-copy subtle">{activity.feedback.evidenceClue}</div>}
+    </div>
+  );
+}
+
+function ActivityCard({
+  activity,
+  response,
+  onChange,
+  onSubmit,
+}) {
+  const submitted = response?.submitted;
+  const locked = Boolean(submitted);
+
+  return (
+    <section className={`activity-card ${locked ? "submitted" : ""}`}>
+      <ActivityHeader activity={activity} />
+      <div className="activity-body">
+        {activity.type === "classification" && (
+          <div className="classification-grid">
+            {activity.items.map(item => (
+              <label className="classify-row" key={item.id}>
+                <span className="classify-text">{item.text}</span>
+                <select
+                  className="classify-select"
+                  value={response.answers?.[item.id] || ""}
+                  onChange={(e) => onChange("classification", activity.id, { itemId: item.id, value: e.target.value })}
+                  disabled={locked}
+                >
+                  <option value="">Choose...</option>
+                  {activity.categories.map(cat => (
+                    <option key={cat.id} value={cat.id}>{cat.label}</option>
+                  ))}
+                </select>
+              </label>
+            ))}
+          </div>
+        )}
+
+        {activity.type === "decision" && (
+          <div className="decision-grid">
+            {activity.options.map(option => (
+              <label className={`decision-option ${response.selected === option.id ? "selected" : ""}`} key={option.id}>
+                <input
+                  type="radio"
+                  name={activity.id}
+                  checked={response.selected === option.id}
+                  onChange={() => onChange("decision", activity.id, option.id)}
+                  disabled={locked}
+                />
+                <span>{option.text}</span>
+              </label>
+            ))}
+          </div>
+        )}
+
+        {activity.type === "fillslot" && (
+          <div className="fill-sentence">
+            {activity.sentence.map((part, index) => {
+              if (part.type === "text") return <span key={index}>{part.text}</span>;
+              return (
+                <select
+                  key={part.id}
+                  className="slot-select"
+                  value={response.slots?.[part.id] || ""}
+                  onChange={(e) => onChange("fillslot", activity.id, { slotId: part.id, value: e.target.value })}
+                  disabled={locked}
+                >
+                  <option value="">Choose...</option>
+                  {part.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                </select>
+              );
+            })}
+          </div>
+        )}
+
+        {activity.type === "matching" && (
+          <div className="matching-grid">
+            <div>
+              <div className="match-label">Terms</div>
+              {activity.items.map(item => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`match-term ${response.pending === item.id ? "selected" : ""}`}
+                  onClick={() => onChange("matchPick", activity.id, item.id)}
+                  disabled={locked}
+                >
+                  {item.text}
+                </button>
+              ))}
+            </div>
+            <div>
+              <div className="match-label">Descriptions</div>
+              {activity.targets.map(target => {
+                const paired = response.pairs && Object.entries(response.pairs).find(([, value]) => value === target.id);
+                const pairedText = paired ? activity.items.find(item => item.id === paired[0])?.text : null;
+                return (
+                  <button
+                    key={target.id}
+                    type="button"
+                    className="match-target"
+                    onClick={() => onChange("matchDrop", activity.id, target.id)}
+                    disabled={locked || !response.pending}
+                  >
+                    <span>{target.text}</span>
+                    {pairedText && <span className="slot-chip">{pairedText}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {activity.type === "sequencing" && (
+          <ol className="seq-list">
+            {response.order?.map((id, index) => {
+              const item = activity.items.find(entry => entry.id === id);
+              if (!item) return null;
+              return (
+                <li key={id} className="seq-item">
+                  <span className="seq-num">{index + 1}</span>
+                  <span className="seq-text">{item.text}</span>
+                  {!locked && (
+                    <div className="seq-btns">
+                      <button type="button" className="seq-btn" onClick={() => onChange("seqUp", activity.id, index)} disabled={index === 0}>▲</button>
+                      <button type="button" className="seq-btn" onClick={() => onChange("seqDown", activity.id, index)} disabled={index === response.order.length - 1}>▼</button>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        )}
+
+        {activity.type === "multiselect" && (
+          <div className="ms-options">
+            {activity.options.map(option => {
+              const selected = response.selected?.includes(option.id);
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  className={`ms-opt ${selected ? "mso-selected" : ""}`}
+                  onClick={() => onChange("toggle", activity.id, option.id)}
+                  disabled={locked}
+                >
+                  <span className="ms-check">{selected ? "✓" : ""}</span>
+                  <span>{option.text}</span>
+                </button>
+              );
+            })}
+          </div>
         )}
       </div>
+      {!submitted && (
+        <div className="activity-footer">
+          <button type="button" className="btn btn-primary" onClick={() => onSubmit(activity.id)} disabled={locked}>
+            Submit for scoring
+          </button>
+        </div>
+      )}
+      {submitted && (
+        <div className="activity-scoreline">
+          Score: {response.score}/{activity.points}
+        </div>
+      )}
+      <ActivityFeedback activity={activity} response={response} />
     </section>
   );
 }
 
-// ──────────────────────────────────────────────────────────────────────────
-// EVIDENCE
-// ──────────────────────────────────────────────────────────────────────────
-
-function EvidenceCard({ ev }) {
-  const [expanded, setExpanded] = useState(false);
-  const color = EV_TYPE_COLOR[ev.type] ?? 'var(--text-2)';
-  const typeLabel = ev.type.replace(/-/g, ' ').toUpperCase();
+function PhaseWorkspace({ phase, responses, onChange, onSubmit }) {
+  if (!phase) return null;
+  const restored = Boolean(phase.activities && phase.activities.length);
   return (
-    <div className="panel ev-card">
-      <div className="ev-head" onClick={() => setExpanded(x => !x)}>
-        <span className="mono ev-type" style={{ color }}>{typeLabel}</span>
-        <span className="ev-title">{ev.title}</span>
-        <span className="mono ev-toggle">{expanded ? '▲' : '▼'}</span>
-      </div>
-      <div className="ev-summary">{ev.summary}</div>
-      {expanded && <div className="ev-details">{ev.details}</div>}
-    </div>
-  );
-}
-
-// ──────────────────────────────────────────────────────────────────────────
-// TASK TYPES
-// ──────────────────────────────────────────────────────────────────────────
-
-function ConceptTagging({ options, value, onChange, submitted, correctTags }) {
-  const selected = value ?? [];
-  return (
-    <div>
-      <div className="tag-options">
-        {options.map(opt => {
-          const isSel = selected.includes(opt);
-          const isCorr = correctTags?.includes(opt);
-          let cls = 'tag-opt';
-          if (submitted) {
-            if (isCorr) cls += ' fb-correct';
-            else if (isSel) cls += ' fb-wrong';
-          } else if (isSel) cls += ' selected';
-          return (
-            <button
-              key={opt}
-              className={cls}
-              onClick={() => {
-                if (submitted) return;
-                onChange(isSel ? selected.filter(s => s !== opt) : [...selected, opt]);
-              }}
-              disabled={submitted}
-            >{opt}</button>
-          );
-        })}
-      </div>
-      {submitted && correctTags && (
-        <p className="fb-correct-inline">Correct: {correctTags.join(' · ')}</p>
-      )}
-    </div>
-  );
-}
-
-function SingleSelect({ options, value, onChange, submitted, correctOption }) {
-  return (
-    <div className="select-opts">
-      {options.map(opt => {
-        let cls = 'select-opt';
-        if (submitted) {
-          if (opt === correctOption) cls += ' fb-correct';
-          else if (value === opt) cls += ' fb-wrong';
-        } else if (value === opt) cls += ' selected';
-        return (
-          <button
-            key={opt}
-            className={cls}
-            onClick={() => !submitted && onChange(opt)}
-            disabled={submitted}
-          >{opt}</button>
-        );
-      })}
-    </div>
-  );
-}
-
-function OrderingTask({ options, value, onChange, submitted, correctOrder }) {
-  const items = (value && value.length > 0) ? value : options;
-  const dragRef = useRef(null);
-  const [dragOver, setDragOver] = useState(null);
-
-  useEffect(() => {
-    if (!value || value.length === 0) onChange([...options]);
-  }, []); // eslint-disable-line
-
-  if (submitted) {
-    const isCorrect = JSON.stringify(items) === JSON.stringify(correctOrder);
-    return (
-      <div className="order-list">
-        {items.map((item, i) => (
-          <div key={item} className={`order-item locked ${isCorrect ? 'fb-correct' : ''}`}>
-            <span className="order-num">{i + 1}</span>
-            <span>{item}</span>
-          </div>
-        ))}
-        <div className={`task-feedback ${isCorrect ? 'fb-correct' : 'fb-info'}`}>
-          {isCorrect ? '✓ CORRECT ORDER' : `Reference: ${correctOrder.join(' → ')}`}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="order-list">
-      {items.map((item, i) => (
-        <div
-          key={item}
-          className={`order-item ${dragOver === i ? 'drag-target' : ''}`}
-          draggable
-          onDragStart={() => { dragRef.current = i; }}
-          onDragOver={e => { e.preventDefault(); setDragOver(i); }}
-          onDrop={e => {
-            e.preventDefault();
-            const from = dragRef.current;
-            if (from === null || from === i) { setDragOver(null); return; }
-            const next = [...items];
-            const [moved] = next.splice(from, 1);
-            next.splice(i, 0, moved);
-            dragRef.current = null;
-            setDragOver(null);
-            onChange(next);
-          }}
-          onDragEnd={() => { dragRef.current = null; setDragOver(null); }}
-        >
-          <span className="order-num">{i + 1}</span>
-          <span>{item}</span>
-          <span className="order-drag">⠿</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function TaskBlock({ task, value, onChange, submitted }) {
-  return (
-    <div className={`task-block${task.type === 'confidence' ? ' task-block-conf' : ''}`}>
-      <p className="task-prompt">{task.prompt}</p>
-
-      {task.type === 'concept-tagging' && (
-        <ConceptTagging
-          options={task.options} value={value} onChange={onChange}
-          submitted={submitted} correctTags={task.correctTags}
-        />
-      )}
-      {task.type === 'single-select' && (
-        <SingleSelect
-          options={task.options} value={value} onChange={onChange}
-          submitted={submitted} correctOption={task.correctOption}
-        />
-      )}
-      {task.type === 'ordering' && (
-        <OrderingTask
-          options={task.options} value={value} onChange={onChange}
-          submitted={submitted} correctOrder={task.correctOrder}
-        />
-      )}
-      {task.type === 'short-answer' && (
-        <>
-          <textarea
-            className="short-answer-input"
-            value={value ?? ''}
-            onChange={e => !submitted && onChange(e.target.value)}
-            disabled={submitted}
-            placeholder="Type your response here…"
-            rows={4}
-          />
-          {submitted && (
-            <div className="task-feedback fb-info">Response recorded — compare with rubric during debrief.</div>
-          )}
-        </>
-      )}
-      {task.type === 'confidence' && (
-        <div className="confidence-block">
-          <div className="confidence-row">
-            <input
-              type="range" className="confidence-slider"
-              min="0" max="100" step="5"
-              value={value ?? 50}
-              onChange={e => !submitted && onChange(Number(e.target.value))}
-              disabled={submitted}
-            />
-            <span className="confidence-val">{value ?? 50}%</span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ──────────────────────────────────────────────────────────────────────────
-// PHASE CONTENT
-// ──────────────────────────────────────────────────────────────────────────
-
-function PhaseNavBar({ phases, prevId, nextId, onPrev, onNext }) {
-  const prevPhase = phases.find(p => p.id === prevId);
-  const nextPhase = phases.find(p => p.id === nextId);
-  return (
-    <div className="phase-nav-bar">
-      <button className="nav-btn" onClick={onPrev} disabled={!prevId}>
-        ← {prevPhase ? prevPhase.long : 'PREV'}
-      </button>
-      {nextId && (
-        <button className="nav-btn nav-next" onClick={onNext}>
-          {nextPhase ? nextPhase.long : 'NEXT'} →
-        </button>
-      )}
-    </div>
-  );
-}
-
-function PhaseContent({ inject, evidenceMap, session, phases, onResponse, onNotes, onSubmit, prevId, nextId, onPrev, onNext }) {
-  const resp      = session.responses[inject.id] ?? {};
-  const notes     = session.notes[inject.id]     ?? '';
-  const submitted = session.submitted[inject.id] ?? false;
-  const evidence  = inject.evidenceIds.map(id => evidenceMap[id]).filter(Boolean);
-  const phaseNum  = phases.find(p => p.phaseId === inject.phaseId)?.id ?? '??';
-
-  const allAnswered = inject.studentTasks.every(t => {
-    if (t.type === 'confidence' || t.type === 'ordering') return true;
-    const r = resp[t.id];
-    if (t.type === 'concept-tagging') return r && r.length > 0;
-    if (t.type === 'single-select')   return r != null;
-    if (t.type === 'short-answer')    return r && r.trim().length > 0;
-    return false;
-  });
-
-  return (
-    <div className="phase-screen">
-      <div className="inject-header">
-        <div className="brief-meta">
-          <span className="meta-chip">PHASE {phaseNum}</span>
-          <span className="meta-chip muted">{inject.timestamp}</span>
-          {submitted && (
-            <span className="meta-chip" style={{ background: 'var(--friendly-bg)', borderColor: 'var(--friendly-border)', color: 'var(--friendly)' }}>
-              SUBMITTED
-            </span>
+    <section className="phase-workspace">
+      <div className="phase-banner">
+        <div>
+          <div className="phase-banner-tag">RESTORED PHASE</div>
+          <h2 className="phase-banner-title">{phase.title}</h2>
+          <div className="phase-banner-sub">{phase.subtitle}</div>
+          {phase.placeholder && (
+            <div className="phase-placeholder-note">This phase will be rebuilt next.</div>
           )}
         </div>
-        <h2 className="inject-title">{inject.title}</h2>
-        <p className="inject-objective">{inject.objective}</p>
+        {phase.domain && <div className="phase-domain">{phase.domain.toUpperCase()}</div>}
       </div>
 
-      <section className="panel">
-        <header className="panel-head">
-          <span className="panel-tag">SITREP</span>
-          <span className="panel-title">SITUATION REPORT</span>
-          <span className="panel-meta">{inject.timestamp}</span>
-        </header>
-        <div className="story-body"><p>{inject.storyText}</p></div>
-      </section>
-
-      {evidence.length > 0 && (
-        <div className="evidence-section">
-          <div className="ev-section-label">
-            <span className="side-title">EVIDENCE</span>
-            <span className="meta-chip muted">{evidence.length} REPORT{evidence.length > 1 ? 'S' : ''}</span>
-          </div>
-          <div className="evidence-grid">
-            {evidence.map(ev => <EvidenceCard key={ev.id} ev={ev} />)}
-          </div>
+      {phase.inject && (
+        <div className="phase-inject panel">
+          <header className="panel-head">
+            <span className="panel-tag">INJECT</span>
+            <span className="panel-title">SCENARIO TEXT</span>
+          </header>
+          <div className="phase-inject-body">{phase.inject}</div>
         </div>
       )}
 
-      {inject.studentTasks.length > 0 && (
-        <div className="tasks-section">
-          <div className="ev-section-label">
-            <span className="side-title">STUDENT TASKS</span>
-            <span className="meta-chip muted">{inject.studentTasks.length} TASK{inject.studentTasks.length > 1 ? 'S' : ''}</span>
-          </div>
-          {inject.studentTasks.map(task => (
-            <TaskBlock
-              key={task.id}
-              task={task}
-              value={resp[task.id]}
-              onChange={v => onResponse(inject.id, task.id, v)}
-              submitted={submitted}
+      {phase.evidenceCards?.length > 0 && (
+        <div className="evidence-grid">
+          {phase.evidenceCards.map(card => <EvidenceCard key={card.id} card={card} />)}
+        </div>
+      )}
+
+      {restored && (
+        <div className="activity-stack">
+          {phase.activities.map(activity => (
+            <ActivityCard
+              key={activity.id}
+              activity={activity}
+              response={responses[activity.id] || emptyResponseFor(activity)}
+              onChange={onChange}
+              onSubmit={onSubmit}
             />
           ))}
-          {!submitted && (
-            <button className="submit-btn" onClick={() => onSubmit(inject.id)} disabled={!allAnswered}>
-              <span className="bb-tag">EVAL</span>
-              SUBMIT RESPONSES
-            </button>
-          )}
         </div>
       )}
-
-      <div className="notes-block">
-        <span className="notes-label">ANALYST NOTES</span>
-        <textarea
-          className="notes-input"
-          value={notes}
-          onChange={e => onNotes(inject.id, e.target.value)}
-          placeholder="Free-form notes for this phase…"
-          rows={3}
-        />
-      </div>
-
-      <PhaseNavBar phases={phases} prevId={prevId} nextId={nextId} onPrev={onPrev} onNext={onNext} />
-    </div>
-  );
-}
-
-// ──────────────────────────────────────────────────────────────────────────
-// FINAL ASSESSMENT
-// ──────────────────────────────────────────────────────────────────────────
-
-function FinalAssessmentContent({ inject, evidenceMap, session, phases, onFinalChange, onFinalSubmit, prevId, onPrev }) {
-  const fa        = session.finalAssessment;
-  const submitted = session.finalSubmitted;
-  const evidence  = inject.evidenceIds.map(id => evidenceMap[id]).filter(Boolean);
-
-  return (
-    <div className="phase-screen">
-      <div className="inject-header">
-        <div className="brief-meta">
-          <span className="meta-chip">PHASE FR</span>
-          <span className="meta-chip muted">{inject.timestamp}</span>
-          {submitted && (
-            <span className="meta-chip" style={{ background: 'var(--friendly-bg)', borderColor: 'var(--friendly-border)', color: 'var(--friendly)' }}>
-              SUBMITTED
-            </span>
-          )}
-        </div>
-        <h2 className="inject-title">{inject.title}</h2>
-        <p className="inject-objective">{inject.objective}</p>
-      </div>
-
-      <section className="panel">
-        <header className="panel-head">
-          <span className="panel-tag flag-amber">TASKING</span>
-          <span className="panel-title">COMMANDER GUIDANCE</span>
-        </header>
-        <div className="story-body"><p>{inject.storyText}</p></div>
-      </section>
-
-      {evidence.length > 0 && (
-        <div className="evidence-section">
-          <div className="evidence-grid">
-            {evidence.map(ev => <EvidenceCard key={ev.id} ev={ev} />)}
-          </div>
-        </div>
-      )}
-
-      <section className="panel">
-        <header className="panel-head">
-          <span className="panel-tag flag-amber">ASSESSMENT</span>
-          <span className="panel-title">STRUCTURED INTELLIGENCE ASSESSMENT</span>
-        </header>
-        <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
-
-          <div className="final-field">
-            <span className="final-label">ANALYST NAME</span>
-            <input
-              className="field-input"
-              type="text"
-              value={fa.studentName ?? ''}
-              onChange={e => onFinalChange('studentName', e.target.value)}
-              disabled={submitted}
-              placeholder="Last, First"
-            />
-          </div>
-
-          <div className="final-field">
-            <span className="final-label">BLUF — BOTTOM LINE UP FRONT</span>
-            <textarea
-              className="final-textarea"
-              value={fa.bluf ?? ''}
-              onChange={e => onFinalChange('bluf', e.target.value)}
-              disabled={submitted}
-              placeholder="One sentence answering the PIR…"
-              rows={3}
-            />
-          </div>
-
-          <div className="final-grid">
-            <div className="final-field">
-              <span className="final-label">MOST LIKELY COA</span>
-              <textarea
-                className="final-textarea"
-                value={fa.mostLikelyCoa ?? ''}
-                onChange={e => onFinalChange('mostLikelyCoa', e.target.value)}
-                disabled={submitted}
-                placeholder="Describe Donovia's most likely course of action…"
-                rows={4}
-              />
-            </div>
-            <div className="final-field">
-              <span className="final-label">MOST DANGEROUS COA</span>
-              <textarea
-                className="final-textarea"
-                value={fa.mostDangerousCoa ?? ''}
-                onChange={e => onFinalChange('mostDangerousCoa', e.target.value)}
-                disabled={submitted}
-                placeholder="Describe Donovia's most dangerous course of action…"
-                rows={4}
-              />
-            </div>
-          </div>
-
-          <div className="final-field">
-            <span className="final-label">KEY INDICATORS</span>
-            <textarea
-              className="final-textarea"
-              value={fa.indicators ?? ''}
-              onChange={e => onFinalChange('indicators', e.target.value)}
-              disabled={submitted}
-              placeholder="What indicators support your assessment?"
-              rows={3}
-            />
-          </div>
-
-          <div className="final-grid">
-            <div className="final-field">
-              <span className="final-label">COLLECTION GAPS</span>
-              <textarea
-                className="final-textarea"
-                value={fa.gaps ?? ''}
-                onChange={e => onFinalChange('gaps', e.target.value)}
-                disabled={submitted}
-                placeholder="What gaps remain in your collection picture?"
-                rows={3}
-              />
-            </div>
-            <div className="final-field">
-              <span className="final-label">RECOMMENDED COLLECTION</span>
-              <textarea
-                className="final-textarea"
-                value={fa.recommendedCollection ?? ''}
-                onChange={e => onFinalChange('recommendedCollection', e.target.value)}
-                disabled={submitted}
-                placeholder="What collection would fill your priority gaps?"
-                rows={3}
-              />
-            </div>
-          </div>
-
-          <div className="final-field">
-            <span className="final-label">ANALYTIC CONFIDENCE</span>
-            <div className="confidence-row">
-              <input
-                type="range" className="confidence-slider"
-                min="0" max="100" step="5"
-                value={fa.confidence ?? 50}
-                onChange={e => onFinalChange('confidence', Number(e.target.value))}
-                disabled={submitted}
-              />
-              <span className="confidence-val">{fa.confidence ?? 50}%</span>
-            </div>
-          </div>
-
-          <div className="final-submit-row">
-            {submitted ? (
-              <div className="final-complete">✓ ASSESSMENT SUBMITTED · EXERCISE COMPLETE</div>
-            ) : (
-              <button
-                className="final-submit-btn"
-                onClick={onFinalSubmit}
-                disabled={!fa.bluf?.trim()}
-              >
-                <span className="bb-tag">SUBMIT</span>
-                SUBMIT FINAL ASSESSMENT →
-              </button>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <div className="phase-nav-bar">
-        <button className="nav-btn" onClick={onPrev} disabled={!prevId}>
-          ← {phases.find(p => p.id === prevId)?.long ?? 'PREV'}
-        </button>
-      </div>
-    </div>
+    </section>
   );
 }
 
@@ -1077,6 +988,8 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 const INSTRUCTOR_PASSWORD = "IITCInstructors";
 const PIN_DEFAULT = { x: 53, y: 62, label: "GORGAS — FOCUS" };
 
+// Map overlay shows 20°E–60°E horizontally, 60°N–30°N vertically.
+// Overlay axes inset from the wrap edges; approximate ranges below.
 const pctToLatLon = (x, y) => {
   const lon = 20 + ((x - 8) / (98 - 8)) * 40;
   const lat = 60 - ((y - 3) / (96 - 3)) * 30;
@@ -1134,8 +1047,13 @@ function App() {
     : [TWEAK_DEFAULTS, () => {}];
 
   const { data, error } = useScenarioData();
-
-  const [activePhase, setActivePhase] = useState("00");
+  const [studentSession, setStudentSession] = useState(() => loadStudentSession());
+  const [accessError, setAccessError] = useState(false);
+  const [activePhase, setActivePhase] = useState(studentSession.activePhase || "phase-0-overview");
+  const [teamName, setTeamName] = useState(studentSession.teamName || "");
+  const [studentReady, setStudentReady] = useState(Boolean(studentSession.ready));
+  const [responses, setResponses] = useState(studentSession.responses || {});
+  const [objectiveStates, setObjectiveStates] = useState(studentSession.objectiveStates || {});
   const [dtg, setDtg] = useState("121216ZMAY26");
 
   const [instructor, setInstructor] = useState(() => {
@@ -1147,59 +1065,187 @@ function App() {
       const raw = localStorage.getItem("onv-pin-v2");
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === "object" && typeof parsed.x === "number") return { ...PIN_DEFAULT, ...parsed };
+        if (parsed && typeof parsed === "object" && typeof parsed.x === "number" && typeof parsed.y === "number") {
+          return { ...PIN_DEFAULT, ...parsed };
+        }
       }
     } catch {}
     return PIN_DEFAULT;
   });
-
-  const [session, setSession] = useState(loadSession);
-
-  useEffect(() => { try { localStorage.setItem("onv-pin-v2", JSON.stringify(pin)); } catch {} }, [pin]);
-  useEffect(() => { try { localStorage.setItem("onv-instructor-v2", instructor ? "1" : "0"); } catch {} }, [instructor]);
-  useEffect(() => { saveSession(session); }, [session]);
-
-  // Mark inject visited whenever active phase changes (after data loads)
+  useEffect(() => {
+    try { localStorage.setItem("onv-pin-v2", JSON.stringify(pin)); } catch {}
+  }, [pin]);
+  useEffect(() => {
+    try { localStorage.setItem("onv-instructor-v2", instructor ? "1" : "0"); } catch {}
+  }, [instructor]);
   useEffect(() => {
     if (!data) return;
-    const phase = data.phases.find(p => p.id === activePhase);
-    if (!phase) return;
-    const inj = data.injects.find(i => i.phaseId === phase.phaseId);
-    if (!inj) return;
-    setSession(s => ({ ...s, visited: { ...(s.visited ?? {}), [inj.id]: true } }));
-  }, [activePhase, data]);
+    if (!data.phases.some(phase => phase.id === activePhase)) {
+      setActivePhase(data.phases[0]?.id || "phase-0-overview");
+    }
+  }, [data, activePhase]);
+  useEffect(() => {
+    const nextSession = {
+      ready: studentReady,
+      teamName,
+      activePhase,
+      responses,
+      objectiveStates,
+    };
+    setStudentSession(nextSession);
+    saveStudentSession(nextSession);
+  }, [studentReady, teamName, activePhase, responses, objectiveStates]);
+  const onLockClick = () => {
+    if (instructor) setInstructor(false);
+    else setModalOpen(true);
+  };
+
+  const allRestoredActivities = RESTORED_PHASE_IDS.flatMap(phaseId => getPhaseContent(phaseId)?.activities || []);
+  const allRestoredEvidence = RESTORED_PHASE_IDS.flatMap(phaseId => getPhaseContent(phaseId)?.evidenceCards || []);
+  const possibleScore = allRestoredActivities.reduce((sum, activity) => sum + activity.points, 0);
+  const earnedScore = allRestoredActivities.reduce((sum, activity) => {
+    const response = responses[activity.id];
+    return sum + (response?.submitted ? Number(response.score || 0) : 0);
+  }, 0);
+  const scoreText = studentReady ? `${earnedScore}/${possibleScore}` : "LOCKED";
+  const evidenceCount = allRestoredEvidence.length;
+  const activityCount = allRestoredActivities.length;
+  const navPhase = data.phases.find(phase => phase.id === activePhase) || data.phases[0];
+  const restoredPhase = getPhaseContent(activePhase);
+  const currentPhase = restoredPhase || {
+    id: navPhase.id,
+    title: navPhase.title,
+    subtitle: navPhase.summary || "",
+    domain: null,
+    inject: "This phase has not been restored yet. The rebuilt trainer currently covers the introductory screen through Phase 3 GEOINT.",
+    evidenceCards: [],
+    activities: [],
+    placeholder: true,
+  };
+  const doneIds = data.phases.filter(phase => phaseIsComplete(phase.id, responses)).map(phase => phase.id);
+  const coveredObjectives = (data.objectives || []).map(obj => ({ ...obj, state: objectiveStates[obj.id] || 0 }));
+
+  const handleAccess = ({ teamName: submittedTeamName, password }) => {
+    if (password !== STUDENT_PASSWORD) {
+      setAccessError(true);
+      return;
+    }
+    setAccessError(false);
+    const nextTeam = submittedTeamName.trim() || "Anonymous Team";
+    setTeamName(nextTeam);
+    setStudentReady(true);
+    setActivePhase(studentSession.activePhase || "phase-0-overview");
+  };
+
+  const handleActivityChange = (kind, activityId, value) => {
+    const activity = findTrainingActivity(activityId);
+    if (!activity) return;
+    setResponses(prev => {
+      const currentResponse = initResponse(activity, prev);
+      if (currentResponse.submitted) return prev;
+      const next = { ...prev };
+      const current = initResponse(activity, prev);
+      const updated = {
+        ...current,
+        submitted: false,
+        score: 0,
+        correct: false,
+      };
+
+      switch (kind) {
+        case "classification":
+          updated.answers = { ...(current.answers || {}), [value.itemId]: value.value };
+          break;
+        case "decision":
+          updated.selected = value;
+          break;
+        case "fillslot":
+          updated.slots = { ...(current.slots || {}), [value.slotId]: value.value };
+          break;
+        case "matchPick":
+          updated.pending = current.pending === value ? null : value;
+          break;
+        case "matchDrop": {
+          if (!current.pending) return prev;
+          const pairs = { ...(current.pairs || {}) };
+          Object.keys(pairs).forEach(key => { if (pairs[key] === value) delete pairs[key]; });
+          pairs[current.pending] = value;
+          updated.pairs = pairs;
+          updated.pending = null;
+          break;
+        }
+        case "seqUp": {
+          const order = [...(current.order || [])];
+          const index = value;
+          const swapIndex = index - 1;
+          if (swapIndex < 0) return prev;
+          [order[index], order[swapIndex]] = [order[swapIndex], order[index]];
+          updated.order = order;
+          break;
+        }
+        case "seqDown": {
+          const order = [...(current.order || [])];
+          const index = value;
+          const swapIndex = index + 1;
+          if (swapIndex >= order.length) return prev;
+          [order[index], order[swapIndex]] = [order[swapIndex], order[index]];
+          updated.order = order;
+          break;
+        }
+        case "toggle": {
+          const selected = new Set(current.selected || []);
+          if (selected.has(value)) selected.delete(value);
+          else selected.add(value);
+          updated.selected = Array.from(selected);
+          break;
+        }
+        default:
+          break;
+      }
+
+      next[activityId] = updated;
+      return next;
+    });
+
+    setObjectiveStates(prev => ({ ...prev, ...objectiveBoost(activity, false) }));
+  };
+
+  const handleActivitySubmit = (activityId) => {
+    const activity = findTrainingActivity(activityId);
+    if (!activity) return;
+    const response = initResponse(activity, responses);
+    if (response.submitted) return;
+    const score = scoreActivity(activity, response);
+    setResponses(prev => ({
+      ...prev,
+      [activityId]: {
+        ...initResponse(activity, prev),
+        submitted: true,
+        score,
+        correct: score >= activity.points,
+      }
+    }));
+    setObjectiveStates(prev => ({ ...prev, ...objectiveBoost(activity, true) }));
+  };
 
   useEffect(() => {
     const upd = () => {
       const d = new Date();
       const pad = n => String(n).padStart(2, "0");
+      const day = pad(d.getUTCDate());
+      const hh = pad(d.getUTCHours());
+      const mm = pad(d.getUTCMinutes());
       const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
-      setDtg(`${pad(d.getUTCDate())}${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}Z${months[d.getUTCMonth()]}${String(d.getUTCFullYear()).slice(-2)}`);
+      const mon = months[d.getUTCMonth()];
+      const yr = String(d.getUTCFullYear()).slice(-2);
+      setDtg(`${day}${hh}${mm}Z${mon}${yr}`);
     };
     upd();
     const id = setInterval(upd, 60000);
     return () => clearInterval(id);
   }, []);
 
-  const onLockClick = () => { if (instructor) setInstructor(false); else setModalOpen(true); };
-
-  // Session handlers
-  const setResponse = (injectId, taskId, value) =>
-    setSession(s => ({ ...s, responses: { ...s.responses, [injectId]: { ...(s.responses[injectId] ?? {}), [taskId]: value } } }));
-
-  const setNotes = (injectId, value) =>
-    setSession(s => ({ ...s, notes: { ...(s.notes ?? {}), [injectId]: value } }));
-
-  const submitInject = (injectId) =>
-    setSession(s => ({ ...s, submitted: { ...(s.submitted ?? {}), [injectId]: true } }));
-
-  const setFinalField = (field, value) =>
-    setSession(s => ({ ...s, finalAssessment: { ...(s.finalAssessment ?? {}), [field]: value } }));
-
-  const submitFinal = () =>
-    setSession(s => ({ ...s, finalSubmitted: true }));
-
-  // Loading gate — all hooks called above, safe to return early
+  // Loading gate — all hooks are called above, so early return is safe
   if (!data) {
     return (
       <div className={`app accent-${tw.accent}`}>
@@ -1214,119 +1260,73 @@ function App() {
     );
   }
 
-  // Phase navigation helpers
-  const phaseIds     = data.phases.map(p => p.id);
-  const currentIdx   = phaseIds.indexOf(activePhase);
-  const prevPhaseId  = currentIdx > 0 ? phaseIds[currentIdx - 1] : null;
-  const nextPhaseId  = currentIdx < phaseIds.length - 1 ? phaseIds[currentIdx + 1] : null;
-  const navigateTo   = (id) => { if (id) setActivePhase(id); };
-
-  // Current inject for active phase
-  const currentPhase  = data.phases.find(p => p.id === activePhase);
-  const currentInject = currentPhase ? data.injects.find(inj => inj.phaseId === currentPhase.phaseId) : null;
-
-  // Compute objective coverage states from session
-  const objectivesWithState = data.objectives.map(o => {
-    let state = 0;
-    data.injects.forEach(inj => {
-      if (inj.objectivesCovered && inj.objectivesCovered.includes(o.id)) {
-        if (session.submitted?.[inj.id] || session.finalSubmitted) state = Math.max(state, 2);
-        else if (session.visited?.[inj.id]) state = Math.max(state, 1);
-      }
-    });
-    return { ...o, state };
-  });
-
-  // Content routing
-  const renderMainContent = () => {
-    if (activePhase === "00") {
-      const phase0Inject = data.injects.find(i => i.phaseId === "phase-0-overview");
-      return (
-        <>
-          <MissionBrief />
-          <div className="grid-row primary-row">
-            <div className="col-map">
-              <MapPanel showReticle={tw.showReticle} showGrid={tw.showGrid} instructor={instructor} pin={pin} onPinChange={setPin} />
-            </div>
-            <div className="col-side">
-              <PIRPanel pirText={data.pirText} pirIssuedBy={data.pirIssuedBy} pirIssuedDTG={data.pirIssuedDTG} />
-              <ActorsPanel actors={data.actors} />
-            </div>
-          </div>
-          <SituationPanel situationText={data.situationText} />
-          <HowItWorks />
-          {phase0Inject && (
-            <Phase0Task inject={phase0Inject} session={session} onResponse={setResponse} onSubmit={submitInject} />
-          )}
-          <BeginBar onBegin={() => navigateTo("01")} />
-        </>
-      );
-    }
-
-    if (activePhase === "FR" && currentInject) {
-      return (
-        <FinalAssessmentContent
-          inject={currentInject}
-          evidenceMap={data.evidence}
-          session={session}
-          phases={data.phases}
-          onFinalChange={setFinalField}
-          onFinalSubmit={submitFinal}
-          prevId={prevPhaseId}
-          onPrev={() => navigateTo(prevPhaseId)}
-        />
-      );
-    }
-
-    if (currentInject) {
-      return (
-        <PhaseContent
-          inject={currentInject}
-          evidenceMap={data.evidence}
-          session={session}
-          phases={data.phases}
-          onResponse={setResponse}
-          onNotes={setNotes}
-          onSubmit={submitInject}
-          prevId={prevPhaseId}
-          nextId={nextPhaseId}
-          onPrev={() => navigateTo(prevPhaseId)}
-          onNext={() => navigateTo(nextPhaseId)}
-        />
-      );
-    }
-
-    return null;
-  };
-
-  const statusLabel = instructor ? "INSTRUCTOR MODE"
-    : activePhase === "00" ? "AWAITING START"
-    : session.finalSubmitted ? "EXERCISE COMPLETE"
-    : "IN PROGRESS";
-
   return (
-    <div className={`app accent-${tw.accent} density-${tw.density} phase-style-${tw.phaseStyle}`}>
+    <div
+      className={`app accent-${tw.accent} density-${tw.density} phase-style-${tw.phaseStyle}`}
+      data-screen-label={currentPhase?.title || "00 Orientation"}
+    >
       <ClassificationBar level={tw.classification} />
 
       <TopBar
         dtg={dtg}
         opName="NORTHERN VEIL"
         opCode="OP-NV-26"
-        status={{ label: statusLabel, tone: "amber" }}
+        status={{ label: instructor ? "INSTRUCTOR MODE" : "AWAITING START", tone: "amber" }}
         instructor={instructor}
         onLockClick={onLockClick}
+        teamName={teamName}
+        scoreText={scoreText}
       />
 
-      <PhaseNav active={activePhase} phases={data.phases} onChange={navigateTo} />
+      <PhaseNav active={activePhase} phases={data.phases} onChange={setActivePhase} doneIds={doneIds} />
 
       <main className="layout">
-        <ObjectiveSidebar objectives={objectivesWithState} />
+        <ObjectiveSidebar objectives={coveredObjectives} />
+
         <div className="content">
-          {renderMainContent()}
+          <MissionBrief />
+
+          <div className="grid-row primary-row">
+            <div className="col-map">
+              <MapPanel
+                showReticle={tw.showReticle}
+                showGrid={tw.showGrid}
+                instructor={instructor}
+                pin={pin}
+                onPinChange={setPin}
+              />
+            </div>
+            <div className="col-side">
+              <PIRPanel
+                pirText={data.pirText}
+                pirIssuedBy={data.pirIssuedBy}
+                pirIssuedDTG={data.pirIssuedDTG}
+              />
+              <ActorsPanel actors={data.actors} />
+            </div>
+          </div>
+
+          <SituationPanel situationText={data.situationText} evidenceCount={evidenceCount} activityCount={activityCount} />
+          <HowItWorks />
+          {activePhase === "phase-0-overview" && (
+            <BeginBar onBegin={() => setActivePhase("phase-1-info")} />
+          )}
+          <PhaseWorkspace
+            phase={currentPhase}
+            responses={responses}
+            onChange={handleActivityChange}
+            onSubmit={handleActivitySubmit}
+          />
         </div>
       </main>
 
       <ClassificationBar level={tw.classification} />
+
+      <StudentAccessModal
+        open={!studentReady}
+        error={accessError}
+        onSubmit={handleAccess}
+      />
 
       <InstructorModal
         open={modalOpen}
@@ -1352,18 +1352,24 @@ function App() {
               label="Density"
               value={tw.density}
               onChange={v => setTweak("density", v)}
-              options={[{ value: "compact", label: "Compact" }, { value: "comfortable", label: "Comfort" }]}
+              options={[
+                { value: "compact",     label: "Compact" },
+                { value: "comfortable", label: "Comfort" },
+              ]}
             />
             <window.TweakRadio
               label="Phase Nav"
               value={tw.phaseStyle}
               onChange={v => setTweak("phaseStyle", v)}
-              options={[{ value: "tabs", label: "Tabs" }, { value: "hex", label: "Hex" }]}
+              options={[
+                { value: "tabs", label: "Tabs" },
+                { value: "hex",  label: "Hex" },
+              ]}
             />
           </window.TweakSection>
           <window.TweakSection label="Map">
-            <window.TweakToggle label="Grid overlay"   value={tw.showGrid}    onChange={v => setTweak("showGrid", v)} />
-            <window.TweakToggle label="Target reticle" value={tw.showReticle} onChange={v => setTweak("showReticle", v)} />
+            <window.TweakToggle label="Grid overlay"    value={tw.showGrid}    onChange={v => setTweak("showGrid", v)} />
+            <window.TweakToggle label="Target reticle"  value={tw.showReticle} onChange={v => setTweak("showReticle", v)} />
           </window.TweakSection>
           <window.TweakSection label="Classification">
             <window.TweakSelect
