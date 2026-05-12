@@ -23,7 +23,7 @@ async function loadScenarioData() {
 // ──────────────────────────────────────────────────────────────────────────
 
 const PHASE_SHORT = ["ORIENT", "IO", "CYB", "GEO", "EMS", "IR", "SPC", "RVW"];
-const PHASE_LONG  = ["ORIENTATION", "INFO OPS", "CYBER", "GEOINT", "EMS / RADAR", "INFRARED", "SPACE / ISR", "FINAL REVIEW"];
+const PHASE_LONG  = ["ORIENTATION", "INFO OPS", "CYBER", "GEOINT", "EMS / RADAR", "INFRARED", "ISR", "SPACE", "FINAL REVIEW"];
 
 function adaptPhases(raw) {
   return raw.map((p, i) => ({
@@ -595,7 +595,7 @@ function BeginBar({ onBegin }) {
 }
 
 const TRAINING_PHASES = window.NorthernVeilContent?.phases || {};
-const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar", "phase-5-ir", "phase-6-isr"];
+const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar", "phase-5-ir", "phase-6-isr", "phase-7-space"];
 const SESSION_KEY = "onv-student-session-v1";
 const STUDENT_PASSWORD = "OperationNorthernV3il";
 

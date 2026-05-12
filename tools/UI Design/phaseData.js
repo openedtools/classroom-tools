@@ -1,6 +1,6 @@
 /* global window */
 window.NorthernVeilContent = {
-  restoredThrough: "phase-6-isr",
+  restoredThrough: "phase-7-space",
   phases: {
     "phase-0-overview": {
       id: "phase-0-overview",
@@ -918,6 +918,173 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
             incorrect: "Check each statement against the ISR cycle and the surveillance/recon distinction. The PIR enters at Planning & Direction, DCGS works in Processing & Exploitation, surveillance is continuous watch, and reconnaissance is a task-organized mission for a specific answer.",
             whyMatters: "ISR works only when the requirement, the collector, the processing tool, and the analyst are all in the right place in the cycle.",
             evidenceClue: "Cards 1 through 5 cover the PIR, the cycle, DCGS, surveillance, and reconnaissance."
+          }
+        }
+      ]
+    }
+    ,
+    "phase-7-space": {
+      id: "phase-7-space",
+      title: "Phase 7 - Space Operations",
+      subtitle: "Lesson 4.8 - Orbit Regimes & Counterspace",
+      domain: "space",
+      objectiveIds: ["4.8-orbits", "4.8-counterspace"],
+      inject: `The intelligence cell now shifts to the space domain. Donovia begins interfering with coalition positioning, navigation, and timing (PNT) during the border crisis, and analysts must recommend the right orbital regime for each mission. The commander also wants to know how to characterize space threats: when is an action kinetic, when is it non-kinetic, and which response is more escalatory? Your job is to match orbit to mission, distinguish the counterspace effect, and identify why the United States Space Force protects and enables space capabilities rather than treating space as a passive backdrop.`,
+      evidenceCards: [
+        {
+          id: "e7-1",
+          domain: "space",
+          title: "Geostationary Earth Orbit (GEO) - Persistent Theater Coverage",
+          summary: "A satellite parked over the equator provides continuous coverage of one region for communications and missile warning.",
+          detail: "Geostationary Earth Orbit sits about 35,786 km above the equator and remains fixed relative to one spot on Earth. That makes it ideal for persistent coverage, especially communications and missile warning. GEO is the classic 'staring' orbit."
+        },
+        {
+          id: "e7-2",
+          domain: "space",
+          title: "Low Earth Orbit (LEO) - High-Resolution Imaging",
+          summary: "A reconnaissance satellite in low orbit provides the clearest imagery and the shortest revisit times.",
+          detail: "Low Earth Orbit sits roughly 160 to 2,000 km above Earth. Because it is close to the surface, it can support high-resolution imagery and quick revisits. The tradeoff is that any one satellite moves quickly across the area of interest, so persistence requires a constellation."
+        },
+        {
+          id: "e7-3",
+          domain: "space",
+          title: "Medium Earth Orbit (MEO) - Navigation Constellation",
+          summary: "Navigation satellites in MEO provide positioning, navigation, and timing (PNT) for coalition forces.",
+          detail: "Medium Earth Orbit sits between LEO and GEO and is commonly used for navigation constellations such as GPS / NAVSTAR. MEO is the backbone of position, navigation, and timing (PNT) services that coalition forces depend on for everything from maneuver to targeting."
+        },
+        {
+          id: "e7-4",
+          domain: "space",
+          title: "Polar Orbit - Global Coverage Including the Poles",
+          summary: "A polar orbit passes over both poles and gives global coverage, including northern and southern latitudes.",
+          detail: "A polar orbit passes close to or over both poles as Earth rotates underneath. This gives broad global coverage, including the Arctic and Antarctic regions that GEO cannot watch well. It is useful for reconnaissance and weather missions that need world-wide reach."
+        },
+        {
+          id: "e7-5",
+          domain: "space",
+          title: "Non-Kinetic Counterspace - Jamming and Cyber Effects",
+          summary: "An adversary is interfering with GPS and the ground segment without physically destroying the satellite.",
+          detail: "Non-kinetic counterspace denies, degrades, disrupts, or deceives space support without physically destroying the satellite. Examples include jamming GPS, dazzling a sensor with lasers, or using cyber effects against the ground segment. These methods can be serious, but they avoid creating orbital debris."
+        },
+        {
+          id: "e7-6",
+          domain: "space",
+          title: "Kinetic Anti-Satellite (ASAT) Test - Debris Risk",
+          summary: "A kinetic ASAT intercept physically destroys a satellite and creates long-lived orbital debris.",
+          detail: "A kinetic anti-satellite (ASAT) strike is the most escalatory space action in the lesson set because it physically destroys the target and can create debris that threatens other satellites. Even a single intercept can have long-lasting effects on the orbital environment."
+        }
+      ],
+      activities: [
+        {
+          id: "p7a1",
+          type: "matching",
+          typeLabel: "Activity 1 of 5 - Matching",
+          points: 4,
+          instruction: "Match each orbital regime to the mission it best supports.",
+          objectiveIds: ["4.8-orbits"],
+          items: [
+            { id: "sp1", text: "Low Earth Orbit (LEO)", explanation: "LEO is closest to Earth, so it is best for high-resolution imagery and quick revisit." },
+            { id: "sp2", text: "Medium Earth Orbit (MEO)", explanation: "MEO is the navigation layer used for GPS / NAVSTAR and other PNT services." },
+            { id: "sp3", text: "Geostationary Earth Orbit (GEO)", explanation: "GEO stays fixed over one region, making it ideal for persistent communications and missile warning." },
+            { id: "sp4", text: "Polar Orbit", explanation: "Polar orbit gives global coverage, including the poles, which GEO cannot cover well." }
+          ],
+          targets: [
+            { id: "spt1", text: "High-resolution imagery and short revisit time for reconnaissance", correct: "sp1" },
+            { id: "spt2", text: "Positioning, Navigation, and Timing (PNT) / GPS mission", correct: "sp2" },
+            { id: "spt3", text: "Persistent communications and missile warning over one theater", correct: "sp3" },
+            { id: "spt4", text: "Global coverage, including Arctic and Antarctic latitudes", correct: "sp4" }
+          ],
+          feedback: {
+            correct: "Correct. LEO gives the best resolution and revisit, MEO supports PNT, GEO provides persistent theater coverage, and polar orbit gives global reach including the poles.",
+            incorrect: "Match the mission to the orbit: LEO is for the closest, clearest imagery; MEO is for navigation and timing; GEO is for persistent staring over one region; polar orbit is for global coverage including the poles.",
+            whyMatters: "If you task the wrong orbit, you either miss the target, lose persistence, or waste an asset on a mission it is not suited to perform.",
+            evidenceClue: "Cards 1 through 4 describe the four orbit regimes and their primary missions."
+          }
+        },
+        {
+          id: "p7a2",
+          type: "classification",
+          typeLabel: "Activity 2 of 5 - Classification",
+          points: 4,
+          instruction: "Classify each space-related action as kinetic counterspace or non-kinetic counterspace.",
+          objectiveIds: ["4.8-counterspace"],
+          items: [
+            { id: "c7-1", text: "A jammer denies GPS signals to coalition vehicles", correct: "non-kinetic", explanation: "This degrades the service without physically destroying the satellite." },
+            { id: "c7-2", text: "An ASAT missile physically destroys a satellite", correct: "kinetic", explanation: "This is a physical strike against the space asset itself." },
+            { id: "c7-3", text: "Cyber effects target the ground segment controlling a satellite", correct: "non-kinetic", explanation: "The space system is disrupted without breaking apart the satellite in orbit." },
+            { id: "c7-4", text: "A laser dazzles a sensor payload and temporarily degrades collection", correct: "non-kinetic", explanation: "The sensor is denied or degraded, but the satellite is not destroyed." },
+            { id: "c7-5", text: "A co-orbital vehicle collides with and destroys the satellite", correct: "kinetic", explanation: "This is a destructive physical attack in orbit." }
+          ],
+          categories: [
+            { id: "kinetic", label: "Kinetic Counterspace" },
+            { id: "non-kinetic", label: "Non-Kinetic Counterspace" }
+          ],
+          feedback: {
+            correct: "Correct. Kinetic counterspace physically destroys or damages the satellite. Non-kinetic counterspace disrupts, deceives, jams, dazzles, or degrades without physical destruction.",
+            incorrect: "Use the physical-destruction test. If the action breaks the satellite, it is kinetic. If it denies, degrades, disrupts, or deceives without destroying the space object, it is non-kinetic.",
+            whyMatters: "Kinetic ASAT is much more escalatory because it creates debris and can threaten other space assets. Non-kinetic options are usually more proportional and more reversible.",
+            evidenceClue: "Card 5 shows the destructive option. Cards 1, 3, and 4 show non-kinetic denial and degradation methods."
+          }
+        },
+        {
+          id: "p7a3",
+          type: "decision",
+          typeLabel: "Activity 3 of 5 - Decision",
+          points: 1,
+          instruction: "The commander wants persistent missile warning over one theater. Which orbit best supports the mission?",
+          objectiveIds: ["4.8-orbits"],
+          options: [
+            { id: "o7-1", text: "Geostationary Earth Orbit (GEO)", correct: true, explanation: "GEO stays fixed over one region, which is ideal for persistent theater missile warning." },
+            { id: "o7-2", text: "Low Earth Orbit (LEO)", correct: false, explanation: "LEO gives great resolution, but one satellite does not provide fixed persistent staring." },
+            { id: "o7-3", text: "Medium Earth Orbit (MEO)", correct: false, explanation: "MEO is primarily used for navigation and timing." },
+            { id: "o7-4", text: "Polar Orbit", correct: false, explanation: "Polar orbit is best for global coverage, not fixed theater staring." }
+          ],
+          feedback: {
+            correct: "Correct. GEO is the best choice for persistent missile warning over one region because it stays fixed relative to that theater.",
+            incorrect: "The mission is persistent warning over one theater, which points to GEO. LEO is for high-resolution imagery, MEO is for navigation and timing, and polar orbit is for global coverage.",
+            whyMatters: "Mission fit matters in space. The wrong orbit can leave you with excellent collection that still misses the commander’s timing requirement.",
+            evidenceClue: "Card 1 describes GEO as the persistent staring orbit used for missile warning and communications."
+          }
+        },
+        {
+          id: "p7a4",
+          type: "ranking",
+          typeLabel: "Activity 4 of 5 - Ranking",
+          points: 4,
+          instruction: "Rank these space actions from least escalatory (1) to most escalatory (4).",
+          objectiveIds: ["4.8-counterspace"],
+          items: [
+            { id: "r7-1", text: "Cyber attack against the satellite ground segment", correct: 1, explanation: "This is disruptive, but it does not physically destroy the satellite." },
+            { id: "r7-2", text: "GPS jamming against users in the field", correct: 2, explanation: "This denies service without destroying the spacecraft." },
+            { id: "r7-3", text: "Laser dazzling against a sensor payload", correct: 3, explanation: "This degrades the sensor and can be temporary, but it is more escalatory than jamming." },
+            { id: "r7-4", text: "Kinetic anti-satellite (ASAT) intercept", correct: 4, explanation: "This physically destroys the satellite and creates debris, making it the most escalatory." }
+          ],
+          feedback: {
+            correct: "Correct ranking. Cyber against the ground segment is least escalatory here, then GPS jamming, then laser dazzling, and kinetic ASAT is the most escalatory.",
+            incorrect: "The lesson logic is based on physical destruction and debris. Non-kinetic actions are generally less escalatory than kinetic ASAT. The more you move toward physically destroying a satellite, the more escalatory the action becomes.",
+            whyMatters: "Commanders need to understand escalation before they choose a counterspace response. A kinetic ASAT strike can create debris that affects the wider orbital environment.",
+            evidenceClue: "Card 5 shows non-kinetic effects. Card 6 shows the kinetic ASAT case that creates debris and is therefore most escalatory."
+          }
+        },
+        {
+          id: "p7a5",
+          type: "multiselect",
+          typeLabel: "Activity 5 of 5 - Multi-Select",
+          points: 4,
+          instruction: "Select all statements that are true about space operations and counterspace.",
+          objectiveIds: ["4.8-orbits", "4.8-counterspace"],
+          options: [
+            { id: "m7-1", text: "LEO is well suited for high-resolution imagery.", correct: true, explanation: "LEO is close to Earth, which helps resolution." },
+            { id: "m7-2", text: "MEO is commonly used for GPS and navigation.", correct: true, explanation: "MEO supports PNT services such as GPS / NAVSTAR." },
+            { id: "m7-3", text: "GEO provides persistent coverage over one region.", correct: true, explanation: "That fixed position makes GEO the staring orbit." },
+            { id: "m7-4", text: "A kinetic ASAT is less escalatory than a non-kinetic jammer.", correct: false, explanation: "Kinetic ASAT is more escalatory because it physically destroys a satellite." },
+            { id: "m7-5", text: "Non-kinetic counterspace can include jamming and cyber effects.", correct: true, explanation: "Those methods degrade or disrupt without physical destruction." }
+          ],
+          feedback: {
+            correct: "Correct. The true statements are the ones that match the orbit and counterspace lesson: LEO for imagery, MEO for navigation, GEO for persistence, and non-kinetic effects such as jamming or cyber for disruption without destruction.",
+            incorrect: "Review the orbit-mission fit and the escalation logic. LEO is for resolution, MEO for navigation, GEO for persistence, and kinetic ASAT is the most escalatory option because it destroys the satellite.",
+            whyMatters: "Space support underpins navigation, collection, and communication. Choosing the wrong orbit or the wrong counterspace response can create collection gaps or unnecessary escalation.",
+            evidenceClue: "Cards 1 through 6 cover the orbit missions and the difference between non-kinetic disruption and kinetic destruction."
           }
         }
       ]
