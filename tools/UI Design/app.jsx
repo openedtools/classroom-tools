@@ -159,7 +159,7 @@ function ClassificationBar({ level }) {
   );
 }
 
-function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossary, onReset, teamName, scoreText }) {
+function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossary, onSources, onReset, teamName, scoreText }) {
   return (
     <header className="topbar">
       <div className="topbar-left">
@@ -204,6 +204,7 @@ function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossa
           <span className="lockbtn-text">{instructor ? 'INSTRUCTOR' : 'INSTRUCTOR'}</span>
         </button>
         <button className="iconbtn" title="Glossary" aria-label="Open glossary" onClick={onGlossary}>?</button>
+        <button className="iconbtn" title="Sources &amp; References" aria-label="View sources and references" onClick={onSources}>§</button>
         <button className="iconbtn" title="Reset Exercise" aria-label="Reset exercise" onClick={onReset}>↺</button>
       </div>
     </header>
@@ -271,6 +272,118 @@ function GlossaryModal({ open, terms, onClose }) {
               <div className="glossary-empty">No matching terms found.</div>
             )}
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const SOURCES = [
+  {
+    section: "SCENARIO FRAMEWORK",
+    items: [
+      {
+        name: "TRADOC ODIN Dateworld",
+        detail: "US Army Training and Doctrine Command — Operational Environment and Threat Analysis Directorate (ODIN). Decisive Action Training Environment (DATE) fictional nation-states: Donovia, Gorgas, Atropia, Limaria, and Ariana. All countries, units, and political entities in this exercise are derived from this unclassified training construct.",
+        url: "https://odin.t2com.army.mil/DATEWORLD",
+        urlLabel: "odin.t2com.army.mil/DATEWORLD",
+      },
+      {
+        name: "TRADOC Pamphlet 525-3-1",
+        detail: "The U.S. Army in Multi-Domain Operations 2028. Headquarters, US Army Training and Doctrine Command (Dec 2018). Unclassified concept document establishing the Multi-Domain Operations (MDO) framework used throughout this exercise.",
+      },
+    ],
+  },
+  {
+    section: "INTELLIGENCE DOCTRINE",
+    items: [
+      { name: "JP 2-0 — Joint Intelligence", detail: "Joint Chiefs of Staff (01 Oct 2013). Defines the joint intelligence enterprise, collection disciplines (GEOINT, SIGINT, HUMINT, MASINT, OSINT), all-source analysis, and the PIR/IR process used throughout this exercise." },
+      { name: "FM 2-0 — Intelligence", detail: "Headquarters, Department of the Army (06 Jul 2018). Army intelligence doctrine covering collection management and ISR operations." },
+      { name: "ADP 2-0 — Intelligence", detail: "Headquarters, Department of the Army (Jul 2019). Foundational Army doctrine defining intelligence principles and the commander's critical information requirements (CCIR) process." },
+      { name: "ATP 2-01 — Planning Requirements and Assessing Collection", detail: "Headquarters, Department of the Army. ISR tasking and collection management procedures underpinning the objective coverage framework." },
+    ],
+  },
+  {
+    section: "GEOSPATIAL INTELLIGENCE",
+    items: [
+      { name: "GEOINT Basic Doctrine Publication 1-0 (BDP 1-0)", detail: "National Geospatial-Intelligence Agency (NGA). Unclassified foundational doctrine covering imagery intelligence (IMINT), full-motion video (FMV), wide-area motion imagery (WAMI), and synthetic aperture radar (SAR) — all referenced in imagery injects." },
+    ],
+  },
+  {
+    section: "ELECTROMAGNETIC SPECTRUM & RADAR",
+    items: [
+      { name: "JP 3-85 — Joint Electromagnetic Spectrum Operations", detail: "Joint Chiefs of Staff (22 May 2020). Defines JEMSO, electronic warfare (EW), electronic attack/protection/support, and spectrum management used in ELINT and radar injects." },
+      { name: "FM 3-12 — Cyberspace and Electronic Warfare Operations", detail: "Headquarters, Department of the Army (11 Apr 2017). Army doctrine for integrated cyberspace and EW operations including GNSS jamming, IADS, and counter-UAS content." },
+    ],
+  },
+  {
+    section: "CYBERSPACE OPERATIONS",
+    items: [
+      { name: "JP 3-12 — Cyberspace Operations", detail: "Joint Chiefs of Staff (08 Jun 2018). Joint doctrine for offensive cyberspace operations (OCO), defensive cyberspace operations (DCO), and the cyber threat landscape framing adversarial APT activity in this exercise." },
+      { name: "Cyber Kill Chain® Framework", detail: "Hutchins, E.M., Cloppert, M.J., & Amin, R.M. (2011). Intelligence-Driven Computer Network Defense Informed by Analysis of Adversary Campaigns and Intrusion Kill Chains. Lockheed Martin Corporation. Publicly available white paper used to structure cyber inject analysis tasks." },
+      { name: "MITRE ATT&CK® Framework", detail: "MITRE Corporation. Publicly available knowledge base of adversary tactics, techniques, and procedures (TTPs) used to categorize threat actor behavior in cyber injects.", url: "https://attack.mitre.org", urlLabel: "attack.mitre.org" },
+    ],
+  },
+  {
+    section: "INFORMATION OPERATIONS",
+    items: [
+      { name: "JP 3-13 — Information Operations", detail: "Joint Chiefs of Staff (20 Nov 2014). Defines IO core capabilities including military deception (MILDEC), military information support operations (MISO), OPSEC, and the information environment." },
+      { name: "FM 3-53 — Military Information Support Operations", detail: "Headquarters, Department of the Army (03 Jan 2013). MISO planning and execution doctrine informing disinformation and social media narrative analysis tasks." },
+    ],
+  },
+  {
+    section: "SPACE & INFRARED OPERATIONS",
+    items: [
+      { name: "JP 3-14 — Space Operations", detail: "Joint Chiefs of Staff (10 Apr 2018, Change 1 — 26 Oct 2020). Covers space control, ISR from space, satellite communications, positioning/navigation/timing (PNT), and space situational awareness referenced in space-domain injects." },
+      { name: "Infrared & Electro-Optical Systems", detail: "DoD unclassified publications on forward-looking infrared (FLIR), infrared search and track (IRST), space-based infrared systems (SBIRS), and EO collection principles. Content is based on publicly available system characteristics only." },
+    ],
+  },
+];
+
+function SourcesModal({ open, onClose }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div className="modal-shade sources-shade" onClick={onClose}>
+      <div className="modal sources-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-head">
+          <span className="modal-tag">SRC</span>
+          <span className="modal-title">SOURCES &amp; REFERENCES</span>
+          <button className="modal-x" type="button" onClick={onClose}>×</button>
+        </div>
+        <div className="sources-body">
+          <div className="modal-lede">
+            All content is based on a completely fictional scenario using notional countries
+            developed by US Army TRADOC for educational purposes only. No classified, CUI, or
+            FOUO material was used in this exercise. All sources listed below are publicly
+            available and unclassified.
+          </div>
+          {SOURCES.map(({ section, items }) => (
+            <div className="sources-section" key={section}>
+              <div className="sources-section-title">{section}</div>
+              {items.map(({ name, detail, url, urlLabel }) => (
+                <div className="source-item" key={name}>
+                  <div className="source-name">{name}</div>
+                  <div className="source-detail">{detail}</div>
+                  {url && (
+                    <a className="source-url" href={url} target="_blank" rel="noopener noreferrer">
+                      {urlLabel || url}
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="modal-foot">
+          <button type="button" className="btn-solid" onClick={onClose}>CLOSE</button>
         </div>
       </div>
     </div>
@@ -1094,7 +1207,7 @@ function downloadMarkdownReport(filename, content) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-function StudentAccessModal({ open, onSubmit, error }) {
+function StudentAccessModal({ open, onSubmit, error, onSources }) {
   const [teamName, setTeamName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -1148,6 +1261,7 @@ function StudentAccessModal({ open, onSubmit, error }) {
           {error && <span className="field-err">INVALID ACCESS CODE</span>}
         </div>
         <div className="modal-foot">
+          <button type="button" className="btn-ghost" onClick={onSources}>SOURCES</button>
           <button type="submit" className="btn-solid">BEGIN TRAINING</button>
         </div>
       </form>
@@ -1638,6 +1752,7 @@ function App() {
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
+  const [sourcesOpen, setSourcesOpen] = useState(false);
   const [completionModalOpen, setCompletionModalOpen] = useState(false);
   const [completionCelebrated, setCompletionCelebrated] = useState(false);
   const [pin, setPin] = useState(() => {
@@ -1912,6 +2027,7 @@ function App() {
         instructor={instructor}
         onLockClick={onLockClick}
         onGlossary={() => setGlossaryOpen(true)}
+        onSources={() => setSourcesOpen(true)}
         onReset={handleResetExercise}
         teamName={teamName}
         scoreText={scoreText}
@@ -1921,6 +2037,11 @@ function App() {
         open={glossaryOpen}
         terms={glossary}
         onClose={() => setGlossaryOpen(false)}
+      />
+
+      <SourcesModal
+        open={sourcesOpen}
+        onClose={() => setSourcesOpen(false)}
       />
 
       <PhaseNav active={activePhase} phases={phases} onChange={setActivePhase} doneIds={doneIds} />
@@ -1974,6 +2095,7 @@ function App() {
         open={!studentReady}
         error={accessError}
         onSubmit={handleAccess}
+        onSources={() => setSourcesOpen(true)}
       />
 
       <InstructorModal
