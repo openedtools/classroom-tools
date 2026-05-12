@@ -356,6 +356,65 @@ body {
   border-top: 1px solid var(--border-1);
   background: var(--bg-0);
 }
+
+.glossary-modal {
+  width: min(820px, calc(100vw - 32px));
+}
+.glossary-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.glossary-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  max-height: min(72vh, 760px);
+}
+.glossary-input {
+  width: 100%;
+  letter-spacing: 0.08em;
+}
+.glossary-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.glossary-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  overflow: auto;
+  padding-right: 4px;
+}
+.glossary-item {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: linear-gradient(180deg, rgba(255, 174, 66, 0.04), transparent), var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.glossary-term {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.glossary-def {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.glossary-empty {
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 8px 2px;
+}
 .btn-ghost, .btn-solid {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;

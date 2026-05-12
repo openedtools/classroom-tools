@@ -8,13 +8,14 @@ const { useState, useEffect, useRef } = React;
 const DATA_BASE = "../intel-scenario-trainer/scenarios/block-4-operation-northern-veil";
 
 async function loadScenarioData() {
-  const [scenario, phases, objectives, actors] = await Promise.all([
+  const [scenario, phases, objectives, actors, glossary] = await Promise.all([
     fetch(`${DATA_BASE}/scenario.json`).then(r => r.json()),
     fetch(`${DATA_BASE}/phases.json`).then(r => r.json()),
     fetch(`${DATA_BASE}/objectives.json`).then(r => r.json()),
     fetch(`${DATA_BASE}/actors.json`).then(r => r.json()),
+    fetch(`${DATA_BASE}/glossary.json`).then(r => r.json()),
   ]);
-  return { scenario, phases, objectives, actors };
+  return { scenario, phases, objectives, actors, glossary };
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -64,6 +65,14 @@ function adaptActors(raw) {
     }));
 }
 
+function adaptGlossary(raw) {
+  return (raw || []).map(entry => ({
+    term: entry.term,
+    def: entry.def,
+    aliases: entry.aliases || [],
+  }));
+}
+
 // ──────────────────────────────────────────────────────────────────────────
 // DATA HOOK
 // ──────────────────────────────────────────────────────────────────────────
@@ -77,6 +86,7 @@ function useScenarioData() {
         phases:       adaptPhases(raw.phases),
         objectives:   adaptObjectives(raw.objectives),
         actors:       adaptActors(raw.actors),
+        glossary:     adaptGlossary(raw.glossary),
         pirText:      raw.scenario.commanderPIR,
         pirIssuedBy:  raw.scenario.pirIssuedBy  ?? "COALITION J2",
         pirIssuedDTG: raw.scenario.pirIssuedDTG ?? "",
@@ -133,7 +143,7 @@ function ClassificationBar({ level }) {
   );
 }
 
-function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, teamName, scoreText }) {
+function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossary, teamName, scoreText }) {
   return (
     <header className="topbar">
       <div className="topbar-left">
@@ -181,9 +191,76 @@ function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, teamName
           <span className="lockbtn-glyph">{instructor ? '◈' : '⌬'}</span>
           <span className="lockbtn-text">{instructor ? 'INSTRUCTOR' : 'INSTRUCTOR'}</span>
         </button>
-        <button className="iconbtn" title="Glossary">?</button>
+        <button className="iconbtn" title="Glossary" aria-label="Open glossary" onClick={onGlossary}>?</button>
       </div>
     </header>
+  );
+}
+
+function GlossaryModal({ open, terms, onClose }) {
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    if (open) setQuery("");
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  const q = query.trim().toLowerCase();
+  const filtered = terms.filter(entry => {
+    if (!q) return true;
+    const haystack = [entry.term, entry.def, ...(entry.aliases || [])].join(" ").toLowerCase();
+    return haystack.includes(q);
+  });
+
+  return (
+    <div className="modal-shade glossary-shade" onClick={onClose}>
+      <div className="modal glossary-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-head glossary-head">
+          <span className="modal-tag">GLOSS</span>
+          <span className="modal-title">SEARCHABLE GLOSSARY</span>
+          <button className="modal-x" type="button" onClick={onClose}>×</button>
+        </div>
+        <div className="glossary-body">
+          <div className="modal-lede">
+            Search acronyms and technical terms used across Block 4. Terms are searchable by acronym, full name, or definition.
+          </div>
+          <div className="modal-field">
+            <label className="field-label" htmlFor="glossary-search">SEARCH TERMS</label>
+            <input
+              id="glossary-search"
+              className="field-input glossary-input"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Type an acronym or term..."
+              autoFocus
+            />
+          </div>
+          <div className="glossary-meta">
+            {filtered.length} of {terms.length} terms
+          </div>
+          <div className="glossary-list">
+            {filtered.length > 0 ? filtered.map(entry => (
+              <article className="glossary-item" key={entry.term}>
+                <div className="glossary-term">{entry.term}</div>
+                <div className="glossary-def">{entry.def}</div>
+              </article>
+            )) : (
+              <div className="glossary-empty">No matching terms found.</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -1120,6 +1197,7 @@ function App() {
     try { return localStorage.getItem("onv-instructor-v2") === "1"; } catch { return false; }
   });
   const [modalOpen, setModalOpen] = useState(false);
+  const [glossaryOpen, setGlossaryOpen] = useState(false);
   const [pin, setPin] = useState(() => {
     try {
       const raw = localStorage.getItem("onv-pin-v2");
@@ -1176,6 +1254,7 @@ function App() {
   const activityCount = allRestoredActivities.length;
   const phases = data?.phases || [];
   const objectives = data?.objectives || [];
+  const glossary = data?.glossary || [];
   const navPhase = phases.find(phase => phase.id === activePhase) || phases[0] || {
     id: "phase-0-overview",
     title: "Scenario Orientation",
@@ -1347,8 +1426,15 @@ function App() {
         status={instructor ? { label: "INSTRUCTOR MODE", tone: "amber" } : null}
         instructor={instructor}
         onLockClick={onLockClick}
+        onGlossary={() => setGlossaryOpen(true)}
         teamName={teamName}
         scoreText={scoreText}
+      />
+
+      <GlossaryModal
+        open={glossaryOpen}
+        terms={glossary}
+        onClose={() => setGlossaryOpen(false)}
       />
 
       <PhaseNav active={activePhase} phases={phases} onChange={setActivePhase} doneIds={doneIds} />
