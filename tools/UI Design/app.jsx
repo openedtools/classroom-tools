@@ -189,10 +189,6 @@ function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossa
           <span className="dtg-label">DTG</span>
           <span className="dtg-value">{dtg}</span>
         </div>
-        <div className="trainee-block">
-          <span className="trainee-label">TRAINEE</span>
-          <span className="trainee-id">CDT-4471 · WALSH, T.</span>
-        </div>
         {status?.label && (
           <div className={`op-status status-${status.tone || "amber"}`}>
             <span className="status-dot" />
@@ -355,7 +351,6 @@ function ObjectiveSidebar({ objectives }) {
             {items.map(o => (
               <div className={`obj-row state-${o.state}`} key={o.code}>
                 <StateGlyph state={o.state} />
-                <span className="obj-code">{o.code}</span>
                 <span className="obj-label">{o.label}</span>
               </div>
             ))}
@@ -382,14 +377,12 @@ function MissionBrief() {
         <span className="meta-chip">INTSUM</span>
         <span className="meta-chip muted">SER 047-26</span>
         <span className="meta-chip muted">SRC // ALL-SOURCE</span>
-        <span className="meta-chip muted">REL TO TRAINEE</span>
       </div>
       <h1 className="brief-title">
         <span className="brief-pre">MISSION BRIEF //</span>
-        <span className="brief-h">OPERATION NORTHERN VEIL</span>
       </h1>
       <div className="brief-sub">
-        Coalition intelligence cell · Tasked to assess Donovian intent toward Gorgas across six intelligence domains.
+        Coalition intelligence cell · Tasked to assess Donovian intent toward Gorgas across seven intelligence domains.
       </div>
     </section>
   );
@@ -829,6 +822,68 @@ function buildReviewExplanation(activity, row, context = {}) {
   }
 }
 
+function reviewExplanationText(activity, row, context = {}) {
+  const base = buildReviewExplanation(activity, row, context).trim();
+  const feedback = activity.feedback || {};
+
+  if (row.ok) {
+    return base || feedback.correct || "";
+  }
+
+  const extraParts = [];
+  const correct = row.correct && row.correct !== "No correct option defined" ? row.correct : "";
+
+  switch (activity.type) {
+    case "classification":
+      extraParts.push("The lesson is asking what the item really is or does, not just what it mentions.");
+      if (correct) extraParts.push(`The correct category is ${correct}.`);
+      break;
+    case "decision":
+      extraParts.push("This is a role-matching question, so the best answer is the one that fits the intelligence task.");
+      if (correct) extraParts.push(`The correct choice is ${correct}.`);
+      break;
+    case "fillslot":
+      extraParts.push("Read the whole sentence around the blank. The missing term must make the statement accurate.");
+      if (correct) extraParts.push(`In this case, the sentence needs ${correct}.`);
+      break;
+    case "matching":
+      extraParts.push("Match the main idea in the definition, not only a nearby keyword.");
+      if (correct) extraParts.push(`That clue points to ${correct}.`);
+      break;
+    case "sequencing": {
+      const correctIds = activity.correct || activity.items.map(item => item.id);
+      const index = correctIds.indexOf(context.correctId);
+      const prevItem = index > 0 ? activity.items.find(item => item.id === correctIds[index - 1]) : null;
+      const nextItem = index >= 0 && index < correctIds.length - 1 ? activity.items.find(item => item.id === correctIds[index + 1]) : null;
+      extraParts.push("This stage has to sit in the chain order shown in the lesson.");
+      if (prevItem && nextItem) {
+        extraParts.push(`It comes after ${prevItem.text} and before ${nextItem.text}.`);
+      } else if (prevItem) {
+        extraParts.push(`It comes after ${prevItem.text}.`);
+      } else if (nextItem) {
+        extraParts.push(`It comes before ${nextItem.text}.`);
+      }
+      break;
+    }
+    case "ranking":
+      extraParts.push("The number shows where this item belongs in the sequence or priority order.");
+      if (correct) extraParts.push(`The correct rank is ${correct}.`);
+      break;
+    case "multiselect":
+      extraParts.push(correct === "Should be selected"
+        ? "This statement belongs in the review because it supports the lesson point directly."
+        : "This statement should stay out because it does not support the lesson point.");
+      break;
+    default:
+      break;
+  }
+
+  if (feedback.incorrect) extraParts.push(feedback.incorrect);
+  if (feedback.whyMatters) extraParts.push(feedback.whyMatters);
+
+  return [base, ...extraParts].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+}
+
 function activityReviewRows(activity, response) {
   const rows = [];
   switch (activity.type) {
@@ -840,7 +895,12 @@ function activityReviewRows(activity, response) {
           user: labelForCategory(activity, user),
           correct: labelForCategory(activity, item.correct),
           ok: user === item.correct,
-          explanation: item.explanation || activity.feedback?.explanations?.[item.id] || buildReviewExplanation(activity, { label: item.text, correct: labelForCategory(activity, item.correct) }),
+          explanation: reviewExplanationText(activity, {
+            ok: user === item.correct,
+            user: labelForCategory(activity, user),
+            correct: labelForCategory(activity, item.correct),
+            explanation: item.explanation || activity.feedback?.explanations?.[item.id],
+          }, { label: item.text, correct: labelForCategory(activity, item.correct) }),
         });
       });
       break;
@@ -852,7 +912,12 @@ function activityReviewRows(activity, response) {
         user: selected ? selected.text : "Not selected",
         correct: correct ? correct.text : "No correct option defined",
         ok: Boolean(selected && selected.correct),
-        explanation: selected?.explanation || correct?.explanation || buildReviewExplanation(activity, { correct: correct ? correct.text : "No correct option defined" }, { selected, correct }),
+        explanation: reviewExplanationText(activity, {
+          ok: Boolean(selected && selected.correct),
+          user: selected ? selected.text : "Not selected",
+          correct: correct ? correct.text : "No correct option defined",
+          explanation: selected?.explanation || correct?.explanation,
+        }, { selected, correct }),
       });
       break;
     }
@@ -864,7 +929,12 @@ function activityReviewRows(activity, response) {
           user: answerText(user),
           correct: answerText(slot.correct),
           ok: user === slot.correct,
-          explanation: slot.explanation || buildReviewExplanation(activity, { correct: answerText(slot.correct) }),
+          explanation: reviewExplanationText(activity, {
+            ok: user === slot.correct,
+            user: answerText(user),
+            correct: answerText(slot.correct),
+            explanation: slot.explanation,
+          }, { slot }),
         });
       });
       break;
@@ -878,7 +948,12 @@ function activityReviewRows(activity, response) {
           user: userTarget ? userTarget.text : "Not matched",
           correct: correctTarget ? correctTarget.text : "No correct target defined",
           ok: userTargetId === correctTarget?.id,
-          explanation: item.explanation || correctTarget?.explanation || buildReviewExplanation(activity, { label: item.text, correct: correctTarget ? correctTarget.text : "No correct target defined" }),
+          explanation: reviewExplanationText(activity, {
+            ok: userTargetId === correctTarget?.id,
+            user: userTarget ? userTarget.text : "Not matched",
+            correct: correctTarget ? correctTarget.text : "No correct target defined",
+            explanation: item.explanation || correctTarget?.explanation,
+          }, { item, target: correctTarget }),
         });
       });
       break;
@@ -893,7 +968,12 @@ function activityReviewRows(activity, response) {
           user: userItem ? userItem.text : "Missing",
           correct: correctItem ? correctItem.text : "Missing",
           ok: currentOrder[index] === id,
-          explanation: correctItem?.explanation || buildReviewExplanation(activity, { correct: correctItem ? correctItem.text : "Missing" }, { position: index + 1 }),
+          explanation: reviewExplanationText(activity, {
+            ok: currentOrder[index] === id,
+            user: userItem ? userItem.text : "Missing",
+            correct: correctItem ? correctItem.text : "Missing",
+            explanation: correctItem?.explanation,
+          }, { position: index + 1, correctId: id }),
         });
       });
       break;
@@ -905,7 +985,12 @@ function activityReviewRows(activity, response) {
           user: answerText(response.ranks?.[item.id]),
           correct: String(item.correct),
           ok: Number(response.ranks?.[item.id]) === Number(item.correct),
-          explanation: item.explanation || buildReviewExplanation(activity, { label: item.text, correct: String(item.correct) }),
+          explanation: reviewExplanationText(activity, {
+            ok: Number(response.ranks?.[item.id]) === Number(item.correct),
+            user: answerText(response.ranks?.[item.id]),
+            correct: String(item.correct),
+            explanation: item.explanation,
+          }, { item }),
         });
       });
       break;
@@ -917,7 +1002,12 @@ function activityReviewRows(activity, response) {
           user: selected.has(option.id) ? "Selected" : "Not selected",
           correct: option.correct ? "Should be selected" : "Should not be selected",
           ok: selected.has(option.id) === option.correct,
-          explanation: option.explanation || buildReviewExplanation(activity, { correct: option.correct ? "Should be selected" : "Should not be selected" }, { item: option }),
+          explanation: reviewExplanationText(activity, {
+            ok: selected.has(option.id) === option.correct,
+            user: selected.has(option.id) ? "Selected" : "Not selected",
+            correct: option.correct ? "Should be selected" : "Should not be selected",
+            explanation: option.explanation,
+          }, { item: option }),
         });
       });
       break;

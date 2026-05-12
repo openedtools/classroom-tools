@@ -52,10 +52,10 @@ body {
     var(--bg-0);
 }
 
-.mono, .panel-tag, .panel-meta, .meta-chip, .obj-code, .dom-tag, .dom-count,
+.mono, .panel-tag, .panel-meta, .meta-chip, .dom-tag, .dom-count,
 .actor-code, .tag, .legend-item, .ret-coord, .map-coords span, .kv-k, .kv-v,
 .bm-k, .bb-tag, .ret-name, .save-text, .op-code, .dtg-label, .dtg-value,
-.trainee-label, .trainee-id, .status-text, .num-done, .num-slash, .num-total,
+.status-text, .num-done, .num-slash, .num-total,
 .phase-num, .pir-issued, .pir-class, .step-n, .brief-pre, .stance, .posture,
 .dom-count, .side-count, .foot-pull, .panel-foot, .deadline, .side-title,
 .brief-meta { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
@@ -128,19 +128,19 @@ body {
   color: var(--text-0);
   font-weight: 600;
 }
-.dtg, .trainee-block {
+.dtg {
   display: flex; flex-direction: column;
   border-left: 1px solid var(--border-1);
   padding-left: 14px;
   line-height: 1.1;
 }
-.dtg-label, .trainee-label {
+.dtg-label {
   font-size: 9.5px;
   letter-spacing: 0.16em;
   color: var(--text-2);
   margin-bottom: 4px;
 }
-.dtg-value, .trainee-id {
+.dtg-value {
   font-size: 12px;
   letter-spacing: 0.08em;
   color: var(--text-0);
@@ -517,7 +517,7 @@ body {
 /* ─── LAYOUT ─────────────────────────────────────────────────────────── */
 .layout {
   display: grid;
-  grid-template-columns: 296px 1fr;
+  grid-template-columns: 248px minmax(0, 1fr);
   gap: 0;
   min-height: calc(100vh - 130px);
 }
@@ -526,10 +526,10 @@ body {
 .sidebar {
   background: var(--bg-1);
   border-right: 1px solid var(--border-1);
-  padding: 20px 18px 24px;
+  padding: 18px 14px 22px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 .sidebar-header {
   display: flex; align-items: baseline; justify-content: space-between;
@@ -591,7 +591,7 @@ body {
 
 .obj-row {
   display: grid;
-  grid-template-columns: 14px 38px 1fr;
+  grid-template-columns: 14px 1fr;
   gap: 8px;
   align-items: baseline;
   padding: 3px 4px;
@@ -602,7 +602,6 @@ body {
 .obj-row:hover { background: var(--bg-2); border-left-color: var(--border-2); }
 .obj-row.state-2 { color: var(--text-0); }
 .obj-row.state-0 .obj-label { color: var(--text-2); }
-.obj-code { font-size: 9.5px; color: var(--text-3); letter-spacing: 0.05em; }
 .obj-label { font-size: 11.5px; line-height: 1.3; }
 
 .sidebar-footer {
@@ -1628,5 +1627,5 @@ body {
   .sidebar { border-right: none; border-bottom: 1px solid var(--border-1); }
   .topbar { flex-wrap: wrap; }
   .topbar-right { flex-wrap: wrap; }
-  .team-pill, .score-pill, .dtg, .trainee-block { padding-left: 10px; }
+  .team-pill, .score-pill, .dtg { padding-left: 10px; }
 }
