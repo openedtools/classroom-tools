@@ -856,6 +856,11 @@ function ActivityCard({
             </div>
             <div>
               <div className="match-label">Descriptions</div>
+              <div className="match-status">
+                {response.pending
+                  ? `Selected term: ${activity.items.find(item => item.id === response.pending)?.text || response.pending}. Click the matching description.`
+                  : "Click a term on the left, then choose the matching description."}
+              </div>
               {activity.targets.map(target => {
                 const paired = response.pairs && Object.entries(response.pairs).find(([, value]) => value === target.id);
                 const pairedText = paired ? activity.items.find(item => item.id === paired[0])?.text : null;
@@ -863,12 +868,12 @@ function ActivityCard({
                   <button
                     key={target.id}
                     type="button"
-                    className="match-target"
+                    className={`match-target ${pairedText ? "paired" : ""}`}
                     onClick={() => onChange("matchDrop", activity.id, target.id)}
                     disabled={locked || !response.pending}
                   >
-                    <span>{target.text}</span>
-                    {pairedText && <span className="slot-chip">{pairedText}</span>}
+                    <span className="match-target-text">{target.text}</span>
+                    {pairedText && <span className="slot-chip">Matched: {pairedText}</span>}
                   </button>
                 );
               })}
