@@ -513,14 +513,12 @@ function PIRPanel({ pirText, pirIssuedBy, pirIssuedDTG }) {
       <header className="panel-head pir-head">
         <span className="panel-tag flag-amber">PIR</span>
         <span className="panel-title">COMMANDER'S PRIORITY INTELLIGENCE REQUIREMENT</span>
-        <span className="panel-meta deadline">DEADLINE T-72:00:00</span>
       </header>
       <div className="pir-body">
         <span className="quote-mark">"</span>
         <p className="pir-text">{pirText}</p>
         <div className="pir-foot">
           <span className="pir-issued">ISSUED · {pirIssuedBy} · {pirIssuedDTG}</span>
-          <span className="pir-class">REL TO TRAINEE</span>
         </div>
       </div>
     </section>
@@ -744,6 +742,126 @@ function objectiveBoost(activity, submitted) {
   }, {});
 }
 
+function hashString(text) {
+  let hash = 2166136261;
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function seededShuffle(items, seed) {
+  const out = [...items];
+  let s = hashString(seed) || 1;
+  for (let i = out.length - 1; i > 0; i -= 1) {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    const j = s % (i + 1);
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+function labelForCategory(activity, id) {
+  return activity.categories?.find(cat => cat.id === id)?.label || id || "Not selected";
+}
+
+function answerText(value) {
+  return value ? String(value) : "Not selected";
+}
+
+function activityReviewRows(activity, response) {
+  const rows = [];
+  switch (activity.type) {
+    case "classification":
+      activity.items.forEach(item => {
+        const user = response.answers?.[item.id] || "";
+        rows.push({
+          label: item.text,
+          user: labelForCategory(activity, user),
+          correct: labelForCategory(activity, item.correct),
+          ok: user === item.correct,
+        });
+      });
+      break;
+    case "decision": {
+      const selected = activity.options.find(opt => opt.id === response.selected);
+      const correct = activity.options.find(opt => opt.correct);
+      rows.push({
+        label: "Selected answer",
+        user: selected ? selected.text : "Not selected",
+        correct: correct ? correct.text : "No correct option defined",
+        ok: Boolean(selected && selected.correct),
+      });
+      break;
+    }
+    case "fillslot":
+      activity.sentence.filter(part => part.type === "slot").forEach(slot => {
+        const user = response.slots?.[slot.id] || "";
+        rows.push({
+          label: slot.id.replace(/^slot/, "Blank "),
+          user: answerText(user),
+          correct: answerText(slot.correct),
+          ok: user === slot.correct,
+        });
+      });
+      break;
+    case "matching":
+      activity.items.forEach(item => {
+        const correctTarget = activity.targets.find(target => target.correct === item.id);
+        const userTargetId = response.pairs?.[item.id];
+        const userTarget = activity.targets.find(target => target.id === userTargetId);
+        rows.push({
+          label: item.text,
+          user: userTarget ? userTarget.text : "Not matched",
+          correct: correctTarget ? correctTarget.text : "No correct target defined",
+          ok: userTargetId === correctTarget?.id,
+        });
+      });
+      break;
+    case "sequencing": {
+      const correctOrder = activity.correct || activity.items.map(item => item.id);
+      const currentOrder = response.order || [];
+      correctOrder.forEach((id, index) => {
+        const correctItem = activity.items.find(item => item.id === id);
+        const userItem = activity.items.find(item => item.id === currentOrder[index]);
+        rows.push({
+          label: `Position ${index + 1}`,
+          user: userItem ? userItem.text : "Missing",
+          correct: correctItem ? correctItem.text : "Missing",
+          ok: currentOrder[index] === id,
+        });
+      });
+      break;
+    }
+    case "ranking":
+      activity.items.forEach(item => {
+        rows.push({
+          label: item.text,
+          user: answerText(response.ranks?.[item.id]),
+          correct: String(item.correct),
+          ok: Number(response.ranks?.[item.id]) === Number(item.correct),
+        });
+      });
+      break;
+    case "multiselect": {
+      const selected = new Set(response.selected || []);
+      activity.options.forEach(option => {
+        rows.push({
+          label: option.text,
+          user: selected.has(option.id) ? "Selected" : "Not selected",
+          correct: option.correct ? "Should be selected" : "Should not be selected",
+          ok: selected.has(option.id) === option.correct,
+        });
+      });
+      break;
+    }
+    default:
+      break;
+  }
+  return rows;
+}
+
 function StudentAccessModal({ open, onSubmit, error }) {
   const [teamName, setTeamName] = useState("");
   const [password, setPassword] = useState("");
@@ -843,10 +961,24 @@ function ActivityHeader({ activity }) {
 function ActivityFeedback({ activity, response }) {
   if (!response?.submitted) return null;
   const correct = response.score >= activity.points;
+  const rows = activityReviewRows(activity, response);
   return (
     <div className={`feedback-box ${correct ? "good" : "bad"}`}>
       <div className="feedback-title">{correct ? "Correct" : "Review"}</div>
       <div className="feedback-copy">{correct ? activity.feedback.correct : activity.feedback.incorrect}</div>
+      {rows.length > 0 && (
+        <div className="feedback-review">
+          {rows.map((row, index) => (
+            <div className={`feedback-row ${row.ok ? "row-good" : "row-bad"}`} key={`${activity.id}-${index}`}>
+              <div className="feedback-row-label">{row.label}</div>
+              <div className="feedback-row-values">
+                <span className={`feedback-chip ${row.ok ? "chip-good" : "chip-bad"}`}>Your answer: {row.user}</span>
+                <span className="feedback-chip chip-good">Correct answer: {row.correct}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="feedback-copy subtle">{activity.feedback.whyMatters}</div>
       {activity.feedback.evidenceClue && <div className="feedback-copy subtle">{activity.feedback.evidenceClue}</div>}
     </div>
@@ -861,6 +993,9 @@ function ActivityCard({
 }) {
   const submitted = response?.submitted;
   const locked = Boolean(submitted);
+  const matchingItems = activity.type === "matching" ? seededShuffle(activity.items || [], `${activity.id}:items`) : activity.items || [];
+  const matchingTargets = activity.type === "matching" ? seededShuffle(activity.targets || [], `${activity.id}:targets`) : activity.targets || [];
+  const classificationCategories = activity.type === "classification" ? seededShuffle(activity.categories || [], `${activity.id}:categories`) : activity.categories || [];
 
   return (
     <section className={`activity-card panel ${locked ? "submitted" : ""}`}>
@@ -869,7 +1004,7 @@ function ActivityCard({
         {activity.type === "classification" && (
           <div className="classification-grid">
             {activity.items.map(item => (
-              <label className="classify-row" key={item.id}>
+              <label className={`classify-row ${submitted ? (response.answers?.[item.id] === item.correct ? "row-good" : "row-bad") : ""}`} key={item.id}>
                 <span className="classify-text">{item.text}</span>
                 <select
                   className="classify-select"
@@ -878,7 +1013,7 @@ function ActivityCard({
                   disabled={locked}
                 >
                   <option value="">Choose...</option>
-                  {activity.categories.map(cat => (
+                  {classificationCategories.map(cat => (
                     <option key={cat.id} value={cat.id}>{cat.label}</option>
                   ))}
                 </select>
@@ -890,7 +1025,18 @@ function ActivityCard({
         {activity.type === "decision" && (
           <div className="decision-grid">
             {activity.options.map(option => (
-              <label className={`decision-option ${response.selected === option.id ? "selected" : ""}`} key={option.id}>
+              <label
+                className={`decision-option ${
+                  response.selected === option.id
+                    ? option.correct
+                      ? "selected selected-good"
+                      : "selected selected-bad"
+                    : submitted && option.correct
+                      ? "correct-answer"
+                      : ""
+                }`}
+                key={option.id}
+              >
                 <input
                   type="radio"
                   name={activity.id}
@@ -908,6 +1054,7 @@ function ActivityCard({
           <div className="fill-sentence">
             {activity.sentence.map((part, index) => {
               if (part.type === "text") return <span key={index}>{part.text}</span>;
+              const slotOptions = seededShuffle(part.options || [], `${activity.id}:${part.id}:options`);
               return (
                 <select
                   key={part.id}
@@ -917,7 +1064,7 @@ function ActivityCard({
                   disabled={locked}
                 >
                   <option value="">Choose...</option>
-                  {part.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                  {slotOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                 </select>
               );
             })}
@@ -928,7 +1075,7 @@ function ActivityCard({
           <div className="matching-grid">
             <div>
               <div className="match-label">Terms</div>
-              {activity.items.map(item => (
+              {matchingItems.map(item => (
                 <button
                   key={item.id}
                   type="button"
@@ -944,12 +1091,12 @@ function ActivityCard({
               <div className="match-label">Descriptions</div>
               <div className="match-status">
                 {response.pending
-                  ? `Selected term: ${activity.items.find(item => item.id === response.pending)?.text || response.pending}. Click the matching description.`
+                  ? `Selected term: ${matchingItems.find(item => item.id === response.pending)?.text || response.pending}. Click the matching description.`
                   : "Click a term on the left, then choose the matching description."}
               </div>
-              {activity.targets.map(target => {
+              {matchingTargets.map(target => {
                 const paired = response.pairs && Object.entries(response.pairs).find(([, value]) => value === target.id);
-                const pairedText = paired ? activity.items.find(item => item.id === paired[0])?.text : null;
+                const pairedText = paired ? matchingItems.find(item => item.id === paired[0])?.text : null;
                 return (
                   <button
                     key={target.id}
@@ -1017,7 +1164,11 @@ function ActivityCard({
                 <button
                   key={option.id}
                   type="button"
-                  className={`ms-opt ${selected ? "mso-selected" : ""}`}
+                  className={`ms-opt ${
+                    selected && option.correct ? "mso-selected mso-good" :
+                    selected && !option.correct ? "mso-selected mso-bad" :
+                    submitted && option.correct ? "mso-correct" : ""
+                  }`}
                   onClick={() => onChange("toggle", activity.id, option.id)}
                   disabled={locked}
                 >
@@ -1090,6 +1241,18 @@ const PhaseWorkspace = React.forwardRef(function PhaseWorkspace({ phase, respons
               onSubmit={onSubmit}
             />
           ))}
+        </div>
+      )}
+
+      {restored && (
+        <div className="phase-footer">
+          <button
+            type="button"
+            className="btn btn-ghost phase-top-btn"
+            onClick={() => ref?.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          >
+            Go to Top
+          </button>
         </div>
       )}
     </section>

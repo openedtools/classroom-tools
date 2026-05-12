@@ -8,7 +8,7 @@ window.NorthernVeilContent = {
       subtitle: "Operation Northern Veil",
       domain: null,
       objectiveIds: [],
-      inject: `You are the coalition intelligence cell supporting Gorgas leadership. Donovian rhetoric toward Gorgas has sharpened over the past two weeks, with renewed claims that Russian-speaking Zabzimeks are under threat. The commander wants you to integrate multi-domain reporting and warn of cross-border action.`,
+      inject: `You are the coalition intelligence cell supporting Gorgas leadership. Donovian rhetoric toward Gorgas has sharpened over the past two weeks, with renewed claims that Donovian-language Zabzimeks are under threat. The commander wants you to integrate multi-domain reporting and warn of cross-border action.`,
       evidenceCards: [
         {
           id: "ev-cmdr-001",
@@ -25,12 +25,12 @@ window.NorthernVeilContent = {
       subtitle: "Lesson 4.6 - Information Operations",
       domain: "io",
       objectiveIds: ["4.6-ie-dimensions", "4.6-disinformation"],
-      inject: `Donovian state media and aligned social accounts have launched a coordinated narrative claiming that Gorgas is preparing ethnic violence against Zabzimeki civilians. The campaign distributes fabricated footage, real documents stripped of context, and amplified social media posts designed to shape international opinion against Gorgas. Coalition signals intelligence has detected coordinated hashtag activity originating from Donovian-linked accounts, reaching audiences in 14 countries within 90 minutes. Open-source researchers have geolocated several video clips to Donovian training grounds - not Gorgas territory. Gorgas issued public denials, but its estimated audience reach was approximately 12 percent of the original campaign's reach. Your intelligence cell has been asked to characterize the IO campaign: identify which dimensions of the Information Environment are being targeted, classify the type of information being used in each report, and clarify the intelligence officer's correct role in supporting the coalition's response.`,
+      inject: `Donovian state media and aligned social accounts have launched a coordinated narrative claiming that Gorgas is preparing ethnic violence against Zabzimeki civilians. The campaign distributes fabricated footage, recycled clips stripped of context, and amplified social media posts designed to shape international opinion against Gorgas. Coalition signals intelligence has detected coordinated hashtag activity originating from Donovian-linked accounts, reaching audiences in 14 countries within 90 minutes. Open-source researchers have geolocated several video clips to Donovian training grounds - not Gorgas territory. Your intelligence cell has been asked to characterize the IO campaign: identify which dimensions of the Information Environment are being targeted, classify the type of information being used in each report, and clarify the intelligence officer's correct role in supporting the coalition's response.`,
       evidenceCards: [
         {
           id: "e1-1",
           title: 'State Broadcast - "Gorgas Army Moves on Civilians"',
-          summary: "Donovian state television claims Gorgas military is mobilizing against Zabzimeki civilians. No independent verification.",
+          summary: "Donovian state television claims Gorgas military is mobilizing against Zabzimeki civilians. The claim is fabricated and part of a coordinated narrative.",
           detail: "Broadcast aired at 1423L. The segment uses inflammatory framing and unverified footage. Within two hours, the same broadcast was re-aired by three Donovian-aligned regional networks. An open-source researcher later identified the visual material as footage from a Donovian military exercise conducted in 2023 - geolocated to Donovia, not Gorgas. The broadcast was produced and distributed intentionally."
         },
         {
@@ -88,25 +88,24 @@ window.NorthernVeilContent = {
           type: "classification",
           typeLabel: "Activity 2 of 4 - Classification",
           points: 5,
-          instruction: "Classify each item. The key rule: check for intent. If deliberately false - Disinformation. If false but no intent to deceive - Misinformation. If true but released to cause harm - Malinformation.",
+          instruction: "Classify each item as Disinformation or Misinformation. Use the intent rule: deliberate falsehood = Disinformation; false content shared without intent to deceive = Misinformation.",
           objectiveIds: ["4.6-disinformation"],
           items: [
             { id: "j1", text: "Donovian state broadcast using footage deliberately fabricated and produced for this campaign", correct: "disinformation" },
             { id: "j2", text: "Separatist social post sharing recycled footage - the poster appears to believe it is authentic", correct: "misinformation" },
-            { id: "j3", text: "Leaked Gorgas readiness memo - a genuine document published to imply offensive intent", correct: "malinformation" },
-            { id: "j4", text: "Gorgas official denial - the Gorgas government believes its own statement is accurate", correct: "misinformation" },
+            { id: "j3", text: "Leaked Gorgas readiness memo - a genuine document published by Donovian media to imply offensive intent", correct: "disinformation" },
+            { id: "j4", text: "Gorgas social-media user reposting an edited clip believing it came from this morning's border crossing", correct: "misinformation" },
             { id: "j5", text: "Coordinated hashtag amplification - state-directed, knowingly spreading a false narrative", correct: "disinformation" }
           ],
           categories: [
             { id: "disinformation", label: "Disinformation" },
-            { id: "misinformation", label: "Misinformation" },
-            { id: "malinformation", label: "Malinformation" }
+            { id: "misinformation", label: "Misinformation" }
           ],
           feedback: {
-            correct: "All five correctly classified. Intent is the determining factor in every case.",
-            incorrect: "Apply the intent rule. Disinformation: sender knows it is false and spreads it deliberately. Misinformation: sender believes it is true, even if wrong. Malinformation: content is factually true but released to cause harm. The leaked memo (Card 3) cannot be called false - calling it false would damage the coalition's own credibility.",
-            whyMatters: "These distinctions determine the correct response. Disinformation requires counter-messaging and source exposure. Misinformation requires correction and education. Malinformation requires context and framing - you cannot claim it is false without undermining your own credibility.",
-            evidenceClue: "Evidence Card 3 is the critical Malinformation example. The memo is genuine. Its weaponization through misleading framing is the operation - this is most commonly confused with Disinformation, but the content itself is real."
+            correct: "All five correctly classified. Intent is the key discriminator between disinformation and misinformation.",
+            incorrect: "Apply the intent rule. Disinformation is false content spread deliberately to deceive. Misinformation is false content shared without intent to deceive. If the poster believes the claim is true, it is misinformation even if the content is wrong.",
+            whyMatters: "The category tells you how to respond. Deliberate falsehood needs exposure and counter-messaging. Honest error needs correction. The same false clip can be handled differently depending on what the sender knew and intended.",
+            evidenceClue: "Card 1 is deliberate fabrication, Card 2 is accidental sharing of false context, Card 3 is weaponized genuine material framed as something else, Card 4 is a mistaken repost, and Card 5 is coordinated deliberate amplification."
           }
         },
         {
@@ -123,10 +122,10 @@ window.NorthernVeilContent = {
             { id: "d", text: "Monitor and manage coalition social media accounts to amplify the Gorgas denial message across the 14 affected countries." }
           ],
           feedback: {
-            correct: "Correct. Intelligence officers research and analyze - they do not produce or broadcast IO content. MISO units act on the targeting intelligence that analysts provide.",
-            incorrect: "Intelligence officers do not produce or broadcast IO content. Their role is analytical: identify who is being targeted, what the adversary is trying to achieve, and what vulnerabilities are being exploited. MISO units produce and broadcast based on that analysis.",
-            whyMatters: "Conflating the intelligence role with MISO leads to two failures: analysts become advocates (bad analysis) or MISO operates without targeting intelligence (bad messaging). The intel officer feeds the MISO planner; the MISO planner executes.",
-            evidenceClue: "Evidence Card 5 shows coordinated amplification in 14 countries across four languages. The intel officer's job is to analyze that and tell planners: these are the target audiences, these are the psychological vulnerabilities being exploited, this is what Donovian success looks like."
+            correct: "Correct. Intelligence officers analyze the target audience, vulnerabilities, and likely effects; MISO uses that analysis to shape messaging.",
+            incorrect: "The intelligence role is analytic, not operational. The intel officer identifies the target audiences, the vulnerabilities being exploited, and what effect the adversary is trying to create. MISO uses that assessment to design the messaging response.",
+            whyMatters: "If you blur intelligence analysis with message production, you lose the target picture that planners need and you risk turning analysts into advocates instead of assessors.",
+            evidenceClue: "The campaign is already reaching multiple countries in multiple languages. The intelligence question is not how to message it first; it is who is being targeted, how, and why."
           }
         },
         {
@@ -291,7 +290,7 @@ Coalition intelligence is tasked to assess: Is this criminal opportunism exploit
       subtitle: "Lesson 4.1 - Geospatial Intelligence",
       domain: "geoint",
       objectiveIds: ["4.1-geoint-elements", "4.1-geoint-limits"],
-      inject: `Coalition imagery assets and a commercial electro-optical satellite pass have detected significant military activity north of the Gorgas border. A motor pool 12 kilometers inside Donovian territory shows approximately 40 wheeled vehicles - including fuel tankers - staged in a pattern consistent with pre-movement preparation. A 48-hour Wide-Area Motion Imagery collection window covered the nearest Donovian border town, capturing and recording all vehicle movement across the area. Full Motion Video assets tracked a vehicle convoy moving south along Route 7 for 12 continuous minutes before the collection platform had to reposition. Moving Target Indicator data flagged 15 vehicles transiting the Zabzimek corridor overnight.
+      inject: `Coalition imagery assets and a commercial electro-optical satellite pass have detected significant military activity north of the Gorgas border. A motor pool 12 kilometers inside Donovian territory shows approximately 40 wheeled vehicles - including fuel tankers - staged in a pattern consistent with pre-movement preparation. A 48-hour Wide-Area Motion Imagery (WAMI) collection window covered the nearest Donovian border town, capturing and recording all vehicle movement across the area. Full Motion Video (FMV) assets tracked a vehicle convoy moving south along Route 7 for 12 continuous minutes before the collection platform had to reposition. Moving Target Indicator (MTI) data flagged 15 vehicles transiting the Zabzimek corridor overnight.
 
 Your intelligence cell must now analyze the imagery picture: identify which GEOINT product provides what type of coverage, determine which product best supports a retrospective analysis of historical vehicle movement, and correctly assess what the imagery can and cannot confirm - particularly regarding a warehouse on the northeast edge of the motor pool that is showing a heat signature.`,
       evidenceCards: [
@@ -310,13 +309,13 @@ Your intelligence cell must now analyze the imagery picture: identify which GEOI
         {
           id: "e3-3",
           title: "FMV Clip - Route 7 Convoy, 12 Minutes",
-          summary: "Full Motion Video tracked a vehicle convoy southbound on Route 7 for 12 continuous minutes before the collection platform repositioned.",
+          summary: "Full Motion Video (FMV) tracked a vehicle convoy southbound on Route 7 for 12 continuous minutes before the collection platform repositioned.",
           detail: "Collection window: 12 minutes of continuous video on a specific convoy of 8 vehicles moving south along Route 7 toward the Gorgas border. The FMV sensor provided a focused, high-detail view of this specific convoy - sometimes called a soda straw view because the sensor sees clearly but only within a narrow field of view. Lead vehicle type confirmed as a wheeled armored transport. After 12 minutes, the collection platform had to reposition to another task. FMV provides excellent detail on the specific target it is watching but cannot simultaneously cover other areas or reconstruct movement that occurred before the sensor was cued to this convoy."
         },
         {
           id: "e3-4",
-          title: "MTI Vehicle Plot - Zabzimek Corridor, Overnight",
-          summary: "Moving Target Indicator data flagged 15 vehicles transiting the Zabzimek corridor between 2200L and 0400L.",
+          title: "Moving Target Indicator (MTI) Vehicle Plot - Zabzimek Corridor, Overnight",
+          summary: "Moving Target Indicator (MTI) data flagged 15 vehicles transiting the Zabzimek corridor between 2200L and 0400L.",
           detail: "MTI detected and flagged movement of 15 vehicles transiting a route between Donovia and the Zabzimek region overnight. MTI works by detecting and flagging moving objects - it can identify that vehicles are moving and plot their tracks across a wide area, but unlike FMV it does not provide continuous detailed video of any single vehicle. MTI is valuable for detecting movement at night or in poor visibility. The track data shows a consistent movement pattern suggesting deliberate, organized transit rather than routine civilian traffic."
         },
         {
@@ -335,10 +334,10 @@ Your intelligence cell must now analyze the imagery picture: identify which GEOI
           instruction: "Match each GEOINT product to its defining characteristic. Click a term on the left, then click the correct description on the right.",
           objectiveIds: ["4.1-geoint-elements"],
           items: [
-            { id: "g-fmv", text: "FMV" },
-            { id: "g-mti", text: "MTI" },
-            { id: "g-wami", text: "WAMI" },
-            { id: "g-sar", text: "SAR" }
+            { id: "g-fmv", text: "Full Motion Video (FMV)" },
+            { id: "g-mti", text: "Moving Target Indicator (MTI)" },
+            { id: "g-wami", text: "Wide-Area Motion Imagery (WAMI)" },
+            { id: "g-sar", text: "Synthetic Aperture Radar (SAR)" }
           ],
           targets: [
             { id: "t-fmv", text: 'Focused, continuous video of a specific target - "soda straw" view; best for tracking one target in detail', correct: "g-fmv" },
@@ -347,8 +346,8 @@ Your intelligence cell must now analyze the imagery picture: identify which GEOI
             { id: "t-sar", text: "Emits its own radar energy; provides all-weather, day/night imaging regardless of cloud cover or darkness", correct: "g-sar" }
           ],
           feedback: {
-            correct: "All four matched correctly. FMV = focused soda straw continuous video. MTI = wide-area movement detection and tracking. WAMI = persistent recording with forensic look-back. SAR = active radar, all-weather capable.",
-            incorrect: "Review the four products. FMV gives a clear, continuous but narrow view of one target. MTI detects and plots anything moving across a wide area. WAMI records everything across a wide area and can be rewound - that is the forensic look-back capability. SAR sends out its own radar signal, making it active and weather-independent.",
+            correct: "All four matched correctly. Full Motion Video (FMV) = focused soda straw continuous video. Moving Target Indicator (MTI) = wide-area movement detection and tracking. Wide-Area Motion Imagery (WAMI) = persistent recording with forensic look-back. Synthetic Aperture Radar (SAR) = active radar, all-weather capable.",
+            incorrect: "Review the four products. Full Motion Video (FMV) gives a clear, continuous but narrow view of one target. Moving Target Indicator (MTI) detects and plots anything moving across a wide area. Wide-Area Motion Imagery (WAMI) records everything across a wide area and can be rewound - that is the forensic look-back capability. Synthetic Aperture Radar (SAR) sends out its own radar signal, making it active and weather-independent.",
             whyMatters: "Knowing which product to request for which intelligence question is a core GEOINT tasking skill. Requesting FMV when you need historical look-back, or WAMI when you only need a focused 12-minute track, wastes collection time and leaves gaps in the intelligence picture.",
             evidenceClue: "Cards 2, 3, and 4 show WAMI, FMV, and MTI in action. Card 3 uses the phrase soda straw to describe FMV. Card 2 describes the forensic look-back that is unique to WAMI. SAR does not appear in the collected evidence but is a testable product from your lesson."
           }
@@ -361,14 +360,14 @@ Your intelligence cell must now analyze the imagery picture: identify which GEOI
           instruction: "An analyst needs to reconstruct all vehicle movement around the border town from three days ago - before any specific convoy was being tracked. Which GEOINT product best answers this requirement?",
           objectiveIds: ["4.1-geoint-elements"],
           options: [
-            { id: "o1", text: "FMV - it provides continuous, high-detail video of specific vehicle movement", correct: false },
-            { id: "o2", text: "MTI - it detects moving vehicles and generates historical track plots", correct: false },
-            { id: "o3", text: "WAMI - it records all movement across the wide area continuously and supports forensic look-back of past coverage", correct: true },
-            { id: "o4", text: "EO satellite image - it provides the highest-resolution snapshot of vehicle positions", correct: false }
+            { id: "o1", text: "Full Motion Video (FMV) - it provides continuous, high-detail video of specific vehicle movement", correct: false },
+            { id: "o2", text: "Moving Target Indicator (MTI) - it detects moving vehicles and generates historical track plots", correct: false },
+            { id: "o3", text: "Wide-Area Motion Imagery (WAMI) - it records all movement across the wide area continuously and supports forensic look-back of past coverage", correct: true },
+            { id: "o4", text: "Electro-Optical (EO) satellite image - it provides the highest-resolution snapshot of vehicle positions", correct: false }
           ],
           feedback: {
-            correct: "Correct. WAMI's forensic look-back capability is specifically designed for this requirement. The analyst needs to go back in time across a wide area - WAMI recorded everything continuously during that window, so any location can be replayed from any point in the collection period.",
-            incorrect: "The key requirement is retrospective: what happened across the whole border town three days ago. FMV only shows what it was cued to watch in real time. MTI generates movement plots but is not the primary forensic tool. EO gives a position snapshot, not movement over time. Only WAMI records everything continuously and enables look-back across the full area.",
+            correct: "Correct. Wide-Area Motion Imagery (WAMI)'s forensic look-back capability is specifically designed for this requirement. The analyst needs to go back in time across a wide area - WAMI recorded everything continuously during that window, so any location can be replayed from any point in the collection period.",
+            incorrect: "The key requirement is retrospective: what happened across the whole border town three days ago. Full Motion Video (FMV) only shows what it was cued to watch in real time. Moving Target Indicator (MTI) generates movement plots but is not the primary forensic tool. Electro-Optical (EO) gives a position snapshot, not movement over time. Only WAMI records everything continuously and enables look-back across the full area.",
             whyMatters: "Forensic look-back is WAMI's defining capability. When you need to reconstruct past movement over a wide area without having pre-tasked a sensor to a specific location, WAMI is the only motion imagery product that can do it.",
             evidenceClue: "Evidence Card 2 describes this exactly: WAMI captured 48 hours of movement and analysts can rewind and replay any location within that area at any point during the 48-hour window. That is forensic look-back applied to this scenario."
           }
@@ -425,37 +424,37 @@ Your intelligence cell must now analyze the imagery picture: identify which GEOI
       subtitle: "Lessons 4.2 & 4.3 - EM Theory & Radar",
       domain: "ems",
       objectiveIds: ["ems-freq", "ems-elint", "radar-kc", "radar-imm"],
-      inject: `As Donovia's IO campaign and cyber disruptions continue, coalition SIGINT collectors begin detecting a surge of radar emissions along the Donovian side of the border. Emissions span multiple frequency bands - from long-range early warning pulses to a brief, alarming Fire Control radar spike that lasted only four seconds before ceasing. A Ground Control Intercept voice intercept was also recorded, consistent with directing fighter aircraft toward a contact.
+      inject: `As Donovia's IO campaign and cyber disruptions continue, coalition SIGINT collectors begin detecting a surge of radar emissions along the Donovian side of the border. Emissions span multiple frequency bands - from long-range Early Warning (EW) pulses to a brief, alarming Fire Control (FC) spike that lasted only four seconds before ceasing. A Ground Control Intercept (GCI) voice intercept was also recorded, consistent with directing fighter aircraft toward a contact.
 
 The current collector position is partially blocked by a ridgeline that interrupts line-of-sight to one of the primary emitter sites. An alternate hilltop position 18 kilometers to the east has been identified with clear line-of-sight to all detected emitters.
 
-Your cell must classify each emission as ELINT or COMINT, apply the kill chain framework to assess how close Donovia is to an engagement decision, and recommend the correct response to the terrain masking problem.`,
+In this phase, classify each emission as ELINT or COMINT, apply the kill chain framework to assess how close Donovia is to an engagement decision, and recommend the correct response to the terrain masking problem.`,
       evidenceCards: [
         {
           id: "e4-1",
           domain: "ems",
-          title: "Early Warning Radar - Long-Range Detection",
+          title: "Early Warning Radar (EW) - Long-Range Detection",
           summary: "VHF-band radar emissions detected at approximately 380 km range. Long pulse, intermittent activation. Assessed as Early Warning radar.",
           detail: "Emissions consistent with an Early Warning (EW) radar: very high frequency (VHF) band, which produces long wavelengths and achieves maximum detection range at the cost of resolution. The long pulse width and intermittent activation pattern are consistent with a search radar sweeping a broad area. EW radar is the Find layer of the Integrated Air Defense System - its activation indicates Donovia is scanning for airborne threats at long range. Detection of EW emissions at 380 km confirms the sensor is active but does not indicate imminent engagement. This is a non-communications electromagnetic emission."
         },
         {
           id: "e4-2",
           domain: "ems",
-          title: "Target Acquisition Radar - Three Bursts Over Six Hours",
+          title: "Target Acquisition Radar (TA) - Three Bursts Over Six Hours",
           summary: "L/S-band radar detected in three separate bursts over 6 hours. Shorter pulse width, higher precision than EW. Assessed as Target Acquisition radar.",
           detail: "Three discrete emission bursts were recorded from an L/S-band radar over a 6-hour window. L/S-band operates at higher frequency than VHF - shorter wavelength, shorter range, but significantly better resolution and precision. This emission profile is consistent with a Target Acquisition (TA) radar that acquires and tracks specific contacts identified by the Early Warning radar. TA radar activation indicates Donovia has moved from broad-area detection to tracking specific contacts - a significant escalation in the IADS operational posture. This is a non-communications electromagnetic emission categorized under ELINT."
         },
         {
           id: "e4-3",
           domain: "ems",
-          title: "Fire Control Radar Spike - X-Band, 4 Seconds",
+          title: "Fire Control Radar (FC) Spike - X-Band, 4 Seconds",
           summary: "X-band emission detected for approximately 4 seconds, then ceased immediately. Very high frequency, narrow beam. Assessed as Fire Control radar. Highest concern.",
           detail: "A 4-second emission burst was detected in the X-band - one of the highest frequency radar bands in operational use. X-band produces very short wavelengths, enabling extremely fine angular resolution and precise range measurement: characteristics required for weapons guidance. A Fire Control (FC) radar lock-on, even briefly, indicates the IADS has moved to the Engage stage of the kill chain. FC radar activation is the most imminent indicator available in an emissions picture - it means a weapon system is being prepared for guidance. The brief duration may indicate a system check, a brief track, or an aborted engagement decision. Regardless, this emission demands immediate attention. This is ELINT."
         },
         {
           id: "e4-4",
           domain: "ems",
-          title: "GCI Voice Intercept - Encrypted, Aircraft Coordination",
+          title: "Ground Control Intercept (GCI) Voice Intercept - Encrypted, Aircraft Coordination",
           summary: "Encrypted voice transmission intercepted on a frequency consistent with Ground Control Intercept operations. Content assessed as aircraft intercept coordination.",
           detail: "A voice radio transmission was intercepted from a frequency and emitter location consistent with a Ground Control Intercept (GCI) station. The transmission was encrypted, but transmission timing, frequency, and call patterns are consistent with a GCI controller directing fighter aircraft toward an airborne contact. GCI is the communications and coordination layer of the IADS - it orchestrates the intercept by directing fighters based on radar track data. Unlike the other emissions in this picture, this is a communications intercept - voice and data communications content - not a radar emission. That distinction determines which SIGINT category it falls under."
         },
@@ -488,14 +487,14 @@ Your cell must classify each emission as ELINT or COMINT, apply the kill chain f
             { id: "f-mid", text: "Mid-range frequency" }
           ],
           targets: [
-            { id: "t-low", text: "Long detection range, coarser resolution - suited for early warning at maximum distance", correct: "f-low" },
-            { id: "t-high", text: "Short range, fine resolution - suited for precision targeting and weapons guidance", correct: "f-high" },
-            { id: "t-mid", text: "Balance of range and resolution - suited for target acquisition and tracking", correct: "f-mid" }
+            { id: "t-low", text: "Long detection range, coarser resolution - suited for Early Warning (EW) at maximum distance", correct: "f-low" },
+            { id: "t-high", text: "Short range, fine resolution - suited for Fire Control (FC) precision targeting and weapons guidance", correct: "f-high" },
+            { id: "t-mid", text: "Balance of range and resolution - suited for Target Acquisition (TA) and tracking", correct: "f-mid" }
           ],
           feedback: {
-            correct: "All three matched correctly. Low frequency = long range, coarse resolution (EW radar). High frequency = short range, fine resolution (Fire Control radar). Mid-range = the balance point used for Target Acquisition.",
+            correct: "All three matched correctly. Low frequency = long range, coarse resolution (Early Warning radar). High frequency = short range, fine resolution (Fire Control radar). Mid-range = the balance point used for Target Acquisition.",
             incorrect: "Remember the inverse relationship: as frequency increases, wavelength decreases, range decreases, and resolution improves. Low frequency reaches far but sees coarsely. High frequency sees precisely but only at short range. This is why different radar roles use different frequency bands.",
-            whyMatters: "The FC radar spike in Card 3 is X-band - the highest frequency in this emissions picture. That high frequency is what makes it capable of guiding a weapon to a target. The EW radar in Card 1 is VHF - low frequency, which is why it can detect targets at 380 km even though it cannot identify them precisely.",
+            whyMatters: "The Fire Control radar spike in Card 3 is X-band - the highest frequency in this emissions picture. That high frequency is what makes it capable of guiding a weapon to a target. The Early Warning radar in Card 1 is VHF - low frequency, which is why it can detect targets at 380 km even though it cannot identify them precisely.",
             evidenceClue: "Card 1 (VHF, 380 km range) = low frequency, long range. Card 3 (X-band, 4-second precision spike) = high frequency, short range, fire-control grade. Card 2 (L/S-band, target acquisition) = mid-range balance."
           }
         },
@@ -554,12 +553,12 @@ Your cell must classify each emission as ELINT or COMINT, apply the kill chain f
           objectiveIds: ["radar-imm"],
           items: [
             { id: "r-ew", text: "Early Warning radar activation - VHF-band, long-range detection sweep", correct: 1 },
-            { id: "r-gci", text: "GCI voice intercept - encrypted coordination consistent with directing interceptors", correct: 2 },
+            { id: "r-gci", text: "Ground Control Intercept (GCI) voice intercept - encrypted coordination consistent with directing interceptors", correct: 2 },
             { id: "r-ta", text: "Target Acquisition radar bursts - three bursts over 6 hours, precision tracking", correct: 3 },
             { id: "r-fc", text: "Fire Control radar spike - X-band, 4 seconds, weapons-guidance grade precision", correct: 4 }
           ],
           feedback: {
-            correct: "Correct ranking. EW = Find stage (1). GCI = coordination to direct interceptors (2). TA = Fix/Track stage (3). FC radar spike = Target/Engage stage - most imminent (4). If FC radar is active, the adversary is at the threshold of firing.",
+            correct: "Correct ranking. Early Warning radar = Find stage (1). Ground Control Intercept (GCI) = coordination to direct interceptors (2). Target Acquisition radar = Fix/Track stage (3). Fire Control radar spike = Target/Engage stage - most imminent (4). If Fire Control radar is active, the adversary is at the threshold of firing.",
             incorrect: "Map each radar to its kill chain stage. EW is the Find layer - earliest, least imminent. GCI directs interceptors, indicating a contact has been detected and fighters are being vectored. TA is the Fix layer - the adversary is tracking a specific target. FC is the Engage layer - a weapon is being guided. FC is always the most imminent indicator.",
             whyMatters: "A commander receiving an intelligence update needs to know: is Donovia at the watching stage or the shooting stage? EW activation is a watch indicator. FC radar activation is a shoot indicator. That difference drives whether advisories go out, aircraft maneuver, or ordnance is employed.",
             evidenceClue: "Card 3 (FC radar spike, 4 seconds) is the most alarming emission in this entire picture - it placed Donovia at the Engage stage of the kill chain, if only briefly. Card 1 (EW radar) indicates active surveillance but no imminent action. The picture has escalated across the collection window."
@@ -579,7 +578,7 @@ Your cell must classify each emission as ELINT or COMINT, apply the kill chain f
             { id: "d4", text: "Request replacement by a space-based collection asset - terrain masking makes ground collection unreliable", correct: false }
           ],
           feedback: {
-            correct: "Correct. Terrain masking is a line-of-sight problem, not a signal strength problem. The only solution is repositioning to a location with unobstructed LOS. The eastern hilltop provides that. Moving west increases distance without solving the LOS problem. Space-based assets may supplement but cannot replace the collection flexibility of a repositioned ground system.",
+            correct: "Correct. Terrain masking is a line-of-sight problem, not a signal strength problem. The only solution is repositioning to a location with unobstructed line-of-sight (LOS). The eastern hilltop provides that. Moving west increases distance without solving the LOS problem. Space-based assets may supplement but cannot replace the collection flexibility of a repositioned ground system.",
             incorrect: "Terrain masking is caused by the loss of electromagnetic line-of-sight - a ridge physically blocks the straight-line path between the sensor and the emitter. Atmospheric conditions do not cause it and cannot resolve it. Moving west increases distance without solving the geometry. The fix is always to restore line-of-sight - and the eastern hilltop does exactly that.",
             whyMatters: "SIGINT collector siting is an intelligence task, not just a logistics decision. A collector placed behind terrain is effectively blind to anything that ridge blocks, regardless of its technical capability. Intelligence officers must understand LOS geometry to correctly advise on collection positioning - and to recognize when a collection gap is a terrain problem versus a system problem.",
             evidenceClue: "Card 5 explains the terrain masking problem explicitly - the ridge creates a physical obstruction, not a signal degradation. Card 6 identifies the solution: the eastern hilltop with confirmed clear LOS to all emitters. The physics determines the answer."
@@ -593,49 +592,49 @@ Your cell must classify each emission as ELINT or COMINT, apply the kill chain f
       subtitle: "Lesson 4.4 - IR Threats & Airframe Survival",
       domain: "ir",
       objectiveIds: ["4.4-ir-signatures"],
-      inject: `As Donovia's border pressure increases, coalition aircrews begin reporting more nighttime missile activity along the same corridor. FLIR passes reveal warm vehicle signatures on unimproved tracks, and a suspected IR-guided MANPADS position has been identified near the route. Analysts also note that one newer missile type appears to use an Imaging Infrared seeker rather than a simple hot-spot tracker.
+      inject: `As Donovia's border pressure increases, coalition aircrews begin reporting more nighttime missile activity along the same corridor. Forward-Looking Infrared (FLIR) passes reveal warm vehicle signatures on unimproved tracks, and a suspected IR-guided Man-Portable Air Defense System (MANPADS) position has been identified near the route. Analysts also note that one newer missile type appears to use an Imaging Infrared (IIR) seeker rather than a simple hot-spot tracker.
 
-Your cell must identify the primary IR vulnerability on the aircraft, distinguish hot-spot seekers from IIR seekers, and choose the correct countermeasure for each threat type. Remember: IR sees heat, flares are the classic decoy for hot-spot seekers, and IIR seekers are harder to fool because they see the shape of the target rather than just one bright point.`,
+In this phase, identify the primary IR vulnerability on the aircraft, distinguish hot-spot seekers from IIR seekers, and choose the correct countermeasure for each threat type. Remember: IR sees heat, flares are the classic decoy for hot-spot seekers, and IIR seekers are harder to fool because they see the shape of the target rather than just one bright point.`,
       evidenceCards: [
         {
           id: "e5-1",
           domain: "ir",
-          title: "Hot Engine Exhaust - Primary IR Vulnerability",
+          title: "Hot Engine Exhaust - Primary Infrared (IR) Vulnerability",
           summary: "The exhaust plume and nozzle glow are the brightest heat source on the airframe and the easiest thing for an IR seeker to lock.",
           detail: "IR seekers look for heat. The hottest, most exposed part of an aircraft is the engine exhaust, especially during high power settings and afterburner use. That bright heat source is the primary vulnerability for an IR-homing missile. Aspect angle matters too: the closer the missile looks straight into the exhaust, the stronger the signature becomes."
         },
         {
           id: "e5-2",
           domain: "ir",
-          title: "IR-Homing MANPADS - Hot-Spot Tracker",
+          title: "IR-Homing Man-Portable Air Defense System (MANPADS) - Hot-Spot Tracker",
           summary: "This seeker locks the hottest point it can see and can be seduced by a hotter flare.",
           detail: "A hot-spot tracker is the classic IR-homing missile seeker. It does not build a full image of the aircraft; it simply chases the hottest point. If a flare is hotter than the aircraft exhaust, the seeker can be pulled away from the airframe and into the decoy. This is why flares remain the standard countermeasure against basic IR-homing threats."
         },
         {
           id: "e5-3",
           domain: "ir",
-          title: "Imaging Infrared Seeker - Shape Recognition",
+          title: "Imaging Infrared (IIR) Seeker - Shape Recognition",
           summary: "IIR seekers build a thermal picture of the target, making them much harder to fool with flares alone.",
           detail: "An Imaging Infrared seeker sees the whole thermal silhouette, not just a single bright dot. That means it can compare shape, contrast, and target patterning. A flare is still a bright point, but the aircraft remains a recognizable thermal object. Because of that, IIR seekers are much harder to defeat with flares alone and typically require tactical maneuver in addition to decoy use."
         },
         {
           id: "e5-4",
           domain: "ir",
-          title: "FLIR Overflight - Surface Heat Detection",
+          title: "Forward-Looking Infrared (FLIR) Overflight - Surface Heat Detection",
           summary: "A forward-looking infrared sensor detects warm vehicles along the tracks at night.",
           detail: "FLIR is a thermal imaging sensor used by aircraft and drones to observe the ground in low light or at night. It detects heat signatures on the surface, making it ideal for spotting vehicles, exhaust plumes, and recent movement. FLIR is a passive sensor: it does not emit energy to collect the picture."
         },
         {
           id: "e5-5",
           domain: "ir",
-          title: "IRST - Passive Fighter Sensor",
+          title: "Infrared Search and Track (IRST) - Passive Fighter Sensor",
           summary: "An infrared search-and-track system can detect aircraft heat without emitting radar energy.",
           detail: "IRST is a passive infrared sensor used on fighter aircraft to detect and track other aircraft. Because it does not send out radar energy, it is harder to detect than an active radar system. It is useful for finding hot targets at range and for supporting silent air-to-air search."
         },
         {
           id: "e5-6",
           domain: "ir",
-          title: "SBIRS - Space-Based Missile Warning",
+          title: "Space-Based Infrared System (SBIRS) - Missile Warning",
           summary: "A satellite sensor watches for launch plumes and rocket exhaust to provide missile warning.",
           detail: "SBIRS is a space-based infrared system built to detect rocket motor exhaust and launch plumes. Its purpose is missile warning and strategic alerting, not air-to-air guidance. In the lesson context, it is one of the best examples of a space-based IR sensor doing a specific warning mission."
         }
@@ -649,11 +648,11 @@ Your cell must identify the primary IR vulnerability on the aircraft, distinguis
           instruction: "Match each IR system or seeker to its best description. Click a term on the left, then the matching description on the right.",
           objectiveIds: ["4.4-ir-signatures"],
           items: [
-            { id: "ir1", text: "FLIR" },
-            { id: "ir2", text: "IRST" },
-            { id: "ir3", text: "SBIRS" },
+            { id: "ir1", text: "Forward-Looking Infrared (FLIR)" },
+            { id: "ir2", text: "Infrared Search and Track (IRST)" },
+            { id: "ir3", text: "Space-Based Infrared System (SBIRS)" },
             { id: "ir4", text: "Hot-spot tracker" },
-            { id: "ir5", text: "IIR seeker" }
+            { id: "ir5", text: "Imaging Infrared (IIR) seeker" }
           ],
           targets: [
             { id: "irt1", text: "Passive thermal imaging for airborne or ground surveillance", correct: "ir1" },
@@ -663,7 +662,7 @@ Your cell must identify the primary IR vulnerability on the aircraft, distinguis
             { id: "irt5", text: "Forms a thermal image of the target and is harder to fool with flares alone", correct: "ir5" }
           ],
           feedback: {
-            correct: "Correct. FLIR is for passive thermal imaging, IRST is a passive air-to-air sensor, SBIRS is space-based missile warning, hot-spot trackers chase the brightest point, and IIR seekers build a fuller thermal picture of the target.",
+            correct: "Correct. Forward-Looking Infrared (FLIR) is passive thermal imaging, Infrared Search and Track (IRST) is a passive air-to-air sensor, Space-Based Infrared System (SBIRS) is space-based missile warning, hot-spot trackers chase the brightest point, and Imaging Infrared (IIR) seekers build a fuller thermal picture of the target.",
             incorrect: "Review the difference between an IR sensor and an IR seeker. FLIR, IRST, and SBIRS are sensor systems. Hot-spot trackers and IIR seekers are missile seekers. The key distinction is whether the system is observing or trying to guide a weapon.",
             whyMatters: "If you can name the sensor or seeker correctly, you can pick the right countermeasure and avoid mixing passive sensors with threat seekers.",
             evidenceClue: "Cards 4, 5, and 6 cover FLIR, IRST, and SBIRS. Cards 2 and 3 cover the two seeker types you need to distinguish."
@@ -680,8 +679,8 @@ Your cell must identify the primary IR vulnerability on the aircraft, distinguis
             { id: "i5-1", text: "Hot engine exhaust on the aircraft", correct: "signature" },
             { id: "i5-2", text: "Flares released from the aircraft", correct: "countermeasure" },
             { id: "i5-3", text: "Chaff bundle released from the aircraft", correct: "radar-countermeasure" },
-            { id: "i5-4", text: "Imaging Infrared seeker on the missile", correct: "seeker" },
-            { id: "i5-5", text: "FLIR sensor on an aircraft or drone", correct: "sensor" }
+            { id: "i5-4", text: "Imaging Infrared (IIR) seeker on the missile", correct: "seeker" },
+            { id: "i5-5", text: "Forward-Looking Infrared (FLIR) sensor on an aircraft or drone", correct: "sensor" }
           ],
           categories: [
             { id: "signature", label: "IR Signature" },
