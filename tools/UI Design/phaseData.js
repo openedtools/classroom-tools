@@ -1093,59 +1093,99 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
     "phase-8-final": {
       id: "phase-8-final",
       title: "Final Review",
-      subtitle: "Block 4 Synthesis",
+      subtitle: "Commander Estimate Board",
       domain: "review",
       objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.3-radar-kill-chain", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits"],
-      inject: `This final review phase is a consolidation space. Use it to revisit the commander PIR and the Block 4 multi-domain problem set: GEOINT product selection, EM spectrum and line-of-sight, radar kill chain stage analysis, IR threats and countermeasures, cyber actor attribution, IO dimensions and intent, ISR cycle tasking, and space orbital tradeoffs. The intent is not to introduce new material but to let students check whether they can connect each lesson back to the scenario without relying on the evidence tiles alone.`,
+      inject: `This final review is the commander estimate board. Use the evidence from GEOINT, EMS, IR, cyber, IO, ISR, and space to answer the PIR as one integrated assessment: is Donovia preparing a limited cross-border operation within the next 72 hours? The goal is to brief the answer, name the indicators that support it, and call out the remaining collection gaps. No new tradecraft should be introduced here - this phase exists to synthesize what the earlier lessons already taught.`,
       evidenceCards: [
         {
           id: "e8-1",
           domain: "review",
-          title: "Block 4 Recap - GEOINT to Space",
-          summary: "A one-page synthesis of the major concepts covered in the restored trainer.",
-          detail: "GEOINT focused on products and limitations. EMS focused on frequency, line-of-sight, ELINT, and COMINT. IR focused on heat signatures and countermeasures. Cyber focused on actor classification and cyber-enabled effects. IO focused on intent and the cognitive dimension. ISR focused on PIR tasking and the cycle. Space focused on orbit mission fit and counterspace escalation."
+          title: "Commander Estimate - PIR Crosswalk",
+          summary: "Each domain contributes a separate clue, but the answer only becomes useful when the clues are read together.",
+          detail: "GEOINT confirms vehicle parks, movement patterns, and what imagery cannot prove by itself. EMS shows radar emission behavior, line-of-sight limits, and possible jamming or deception. IR highlights night movement, thermal staging, and heat signatures that support or contradict the ground picture. Cyber points to access disruption, compromised accounts, and deliberate shaping of the information environment. IO shows the cognitive campaign that is preparing audiences for Donovian action. ISR turns the commander's PIR into collection tasks and routes the finished assessment back to decision-makers. Space matters because PNT, orbit selection, and counterspace effects can change collection endurance and maneuver. Taken together, those signals support a limited cross-border warning assessment rather than a single-source conclusion."
+        },
+        {
+          id: "e8-2",
+          domain: "review",
+          title: "Collection Gaps and Confidence",
+          summary: "The cell can brief likely intent, but the exact crossing point and H-hour still need confirmation.",
+          detail: "The current picture supports a moderate-confidence judgment that Donovia is preparing a limited cross-border operation. What remains unconfirmed is the exact axis of advance, the final crossing point, and whether the supporting package is meant to coerce or to seize ground. The next collection priorities are focused GEOINT on staging areas and routes, ISR on the suspected axis, EMS on emitter changes, and space support on collection access and PNT resilience."
         }
       ],
       activities: [
         {
           id: "p8a1",
           type: "decision",
-          typeLabel: "Activity 1 of 2 - Decision",
+          typeLabel: "Activity 1 of 3 - Decision",
           points: 2,
-          instruction: "Which statement best captures how the Block 4 domains combine to answer the commander PIR?",
+          instruction: "Which commander BLUF best fits the integrated evidence for the PIR?",
           objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.3-radar-kill-chain", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits"],
           options: [
-            { id: "r8-1", text: "Use GEOINT, EMS, IR, cyber, IO, ISR, and space together to test whether Donovia is preparing a limited cross-border operation within 72 hours.", correct: true, explanation: "That is the synthesis the commander needs: a multi-domain answer tied to the PIR." },
-            { id: "r8-2", text: "Treat each domain as separate and brief only the most dramatic single-source clue.", correct: false, explanation: "The review phase is about integration, not cherry-picking one clue." },
-            { id: "r8-3", text: "Focus only on the latest imagery and ignore cyber, space, and information effects.", correct: false, explanation: "The scenario is intentionally multi-domain, so one source is not enough." }
+            { id: "r8-1", text: "Donovia is likely preparing a limited cross-border operation within 72 hours; brief moderate confidence, note the remaining axis and H-hour gaps, and keep collection focused.", correct: true, explanation: "That is the integrated commander estimate: a likely, limited operation with a clear collection gap still to close." },
+            { id: "r8-2", text: "The situation is only an IO and cyber story, so the commander should ignore maneuver indicators until there is a confirmed crossing.", correct: false, explanation: "The evidence is multi-domain, and the ground picture matters as much as the information campaign." },
+            { id: "r8-3", text: "The evidence proves a full-scale invasion is imminent, so no additional collection is necessary.", correct: false, explanation: "The scenario supports a limited warning assessment, not an absolute conclusion about a larger offensive." }
           ],
           feedback: {
-            correct: "Correct. The final review is about integrating all of Block 4 back to the commander PIR.",
-            incorrect: "The review phase is a synthesis check. GEOINT, EMS, IR, cyber, IO, ISR, and space each contribute part of the answer, but none of them is sufficient on its own.",
-            whyMatters: "The commander is not asking for a domain-by-domain recap. The value of the block is whether you can combine those domains into one coherent assessment.",
-            evidenceClue: "The recap card on this phase names each domain and the final review prompt asks you to connect them back to the PIR."
+            correct: "Correct. The best BLUF is a moderate-confidence warning assessment: Donovia is likely preparing a limited cross-border operation within 72 hours, with the remaining gap focused on route and H-hour.",
+            incorrect: "This phase is a synthesis check. The right answer is not a single dramatic source or a broad strategic guess; it is a balanced commander estimate that uses GEOINT, EMS, IR, cyber, IO, ISR, and space together.",
+            whyMatters: "The commander needs a decision-ready assessment, not a recap of the lesson list. The review is successful when you can bridge the domains into one coherent warning judgment.",
+            evidenceClue: "The estimate board, the collection gap card, and the lower-domain crosswalk should all point toward the same integrated answer."
           }
         },
         {
           id: "p8a2",
-          type: "multiselect",
-          typeLabel: "Activity 2 of 2 - Multi-Select",
-          points: 3,
-          instruction: "Select all statements that belong in a strong final review of the commander PIR.",
+          type: "matching",
+          typeLabel: "Activity 2 of 3 - Matching",
+          points: 7,
+          instruction: "Match each domain to the main contribution it makes to the final commander estimate.",
           objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits"],
-          options: [
-            { id: "m8-1", text: "GEOINT can confirm vehicle parks, movement patterns, and imagery limitations.", correct: true, explanation: "GEOINT helps define what can be confirmed from imagery and what cannot." },
-            { id: "m8-2", text: "EMS and IR can reveal emitters, line-of-sight limits, and thermal movement cues.", correct: true, explanation: "These domains help identify signatures and access limitations that matter to the PIR." },
-            { id: "m8-3", text: "Cyber and IO can indicate access disruption and deliberate influence shaping.", correct: true, explanation: "Those effects help explain how the adversary may be preparing the environment." },
-            { id: "m8-4", text: "ISR turns the commander PIR into collection tasks and routes the result to decision-makers.", correct: true, explanation: "That is the core tasking and dissemination logic from Phase 6." },
-            { id: "m8-5", text: "Space support matters because PNT, orbit selection, and counterspace effects can change collection and maneuver.", correct: true, explanation: "Space is part of the assessment because it affects navigation, access, and escalation." },
-            { id: "m8-6", text: "The final answer should rely on a single domain and ignore the rest.", correct: false, explanation: "The whole point of the review is to integrate the domains, not isolate one." }
+          items: [
+            { id: "dom1", text: "GEOINT", explanation: "Imagery shows staging, routes, and what cannot be proven from a single image." },
+            { id: "dom2", text: "EMS", explanation: "Emitters, line-of-sight, and jamming/deception clues help define the signal picture." },
+            { id: "dom3", text: "IR", explanation: "Thermal cues reveal night movement, staging, and heat signatures." },
+            { id: "dom4", text: "Cyber", explanation: "Access disruption and compromised accounts show the digital side of the campaign." },
+            { id: "dom5", text: "IO", explanation: "Narrative shaping shows how Donovia is preparing perceptions before action." },
+            { id: "dom6", text: "ISR", explanation: "The PIR becomes collection tasks and the assessment is routed back to the commander." },
+            { id: "dom7", text: "Space", explanation: "PNT, orbit coverage, and counterspace effects shape collection endurance and maneuver." }
+          ],
+          targets: [
+            { id: "t8-1", text: "Confirms vehicle parks, movement patterns, and imagery limits", correct: "dom1" },
+            { id: "t8-2", text: "Reveals emitters, line-of-sight limits, and possible jamming or deception", correct: "dom2" },
+            { id: "t8-3", text: "Flags thermal movement cues and night staging activity", correct: "dom3" },
+            { id: "t8-4", text: "Shows access disruption and deliberate digital effects", correct: "dom4" },
+            { id: "t8-5", text: "Indicates audience shaping and cognitive preparation", correct: "dom5" },
+            { id: "t8-6", text: "Turns the PIR into tasking and sends the result to the commander", correct: "dom6" },
+            { id: "t8-7", text: "Keeps the picture alive through PNT, orbit selection, and counterspace resilience", correct: "dom7" }
           ],
           feedback: {
-            correct: "Correct. Those statements all belong in a mature final review because they connect the lesson set back to the PIR.",
-            incorrect: "Keep the synthesis lens on. The final review should connect GEOINT, EMS, IR, cyber, IO, ISR, and space back to the commander question.",
-            whyMatters: "A good final answer is multi-domain and mission-focused. That is what the commander needs to decide whether Donovia is preparing to move.",
-            evidenceClue: "This phase exists to tie the earlier lessons back to the PIR without introducing new tradecraft."
+            correct: "Correct. Each domain feeds the same estimate from a different angle, and the commander only gets a useful answer when the domains are read together.",
+            incorrect: "Match the domain to the estimate contribution, not just the vocabulary. The final review is about what each domain contributes to the commander PIR.",
+            whyMatters: "A synthesis product has to show how each intelligence discipline adds value. If you cannot map the discipline to the estimate, the final brief will feel disconnected.",
+            evidenceClue: "The estimate board should line up with the evidence cards: GEOINT, EMS, IR, cyber, IO, ISR, and space each support a specific part of the answer."
+          }
+        },
+        {
+          id: "p8a3",
+          type: "fillslot",
+          typeLabel: "Activity 3 of 3 - Fill the Estimate",
+          points: 3,
+          instruction: "Complete the commander estimate sentence using the best synthesis terms.",
+          objectiveIds: ["4.7-isr-cycle", "4.8-orbits", "4.5-cyber-actors", "4.6-ie-dimensions"],
+          sentence: [
+            { type: "text", text: "The commander should brief a " },
+            { type: "slot", id: "slot1", options: ["low", "moderate", "high"], correct: "moderate", explanation: "The evidence is strong enough for a warning estimate, but not strong enough for absolute certainty." },
+            { type: "text", text: "-confidence assessment that Donovia is " },
+            { type: "slot", id: "slot2", options: ["likely", "certainly", "barely"], correct: "likely", explanation: "The cumulative indicators point toward likely preparation rather than mere possibility." },
+            { type: "text", text: " preparing a " },
+            { type: "slot", id: "slot3", options: ["limited cross-border operation", "strategic nuclear strike", "purely defensive patrol"], correct: "limited cross-border operation", explanation: "The scenario supports a limited cross-border warning assessment, not a larger strategic attack." },
+            { type: "text", text: " within 72 hours, while the main unresolved gaps remain the exact crossing point and H-hour." }
+          ],
+          feedback: {
+            correct: "Correct. That is the kind of concise, decision-ready estimate the commander needs.",
+            incorrect: "Keep the estimate bounded. The final review should be moderate-confidence, likely, and limited in scope - with the remaining gaps clearly named.",
+            whyMatters: "The point of the block is not to produce a dramatic one-line answer. It is to give the commander a measured, defensible judgment with the uncertainty stated up front.",
+            evidenceClue: "The previous evidence cards point to the same estimate: the domains reinforce a limited cross-border warning assessment, but not every detail is nailed down."
           }
         }
       ]
