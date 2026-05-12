@@ -42,6 +42,7 @@
   { "term": "C2", "def": "Command and Control - the communications link used by an attacker or commander to direct actions." },
   { "term": "TTP", "def": "Tactics, Techniques, and Procedures - the methods and patterns used by an actor." },
   { "term": "Dwell time", "def": "The length of time an intrusion remains undetected inside a network or environment." },
+  { "term": "Diamond Model of Intrusion Analysis", "def": "A cyber attribution framework that links adversary, capability, infrastructure, and victim across incidents." },
   { "term": "PIR", "def": "Priority Intelligence Requirement - the commander's top intelligence question." },
   { "term": "ISR", "def": "Intelligence, Surveillance, Reconnaissance - the broader collection and analysis cycle." },
   { "term": "P&D", "def": "Planning and Direction - the ISR stage where requirements become collection tasks." },

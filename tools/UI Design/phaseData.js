@@ -113,19 +113,19 @@ window.NorthernVeilContent = {
           type: "decision",
           typeLabel: "Activity 3 of 4 - Best Answer",
           points: 1,
-          instruction: "Coalition IO planners need analytical support from your cell. What is the intelligence officer's primary role in supporting this IO campaign response?",
+          instruction: "Coalition IO planners need analytical support from your cell. How should the intelligence officer distinguish MISO from MILDEC while supporting this IO campaign response?",
           objectiveIds: ["4.6-disinformation"],
           options: [
-            { id: "a", text: "Research Donovian audience targeting - identify which populations are being influenced, what psychological vulnerabilities are being exploited, and what the adversary's messaging objectives are. Feed that analysis to MISO planners.", correct: true, explanation: "The intelligence officer's job is analysis: identify the target audience, vulnerabilities, and intended effect, then pass that to MISO planners." },
+            { id: "a", text: "Assess the target audience, the vulnerability being exploited, and whether the operation is intended to persuade a foreign audience (MISO) or deceive adversary decision-makers about intent and capability (MILDEC), then pass that analysis to planners.", correct: true, explanation: "The intelligence officer's job is analysis: identify the audience, effect, and deception intent, then hand that distinction to the planners." },
             { id: "b", text: "Broadcast counter-MISO messages directly to Gorgas and Zabzimeki civilian audiences to rebut the Donovian narrative in real time.", explanation: "That is a messaging task, not an intelligence task." },
-            { id: "c", text: "Produce counter-narrative video content to respond to the Donovian state media broadcast segment.", explanation: "Creating the content is MISO work, not the intelligence officer's role." },
-            { id: "d", text: "Monitor and manage coalition social media accounts to amplify the Gorgas denial message across the 14 affected countries.", explanation: "This is a public affairs / messaging function, not the analytical role of the intel cell." }
+            { id: "c", text: "Call every false narrative MILDEC, because all propaganda is the same thing.", explanation: "MISO and MILDEC are related but not identical; the intent and audience differ." },
+            { id: "d", text: "Produce counter-narrative video content to respond to the Donovian state media broadcast segment.", explanation: "Creating the content is MISO work, not the intelligence officer's role." }
           ],
           feedback: {
-            correct: "Correct. Intelligence officers analyze the target audience, vulnerabilities, and likely effects; MISO uses that analysis to shape messaging.",
-            incorrect: "The intelligence role is analytic, not operational. The intel officer identifies the target audiences, the vulnerabilities being exploited, and what effect the adversary is trying to create. MISO uses that assessment to design the messaging response.",
-            whyMatters: "If you blur intelligence analysis with message production, you lose the target picture that planners need and you risk turning analysts into advocates instead of assessors.",
-            evidenceClue: "The campaign is already reaching multiple countries in multiple languages. The intelligence question is not how to message it first; it is who is being targeted, how, and why."
+            correct: "Correct. Intelligence officers analyze the audience and effect, then tell planners whether the activity is MISO shaping or MILDEC deception.",
+            incorrect: "The intelligence role is analytic, not operational. MISO seeks to influence a foreign audience. MILDEC seeks to deceive decision-makers about intent or capability. Your job is to identify which one the activity fits and why, not to write the message yourself.",
+            whyMatters: "If you blur MISO and MILDEC, you risk misreading the enemy's goal. A persuasive narrative aimed at foreign audiences is not the same thing as a deception plan aimed at decision-makers.",
+            evidenceClue: "The campaign is already reaching multiple countries in multiple languages. That is an influence problem for MISO analysis, but it is not the same as MILDEC unless the adversary is masking friendly intent or capability from decision-makers."
           }
         },
         {
@@ -423,7 +423,7 @@ Your intelligence cell must now analyze the imagery picture: identify which GEOI
       title: "Phase 4 - EMS, ELINT & Radar Kill Chain",
       subtitle: "Lessons 4.2 & 4.3 - EM Theory & Radar",
       domain: "ems",
-      objectiveIds: ["ems-freq", "ems-elint", "radar-kc", "radar-imm"],
+      objectiveIds: ["4.2-em-basics", "4.2-elint-vs-comint", "4.3-radar-kill-chain"],
       inject: `As Donovia's IO campaign and cyber disruptions continue, coalition SIGINT collectors begin detecting a surge of radar emissions along the Donovian side of the border. Emissions span multiple frequency bands - from long-range Early Warning (EW) pulses to a brief, alarming Fire Control (FC) spike that lasted only four seconds before ceasing. A Ground Control Intercept (GCI) voice intercept was also recorded, consistent with directing fighter aircraft toward a contact.
 
 The current collector position is partially blocked by a ridgeline that interrupts line-of-sight to one of the primary emitter sites. An alternate hilltop position 18 kilometers to the east has been identified with clear line-of-sight to all detected emitters.
@@ -480,7 +480,7 @@ In this phase, classify each emission as ELINT or COMINT, apply the kill chain f
           typeLabel: "Activity 1 of 5 - Matching",
           points: 3,
           instruction: "Match each frequency characteristic to its operational effect. Click a term on the left, then the correct description on the right.",
-          objectiveIds: ["ems-freq"],
+          objectiveIds: ["4.2-em-basics"],
           items: [
             { id: "f-low", text: "Low frequency / long wavelength" },
             { id: "f-high", text: "High frequency / short wavelength" },
@@ -504,7 +504,7 @@ In this phase, classify each emission as ELINT or COMINT, apply the kill chain f
           typeLabel: "Activity 2 of 5 - Classification",
           points: 4,
           instruction: "Classify each intercepted emission as ELINT or COMINT. ELINT = intelligence from non-communications electronic emitters (radars, beacons). COMINT = intelligence from voice and data communications.",
-          objectiveIds: ["ems-elint"],
+          objectiveIds: ["4.2-elint-vs-comint"],
           items: [
             { id: "em1", text: "Early Warning radar pulse - a non-communications radar emission used for air surveillance", correct: "elint" },
             { id: "em2", text: "Fire Control radar spike - a precision radar emission guiding a weapon system", correct: "elint" },
@@ -528,7 +528,7 @@ In this phase, classify each emission as ELINT or COMINT, apply the kill chain f
           typeLabel: "Activity 3 of 5 - Sequencing",
           points: 3,
           instruction: "Place the six stages of the kill chain in the correct order from first to last. Use the up/down arrows to reorder.",
-          objectiveIds: ["radar-kc"],
+          objectiveIds: ["4.3-radar-kill-chain"],
           items: [
             { id: "kc1", text: "Find - detect the target at long range; the Early Warning radar activation stage", correct: 1 },
             { id: "kc2", text: "Fix - precisely locate and identify the specific target", correct: 2 },
@@ -550,7 +550,7 @@ In this phase, classify each emission as ELINT or COMINT, apply the kill chain f
           typeLabel: "Activity 4 of 5 - Ranking",
           points: 3,
           instruction: "Rank these four radar events from least imminent (1) to most imminent (4) based on where each places Donovia in the kill chain. Rank 1 = earliest stage, least threatening right now. Rank 4 = closest to weapons release.",
-          objectiveIds: ["radar-imm"],
+          objectiveIds: ["4.3-radar-kill-chain"],
           items: [
             { id: "r-ew", text: "Early Warning radar activation - VHF-band, long-range detection sweep", correct: 1 },
             { id: "r-gci", text: "Ground Control Intercept (GCI) voice intercept - encrypted coordination consistent with directing interceptors", correct: 2 },
@@ -570,7 +570,7 @@ In this phase, classify each emission as ELINT or COMINT, apply the kill chain f
           typeLabel: "Activity 5 of 5 - Decision",
           points: 1,
           instruction: "The current collector position has intermittent line-of-sight to the Early Warning radar site due to a ridgeline. An alternate hilltop position 18 km to the east provides clear line-of-sight to all emitters. What should the collection team do?",
-          objectiveIds: ["ems-freq"],
+          objectiveIds: ["4.2-em-basics"],
           options: [
             { id: "d1", text: "Stay at the current position - terrain masking is a temporary atmospheric condition that will resolve on its own", correct: false },
             { id: "d2", text: "Move the collector further west to reduce the distance to the emitter sites and improve signal strength", correct: false },
@@ -592,7 +592,7 @@ In this phase, classify each emission as ELINT or COMINT, apply the kill chain f
       subtitle: "Lesson 4.4 - IR Threats & Airframe Survival",
       domain: "ir",
       objectiveIds: ["4.4-ir-signatures"],
-      inject: `As Donovia's border pressure increases, coalition aircrews begin reporting more nighttime missile activity along the same corridor. Forward-Looking Infrared (FLIR) passes reveal warm vehicle signatures on unimproved tracks, and a suspected IR-guided Man-Portable Air Defense System (MANPADS) position has been identified near the route. Analysts also note that one newer missile type appears to use an Imaging Infrared (IIR) seeker rather than a simple hot-spot tracker.
+      inject: `As Donovia's border pressure increases, coalition aircrews supporting patrols through the Zabzimek corridor begin reporting more nighttime missile activity along the same route. Forward-Looking Infrared (FLIR) passes from a coalition aircraft reveal warm vehicle signatures on unimproved tracks, and a suspected IR-guided Man-Portable Air Defense System (MANPADS) position has been identified near the route. Analysts also note that one newer missile type appears to use an Imaging Infrared (IIR) seeker rather than a simple hot-spot tracker.
 
 In this phase, identify the primary IR vulnerability on the aircraft, distinguish hot-spot seekers from IIR seekers, and choose the correct countermeasure for each threat type. Remember: IR sees heat, flares are the classic decoy for hot-spot seekers, and IIR seekers are harder to fool because they see the shape of the target rather than just one bright point.`,
       evidenceCards: [
@@ -766,7 +766,7 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
       title: "Phase 6 - ISR Fundamentals",
       subtitle: "Lesson 4.7 - ISR Cycle & Tasking",
       domain: "isr",
-      objectiveIds: ["4.7-isr-cycle", "4.7-pir-entry", "4.7-dcgs", "4.7-surveillance-recon"],
+      objectiveIds: ["4.7-isr-cycle"],
       inject: `The commander has issued a new Priority Intelligence Requirement (PIR): determine whether Donovia is preparing a limited cross-border operation within the next 72 hours. The Coalition J2 just released it down to your cell. Your job is to convert that one question into a real collection plan, run incoming sensor feeds through Processing & Exploitation, keep persistent surveillance separate from directed reconnaissance, and route the results back through the cycle. Below is a snapshot of what is already in motion: the PIR tasking memo, the current ISR collection plan, the DCGS exploitation queue, the border surveillance feed, and the Route 7 reconnaissance task order.`,
       evidenceCards: [
         {
@@ -861,7 +861,7 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
           typeLabel: "Activity 3 of 5 - Decision",
           points: 1,
           instruction: "Where does the commander's PIR enter the ISR cycle?",
-          objectiveIds: ["4.7-pir-entry"],
+          objectiveIds: ["4.7-isr-cycle"],
           options: [
             { id: "d1", text: "Planning & Direction (P&D) - the PIR is converted into collection tasks here", correct: true, explanation: "PIRs are routed into the cycle at Planning & Direction because that is where requirements become tasking." },
             { id: "d2", text: "Collection - the PIR is already a finished report at this point", correct: false, explanation: "Collection gathers raw data, but it does not start the cycle." },
@@ -881,7 +881,7 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
           typeLabel: "Activity 4 of 5 - Classification",
           points: 3,
           instruction: "Classify each activity as Surveillance or Reconnaissance.",
-          objectiveIds: ["4.7-surveillance-recon"],
+          objectiveIds: ["4.7-isr-cycle"],
           items: [
             { id: "sur1", text: "A continuous feed watching the border corridor all day and all night", correct: "surveillance", explanation: "This is persistent watch over an area, which is surveillance." },
             { id: "sur2", text: "A task-organized patrol sent to probe Route 7 for crossing indicators", correct: "reconnaissance", explanation: "This is a directed, time-limited probe for specific information, which is reconnaissance." },
@@ -905,7 +905,7 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
           typeLabel: "Activity 5 of 5 - Multi-Select",
           points: 4,
           instruction: "Select all statements that are true about ISR, DCGS, and the PIR process.",
-          objectiveIds: ["4.7-dcgs"],
+          objectiveIds: ["4.7-isr-cycle"],
           options: [
             { id: "ms6-1", text: "Planning & Direction is where the commander's PIR is turned into tasking.", correct: true, explanation: "Planning & Direction is the entry point for the PIR." },
             { id: "ms6-2", text: "DCGS is used during Processing & Exploitation.", correct: true, explanation: "DCGS is a processing and exploitation system." },
