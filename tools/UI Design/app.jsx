@@ -389,7 +389,7 @@ function MissionBrief() {
 }
 
 function MapPanel({ showReticle, showGrid, instructor, pin, onPinChange }) {
-  const safePin = pin && typeof pin.x === "number" ? pin : { x: 46, y: 61, label: "GORGAS — FOCUS" };
+  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ZABZIMEK" } : { x: 46, y: 61, label: "ZABZIMEK" };
   const wrapRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [editingLabel, setEditingLabel] = useState(false);
@@ -423,7 +423,7 @@ function MapPanel({ showReticle, showGrid, instructor, pin, onPinChange }) {
       </header>
       <div className={`map-wrap ${instructor ? 'instructor' : ''} ${dragging ? 'dragging' : ''}`} ref={wrapRef}>
         {showGrid && <div className="map-grid" />}
-        <img src="assets/eurasia-map.png" alt="Eurasia Region Map" className="map-img" draggable={false} />
+        <img src="assets/Eurasia_map_small.png" alt="Eurasia Region Map" className="map-img" draggable={false} />
         {instructor && (
           <div className="map-instructor-hint">
             <span className="hint-dot" /> INSTRUCTOR · DRAG PIN · CLICK LABEL TO RENAME
@@ -1020,6 +1020,80 @@ function activityReviewRows(activity, response) {
   return rows;
 }
 
+function objectiveStateLabel(state) {
+  if (state >= 2) return "Demonstrated";
+  if (state === 1) return "Practiced";
+  return "Not yet";
+}
+
+function sanitizeFileStem(text) {
+  return (text || "team")
+    .toString()
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "team";
+}
+
+function buildCompletionReportMarkdown({ teamName, dtg, scoreText, pirText, phases, responses, objectives }) {
+  const lines = [];
+  lines.push("# Operation Northern Veil - Commander Review Report");
+  lines.push("");
+  lines.push(`- Team: ${teamName || "Anonymous Team"}`);
+  lines.push(`- DTG: ${dtg}`);
+  lines.push(`- Score: ${scoreText}`);
+  lines.push(`- Status: All restored activities complete`);
+  lines.push("");
+  lines.push("## Commander PIR");
+  lines.push(pirText || "No PIR text available.");
+  lines.push("");
+  lines.push("## Phase Summary");
+
+  phases.forEach(phase => {
+    const content = getPhaseContent(phase.id);
+    const activities = content?.activities || [];
+    if (!activities.length) return;
+    const phaseScore = activities.reduce((sum, activity) => sum + Number(responses[activity.id]?.score || 0), 0);
+    const phasePossible = activities.reduce((sum, activity) => sum + Number(activity.points || 0), 0);
+    lines.push("");
+    lines.push(`### ${content.title}`);
+    lines.push(`- Score: ${phaseScore}/${phasePossible}`);
+    activities.forEach(activity => {
+      const response = responses[activity.id] || emptyResponseFor(activity);
+      const rows = activityReviewRows(activity, response);
+      lines.push(`- ${activity.typeLabel || activity.type}: ${response.submitted ? `${response.score}/${activity.points}` : `0/${activity.points}`}`);
+      rows.forEach(row => {
+        lines.push(`  - ${row.label}: ${row.user} (correct: ${row.correct})${row.ok ? "" : " - review recommended"}`);
+      });
+    });
+  });
+
+  if (objectives?.length) {
+    lines.push("");
+    lines.push("## Objective Coverage");
+    objectives.forEach(obj => {
+      lines.push(`- ${obj.code} ${obj.label}: ${objectiveStateLabel(obj.state)}`);
+    });
+  }
+
+  lines.push("");
+  lines.push("## Commander Note");
+  lines.push("This report captures the final synthesis product for instructor review before the test.");
+  return lines.join("\n");
+}
+
+function downloadMarkdownReport(filename, content) {
+  const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 function StudentAccessModal({ open, onSubmit, error }) {
   const [teamName, setTeamName] = useState("");
   const [password, setPassword] = useState("");
@@ -1239,7 +1313,12 @@ function ActivityCard({
 
         {activity.type === "matching" && (
           <div className="matching-grid">
-            <div>
+            <div className="match-status match-status-top">
+              {response.pending
+                ? `Selected term: ${matchingItems.find(item => item.id === response.pending)?.text || response.pending}. Click the matching description.`
+                : "Click a term on the left, then choose the matching description."}
+            </div>
+            <div className="match-column">
               <div className="match-label">Terms</div>
               {matchingItems.map(item => (
                 <button
@@ -1253,13 +1332,8 @@ function ActivityCard({
                 </button>
               ))}
             </div>
-            <div>
+            <div className="match-column">
               <div className="match-label">Descriptions</div>
-              <div className="match-status">
-                {response.pending
-                  ? `Selected term: ${matchingItems.find(item => item.id === response.pending)?.text || response.pending}. Click the matching description.`
-                  : "Click a term on the left, then choose the matching description."}
-              </div>
               {matchingTargets.map(target => {
                 const paired = response.pairs && Object.entries(response.pairs).find(([, value]) => value === target.id);
                 const pairedText = paired ? matchingItems.find(item => item.id === paired[0])?.text : null;
@@ -1452,7 +1526,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const INSTRUCTOR_PASSWORD = "IITCInstructors";
-const PIN_DEFAULT = { x: 53, y: 62, label: "GORGAS — FOCUS" };
+const PIN_DEFAULT = { x: 53, y: 62, label: "ZABZIMEK" };
 
 // Map overlay shows 20°E–60°E horizontally, 60°N–30°N vertically.
 // Overlay axes inset from the wrap edges; approximate ranges below.
@@ -1507,6 +1581,43 @@ function InstructorModal({ open, onClose, onUnlock }) {
   );
 }
 
+function CompletionModal({ open, teamName, scoreText, reportMarkdown, onClose, onDownload }) {
+  if (!open) return null;
+  return (
+    <div className="modal-shade completion-shade" onClick={onClose}>
+      <div className="modal completion-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-head">
+          <span className="modal-tag">MISSION COMPLETE</span>
+          <span className="modal-title">CONGRATULATIONS</span>
+          <button type="button" className="modal-x" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body completion-body">
+          <div className="completion-lede">
+            Team <strong>{teamName || "Anonymous Team"}</strong> completed Operation Northern Veil.
+          </div>
+          <div className="completion-grid">
+            <div className="completion-stat">
+              <span className="completion-stat-label">TEAM</span>
+              <span className="completion-stat-value">{teamName || "Anonymous Team"}</span>
+            </div>
+            <div className="completion-stat">
+              <span className="completion-stat-label">SCORE</span>
+              <span className="completion-stat-value">{scoreText}</span>
+            </div>
+          </div>
+          <div className="completion-copy">
+            Download the markdown report for shared-drive review and instructor feedback before the test tomorrow.
+          </div>
+        </div>
+        <div className="modal-foot completion-foot">
+          <button type="button" className="btn-ghost" onClick={onClose}>CLOSE</button>
+          <button type="button" className="btn-solid" onClick={() => onDownload(reportMarkdown)}>DOWNLOAD REPORT (.MD)</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [tw, setTweak] = window.useTweaks
     ? window.useTweaks(TWEAK_DEFAULTS)
@@ -1527,13 +1638,17 @@ function App() {
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
+  const [completionModalOpen, setCompletionModalOpen] = useState(false);
+  const [completionCelebrated, setCompletionCelebrated] = useState(false);
   const [pin, setPin] = useState(() => {
     try {
       const raw = localStorage.getItem("onv-pin-v2");
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === "object" && typeof parsed.x === "number" && typeof parsed.y === "number") {
-          return { ...PIN_DEFAULT, ...parsed };
+          const next = { ...PIN_DEFAULT, ...parsed };
+          if (!next.label || next.label === "GORGAS — FOCUS") next.label = PIN_DEFAULT.label;
+          return next;
         }
       }
     } catch {}
@@ -1580,6 +1695,7 @@ function App() {
     return sum + (response?.submitted ? Number(response.score || 0) : 0);
   }, 0);
   const scoreText = studentReady ? `${earnedScore}/${possibleScore}` : "LOCKED";
+  const allActivitiesComplete = studentReady && allRestoredActivities.length > 0 && allRestoredActivities.every(activity => responses[activity.id]?.submitted);
   const evidenceCount = allRestoredEvidence.length;
   const activityCount = allRestoredActivities.length;
   const phases = data?.phases || [];
@@ -1629,6 +1745,8 @@ function App() {
     setObjectiveStates({});
     setGlossaryOpen(false);
     setModalOpen(false);
+    setCompletionModalOpen(false);
+    setCompletionCelebrated(false);
     setInstructor(false);
   };
 
@@ -1744,6 +1862,27 @@ function App() {
   }, []);
 
   // Loading gate — all hooks are called above, so early return is safe
+  useEffect(() => {
+    if (allActivitiesComplete && !completionCelebrated) {
+      setCompletionModalOpen(true);
+      setCompletionCelebrated(true);
+    }
+    if (!studentReady) {
+      setCompletionCelebrated(false);
+    }
+  }, [allActivitiesComplete, completionCelebrated, studentReady]);
+
+  const completionReportMarkdown = buildCompletionReportMarkdown({
+    teamName,
+    dtg,
+    scoreText,
+    pirText: data?.pirText,
+    phases,
+    responses,
+    objectives,
+  });
+  const completionReportFilename = `operation-northern-veil-${sanitizeFileStem(teamName)}-${dtg}.md`;
+
   if (!data) {
     return (
       <div className={`app accent-${tw.accent}`}>
@@ -1841,6 +1980,15 @@ function App() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onUnlock={() => setInstructor(true)}
+      />
+
+      <CompletionModal
+        open={completionModalOpen}
+        teamName={teamName}
+        scoreText={scoreText}
+        reportMarkdown={completionReportMarkdown}
+        onClose={() => setCompletionModalOpen(false)}
+        onDownload={(markdown) => downloadMarkdownReport(completionReportFilename, markdown)}
       />
 
       {window.TweaksPanel && (
