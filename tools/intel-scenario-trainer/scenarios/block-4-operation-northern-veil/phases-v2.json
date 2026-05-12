@@ -1,0 +1,11 @@
+[
+  { "id": "phase-0-overview",   "sequence": 0, "title": "Overview",            "shortLabel": "Overview",            "summary": "Orient on actors, region, and commander PIR." },
+  { "id": "phase-1-info",       "sequence": 1, "title": "Information Shaping", "shortLabel": "Information Shaping", "summary": "Donovian media + proxy narrative against Gorgas." },
+  { "id": "phase-2-cyber",      "sequence": 2, "title": "Cyber Disruption",    "shortLabel": "Cyber Disruption",    "summary": "Border camera outages, phishing, and login anomalies." },
+  { "id": "phase-3-geoint",     "sequence": 3, "title": "GEOINT",              "shortLabel": "GEOINT",              "summary": "Vehicle parks and engineering assets north of the border." },
+  { "id": "phase-4-emsradar",   "sequence": 4, "title": "EMS / RADAR",         "shortLabel": "EMS/RADAR",           "summary": "Donovian radar emissions and terrain masking." },
+  { "id": "phase-5-ir",         "sequence": 5, "title": "IR Threats",          "shortLabel": "IR Threats",          "summary": "Thermal signatures of night movement; MANPADS risk." },
+  { "id": "phase-6-isr",        "sequence": 6, "title": "ISR Fundamentals",    "shortLabel": "ISR",                 "summary": "PIR tasking, DCGS, and surveillance vs. reconnaissance." },
+  { "id": "phase-7-space",      "sequence": 7, "title": "Space Operations",    "shortLabel": "Space",               "summary": "Orbit tradeoffs, GNSS interference, counterspace." },
+  { "id": "phase-8-final",      "sequence": 8, "title": "Final Review",        "shortLabel": "Final Review",        "summary": "Synthesize and answer the commander's PIR." }
+]

@@ -6,14 +6,27 @@ const { useState, useEffect, useRef } = React;
 // ──────────────────────────────────────────────────────────────────────────
 
 const DATA_BASE = "../intel-scenario-trainer/scenarios/block-4-operation-northern-veil";
-
 async function loadScenarioData() {
+  const fetchJson = async (path, label) => {
+    const response = await fetch(path, { cache: "reload" });
+    const text = await response.text();
+    try {
+      return JSON.parse(text);
+    } catch (err) {
+      console.error(`loadScenarioData parse failed for ${label} ${JSON.stringify({
+        status: response.status,
+        url: response.url,
+        preview: text.slice(0, 1200),
+      })}`);
+      throw err;
+    }
+  };
   const [scenario, phases, objectives, actors, glossary] = await Promise.all([
-    fetch(`${DATA_BASE}/scenario.json`).then(r => r.json()),
-    fetch(`${DATA_BASE}/phases.json`).then(r => r.json()),
-    fetch(`${DATA_BASE}/objectives.json`).then(r => r.json()),
-    fetch(`${DATA_BASE}/actors.json`).then(r => r.json()),
-    fetch(`${DATA_BASE}/glossary.json`).then(r => r.json()),
+    fetchJson(`${DATA_BASE}/scenario.json`, "scenario.json"),
+    fetchJson(`${DATA_BASE}/phases-v2.json`, "phases-v2.json"),
+    fetchJson(`${DATA_BASE}/objectives.json`, "objectives.json"),
+    fetchJson(`${DATA_BASE}/actors.json`, "actors.json"),
+    fetchJson(`${DATA_BASE}/glossary.json`, "glossary.json"),
   ]);
   return { scenario, phases, objectives, actors, glossary };
 }
@@ -28,7 +41,7 @@ const PHASE_LONG  = ["ORIENTATION", "INFO OPS", "CYBER", "GEOINT", "EMS / RADAR"
 function adaptPhases(raw) {
   return raw.map((p, i) => ({
     id:    p.id,
-    num:   p.sequence === 8 ? "FR" : String(p.sequence).padStart(2, "0"),
+    num:   String(p.sequence).padStart(2, "0"),
     short: PHASE_SHORT[i] ?? p.shortLabel.slice(0, 3).toUpperCase(),
     long:  PHASE_LONG[i]  ?? p.title.toUpperCase(),
   }));
@@ -92,7 +105,10 @@ function useScenarioData() {
         pirIssuedDTG: raw.scenario.pirIssuedDTG ?? "",
         situationText: raw.scenario.situationText ?? [],
       }))
-      .catch(err => setError(err));
+      .catch(err => {
+        console.error("loadScenarioData failed", err);
+        setError(err);
+      });
   }, []);
   return { data, error };
 }
@@ -595,12 +611,22 @@ function BeginBar({ onBegin }) {
 }
 
 const TRAINING_PHASES = window.NorthernVeilContent?.phases || {};
-const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar", "phase-5-ir", "phase-6-isr", "phase-7-space"];
+const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar", "phase-5-ir", "phase-6-isr", "phase-7-space", "phase-8-final"];
 const SESSION_KEY = "onv-student-session-v1";
 const STUDENT_PASSWORD = "OperationNorthernV3il";
 
+const PHASE_ALIASES = {
+  FR: "phase-8-final",
+  "phase-6-space": "phase-7-space",
+  "phase-7-final": "phase-8-final",
+};
+
+function resolvePhaseId(phaseId) {
+  return PHASE_ALIASES[phaseId] || phaseId;
+}
+
 function getPhaseContent(phaseId) {
-  return TRAINING_PHASES[phaseId] || null;
+  return TRAINING_PHASES[resolvePhaseId(phaseId)] || null;
 }
 
 function findTrainingActivity(activityId) {
@@ -1430,10 +1456,11 @@ function App() {
   useEffect(() => {
     if (!data) return;
     const phases = data?.phases || [];
-    const phase = phases.find(phase => phase.id === activePhase || phase.num === activePhase);
+    const resolvedActive = resolvePhaseId(activePhase);
+    const phase = phases.find(phase => phase.id === resolvedActive || phase.num === resolvedActive);
     if (!phase) {
       setActivePhase(phases[0]?.id || "phase-0-overview");
-    } else if (phase.id !== activePhase) {
+    } else if (phase.id !== resolvedActive) {
       setActivePhase(phase.id);
     }
   }, [data, activePhase]);
@@ -1466,12 +1493,13 @@ function App() {
   const phases = data?.phases || [];
   const objectives = data?.objectives || [];
   const glossary = data?.glossary || [];
-  const navPhase = phases.find(phase => phase.id === activePhase) || phases[0] || {
+  const resolvedActivePhase = resolvePhaseId(activePhase);
+  const navPhase = phases.find(phase => phase.id === resolvedActivePhase) || phases[0] || {
     id: "phase-0-overview",
     title: "Scenario Orientation",
     summary: "Operation Northern Veil",
   };
-  const restoredPhase = getPhaseContent(activePhase);
+  const restoredPhase = getPhaseContent(resolvedActivePhase);
   const currentPhase = restoredPhase || {
     id: navPhase.id,
     title: navPhase.title,
@@ -1494,7 +1522,7 @@ function App() {
     const nextTeam = submittedTeamName.trim() || "Anonymous Team";
     setTeamName(nextTeam);
     setStudentReady(true);
-    setActivePhase(studentSession.activePhase || "phase-0-overview");
+    setActivePhase(resolvePhaseId(studentSession.activePhase || "phase-0-overview"));
   };
 
   const handleResetExercise = () => {

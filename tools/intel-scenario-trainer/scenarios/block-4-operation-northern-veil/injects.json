@@ -188,7 +188,7 @@
   },
   {
     "id": "inject-06-space-gap",
-    "phaseId": "phase-6-space",
+    "phaseId": "phase-7-space",
     "sequence": 6,
     "title": "The Space Gap",
     "timestamp": "D-1 / 1400L",
@@ -225,7 +225,7 @@
   },
   {
     "id": "inject-07-final",
-    "phaseId": "phase-7-final",
+    "phaseId": "phase-8-final",
     "sequence": 7,
     "title": "Commander Update — Final Assessment",
     "timestamp": "D-0 / 0800L",

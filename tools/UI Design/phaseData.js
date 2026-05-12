@@ -1106,7 +1106,49 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
           detail: "GEOINT focused on products and limitations. EMS focused on frequency, line-of-sight, ELINT, and COMINT. IR focused on heat signatures and countermeasures. Cyber focused on actor classification and cyber-enabled effects. IO focused on intent and the cognitive dimension. ISR focused on PIR tasking and the cycle. Space focused on orbit mission fit and counterspace escalation."
         }
       ],
-      activities: []
+      activities: [
+        {
+          id: "p8a1",
+          type: "decision",
+          typeLabel: "Activity 1 of 2 - Decision",
+          points: 2,
+          instruction: "Which statement best captures how the Block 4 domains combine to answer the commander PIR?",
+          objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.3-radar-kill-chain", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits"],
+          options: [
+            { id: "r8-1", text: "Use GEOINT, EMS, IR, cyber, IO, ISR, and space together to test whether Donovia is preparing a limited cross-border operation within 72 hours.", correct: true, explanation: "That is the synthesis the commander needs: a multi-domain answer tied to the PIR." },
+            { id: "r8-2", text: "Treat each domain as separate and brief only the most dramatic single-source clue.", correct: false, explanation: "The review phase is about integration, not cherry-picking one clue." },
+            { id: "r8-3", text: "Focus only on the latest imagery and ignore cyber, space, and information effects.", correct: false, explanation: "The scenario is intentionally multi-domain, so one source is not enough." }
+          ],
+          feedback: {
+            correct: "Correct. The final review is about integrating all of Block 4 back to the commander PIR.",
+            incorrect: "The review phase is a synthesis check. GEOINT, EMS, IR, cyber, IO, ISR, and space each contribute part of the answer, but none of them is sufficient on its own.",
+            whyMatters: "The commander is not asking for a domain-by-domain recap. The value of the block is whether you can combine those domains into one coherent assessment.",
+            evidenceClue: "The recap card on this phase names each domain and the final review prompt asks you to connect them back to the PIR."
+          }
+        },
+        {
+          id: "p8a2",
+          type: "multiselect",
+          typeLabel: "Activity 2 of 2 - Multi-Select",
+          points: 3,
+          instruction: "Select all statements that belong in a strong final review of the commander PIR.",
+          objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits"],
+          options: [
+            { id: "m8-1", text: "GEOINT can confirm vehicle parks, movement patterns, and imagery limitations.", correct: true, explanation: "GEOINT helps define what can be confirmed from imagery and what cannot." },
+            { id: "m8-2", text: "EMS and IR can reveal emitters, line-of-sight limits, and thermal movement cues.", correct: true, explanation: "These domains help identify signatures and access limitations that matter to the PIR." },
+            { id: "m8-3", text: "Cyber and IO can indicate access disruption and deliberate influence shaping.", correct: true, explanation: "Those effects help explain how the adversary may be preparing the environment." },
+            { id: "m8-4", text: "ISR turns the commander PIR into collection tasks and routes the result to decision-makers.", correct: true, explanation: "That is the core tasking and dissemination logic from Phase 6." },
+            { id: "m8-5", text: "Space support matters because PNT, orbit selection, and counterspace effects can change collection and maneuver.", correct: true, explanation: "Space is part of the assessment because it affects navigation, access, and escalation." },
+            { id: "m8-6", text: "The final answer should rely on a single domain and ignore the rest.", correct: false, explanation: "The whole point of the review is to integrate the domains, not isolate one." }
+          ],
+          feedback: {
+            correct: "Correct. Those statements all belong in a mature final review because they connect the lesson set back to the PIR.",
+            incorrect: "Keep the synthesis lens on. The final review should connect GEOINT, EMS, IR, cyber, IO, ISR, and space back to the commander question.",
+            whyMatters: "A good final answer is multi-domain and mission-focused. That is what the commander needs to decide whether Donovia is preparing to move.",
+            evidenceClue: "This phase exists to tie the earlier lessons back to the PIR without introducing new tradecraft."
+          }
+        }
+      ]
     }
   }
 };
