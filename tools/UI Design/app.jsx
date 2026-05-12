@@ -28,7 +28,7 @@ const PHASE_LONG  = ["ORIENTATION", "INFO OPS", "CYBER", "GEOINT", "EMS / RADAR"
 function adaptPhases(raw) {
   return raw.map((p, i) => ({
     id:    p.id,
-    num:   p.sequence === 7 ? "FR" : String(p.sequence).padStart(2, "0"),
+    num:   p.sequence === 8 ? "FR" : String(p.sequence).padStart(2, "0"),
     short: PHASE_SHORT[i] ?? p.shortLabel.slice(0, 3).toUpperCase(),
     long:  PHASE_LONG[i]  ?? p.title.toUpperCase(),
   }));

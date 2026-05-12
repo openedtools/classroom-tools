@@ -7,5 +7,5 @@
   { "id": "phase-5-ir",         "sequence": 5, "title": "IR Threats",          "shortLabel": "IR Threats",          "summary": "Thermal signatures of night movement; MANPADS risk." },
   { "id": "phase-6-isr",        "sequence": 6, "title": "ISR Fundamentals",    "shortLabel": "ISR",                 "summary": "PIR tasking, DCGS, and surveillance vs. reconnaissance." },
   { "id": "phase-7-space",      "sequence": 7, "title": "Space Operations",    "shortLabel": "Space",               "summary": "Orbit tradeoffs, GNSS interference, counterspace." },
-  { "id": "phase-8-final",      "sequence": 8, "title": "Final Assessment",    "shortLabel": "Final Assessment",     "summary": "Synthesize and answer the commander's PIR." }
+  { "id": "phase-8-final",      "sequence": 8, "title": "Final Review",        "shortLabel": "Final Review",        "summary": "Synthesize and answer the commander'"'"'s PIR." }
 ]

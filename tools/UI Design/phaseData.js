@@ -1,6 +1,6 @@
 /* global window */
 window.NorthernVeilContent = {
-  restoredThrough: "phase-7-space",
+  restoredThrough: "phase-8-final",
   phases: {
     "phase-0-overview": {
       id: "phase-0-overview",
@@ -1088,6 +1088,25 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
           }
         }
       ]
+    }
+    ,
+    "phase-8-final": {
+      id: "phase-8-final",
+      title: "Final Review",
+      subtitle: "Block 4 Synthesis",
+      domain: "review",
+      objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.3-radar-kill-chain", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits"],
+      inject: `This final review phase is a consolidation space. Use it to revisit the commander PIR and the Block 4 multi-domain problem set: GEOINT product selection, EM spectrum and line-of-sight, radar kill chain stage analysis, IR threats and countermeasures, cyber actor attribution, IO dimensions and intent, ISR cycle tasking, and space orbital tradeoffs. The intent is not to introduce new material but to let students check whether they can connect each lesson back to the scenario without relying on the evidence tiles alone.`,
+      evidenceCards: [
+        {
+          id: "e8-1",
+          domain: "review",
+          title: "Block 4 Recap - GEOINT to Space",
+          summary: "A one-page synthesis of the major concepts covered in the restored trainer.",
+          detail: "GEOINT focused on products and limitations. EMS focused on frequency, line-of-sight, ELINT, and COMINT. IR focused on heat signatures and countermeasures. Cyber focused on actor classification and cyber-enabled effects. IO focused on intent and the cognitive dimension. ISR focused on PIR tasking and the cycle. Space focused on orbit mission fit and counterspace escalation."
+        }
+      ],
+      activities: []
     }
   }
 };
