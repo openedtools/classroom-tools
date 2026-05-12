@@ -167,10 +167,12 @@ function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, teamName
           <span className="trainee-label">TRAINEE</span>
           <span className="trainee-id">CDT-4471 · WALSH, T.</span>
         </div>
-        <div className={`op-status status-${status.tone}`}>
-          <span className="status-dot" />
-          <span className="status-text">{status.label}</span>
-        </div>
+        {status?.label && (
+          <div className={`op-status status-${status.tone || "amber"}`}>
+            <span className="status-dot" />
+            <span className="status-text">{status.label}</span>
+          </div>
+        )}
         <button
           className={`iconbtn lockbtn ${instructor ? 'unlocked' : ''}`}
           title={instructor ? 'Instructor mode active — click to exit' : 'Instructor mode'}
@@ -720,12 +722,21 @@ function StudentAccessModal({ open, onSubmit, error }) {
 function EvidenceCard({ card }) {
   const [open, setOpen] = useState(false);
   return (
-    <button className={`evidence-card ${open ? "open" : ""}`} onClick={() => setOpen(v => !v)} type="button">
+    <button
+      className={`evidence-card ${open ? "open" : ""}`}
+      onClick={() => setOpen(v => !v)}
+      type="button"
+      aria-expanded={open}
+    >
       <div className="evidence-head">
-        <span className="evidence-tag">EVIDENCE</span>
-        <span className="evidence-title">{card.title}</span>
+        <div className="evidence-head-left">
+          <span className="evidence-tag">EVIDENCE</span>
+          <span className="evidence-title">{card.title}</span>
+        </div>
+        <span className="evidence-toggle">{open ? "COLLAPSE" : "EXPAND"} ▾</span>
       </div>
       <div className="evidence-summary">{card.summary}</div>
+      <div className="evidence-hint">{open ? "Click to hide details" : "Click to expand details"}</div>
       {open && <div className="evidence-detail">{card.detail}</div>}
     </button>
   );
@@ -766,7 +777,7 @@ function ActivityCard({
   const locked = Boolean(submitted);
 
   return (
-    <section className={`activity-card ${locked ? "submitted" : ""}`}>
+    <section className={`activity-card panel ${locked ? "submitted" : ""}`}>
       <ActivityHeader activity={activity} />
       <div className="activity-body">
         {activity.type === "classification" && (
@@ -973,6 +984,19 @@ const PhaseWorkspace = React.forwardRef(function PhaseWorkspace({ phase, respons
   );
 });
 
+function PhaseConsole({ phase, responses, onChange, onSubmit }) {
+  return (
+    <div className="phase-console">
+      <PhaseWorkspace
+        phase={phase}
+        responses={responses}
+        onChange={onChange}
+        onSubmit={onSubmit}
+      />
+    </div>
+  );
+}
+
 // ──────────────────────────────────────────────────────────────────────────
 // APP
 // ──────────────────────────────────────────────────────────────────────────
@@ -1061,8 +1085,6 @@ function App() {
     try { return localStorage.getItem("onv-instructor-v2") === "1"; } catch { return false; }
   });
   const [modalOpen, setModalOpen] = useState(false);
-  const phaseWorkspaceRef = useRef(null);
-  const previousPhaseRef = useRef(activePhase);
   const [pin, setPin] = useState(() => {
     try {
       const raw = localStorage.getItem("onv-pin-v2");
@@ -1102,12 +1124,6 @@ function App() {
     setStudentSession(nextSession);
     saveStudentSession(nextSession);
   }, [studentReady, teamName, activePhase, responses, objectiveStates]);
-  useEffect(() => {
-    if (previousPhaseRef.current !== activePhase) {
-      phaseWorkspaceRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      previousPhaseRef.current = activePhase;
-    }
-  }, [activePhase]);
   const onLockClick = () => {
     if (instructor) setInstructor(false);
     else setModalOpen(true);
@@ -1290,7 +1306,7 @@ function App() {
         dtg={dtg}
         opName="NORTHERN VEIL"
         opCode="OP-NV-26"
-        status={{ label: instructor ? "INSTRUCTOR MODE" : "AWAITING START", tone: "amber" }}
+        status={instructor ? { label: "INSTRUCTOR MODE", tone: "amber" } : null}
         instructor={instructor}
         onLockClick={onLockClick}
         teamName={teamName}
@@ -1303,40 +1319,42 @@ function App() {
         <ObjectiveSidebar objectives={coveredObjectives} />
 
         <div className="content">
-          <MissionBrief />
+          {activePhase === "phase-0-overview" ? (
+            <>
+              <MissionBrief />
 
-          <div className="grid-row primary-row">
-            <div className="col-map">
-              <MapPanel
-                showReticle={tw.showReticle}
-                showGrid={tw.showGrid}
-                instructor={instructor}
-                pin={pin}
-                onPinChange={setPin}
-              />
-            </div>
-            <div className="col-side">
-              <PIRPanel
-                pirText={data.pirText}
-                pirIssuedBy={data.pirIssuedBy}
-                pirIssuedDTG={data.pirIssuedDTG}
-              />
-              <ActorsPanel actors={data.actors} />
-            </div>
-          </div>
+              <div className="grid-row primary-row">
+                <div className="col-map">
+                  <MapPanel
+                    showReticle={tw.showReticle}
+                    showGrid={tw.showGrid}
+                    instructor={instructor}
+                    pin={pin}
+                    onPinChange={setPin}
+                  />
+                </div>
+                <div className="col-side">
+                  <PIRPanel
+                    pirText={data.pirText}
+                    pirIssuedBy={data.pirIssuedBy}
+                    pirIssuedDTG={data.pirIssuedDTG}
+                  />
+                  <ActorsPanel actors={data.actors} />
+                </div>
+              </div>
 
-          <SituationPanel situationText={data.situationText} evidenceCount={evidenceCount} activityCount={activityCount} />
-          <HowItWorks />
-          {activePhase === "phase-0-overview" && (
-            <BeginBar onBegin={() => setActivePhase("phase-1-info")} />
+              <SituationPanel situationText={data.situationText} evidenceCount={evidenceCount} activityCount={activityCount} />
+              <HowItWorks />
+              <BeginBar onBegin={() => setActivePhase("phase-1-info")} />
+            </>
+          ) : (
+            <PhaseConsole
+              phase={currentPhase}
+              responses={responses}
+              onChange={handleActivityChange}
+              onSubmit={handleActivitySubmit}
+            />
           )}
-      <PhaseWorkspace
-            ref={phaseWorkspaceRef}
-            phase={currentPhase}
-            responses={responses}
-            onChange={handleActivityChange}
-            onSubmit={handleActivitySubmit}
-          />
         </div>
       </main>
 

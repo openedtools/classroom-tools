@@ -569,6 +569,12 @@ body {
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 32px 100%,
     var(--bg-0);
 }
+.phase-console {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100%;
+}
 
 /* ─── BRIEF ──────────────────────────────────────────────────────────── */
 .brief { display: flex; flex-direction: column; gap: 8px; }
@@ -999,7 +1005,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 6px;
+  margin-top: 0;
 }
 .phase-banner {
   display: flex;
@@ -1056,6 +1062,7 @@ body {
   gap: 12px;
 }
 .evidence-card {
+  position: relative;
   text-align: left;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1063,14 +1070,27 @@ body {
   padding: 16px;
   box-shadow: var(--shadow);
   color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+  overflow: hidden;
 }
-.evidence-card.open { border-color: var(--accent); }
+.evidence-card:hover {
+  border-color: var(--accent-lo);
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px var(--accent-ghost), var(--shadow);
+}
+.evidence-card.open {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-ghost), 0 0 24px var(--accent-ghost), var(--shadow);
+}
 .evidence-head {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
   margin-bottom: 10px;
 }
+.evidence-head-left { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .evidence-tag {
   font-size: 9.5px;
   letter-spacing: 0.16em;
@@ -1081,20 +1101,42 @@ body {
   font-size: 14px;
   font-weight: 700;
   color: var(--text);
+  line-height: 1.25;
+}
+.evidence-toggle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  white-space: nowrap;
+  margin-top: 2px;
 }
 .evidence-summary, .evidence-detail {
   font-size: 12.5px;
   line-height: 1.5;
   color: var(--text-muted);
 }
+.evidence-hint {
+  margin-top: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
 .evidence-detail { margin-top: 10px; color: var(--text); }
 .activity-stack { display: flex; flex-direction: column; gap: 14px; }
 .activity-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(19, 26, 37, 0.95), rgba(12, 17, 23, 0.98));
+  border: 1px solid var(--border-1);
   border-radius: var(--radius);
   padding: 18px;
-  box-shadow: var(--shadow);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.02) inset,
+    0 14px 32px rgba(0,0,0,0.32);
+}
+.activity-card.panel {
+  overflow: hidden;
 }
 .activity-head {
   display: flex;
@@ -1114,6 +1156,7 @@ body {
   margin: 0;
   font-size: 14px;
   color: var(--text);
+  line-height: 1.3;
 }
 .activity-points {
   font-family: 'IBM Plex Mono', monospace;
@@ -1138,8 +1181,8 @@ body {
 }
 .classify-row, .decision-option {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 12px;
   padding: 12px 14px;
   border: 1px solid var(--border);
@@ -1150,18 +1193,51 @@ body {
   flex: 1;
   font-size: 12.5px;
   color: var(--text);
+  line-height: 1.45;
+  padding-top: 3px;
 }
 .classify-select, .slot-select {
   min-width: 180px;
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-2);
   border-radius: var(--radius-sm);
-  padding: 8px 10px;
-  background: var(--surface);
-  color: var(--text);
+  padding: 10px 34px 10px 12px;
+  background:
+    linear-gradient(180deg, rgba(18, 25, 34, 0.98), rgba(11, 16, 23, 0.98));
+  color: var(--text-0);
   font: inherit;
+  line-height: 1.25;
+  appearance: none;
+  -webkit-appearance: none;
+  color-scheme: dark;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--accent) 50%),
+    linear-gradient(135deg, var(--accent) 50%, transparent 50%),
+    linear-gradient(180deg, rgba(18, 25, 34, 0.98), rgba(11, 16, 23, 0.98));
+  background-position:
+    calc(100% - 16px) calc(50% - 2px),
+    calc(100% - 10px) calc(50% - 2px),
+    0 0;
+  background-size: 6px 6px, 6px 6px, 100% 100%;
+  background-repeat: no-repeat;
 }
-.decision-option input { accent-color: var(--accent); }
-.decision-option.selected { border-color: var(--accent); background: #f4f8f4; }
+.classify-select option, .slot-select option {
+  background: var(--bg-1);
+  color: var(--text-0);
+}
+.decision-option input {
+  accent-color: var(--accent);
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.decision-option span {
+  flex: 1;
+  line-height: 1.45;
+}
+.decision-option.selected {
+  border-color: var(--accent);
+  background: var(--accent-ghost);
+  box-shadow: 0 0 0 1px var(--accent-ghost) inset;
+}
 .fill-sentence {
   display: flex;
   flex-wrap: wrap;
@@ -1192,7 +1268,7 @@ body {
   color: var(--text);
   margin-bottom: 8px;
 }
-.match-term.selected { border-color: var(--accent); background: #f2f8f2; }
+.match-term.selected { border-color: var(--accent); background: var(--accent-ghost); }
 .match-target { display: flex; flex-direction: column; gap: 8px; }
 .slot-chip {
   font-family: 'IBM Plex Mono', monospace;
@@ -1239,7 +1315,7 @@ body {
 .ms-options { display: flex; flex-direction: column; gap: 8px; }
 .ms-opt {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   text-align: left;
   padding: 12px 14px;
@@ -1248,7 +1324,7 @@ body {
   border-radius: var(--radius-sm);
   color: var(--text);
 }
-.mso-selected { border-color: var(--accent); background: #f2f8f2; }
+.mso-selected { border-color: var(--accent); background: var(--accent-ghost); }
 .ms-check {
   width: 18px;
   height: 18px;
@@ -1285,6 +1361,8 @@ body {
 @media (max-width: 980px) {
   .matching-grid { grid-template-columns: 1fr; }
   .phase-banner { align-items: flex-start; flex-direction: column; }
+  .classify-row, .decision-option { align-items: stretch; }
+  .classify-select, .slot-select { width: 100%; min-width: 0; }
 }
 
 /* ─── SCROLLBAR ──────────────────────────────────────────────────────── */
