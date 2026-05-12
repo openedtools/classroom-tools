@@ -1080,8 +1080,9 @@ function App() {
   }, [instructor]);
   useEffect(() => {
     if (!data) return;
-    if (!data.phases.some(phase => phase.id === activePhase)) {
-      setActivePhase(data.phases[0]?.id || "phase-0-overview");
+    const phases = data?.phases || [];
+    if (!phases.some(phase => phase.id === activePhase)) {
+      setActivePhase(phases[0]?.id || "phase-0-overview");
     }
   }, [data, activePhase]);
   useEffect(() => {
@@ -1110,7 +1111,13 @@ function App() {
   const scoreText = studentReady ? `${earnedScore}/${possibleScore}` : "LOCKED";
   const evidenceCount = allRestoredEvidence.length;
   const activityCount = allRestoredActivities.length;
-  const navPhase = data.phases.find(phase => phase.id === activePhase) || data.phases[0];
+  const phases = data?.phases || [];
+  const objectives = data?.objectives || [];
+  const navPhase = phases.find(phase => phase.id === activePhase) || phases[0] || {
+    id: "phase-0-overview",
+    title: "Scenario Orientation",
+    summary: "Operation Northern Veil",
+  };
   const restoredPhase = getPhaseContent(activePhase);
   const currentPhase = restoredPhase || {
     id: navPhase.id,
@@ -1122,8 +1129,8 @@ function App() {
     activities: [],
     placeholder: true,
   };
-  const doneIds = data.phases.filter(phase => phaseIsComplete(phase.id, responses)).map(phase => phase.id);
-  const coveredObjectives = (data.objectives || []).map(obj => ({ ...obj, state: objectiveStates[obj.id] || 0 }));
+  const doneIds = phases.filter(phase => phaseIsComplete(phase.id, responses)).map(phase => phase.id);
+  const coveredObjectives = objectives.map(obj => ({ ...obj, state: objectiveStates[obj.id] || 0 }));
 
   const handleAccess = ({ teamName: submittedTeamName, password }) => {
     if (password !== STUDENT_PASSWORD) {
@@ -1278,7 +1285,7 @@ function App() {
         scoreText={scoreText}
       />
 
-      <PhaseNav active={activePhase} phases={data.phases} onChange={setActivePhase} doneIds={doneIds} />
+      <PhaseNav active={activePhase} phases={phases} onChange={setActivePhase} doneIds={doneIds} />
 
       <main className="layout">
         <ObjectiveSidebar objectives={coveredObjectives} />
