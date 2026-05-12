@@ -519,7 +519,7 @@ function BeginBar({ onBegin }) {
 }
 
 const TRAINING_PHASES = window.NorthernVeilContent?.phases || {};
-const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint"];
+const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar"];
 const SESSION_KEY = "onv-student-session-v1";
 const STUDENT_PASSWORD = "OperationalV3il";
 
@@ -585,6 +585,8 @@ function emptyResponseFor(activity) {
       return { pairs: {}, pending: null, submitted: false, score: 0, correct: false };
     case "sequencing":
       return { order: [...(activity.correct || activity.items.map(item => item.id))], submitted: false, score: 0, correct: false };
+    case "ranking":
+      return { ranks: {}, submitted: false, score: 0, correct: false };
     case "multiselect":
       return { selected: [], submitted: false, score: 0, correct: false };
     default:
@@ -636,6 +638,13 @@ function scoreActivity(activity, response) {
       if (pct >= 0.8) return Math.max(1, activity.points - 1);
       if (pct >= 0.5) return Math.floor(activity.points * 0.5);
       return 0;
+    }
+    case "ranking": {
+      let score = 0;
+      activity.items.forEach(item => {
+        if (Number(response.ranks && response.ranks[item.id]) === Number(item.correct)) score += 1;
+      });
+      return Math.min(score, activity.points);
     }
     case "multiselect": {
       let score = 0;
@@ -878,6 +887,27 @@ function ActivityCard({
                 );
               })}
             </div>
+          </div>
+        )}
+
+        {activity.type === "ranking" && (
+          <div className="ranking-grid">
+            {activity.items.map(item => (
+              <label className="rank-row" key={item.id}>
+                <span className="rank-text">{item.text}</span>
+                <select
+                  className="rank-select"
+                  value={response.ranks?.[item.id] || ""}
+                  onChange={(e) => onChange("rank", activity.id, { itemId: item.id, value: e.target.value })}
+                  disabled={locked}
+                >
+                  <option value="">Rank...</option>
+                  {activity.items.map((_, idx) => (
+                    <option key={idx + 1} value={String(idx + 1)}>{idx + 1}</option>
+                  ))}
+                </select>
+              </label>
+            ))}
           </div>
         )}
 
@@ -1232,6 +1262,9 @@ function App() {
           updated.order = order;
           break;
         }
+        case "rank":
+          updated.ranks = { ...(current.ranks || {}), [value.itemId]: value.value };
+          break;
         case "toggle": {
           const selected = new Set(current.selected || []);
           if (selected.has(value)) selected.delete(value);

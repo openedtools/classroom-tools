@@ -1,6 +1,6 @@
 /* global window */
 window.NorthernVeilContent = {
-  restoredThrough: "phase-3-geoint",
+  restoredThrough: "phase-4-emsradar",
   phases: {
     "phase-0-overview": {
       id: "phase-0-overview",
@@ -415,6 +415,174 @@ Your intelligence cell must now analyze the imagery picture: identify which GEOI
             incorrect: "The fundamental limitation: sensors cannot see through solid walls. Personnel count inside, weapons storage, intent, and interior activity are all invisible to imagery. What imagery can confirm is outside: vehicles parked in the lot, access patterns, and heat signatures detected at the surface. Option C - vehicles parked outside - is something GEOINT can show. Do not select it.",
             whyMatters: "Over-claiming from imagery damages analytical credibility and misleads commanders. A heat signature was detected is a finding. The warehouse contains weapons exceeds what imagery can confirm without corroborating collection. Knowing the limits of your sensors is as important as knowing their capabilities.",
             evidenceClue: "Card 5 states directly: the sensor cannot see through the warehouse walls and lists what analysts cannot confirm - personnel count, stored equipment, and intent. That language is the lesson applied to the scenario."
+          }
+        }
+      ]
+    },
+    "phase-4-emsradar": {
+      id: "phase-4-emsradar",
+      title: "Phase 4 - EMS, ELINT & Radar Kill Chain",
+      subtitle: "Lessons 4.2 & 4.3 - EM Theory & Radar",
+      domain: "ems",
+      objectiveIds: ["ems-freq", "ems-elint", "radar-kc", "radar-imm"],
+      inject: `As Donovia's IO campaign and cyber disruptions continue, coalition SIGINT collectors begin detecting a surge of radar emissions along the Donovian side of the border. Emissions span multiple frequency bands - from long-range early warning pulses to a brief, alarming Fire Control radar spike that lasted only four seconds before ceasing. A Ground Control Intercept voice intercept was also recorded, consistent with directing fighter aircraft toward a contact.
+
+The current collector position is partially blocked by a ridgeline that interrupts line-of-sight to one of the primary emitter sites. An alternate hilltop position 18 kilometers to the east has been identified with clear line-of-sight to all detected emitters.
+
+Your cell must classify each emission as ELINT or COMINT, apply the kill chain framework to assess how close Donovia is to an engagement decision, and recommend the correct response to the terrain masking problem.`,
+      evidenceCards: [
+        {
+          id: "e4-1",
+          domain: "ems",
+          title: "Early Warning Radar - Long-Range Detection",
+          summary: "VHF-band radar emissions detected at approximately 380 km range. Long pulse, intermittent activation. Assessed as Early Warning radar.",
+          detail: "Emissions consistent with an Early Warning (EW) radar: very high frequency (VHF) band, which produces long wavelengths and achieves maximum detection range at the cost of resolution. The long pulse width and intermittent activation pattern are consistent with a search radar sweeping a broad area. EW radar is the Find layer of the Integrated Air Defense System - its activation indicates Donovia is scanning for airborne threats at long range. Detection of EW emissions at 380 km confirms the sensor is active but does not indicate imminent engagement. This is a non-communications electromagnetic emission."
+        },
+        {
+          id: "e4-2",
+          domain: "ems",
+          title: "Target Acquisition Radar - Three Bursts Over Six Hours",
+          summary: "L/S-band radar detected in three separate bursts over 6 hours. Shorter pulse width, higher precision than EW. Assessed as Target Acquisition radar.",
+          detail: "Three discrete emission bursts were recorded from an L/S-band radar over a 6-hour window. L/S-band operates at higher frequency than VHF - shorter wavelength, shorter range, but significantly better resolution and precision. This emission profile is consistent with a Target Acquisition (TA) radar that acquires and tracks specific contacts identified by the Early Warning radar. TA radar activation indicates Donovia has moved from broad-area detection to tracking specific contacts - a significant escalation in the IADS operational posture. This is a non-communications electromagnetic emission categorized under ELINT."
+        },
+        {
+          id: "e4-3",
+          domain: "ems",
+          title: "Fire Control Radar Spike - X-Band, 4 Seconds",
+          summary: "X-band emission detected for approximately 4 seconds, then ceased immediately. Very high frequency, narrow beam. Assessed as Fire Control radar. Highest concern.",
+          detail: "A 4-second emission burst was detected in the X-band - one of the highest frequency radar bands in operational use. X-band produces very short wavelengths, enabling extremely fine angular resolution and precise range measurement: characteristics required for weapons guidance. A Fire Control (FC) radar lock-on, even briefly, indicates the IADS has moved to the Engage stage of the kill chain. FC radar activation is the most imminent indicator available in an emissions picture - it means a weapon system is being prepared for guidance. The brief duration may indicate a system check, a brief track, or an aborted engagement decision. Regardless, this emission demands immediate attention. This is ELINT."
+        },
+        {
+          id: "e4-4",
+          domain: "ems",
+          title: "GCI Voice Intercept - Encrypted, Aircraft Coordination",
+          summary: "Encrypted voice transmission intercepted on a frequency consistent with Ground Control Intercept operations. Content assessed as aircraft intercept coordination.",
+          detail: "A voice radio transmission was intercepted from a frequency and emitter location consistent with a Ground Control Intercept (GCI) station. The transmission was encrypted, but transmission timing, frequency, and call patterns are consistent with a GCI controller directing fighter aircraft toward an airborne contact. GCI is the communications and coordination layer of the IADS - it orchestrates the intercept by directing fighters based on radar track data. Unlike the other emissions in this picture, this is a communications intercept - voice and data communications content - not a radar emission. That distinction determines which SIGINT category it falls under."
+        },
+        {
+          id: "e4-5",
+          domain: "ems",
+          title: "Terrain Masking - Ridgeline Blocks Line-of-Sight",
+          summary: "A ridgeline between the current SIGINT collector position and the Donovian EW radar site is blocking electromagnetic line-of-sight. Collection of EW emissions is intermittent.",
+          detail: "Electromagnetic waves travel in straight lines - they cannot bend around terrain features. A ridgeline approximately 60 km from the current collector position creates a physical obstruction that blocks the direct line-of-sight path to the Donovian Early Warning radar site. Collection from this emitter is intermittent - only possible when atmospheric conditions produce slight diffraction. This is not a sensor malfunction; it is a fundamental physics constraint. No amount of signal processing can recover emissions blocked by terrain. The solution is repositioning - placing the collector where it has unobstructed line-of-sight to the target emitter."
+        },
+        {
+          id: "e4-6",
+          domain: "ems",
+          title: "Alternate Collector Position - Eastern Hilltop",
+          summary: "A hilltop 18 km to the east has been identified. Analysis confirms clear line-of-sight to all four identified emitter sites from this position.",
+          detail: "A terrain analysis of potential alternate collection positions identified a hilltop 18 km to the east of the current position. Elevation and azimuth analysis confirms unobstructed line-of-sight from this hilltop to all four identified emitter sites: the EW radar, the TA radar, the FC radar location, and the GCI station. Repositioning to this hilltop would resolve the current terrain masking problem and improve collection continuity on all emitters. The trade-off is that relocation takes time and creates a collection gap during movement. However, continued intermittent collection from the current position provides an incomplete emissions picture at a critical moment."
+        }
+      ],
+      activities: [
+        {
+          id: "p4a1",
+          type: "matching",
+          typeLabel: "Activity 1 of 5 - Matching",
+          points: 3,
+          instruction: "Match each frequency characteristic to its operational effect. Click a term on the left, then the correct description on the right.",
+          objectiveIds: ["ems-freq"],
+          items: [
+            { id: "f-low", text: "Low frequency / long wavelength" },
+            { id: "f-high", text: "High frequency / short wavelength" },
+            { id: "f-mid", text: "Mid-range frequency" }
+          ],
+          targets: [
+            { id: "t-low", text: "Long detection range, coarser resolution - suited for early warning at maximum distance", correct: "f-low" },
+            { id: "t-high", text: "Short range, fine resolution - suited for precision targeting and weapons guidance", correct: "f-high" },
+            { id: "t-mid", text: "Balance of range and resolution - suited for target acquisition and tracking", correct: "f-mid" }
+          ],
+          feedback: {
+            correct: "All three matched correctly. Low frequency = long range, coarse resolution (EW radar). High frequency = short range, fine resolution (Fire Control radar). Mid-range = the balance point used for Target Acquisition.",
+            incorrect: "Remember the inverse relationship: as frequency increases, wavelength decreases, range decreases, and resolution improves. Low frequency reaches far but sees coarsely. High frequency sees precisely but only at short range. This is why different radar roles use different frequency bands.",
+            whyMatters: "The FC radar spike in Card 3 is X-band - the highest frequency in this emissions picture. That high frequency is what makes it capable of guiding a weapon to a target. The EW radar in Card 1 is VHF - low frequency, which is why it can detect targets at 380 km even though it cannot identify them precisely.",
+            evidenceClue: "Card 1 (VHF, 380 km range) = low frequency, long range. Card 3 (X-band, 4-second precision spike) = high frequency, short range, fire-control grade. Card 2 (L/S-band, target acquisition) = mid-range balance."
+          }
+        },
+        {
+          id: "p4a2",
+          type: "classification",
+          typeLabel: "Activity 2 of 5 - Classification",
+          points: 4,
+          instruction: "Classify each intercepted emission as ELINT or COMINT. ELINT = intelligence from non-communications electronic emitters (radars, beacons). COMINT = intelligence from voice and data communications.",
+          objectiveIds: ["ems-elint"],
+          items: [
+            { id: "em1", text: "Early Warning radar pulse - a non-communications radar emission used for air surveillance", correct: "elint" },
+            { id: "em2", text: "Fire Control radar spike - a precision radar emission guiding a weapon system", correct: "elint" },
+            { id: "em3", text: "GCI encrypted voice transmission - a radio communication between controller and aircrew", correct: "comint" },
+            { id: "em4", text: "Logistics convoy radio check - voice communications between vehicles on a route", correct: "comint" }
+          ],
+          categories: [
+            { id: "elint", label: "ELINT" },
+            { id: "comint", label: "COMINT" }
+          ],
+          feedback: {
+            correct: "All four correctly classified. Radars (EW, FC, TA) are non-communications emitters - ELINT. Voice and data radio communications are COMINT, regardless of whether the content is encrypted or not.",
+            incorrect: "The key discriminator is the type of emitter, not the content. ELINT comes from non-communications devices: radars, beacons, jammers - devices designed to emit EM energy for purposes other than communication. COMINT comes from voice or data communications, even if encrypted. The GCI voice intercept is COMINT even though the content is encrypted.",
+            whyMatters: "ELINT and COMINT are processed, analyzed, and reported through different systems and chains. Misclassifying an emission means it goes to the wrong analyst team. The FC radar spike (ELINT) goes to an electronic warfare analyst. The GCI voice intercept (COMINT) goes to a linguist or signals analyst.",
+            evidenceClue: "Cards 1, 2, and 3 all describe radar emissions - non-communications emitters, all ELINT. Card 4 describes the GCI voice intercept - a radio communication between a controller and aircrew, which is COMINT even though the content is encrypted."
+          }
+        },
+        {
+          id: "p4a3",
+          type: "sequencing",
+          typeLabel: "Activity 3 of 5 - Sequencing",
+          points: 3,
+          instruction: "Place the six stages of the kill chain in the correct order from first to last. Use the up/down arrows to reorder.",
+          objectiveIds: ["radar-kc"],
+          items: [
+            { id: "kc1", text: "Find - detect the target at long range; the Early Warning radar activation stage", correct: 1 },
+            { id: "kc2", text: "Fix - precisely locate and identify the specific target", correct: 2 },
+            { id: "kc3", text: "Track - maintain continuous contact with the moving target as it maneuvers", correct: 3 },
+            { id: "kc4", text: "Target - assign a weapon system and prepare for engagement", correct: 4 },
+            { id: "kc5", text: "Engage - fire weapon at the target", correct: 5 },
+            { id: "kc6", text: "Assess - evaluate the results of the engagement (battle damage assessment)", correct: 6 }
+          ],
+          feedback: {
+            correct: "Correct. Find -> Fix -> Track -> Target -> Engage -> Assess. The kill chain must be completed in sequence - and defenders only need to break one link to stop the engagement.",
+            incorrect: "The six stages are: Find -> Fix -> Track -> Target -> Engage -> Assess. Think of it as: detect it, identify it, keep watching it, assign a weapon to it, fire, then check results. Each stage must precede the next - you cannot Target something you have not Tracked.",
+            whyMatters: "Kill chain stage analysis tells you how much time remains before an adversary engages. If you are seeing Find-stage indicators (EW radar), you likely have time. If you are seeing Engage-stage indicators (FC radar spike), the window is extremely short. The analyst's job is to place the adversary on the kill chain and update that assessment as new emissions are detected.",
+            evidenceClue: "The emissions picture in this phase maps directly onto the kill chain: Card 1 (EW radar) = Find stage. Card 2 (TA radar) = Fix/Track stages. Card 3 (FC radar spike) = Target/Engage stage - the most alarming indicator in the picture."
+          }
+        },
+        {
+          id: "p4a4",
+          type: "ranking",
+          typeLabel: "Activity 4 of 5 - Ranking",
+          points: 3,
+          instruction: "Rank these four radar events from least imminent (1) to most imminent (4) based on where each places Donovia in the kill chain. Rank 1 = earliest stage, least threatening right now. Rank 4 = closest to weapons release.",
+          objectiveIds: ["radar-imm"],
+          items: [
+            { id: "r-ew", text: "Early Warning radar activation - VHF-band, long-range detection sweep", correct: 1 },
+            { id: "r-gci", text: "GCI voice intercept - encrypted coordination consistent with directing interceptors", correct: 2 },
+            { id: "r-ta", text: "Target Acquisition radar bursts - three bursts over 6 hours, precision tracking", correct: 3 },
+            { id: "r-fc", text: "Fire Control radar spike - X-band, 4 seconds, weapons-guidance grade precision", correct: 4 }
+          ],
+          feedback: {
+            correct: "Correct ranking. EW = Find stage (1). GCI = coordination to direct interceptors (2). TA = Fix/Track stage (3). FC radar spike = Target/Engage stage - most imminent (4). If FC radar is active, the adversary is at the threshold of firing.",
+            incorrect: "Map each radar to its kill chain stage. EW is the Find layer - earliest, least imminent. GCI directs interceptors, indicating a contact has been detected and fighters are being vectored. TA is the Fix layer - the adversary is tracking a specific target. FC is the Engage layer - a weapon is being guided. FC is always the most imminent indicator.",
+            whyMatters: "A commander receiving an intelligence update needs to know: is Donovia at the watching stage or the shooting stage? EW activation is a watch indicator. FC radar activation is a shoot indicator. That difference drives whether advisories go out, aircraft maneuver, or ordnance is employed.",
+            evidenceClue: "Card 3 (FC radar spike, 4 seconds) is the most alarming emission in this entire picture - it placed Donovia at the Engage stage of the kill chain, if only briefly. Card 1 (EW radar) indicates active surveillance but no imminent action. The picture has escalated across the collection window."
+          }
+        },
+        {
+          id: "p4a5",
+          type: "decision",
+          typeLabel: "Activity 5 of 5 - Decision",
+          points: 1,
+          instruction: "The current collector position has intermittent line-of-sight to the Early Warning radar site due to a ridgeline. An alternate hilltop position 18 km to the east provides clear line-of-sight to all emitters. What should the collection team do?",
+          objectiveIds: ["ems-freq"],
+          options: [
+            { id: "d1", text: "Stay at the current position - terrain masking is a temporary atmospheric condition that will resolve on its own", correct: false },
+            { id: "d2", text: "Move the collector further west to reduce the distance to the emitter sites and improve signal strength", correct: false },
+            { id: "d3", text: "Relocate to the eastern hilltop - clear, unobstructed line-of-sight overcomes terrain masking and restores collection on all emitters", correct: true },
+            { id: "d4", text: "Request replacement by a space-based collection asset - terrain masking makes ground collection unreliable", correct: false }
+          ],
+          feedback: {
+            correct: "Correct. Terrain masking is a line-of-sight problem, not a signal strength problem. The only solution is repositioning to a location with unobstructed LOS. The eastern hilltop provides that. Moving west increases distance without solving the LOS problem. Space-based assets may supplement but cannot replace the collection flexibility of a repositioned ground system.",
+            incorrect: "Terrain masking is caused by the loss of electromagnetic line-of-sight - a ridge physically blocks the straight-line path between the sensor and the emitter. Atmospheric conditions do not cause it and cannot resolve it. Moving west increases distance without solving the geometry. The fix is always to restore line-of-sight - and the eastern hilltop does exactly that.",
+            whyMatters: "SIGINT collector siting is an intelligence task, not just a logistics decision. A collector placed behind terrain is effectively blind to anything that ridge blocks, regardless of its technical capability. Intelligence officers must understand LOS geometry to correctly advise on collection positioning - and to recognize when a collection gap is a terrain problem versus a system problem.",
+            evidenceClue: "Card 5 explains the terrain masking problem explicitly - the ridge creates a physical obstruction, not a signal degradation. Card 6 identifies the solution: the eastern hilltop with confirmed clear LOS to all emitters. The physics determines the answer."
           }
         }
       ]
