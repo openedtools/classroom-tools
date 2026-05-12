@@ -44,7 +44,7 @@
 html, body { margin: 0; padding: 0; background: var(--bg-0); color: var(--text-0); }
 body {
   font-family: 'IBM Plex Sans', system-ui, sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.5;
   min-height: 100vh;
   background:
@@ -1546,6 +1546,10 @@ body {
   font-size: 12px;
   line-height: 1.5;
   color: var(--text-muted);
+}
+.feedback-row-expl strong {
+  color: var(--text-0);
+  font-weight: 700;
 }
 .feedback-chip {
   display: inline-flex;

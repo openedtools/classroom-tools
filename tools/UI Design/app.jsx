@@ -984,7 +984,7 @@ function ActivityFeedback({ activity, response }) {
                 <span className="feedback-chip chip-good">Correct answer: {row.correct}</span>
               </div>
               {row.explanation && (
-                <div className="feedback-row-expl">{row.explanation}</div>
+                <div className="feedback-row-expl"><strong>Explanation:</strong> {row.explanation}</div>
               )}
             </div>
           ))}
