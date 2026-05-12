@@ -597,7 +597,7 @@ function BeginBar({ onBegin }) {
 const TRAINING_PHASES = window.NorthernVeilContent?.phases || {};
 const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar", "phase-5-ir"];
 const SESSION_KEY = "onv-student-session-v1";
-const STUDENT_PASSWORD = "OperationalV3il";
+const STUDENT_PASSWORD = "OperationNorthernV3il";
 
 function getPhaseContent(phaseId) {
   return TRAINING_PHASES[phaseId] || null;
@@ -915,10 +915,10 @@ function StudentAccessModal({ open, onSubmit, error }) {
             <span className="field-label">ACCESS CODE</span>
             <input
               className={`field-input ${error ? "err" : ""}`}
-              type="password"
+              type="text"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="OperationalV3il"
+              placeholder="Enter access code"
             />
           </label>
           {error && <span className="field-err">INVALID ACCESS CODE</span>}
