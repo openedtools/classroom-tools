@@ -1092,100 +1092,171 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
     ,
     "phase-8-final": {
       id: "phase-8-final",
-      title: "Final Review",
-      subtitle: "Commander Estimate Board",
+      title: "Phase 8 - Commander Synthesis Brief",
+      subtitle: "Final Review - PIR Answer & Multi-Domain Integration",
       domain: "review",
-      objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.3-radar-kill-chain", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits"],
-      inject: `This final review is the commander estimate board. Use the evidence from GEOINT, EMS, IR, cyber, IO, ISR, and space to answer the PIR as one integrated assessment: is Donovia preparing a limited cross-border operation within the next 72 hours? The goal is to brief the answer, name the indicators that support it, and call out the remaining collection gaps. No new tradecraft should be introduced here - this phase exists to synthesize what the earlier lessons already taught.`,
+      objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.3-radar-kill-chain", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits", "4.8-counterspace"],
+      inject: `The J3 will brief the commander in 30 minutes. Your intelligence cell now owns the synthesis product: a defensible answer to the commander Priority Intelligence Requirement, built from every domain you have worked through.
+
+Recall the question: "Will Donovia conduct a limited cross-border operation into Gorgas within the next 72 hours?" The commander wants a structured product: a BLUF, the indicators that drive it, a Most Likely and Most Dangerous Course of Action, the collection gaps you still carry, and a final PIR call. No new evidence will be injected in this phase. Pull from the GEOINT motor pool picture, the EMS kill-chain emissions, the IR threat picture along the corridor, the cyber actor attribution, the IO campaign assessment, the ISR cycle you ran, and the space-domain interference reporting - and put them on one page.`,
       evidenceCards: [
         {
           id: "e8-1",
           domain: "review",
-          title: "Commander Estimate - PIR Crosswalk",
-          summary: "Each domain contributes a separate clue, but the answer only becomes useful when the clues are read together.",
-          detail: "GEOINT confirms vehicle parks, movement patterns, and what imagery cannot prove by itself. EMS shows radar emission behavior, line-of-sight limits, and possible jamming or deception. IR highlights night movement, thermal staging, and heat signatures that support or contradict the ground picture. Cyber points to access disruption, compromised accounts, and deliberate shaping of the information environment. IO shows the cognitive campaign that is preparing audiences for Donovian action. ISR turns the commander's PIR into collection tasks and routes the finished assessment back to decision-makers. Space matters because PNT, orbit selection, and counterspace effects can change collection endurance and maneuver. Taken together, those signals support a limited cross-border warning assessment rather than a single-source conclusion."
+          title: "Commander PIR - Restated for the Brief",
+          summary: "Will Donovia conduct a limited cross-border operation into Gorgas within the next 72 hours?",
+          detail: "This is the question the commander will be asked to answer. Your synthesis must include: (1) BLUF - a graded judgment with confidence and timeline; (2) the strongest indicator from each domain; (3) the Most Likely Course of Action (MLCOA); (4) the Most Dangerous Course of Action (MDCOA); (5) the collection gaps that still constrain the assessment; (6) a final PIR call. The commander does not want a domain-by-domain recap - they want one integrated judgment."
         },
         {
           id: "e8-2",
           domain: "review",
-          title: "Collection Gaps and Confidence",
-          summary: "The cell can brief likely intent, but the exact crossing point and H-hour still need confirmation.",
-          detail: "The current picture supports a moderate-confidence judgment that Donovia is preparing a limited cross-border operation. What remains unconfirmed is the exact axis of advance, the final crossing point, and whether the supporting package is meant to coerce or to seize ground. The next collection priorities are focused GEOINT on staging areas and routes, ISR on the suspected axis, EMS on emitter changes, and space support on collection access and PNT resilience."
+          title: "Indicator Roll-Up - Physical & Emitter Picture",
+          summary: "GEOINT, EMS/RADAR, and IR indicators consolidated from Phases 3, 4, and 5.",
+          detail: "GEOINT: approximately 40 wheeled vehicles and fuel tankers staged at a motor pool 12 km north of the Gorgas border; WAMI reconstructed five movement clusters; FMV tracked an 8-vehicle convoy southbound on Route 7; MTI flagged 15 overnight vehicle transits in the Zabzimek corridor. EMS/RADAR: Early Warning radar at 380 km range, Target Acquisition bursts (three over six hours), and a 4-second X-band Fire Control radar spike placing Donovia at the Engage stage of the kill chain - the most imminent indicator in the picture. IR: nighttime FLIR detected warm vehicle signatures on unimproved tracks; a suspected IR-guided MANPADS position has been identified adjacent to the same corridor."
+        },
+        {
+          id: "e8-3",
+          domain: "review",
+          title: "Indicator Roll-Up - Influence & Cyber Pressure",
+          summary: "IO and Cyber indicators consolidated from Phases 1 and 2.",
+          detail: "IO: a coordinated state-directed disinformation campaign claims Gorgas is preparing ethnic violence against Zabzimeki civilians; synchronized hashtag amplification reached 14 countries in 90 minutes across four languages, including NATO members and Gorgas itself. The cognitive-dimension objective is humanitarian precondition-setting for international audiences. Cyber: spearphishing with custom (non-commercial) malware established a 6-week dwell C2 channel on Gorgas logistics contractors; a destructive malware event took the border crossing database offline for 3 hours with no ransom demand; compromised official Gorgas accounts pushed messaging consistent with the IO narrative - a Cyber-Enabled Threat overlaying a Cyber Threat. Attribution indicators converge on a nation-state actor."
+        },
+        {
+          id: "e8-4",
+          domain: "review",
+          title: "Indicator Roll-Up - Collection State, ISR & Space",
+          summary: "ISR posture and space-domain interference from Phases 6 and 7.",
+          detail: "ISR: the PIR has been converted at Planning & Direction into collection tasks. Persistent surveillance covers the border corridor; a Route 7 reconnaissance task is launched against the convoy track from Phase 3. DCGS is exploiting new sensor feeds in the Processing & Exploitation stage. Space: Donovia is interfering with coalition Positioning, Navigation, and Timing (PNT) in the border corridor; the activity is consistent with non-kinetic counterspace (jamming the user segment / GNSS denial), not kinetic ASAT. Coalition LEO imagery and MEO PNT remain available outside the denied corridor. There is no indication of an imminent kinetic counterspace event."
+        },
+        {
+          id: "e8-5",
+          domain: "review",
+          title: "Threshold Logic - MLCOA vs MDCOA",
+          summary: "How to grade the Most Likely vs Most Dangerous Course of Action.",
+          detail: "Most Likely Course of Action (MLCOA): the COA most consistent with the convergence of all current indicators. It is what the evidence is actually pointing at. Most Dangerous Course of Action (MDCOA): the highest-impact COA the indicators do not yet preclude - what the commander must remain prepared for, even if probability is lower. A COA is implausible when it contradicts the indicators in hand (for example, a Donovian stand-down despite Fire Control radar activity is implausible; a kinetic ASAT against a coalition satellite is implausible because no space-attack indicators are present). Use the indicator roll-ups in cards 2-4 to sort each candidate COA into MLCOA, MDCOA, or implausible."
         }
       ],
       activities: [
         {
           id: "p8a1",
-          type: "decision",
-          typeLabel: "Activity 1 of 3 - Decision",
-          points: 2,
-          instruction: "Which commander BLUF best fits the integrated evidence for the PIR?",
-          objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.3-radar-kill-chain", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits"],
-          options: [
-            { id: "r8-1", text: "Donovia is likely preparing a limited cross-border operation within 72 hours; brief moderate confidence, note the remaining axis and H-hour gaps, and keep collection focused.", correct: true, explanation: "That is the integrated commander estimate: a likely, limited operation with a clear collection gap still to close." },
-            { id: "r8-2", text: "The situation is only an IO and cyber story, so the commander should ignore maneuver indicators until there is a confirmed crossing.", correct: false, explanation: "The evidence is multi-domain, and the ground picture matters as much as the information campaign." },
-            { id: "r8-3", text: "The evidence proves a full-scale invasion is imminent, so no additional collection is necessary.", correct: false, explanation: "The scenario supports a limited warning assessment, not an absolute conclusion about a larger offensive." }
+          type: "fillslot",
+          typeLabel: "Activity 1 of 5 - Build the BLUF",
+          points: 3,
+          instruction: "Build the BLUF for the commander brief. Complete each blank using the indicator roll-ups above. The BLUF must be defensible from the evidence in Phases 1 through 7.",
+          objectiveIds: ["4.1-geoint-elements", "4.3-radar-kill-chain", "4.5-cyber-actors", "4.6-ie-dimensions"],
+          sentence: [
+            { type: "text", text: "BLUF: Donovia is " },
+            { type: "slot", id: "bluf-likelihood", options: ["LIKELY", "POSSIBLE", "UNLIKELY"], correct: "LIKELY", explanation: "Multi-domain indicators converge: motor pool pre-movement signatures, a Fire Control radar spike, IO precondition-setting, and a coordinated cyber campaign. The convergence supports LIKELY, not merely possible." },
+            { type: "text", text: " to conduct a " },
+            { type: "slot", id: "bluf-coa", options: ["limited cross-border operation", "full armored invasion", "IO-only pressure campaign"], correct: "limited cross-border operation", explanation: "The staging footprint is too large for IO-only but too small for a full conventional thrust. The IO narrative (Zabzimek protection) and the FC-stage emissions are consistent with a limited, deniable cross-border action." },
+            { type: "text", text: " into Gorgas within " },
+            { type: "slot", id: "bluf-window", options: ["the next 72 hours", "the next 7 days", "the next 30 days"], correct: "the next 72 hours", explanation: "Fire Control radar activity and the cyber-IO synchronization point at the near-term window the commander PIR asked about: 72 hours." },
+            { type: "text", text: "." }
           ],
           feedback: {
-            correct: "Correct. The best BLUF is a moderate-confidence warning assessment: Donovia is likely preparing a limited cross-border operation within 72 hours, with the remaining gap focused on route and H-hour.",
-            incorrect: "This phase is a synthesis check. The right answer is not a single dramatic source or a broad strategic guess; it is a balanced commander estimate that uses GEOINT, EMS, IR, cyber, IO, ISR, and space together.",
-            whyMatters: "The commander needs a decision-ready assessment, not a recap of the lesson list. The review is successful when you can bridge the domains into one coherent warning judgment.",
-            evidenceClue: "The estimate board, the collection gap card, and the lower-domain crosswalk should all point toward the same integrated answer."
+            correct: "Correct BLUF. LIKELY / limited cross-border / 72 hours is the integrated read of the evidence and matches the commander PIR window.",
+            incorrect: "Rebuild the BLUF against the indicators. UNLIKELY contradicts the FC radar at the Engage stage. A full armored invasion is the Most Dangerous COA, not the Most Likely. The 72-hour window is the explicit PIR window and is supported by the cyber-IO synchronization with the staging picture.",
+            whyMatters: "BLUFs are graded on calibration. Overstating CERTAIN locks the commander into action; understating UNLIKELY denies the commander the warning the evidence supports. LIKELY communicates real risk while preserving the gaps you will declare in Activity 4.",
+            evidenceClue: "Card 2 (FC spike, 40-vehicle motor pool, MANPADS adjacency), Card 3 (custom-malware cyber + 14-country IO synchronization), and Card 4 (PNT denial in the corridor) all point to LIKELY / limited cross-border / 72 hours."
           }
         },
         {
           id: "p8a2",
           type: "matching",
-          typeLabel: "Activity 2 of 3 - Matching",
+          typeLabel: "Activity 2 of 5 - Indicator Matrix",
           points: 7,
-          instruction: "Match each domain to the main contribution it makes to the final commander estimate.",
-          objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-orbits"],
+          instruction: "Match each domain to its single strongest indicator from this scenario. These are the indicators you will cite in the brief. Click a domain on the left, then the matching indicator on the right.",
+          objectiveIds: ["4.1-geoint-elements", "4.2-em-basics", "4.3-radar-kill-chain", "4.4-ir-signatures", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle", "4.8-counterspace"],
           items: [
-            { id: "dom1", text: "GEOINT", explanation: "Imagery shows staging, routes, and what cannot be proven from a single image." },
-            { id: "dom2", text: "EMS", explanation: "Emitters, line-of-sight, and jamming/deception clues help define the signal picture." },
-            { id: "dom3", text: "IR", explanation: "Thermal cues reveal night movement, staging, and heat signatures." },
-            { id: "dom4", text: "Cyber", explanation: "Access disruption and compromised accounts show the digital side of the campaign." },
-            { id: "dom5", text: "IO", explanation: "Narrative shaping shows how Donovia is preparing perceptions before action." },
-            { id: "dom6", text: "ISR", explanation: "The PIR becomes collection tasks and the assessment is routed back to the commander." },
-            { id: "dom7", text: "Space", explanation: "PNT, orbit coverage, and counterspace effects shape collection endurance and maneuver." }
+            { id: "d-geoint", text: "GEOINT" },
+            { id: "d-ems",    text: "EMS / RADAR" },
+            { id: "d-ir",     text: "Infrared (IR)" },
+            { id: "d-cyber",  text: "Cyber" },
+            { id: "d-io",     text: "Information Operations" },
+            { id: "d-isr",    text: "ISR" },
+            { id: "d-space",  text: "Space" }
           ],
           targets: [
-            { id: "t8-1", text: "Confirms vehicle parks, movement patterns, and imagery limits", correct: "dom1" },
-            { id: "t8-2", text: "Reveals emitters, line-of-sight limits, and possible jamming or deception", correct: "dom2" },
-            { id: "t8-3", text: "Flags thermal movement cues and night staging activity", correct: "dom3" },
-            { id: "t8-4", text: "Shows access disruption and deliberate digital effects", correct: "dom4" },
-            { id: "t8-5", text: "Indicates audience shaping and cognitive preparation", correct: "dom5" },
-            { id: "t8-6", text: "Turns the PIR into tasking and sends the result to the commander", correct: "dom6" },
-            { id: "t8-7", text: "Keeps the picture alive through PNT, orbit selection, and counterspace resilience", correct: "dom7" }
+            { id: "t-geoint", text: "Approximately 40 wheeled vehicles and fuel tankers staged at a motor pool 12 km north of the Gorgas border", correct: "d-geoint" },
+            { id: "t-ems",    text: "X-band Fire Control radar emission for four seconds - placing Donovia at the Engage stage of the kill chain", correct: "d-ems" },
+            { id: "t-ir",     text: "Suspected IR-guided MANPADS position identified along the same border corridor on a nighttime FLIR pass", correct: "d-ir" },
+            { id: "t-cyber",  text: "Custom (non-commercial) malware on Gorgas logistics contractors with six weeks of undetected C2 dwell", correct: "d-cyber" },
+            { id: "t-io",     text: "Synchronized hashtag campaign across 14 countries in 90 minutes, four languages, framing Gorgas as the aggressor", correct: "d-io" },
+            { id: "t-isr",    text: "Commander PIR converted into collection tasks at Planning & Direction; DCGS exploiting new feeds; Route 7 reconnaissance launched", correct: "d-isr" },
+            { id: "t-space",  text: "GNSS / PNT denial in the border corridor consistent with Donovian non-kinetic counterspace - no kinetic ASAT indicators present", correct: "d-space" }
           ],
           feedback: {
-            correct: "Correct. Each domain feeds the same estimate from a different angle, and the commander only gets a useful answer when the domains are read together.",
-            incorrect: "Match the domain to the estimate contribution, not just the vocabulary. The final review is about what each domain contributes to the commander PIR.",
-            whyMatters: "A synthesis product has to show how each intelligence discipline adds value. If you cannot map the discipline to the estimate, the final brief will feel disconnected.",
-            evidenceClue: "The estimate board should line up with the evidence cards: GEOINT, EMS, IR, cyber, IO, ISR, and space each support a specific part of the answer."
+            correct: "Correct. These are the seven indicators you cite in the commander brief - one strongest signal per domain. Together they form the indicator matrix backing the BLUF.",
+            incorrect: "Match each domain to the indicator that most directly raises confidence in the BLUF. GEOINT = the staging footprint. EMS = the FC radar at Engage stage. IR = the MANPADS position. Cyber = custom malware with long dwell (the nation-state signature). IO = the hashtag synchronization. ISR = the PIR-to-tasking chain you actually ran. Space = the corridor PNT denial.",
+            whyMatters: "A commander brief without a clean indicator matrix is just an opinion. The matrix is what makes the BLUF defensible if a peer challenges your assessment.",
+            evidenceClue: "Cards 2, 3, and 4 in this phase consolidate every indicator above. Each one was already collected in Phases 1 through 7."
           }
         },
         {
           id: "p8a3",
-          type: "fillslot",
-          typeLabel: "Activity 3 of 3 - Fill the Estimate",
-          points: 3,
-          instruction: "Complete the commander estimate sentence using the best synthesis terms.",
-          objectiveIds: ["4.7-isr-cycle", "4.8-orbits", "4.5-cyber-actors", "4.6-ie-dimensions"],
-          sentence: [
-            { type: "text", text: "The commander should brief a " },
-            { type: "slot", id: "slot1", options: ["low", "moderate", "high"], correct: "moderate", explanation: "The evidence is strong enough for a warning estimate, but not strong enough for absolute certainty." },
-            { type: "text", text: "-confidence assessment that Donovia is " },
-            { type: "slot", id: "slot2", options: ["likely", "certainly", "barely"], correct: "likely", explanation: "The cumulative indicators point toward likely preparation rather than mere possibility." },
-            { type: "text", text: " preparing a " },
-            { type: "slot", id: "slot3", options: ["limited cross-border operation", "strategic nuclear strike", "purely defensive patrol"], correct: "limited cross-border operation", explanation: "The scenario supports a limited cross-border warning assessment, not a larger strategic attack." },
-            { type: "text", text: " within 72 hours, while the main unresolved gaps remain the exact crossing point and H-hour." }
+          type: "classification",
+          typeLabel: "Activity 3 of 5 - MLCOA / MDCOA Sort",
+          points: 4,
+          instruction: "Classify each candidate Donovian course of action as the Most Likely COA, the Most Dangerous COA, or implausible (contradicted by current indicators).",
+          objectiveIds: ["4.3-radar-kill-chain", "4.5-cyber-actors", "4.6-ie-dimensions", "4.8-counterspace"],
+          items: [
+            { id: "coa-1", text: "Limited cross-border action into the Zabzimek region under a humanitarian-protection narrative, with continued IO and cyber pressure as cover", correct: "mlcoa", explanation: "This COA matches every indicator in the matrix: motor pool staging at the right scale, FC radar at Engage stage, IO precondition-setting, and cyber pre-positioning. It is the MLCOA." },
+            { id: "coa-2", text: "Full conventional armored thrust into Gorgas timed to coincide with cyber blackout of border systems and GNSS denial of coalition PNT", correct: "mdcoa", explanation: "Higher impact than the staging picture supports, but the indicators do not preclude escalation. The commander must remain prepared for it. This is the MDCOA." },
+            { id: "coa-3", text: "Complete Donovian stand-down and a diplomatic walkback following the international response to the hashtag campaign", correct: "implausible", explanation: "A stand-down contradicts the Fire Control radar activity, the staged motor pool, and the continued cyber and PNT denial activity. The indicators rule this out." },
+            { id: "coa-4", text: "Kinetic anti-satellite (ASAT) strike against a coalition LEO ISR satellite as a pre-invasion blinding move", correct: "implausible", explanation: "No space-attack indicators are present. Donovian counterspace activity is non-kinetic (GNSS denial only). A kinetic ASAT would be the most escalatory option in the lesson set and is not supported by any indicator collected." }
+          ],
+          categories: [
+            { id: "mlcoa",        label: "Most Likely COA" },
+            { id: "mdcoa",        label: "Most Dangerous COA" },
+            { id: "implausible",  label: "Implausible / Contradicted by Indicators" }
           ],
           feedback: {
-            correct: "Correct. That is the kind of concise, decision-ready estimate the commander needs.",
-            incorrect: "Keep the estimate bounded. The final review should be moderate-confidence, likely, and limited in scope - with the remaining gaps clearly named.",
-            whyMatters: "The point of the block is not to produce a dramatic one-line answer. It is to give the commander a measured, defensible judgment with the uncertainty stated up front.",
-            evidenceClue: "The previous evidence cards point to the same estimate: the domains reinforce a limited cross-border warning assessment, but not every detail is nailed down."
+            correct: "Correct. MLCOA = the limited cross-border action the indicators are actually pointing at. MDCOA = the full conventional thrust the indicators do not preclude. The stand-down and the kinetic ASAT are implausible given the picture you have.",
+            incorrect: "Use Card 5's threshold logic. MLCOA is what the indicators converge on. MDCOA is the highest-impact COA still consistent with the indicators. A COA that contradicts evidence (FC radar plus stand-down) is implausible. A COA with no supporting evidence (kinetic ASAT with no space-attack indicators) is also implausible.",
+            whyMatters: "Commanders plan against MLCOA and prepare branches for MDCOA. If you collapse the two, you either over-react to the worst case or miss the warning the evidence actually supports.",
+            evidenceClue: "Card 2 supports MLCOA - the staging scale and FC spike. Card 4 (no kinetic ASAT indicators) is what makes COA-4 implausible. Card 3 (custom malware, continuing IO) is what makes the stand-down COA-3 implausible."
+          }
+        },
+        {
+          id: "p8a4",
+          type: "multiselect",
+          typeLabel: "Activity 4 of 5 - Collection Gaps",
+          points: 4,
+          instruction: "Select ALL remaining collection gaps that should be declared in the commander brief. Do not select gaps that have already been resolved by collection in Phases 1 through 7.",
+          objectiveIds: ["4.1-geoint-limits", "4.7-isr-cycle"],
+          options: [
+            { id: "gap-1", text: "Interior contents of the northeast warehouse showing a heat signature - personnel count, stored equipment, and intent inside the structure", correct: true, explanation: "GEOINT cannot penetrate walls. The interior of the warehouse remains a confirmed gap." },
+            { id: "gap-2", text: "Specific Donovian senior-leader decision-cycle intent - whether the order to cross has been issued", correct: true, explanation: "HUMINT into the Donovian decision cycle is the classic gap behind any warning intelligence question. It remains unresolved." },
+            { id: "gap-3", text: "Positive ELINT identification (system type and unit) of the Fire Control radar emitter that briefly illuminated", correct: true, explanation: "The FC spike was characterized by band and duration but the specific emitter has not been positively identified to a unit. A gap." },
+            { id: "gap-4", text: "Attribution of the GNSS / PNT denial to a specific Donovian unit or ground-segment cyber action", correct: true, explanation: "The effect is observed and characterized as non-kinetic; the responsible Donovian element has not been attributed. A gap." },
+            { id: "gap-5", text: "Whether the Gorgas Ministry of Defense readiness memo from Phase 1 is authentic", correct: false, explanation: "Not a gap. The memo was verified as authentic in Phase 1 - the IO was the deceptive framing, not the document itself." },
+            { id: "gap-6", text: "Whether the Donovian IO campaign is reaching foreign audiences", correct: false, explanation: "Not a gap. OSINT in Phase 1 confirmed 14-country reach in 90 minutes across four languages. This is established." }
+          ],
+          feedback: {
+            correct: "Correct. The four real gaps are warehouse interior, Donovian leadership intent, FC radar positive ID, and PNT denial attribution. The memo authenticity and IO reach are already confirmed and should not be re-listed as gaps.",
+            incorrect: "A gap is what the commander still does not know. The warehouse interior, Donovian leadership intent, FC emitter unit ID, and PNT denial attribution are open. The memo authenticity and IO reach were settled by collection in Phase 1 - they do not belong in the gaps section.",
+            whyMatters: "Declaring gaps is what separates a competent intelligence product from an overstatement. The commander needs to know what you do not know so they can task additional collection or weight the BLUF accordingly.",
+            evidenceClue: "Phase 3 Card 5 named the warehouse interior limit. Phase 4 named the FC emitter only by band. Phase 7 characterized the PNT denial without attributing it. Phase 1 Card 3 verified the leaked memo, so it is not a gap."
+          }
+        },
+        {
+          id: "p8a5",
+          type: "decision",
+          typeLabel: "Activity 5 of 5 - Final PIR Call",
+          points: 2,
+          instruction: "Final answer to the commander PIR: 'Will Donovia conduct a limited cross-border operation into Gorgas within the next 72 hours?' Choose the assessment that integrates the BLUF, the indicator matrix, the MLCOA/MDCOA sort, and the declared gaps.",
+          objectiveIds: ["4.1-geoint-elements", "4.3-radar-kill-chain", "4.5-cyber-actors", "4.6-ie-dimensions", "4.7-isr-cycle"],
+          options: [
+            { id: "pir-1", text: "ASSESS LIKELY: multi-domain indicators converge on a limited cross-border action inside the 72-hour window. MLCOA is the Zabzimek-flagged limited operation; MDCOA is a full conventional thrust with cyber and PNT denial; declared gaps include warehouse interior, leadership intent, FC emitter ID, and PNT attribution.", correct: true, explanation: "This integrates the BLUF, the indicator matrix, the COA sort, and the declared gaps in a single defensible call. It is the synthesis the commander needs." },
+            { id: "pir-2", text: "ASSESS UNLIKELY: indicators are inconsistent or single-source; recommend continued monitoring only and no warning at this time.", correct: false, explanation: "Inconsistent with the picture. The FC radar at Engage stage, the staged motor pool, the synchronized cyber-IO campaign, and the PNT denial converge - they are not single-source." },
+            { id: "pir-3", text: "ASSESS CERTAIN: Donovian invasion will occur within 72 hours; recommend immediate kinetic preemption by coalition forces.", correct: false, explanation: "Over-claim. The warehouse interior, the Donovian decision cycle, and FC emitter ID remain open gaps. CERTAIN is not defensible and recommending preemption exceeds the intelligence role." },
+            { id: "pir-4", text: "ASSESS NO RESPONSE NEEDED: the IO campaign is the entire Donovian operation and no kinetic action is planned.", correct: false, explanation: "Contradicted by the FC radar spike, the motor pool staging, the suspected MANPADS position, and the PNT denial. An IO-only read ignores the rest of the indicator matrix." }
+          ],
+          feedback: {
+            correct: "Correct. This is the integrated PIR answer: a calibrated LIKELY judgment, the indicator matrix behind it, both COAs sorted, and the gaps declared. That is the commander's synthesis product.",
+            incorrect: "The PIR call must reflect all four prior activities. UNLIKELY contradicts the indicator matrix. CERTAIN over-claims past the declared gaps and crosses into an operational recommendation that is not the intelligence officer's role. NO RESPONSE NEEDED ignores the kinetic and emitter indicators.",
+            whyMatters: "This is the line of effort the entire scenario was designed to test. A coherent multi-domain answer to a 72-hour warning question - graded, supported, and bounded by gaps - is the headline product an intelligence cell owes a commander.",
+            evidenceClue: "Cards 1 through 5 in this phase are the brief in miniature: PIR, three indicator roll-ups, and the COA threshold logic. The correct option restates all of them in one assessment line."
           }
         }
       ]
