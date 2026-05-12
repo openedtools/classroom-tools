@@ -1,0 +1,241 @@
+[
+  {
+    "id": "inject-00-orientation",
+    "phaseId": "phase-0-overview",
+    "sequence": 0,
+    "title": "Situation Brief — Know the Target",
+    "timestamp": "D-10 / 0700L",
+    "objective": "Orient on actors, geography, and the commander's PIR before reporting begins.",
+    "storyText": "You are the coalition intelligence cell supporting Gorgan leadership. Donovian rhetoric toward Gorgas has sharpened over the past two weeks, with renewed claims that Russian-speaking Zabzimekis are under threat. The commander wants you to integrate multi-domain reporting and warn of cross-border action.",
+    "presetView": "regional",
+    "mapLayersToEnable": ["political"],
+    "evidenceIds": ["ev-cmdr-001"],
+    "objectivesCovered": ["4.7-isr-cycle"],
+    "studentTasks": [
+      {
+        "id": "task-00-confirm",
+        "type": "short-answer",
+        "prompt": "In one sentence, restate the commander's PIR in your own words.",
+        "evaluatesObjectiveId": "4.7-isr-cycle"
+      }
+    ]
+  },
+  {
+    "id": "inject-01-rumor-wave",
+    "phaseId": "phase-1-info",
+    "sequence": 1,
+    "title": "The Rumor Wave",
+    "timestamp": "D-9 / 0815L",
+    "objective": "Identify the IO activity and its intended effect in the information environment.",
+    "storyText": "Donovian state media and proxy social-media accounts simultaneously report that Gorgan nationalist militias are preparing attacks against Zabzimeki civilians. Reused footage and coordinated hashtags suggest a shaping campaign, not organic reporting.",
+    "presetView": "donovia-gorgas-border",
+    "mapLayersToEnable": ["political", "cyber"],
+    "evidenceIds": ["ev-io-001", "ev-osint-001"],
+    "objectivesCovered": ["4.6-disinformation", "4.6-ie-dimensions"],
+    "studentTasks": [
+      {
+        "id": "task-01-tag",
+        "type": "concept-tagging",
+        "prompt": "Tag the activity. Select all that apply.",
+        "options": ["disinformation", "misinformation", "malinformation", "MISO", "MILDEC", "physical dimension", "informational dimension", "cognitive dimension"],
+        "correctTags": ["disinformation", "MISO", "cognitive dimension", "informational dimension"],
+        "evaluatesObjectiveId": "4.6-disinformation"
+      },
+      {
+        "id": "task-01-rationale",
+        "type": "short-answer",
+        "prompt": "In 1–3 sentences, explain why this is disinformation rather than misinformation and identify the likely target audience.",
+        "evaluatesObjectiveId": "4.6-ie-dimensions"
+      },
+      {
+        "id": "task-01-conf",
+        "type": "confidence",
+        "prompt": "Confidence in your IO classification."
+      }
+    ]
+  },
+  {
+    "id": "inject-02-border-dark",
+    "phaseId": "phase-2-cyber",
+    "sequence": 2,
+    "title": "Border Systems Go Dark",
+    "timestamp": "D-7 / 0240L",
+    "objective": "Classify the actor and cyber kill-chain stage; distinguish cyber threat from cyber-enabled threat.",
+    "storyText": "Gorgan CERT reports border CCTV blackouts, a credential-spray against a utility SCADA portal, ministry website defacement, and a spear-phish against a logistics contractor — all inside a 36-hour window. Infrastructure overlaps with a previously named Donovian-linked APT.",
+    "presetView": "donovia-gorgas-border",
+    "mapLayersToEnable": ["political", "cyber"],
+    "evidenceIds": ["ev-cyber-001"],
+    "objectivesCovered": ["4.5-cyber-actors"],
+    "studentTasks": [
+      {
+        "id": "task-02-actor",
+        "type": "single-select",
+        "prompt": "Best-fit threat actor category for this set of incidents:",
+        "options": ["Hacktivist", "Cybercriminal (financial)", "Insider threat", "Nation-state / state-sponsored APT"],
+        "correctOption": "Nation-state / state-sponsored APT",
+        "evaluatesObjectiveId": "4.5-cyber-actors"
+      },
+      {
+        "id": "task-02-stage",
+        "type": "single-select",
+        "prompt": "What kill-chain stage best matches the spear-phish + credential spray?",
+        "options": ["Reconnaissance", "Weaponization", "Delivery", "Exploitation", "Actions on objectives"],
+        "correctOption": "Delivery",
+        "evaluatesObjectiveId": "4.5-cyber-actors"
+      },
+      {
+        "id": "task-02-rationale",
+        "type": "short-answer",
+        "prompt": "Is this a cyber threat, a cyber-enabled threat, or both? Justify briefly.",
+        "evaluatesObjectiveId": "4.5-cyber-actors"
+      }
+    ]
+  },
+  {
+    "id": "inject-03-ground-picture",
+    "phaseId": "phase-3-geoint",
+    "sequence": 3,
+    "title": "Ground Picture Changes",
+    "timestamp": "D-3 / 1015L",
+    "objective": "Pick the right GEOINT product for the gap and state imagery's limits.",
+    "storyText": "EO imagery from D-3 shows ~40 tracked vehicles, fuel bowsers, and engineering bridging assets at a previously empty motor pool north of the border. D-1 cloud cover blocks EO collection. The commander wants confirmation of presence and any change in posture.",
+    "presetView": "donovia-gorgas-border",
+    "mapLayersToEnable": ["political", "geoint", "terrain"],
+    "evidenceIds": ["ev-geoint-001", "ev-geoint-002"],
+    "objectivesCovered": ["4.1-geoint-elements", "4.1-geoint-limits"],
+    "studentTasks": [
+      {
+        "id": "task-03-sensor",
+        "type": "single-select",
+        "prompt": "Best follow-on GEOINT product given the weather and need:",
+        "options": ["Additional EO imagery", "SAR imagery", "FMV (Full-Motion Video)", "WAMI (Wide-Area Motion Imagery)"],
+        "correctOption": "SAR imagery",
+        "evaluatesObjectiveId": "4.1-geoint-elements"
+      },
+      {
+        "id": "task-03-limits",
+        "type": "short-answer",
+        "prompt": "List one thing this single EO image CAN show and one thing it CANNOT show.",
+        "evaluatesObjectiveId": "4.1-geoint-limits"
+      }
+    ]
+  },
+  {
+    "id": "inject-04-emitters",
+    "phaseId": "phase-4-emsradar",
+    "sequence": 4,
+    "title": "The Emitters Wake Up",
+    "timestamp": "D-2 / 1830L",
+    "objective": "Differentiate ELINT/COMINT, apply LOS reasoning, and place radar activity in the kill chain.",
+    "storyText": "ELINT reporting shows increasing Donovian radar emissions near the border. Activity matches a target acquisition role; fire-control activity remains unconfirmed. The Greater Caucasus ridge likely masks some coverage south of the divide.",
+    "presetView": "donovia-gorgas-border",
+    "mapLayersToEnable": ["political", "radar", "terrain"],
+    "evidenceIds": ["ev-elint-001"],
+    "objectivesCovered": ["4.2-em-basics", "4.2-elint-vs-comint", "4.3-radar-kill-chain"],
+    "studentTasks": [
+      {
+        "id": "task-04-disc",
+        "type": "single-select",
+        "prompt": "Reporting on radar emissions is best categorized as:",
+        "options": ["COMINT", "ELINT", "FISINT", "OSINT"],
+        "correctOption": "ELINT",
+        "evaluatesObjectiveId": "4.2-elint-vs-comint"
+      },
+      {
+        "id": "task-04-killchain",
+        "type": "ordering",
+        "prompt": "Order the radar kill-chain steps from first to last:",
+        "options": ["Find", "Fix", "Track", "Target", "Engage", "Assess"],
+        "correctOrder": ["Find", "Fix", "Track", "Target", "Engage", "Assess"],
+        "evaluatesObjectiveId": "4.3-radar-kill-chain"
+      },
+      {
+        "id": "task-04-imminence",
+        "type": "short-answer",
+        "prompt": "Why is the absence of fire-control radar activity meaningful for engagement imminence? (1–2 sentences)",
+        "evaluatesObjectiveId": "4.3-radar-kill-chain"
+      }
+    ]
+  },
+  {
+    "id": "inject-05-night",
+    "phaseId": "phase-5-ir",
+    "sequence": 5,
+    "title": "Night Signatures",
+    "timestamp": "D-1 / 0220L",
+    "objective": "Tie an IR signature to an appropriate countermeasure choice.",
+    "storyText": "A FLIR overflight detects warm vehicle signatures along two unimproved tracks near Zabzimek. Gorgan rotary-wing resupply runs the same corridor and is in suspected IR-guided MANPADS range.",
+    "presetView": "gorgas",
+    "mapLayersToEnable": ["political", "ir", "terrain"],
+    "evidenceIds": ["ev-ir-001"],
+    "objectivesCovered": ["4.4-ir-signatures"],
+    "studentTasks": [
+      {
+        "id": "task-05-cm",
+        "type": "single-select",
+        "prompt": "Most appropriate aircraft countermeasure against an IR-guided MANPADS:",
+        "options": ["Chaff", "Flares", "Smoke", "Active radar jamming"],
+        "correctOption": "Flares",
+        "evaluatesObjectiveId": "4.4-ir-signatures"
+      },
+      {
+        "id": "task-05-rationale",
+        "type": "short-answer",
+        "prompt": "Briefly explain why this countermeasure (not the others) fits the threat type.",
+        "evaluatesObjectiveId": "4.4-ir-signatures"
+      }
+    ]
+  },
+  {
+    "id": "inject-06-space-gap",
+    "phaseId": "phase-6-space",
+    "sequence": 6,
+    "title": "The Space Gap",
+    "timestamp": "D-1 / 1400L",
+    "objective": "Match orbit regime to mission, classify counterspace activity, and state a collection gap.",
+    "storyText": "Planners must allocate scarce space ISR. LEO offers resolution but limited revisit; GEO supports SATCOM and weather. GNSS interference is reported within ~80 km of the border.",
+    "presetView": "caucasus",
+    "mapLayersToEnable": ["political", "space"],
+    "evidenceIds": ["ev-space-001"],
+    "objectivesCovered": ["4.8-orbits", "4.8-counterspace", "4.7-isr-cycle"],
+    "studentTasks": [
+      {
+        "id": "task-06-orbit",
+        "type": "single-select",
+        "prompt": "Best orbit choice for high-resolution imagery of the motor pool:",
+        "options": ["LEO", "MEO", "GEO", "HEO / Polar (communications)"],
+        "correctOption": "LEO",
+        "evaluatesObjectiveId": "4.8-orbits"
+      },
+      {
+        "id": "task-06-cs",
+        "type": "single-select",
+        "prompt": "GNSS jamming is best categorized as:",
+        "options": ["Kinetic counterspace", "Non-kinetic counterspace (electronic)", "Cyber counterspace", "Directed-energy counterspace"],
+        "correctOption": "Non-kinetic counterspace (electronic)",
+        "evaluatesObjectiveId": "4.8-counterspace"
+      },
+      {
+        "id": "task-06-gap",
+        "type": "short-answer",
+        "prompt": "State one named collection gap you would surface to the commander.",
+        "evaluatesObjectiveId": "4.7-isr-cycle"
+      }
+    ]
+  },
+  {
+    "id": "inject-07-final",
+    "phaseId": "phase-7-final",
+    "sequence": 7,
+    "title": "Commander Update — Final Assessment",
+    "timestamp": "D-0 / 0800L",
+    "objective": "Synthesize multi-domain reporting and answer the PIR.",
+    "storyText": "The commander asks for your assessment: will Donovia conduct a limited cross-border operation into Gorgas within the next 72 hours? Provide BLUF, most likely COA, most dangerous COA, key indicators, collection gaps, recommended collection, and confidence.",
+    "presetView": "donovia-gorgas-border",
+    "mapLayersToEnable": ["political", "geoint", "radar", "ir", "cyber", "space"],
+    "evidenceIds": ["ev-cmdr-001"],
+    "objectivesCovered": ["4.7-isr-cycle"],
+    "isFinalAssessment": true,
+    "studentTasks": []
+  }
+]

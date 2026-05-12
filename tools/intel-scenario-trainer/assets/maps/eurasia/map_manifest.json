@@ -1,0 +1,178 @@
+{
+  "id": "eurasia-date-v1-5",
+  "title": "DATE Eurasia Map Assets",
+  "description": "Web-ready GeoJSON assets converted from DATE_EA_Boundary_Shapefiles for Operation Northern Veil static web app.",
+  "crs": "EPSG:4326 / WGS84 lon-lat",
+  "source": "DATE_EA_Boundary_Shapefiles.zip",
+  "source_version": "GIS version 1.5; May 2024",
+  "recommended_default_layer": "countries_simplified",
+  "layers": [
+    {
+      "id": "countries_full",
+      "type": "polygon",
+      "path": "geojson/countries_full.geojson",
+      "use": "Full-detail country polygons. Use for desktop or analysis, not first-load mobile."
+    },
+    {
+      "id": "countries_simplified",
+      "type": "polygon",
+      "path": "geojson/countries_simplified.geojson",
+      "use": "Recommended browser layer for political boundaries and clickable countries."
+    },
+    {
+      "id": "boundary_lines_simplified",
+      "type": "line",
+      "path": "geojson/boundary_lines_simplified.geojson",
+      "use": "Recommended browser layer for borders."
+    },
+    {
+      "id": "donovia_gorgas_border",
+      "type": "line",
+      "path": "geojson/donovia_gorgas_border.geojson",
+      "use": "Scenario highlight overlay for Operation Northern Veil."
+    },
+    {
+      "id": "capital_cities",
+      "type": "point",
+      "path": "geojson/capital_cities.geojson",
+      "use": "Capital city markers."
+    },
+    {
+      "id": "country_label_points",
+      "type": "point",
+      "path": "geojson/country_label_points.geojson",
+      "use": "Suggested label anchor points."
+    }
+  ],
+  "presetViews": [
+    {
+      "id": "regional",
+      "label": "Regional Eurasia Overview",
+      "bounds": [
+        -179.999989,
+        25.059408,
+        179.999989,
+        81.85871
+      ]
+    },
+    {
+      "id": "donovia-gorgas-border",
+      "label": "Donovia-Gorgas Border",
+      "bounds": [
+        38.973373,
+        41.316032,
+        47.250842,
+        43.575765
+      ]
+    },
+    {
+      "id": "gorgas",
+      "label": "Gorgas Focus",
+      "bounds": [
+        39.985976,
+        41.044111,
+        47.250842,
+        43.575843
+      ]
+    },
+    {
+      "id": "donovia",
+      "label": "Donovia Overview",
+      "bounds": [
+        -179.999989,
+        41.192681,
+        179.999989,
+        81.85871
+      ]
+    },
+    {
+      "id": "caucasus",
+      "label": "Caucasus Focus",
+      "bounds": [
+        35.0,
+        35.0,
+        55.0,
+        48.0
+      ]
+    }
+  ],
+  "countries": [
+    {
+      "id": "gorgas",
+      "displayName": "Gorgas",
+      "fullName": "Democratic Republic of Gorgas",
+      "role": "primary-partner",
+      "bounds": [
+        39.985976,
+        41.044111,
+        47.250842,
+        43.575843
+      ]
+    },
+    {
+      "id": "ariana",
+      "displayName": "Ariana",
+      "fullName": "Islamic Republic of Ariana",
+      "role": "regional-context",
+      "bounds": [
+        44.014863,
+        25.059408,
+        63.319628,
+        39.771527
+      ]
+    },
+    {
+      "id": "donovia",
+      "displayName": "Donovia",
+      "fullName": "United Republics of Donovia",
+      "role": "primary-adversary",
+      "bounds": [
+        -179.999989,
+        41.192681,
+        179.999989,
+        81.85871
+      ]
+    },
+    {
+      "id": "pirtuni",
+      "displayName": "Pirtuni",
+      "fullName": "Republic of Pirtuni",
+      "role": "regional-context",
+      "bounds": [
+        22.13284,
+        44.381049,
+        40.159543,
+        56.156806
+      ]
+    },
+    {
+      "id": "limaria",
+      "displayName": "Limaria",
+      "fullName": "Democratic Republic of Limaria",
+      "role": "regional-context",
+      "bounds": [
+        43.436294,
+        38.862668,
+        46.602612,
+        41.290452
+      ]
+    },
+    {
+      "id": "atropia",
+      "displayName": "Atropia",
+      "fullName": "Republic of Atropia",
+      "role": "regional-context",
+      "bounds": [
+        44.960697,
+        38.392645,
+        50.391124,
+        41.780321
+      ]
+    }
+  ],
+  "notes": [
+    "All GeoJSON is local and suitable for a static web app. No GIS server is required.",
+    "Use simplified layers for first-load UI performance. Keep full layers available for later refinement.",
+    "The source data uses WGS84. A custom SVG renderer can project lon/lat into screen coordinates, or a lightweight client map library can load the GeoJSON directly."
+  ]
+}

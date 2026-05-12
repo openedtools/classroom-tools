@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"name": "capital_cities",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "Tbilisi", "country": "Gorgas", "status": "NOTIONAL", "region": "Eurasia", "version": "GIS version 1.5; May 2024", "id": "georgia-capital", "display_name": "Tbilisi" }, "geometry": { "type": "Point", "coordinates": [ 44.788849590997948, 41.726955847077463 ] } },
+{ "type": "Feature", "properties": { "name": "Yerevan", "country": "Limaria", "status": "NOTIONAL", "region": "Eurasia", "version": "GIS version 1.5; May 2024", "id": "limaria-capital", "display_name": "Yerevan" }, "geometry": { "type": "Point", "coordinates": [ 44.511605531752139, 40.183096594142143 ] } },
+{ "type": "Feature", "properties": { "name": "Baku", "country": "Atropia", "status": "NOTIONAL", "region": "Eurasia", "version": "GIS version 1.5; May 2024", "id": "atropia-capital", "display_name": "Baku" }, "geometry": { "type": "Point", "coordinates": [ 49.860271303257818, 40.397217891343182 ] } },
+{ "type": "Feature", "properties": { "name": "Kiev", "country": "Pirtuni", "status": "NOTIONAL", "region": "Eurasia", "version": "GIS version 1.5; May 2024", "id": "pirtuni-capital", "display_name": "Kiev" }, "geometry": { "type": "Point", "coordinates": [ 30.514682110472087, 50.435313187606923 ] } },
+{ "type": "Feature", "properties": { "name": "Tehran", "country": "Ariana", "status": "NOTIONAL", "region": "Eurasia", "version": "GIS version 1.5; May 2024", "id": "ariana-capital", "display_name": "Tehran" }, "geometry": { "type": "Point", "coordinates": [ 51.422398175008993, 35.673888627001304 ] } },
+{ "type": "Feature", "properties": { "name": "Moscow", "country": "Donovia", "status": "NOTIONAL", "region": "Eurasia", "version": "GIS version 1.5; May 2024", "id": "donovia-capital", "display_name": "Moscow" }, "geometry": { "type": "Point", "coordinates": [ 37.613576967271399, 55.754109981248178 ] } }
+]
+}

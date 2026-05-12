@@ -1,0 +1,47 @@
+{
+  "theme": "operation-northern-veil-light",
+  "palette": {
+    "background": "#f8faf7",
+    "water": "#e8edf0",
+    "landMuted": "#e5e7e2",
+    "countryStroke": "#9ca3af",
+    "donoviaFill": "#b9c4a9",
+    "gorgasFill": "#d7867c",
+    "otherCountryFill": "#d8d9d6",
+    "borderHighlight": "#d94841",
+    "labelText": "#27313a",
+    "capitalPoint": "#3f5f37"
+  },
+  "countryStyles": {
+    "donovia": {
+      "fill": "#b9c4a9",
+      "stroke": "#7c8f71",
+      "strokeWidth": 1.2
+    },
+    "gorgas": {
+      "fill": "#d7867c",
+      "stroke": "#a94d45",
+      "strokeWidth": 1.2
+    },
+    "pirtuni": {
+      "fill": "#d8d9d6",
+      "stroke": "#9ca3af",
+      "strokeWidth": 0.9
+    },
+    "limaria": {
+      "fill": "#d8d9d6",
+      "stroke": "#9ca3af",
+      "strokeWidth": 0.9
+    },
+    "atropia": {
+      "fill": "#d8d9d6",
+      "stroke": "#9ca3af",
+      "strokeWidth": 0.9
+    },
+    "ariana": {
+      "fill": "#d8d9d6",
+      "stroke": "#9ca3af",
+      "strokeWidth": 0.9
+    }
+  }
+}

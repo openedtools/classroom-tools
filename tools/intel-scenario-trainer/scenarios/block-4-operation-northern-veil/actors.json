@@ -1,0 +1,44 @@
+[
+  {
+    "id": "donovia",
+    "displayName": "Donovia",
+    "fullName": "United Republics of Donovia",
+    "role": "primary-adversary",
+    "summary": "Large, multi-domain coercive actor north of the Greater Caucasus. Employs proxies, information operations, cyber pressure, and conventional forces to dominate near-abroad."
+  },
+  {
+    "id": "gorgas",
+    "displayName": "Gorgas",
+    "fullName": "Democratic Republic of Gorgas",
+    "role": "primary-partner",
+    "summary": "Western-leaning state south of the Caucasus ridge. Long history of Donovian pressure, including the disputed Zabzimek region. Small, modern force; limited organic ISR."
+  },
+  {
+    "id": "zabzimek",
+    "displayName": "Zabzimek",
+    "fullName": "Zabzimek Separatist Region",
+    "role": "flashpoint",
+    "summary": "Russian-language separatist enclave inside Gorgas. Frequently cited by Donovian media as needing protection."
+  },
+  {
+    "id": "atropia",
+    "displayName": "Atropia",
+    "fullName": "Republic of Atropia",
+    "role": "regional-context",
+    "summary": "Energy producer east of Gorgas. Generally neutral; key pipeline and rail corridors."
+  },
+  {
+    "id": "limaria",
+    "displayName": "Limaria",
+    "fullName": "Democratic Republic of Limaria",
+    "role": "regional-context",
+    "summary": "Land-locked southern Caucasus state. Hosts Donovian basing rights."
+  },
+  {
+    "id": "ariana",
+    "displayName": "Ariana",
+    "fullName": "Islamic Republic of Ariana",
+    "role": "regional-context",
+    "summary": "Large southern neighbor. Independent regional actor with its own air defense and influence operations."
+  }
+]

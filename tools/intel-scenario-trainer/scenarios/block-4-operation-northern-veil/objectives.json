@@ -1,0 +1,14 @@
+[
+  { "id": "4.1-geoint-elements", "lesson": "4.1 GEOINT", "family": "GEOINT", "title": "Foundational GEOINT elements", "studentMustDo": "Distinguish imagery, IMINT, and geospatial information; identify appropriate GEOINT product." },
+  { "id": "4.1-geoint-limits", "lesson": "4.1 GEOINT", "family": "GEOINT", "title": "Limits of imagery", "studentMustDo": "Explain what can and cannot be inferred from a single image." },
+  { "id": "4.2-em-basics", "lesson": "4.2 EM Theory", "family": "EMS", "title": "Frequency / wavelength / LOS", "studentMustDo": "Apply the inverse relationship between frequency and wavelength and identify line-of-sight limits." },
+  { "id": "4.2-elint-vs-comint", "lesson": "4.2 EM Theory", "family": "EMS", "title": "ELINT vs COMINT", "studentMustDo": "Differentiate ELINT and COMINT given a reporting excerpt." },
+  { "id": "4.3-radar-kill-chain", "lesson": "4.3 Radar Kill Chain", "family": "RADAR", "title": "Radar kill chain ordering", "studentMustDo": "Place radar events in find / fix / track / target / engage / assess order and assess imminence." },
+  { "id": "4.4-ir-signatures", "lesson": "4.4 IR Threats", "family": "IR", "title": "IR signatures and countermeasures", "studentMustDo": "Identify exploitable heat signatures and match countermeasures (flares vs chaff)." },
+  { "id": "4.5-cyber-actors", "lesson": "4.5 Cyber Intelligence", "family": "Cyber", "title": "Cyber actor classification", "studentMustDo": "Classify a cyber incident actor and stage on the kill chain; distinguish cyber threat vs cyber-enabled threat." },
+  { "id": "4.6-ie-dimensions", "lesson": "4.6 Information Operations", "family": "IO", "title": "Information environment dimensions", "studentMustDo": "Identify physical, informational, and cognitive dimensions in a media inject." },
+  { "id": "4.6-disinformation", "lesson": "4.6 Information Operations", "family": "IO", "title": "Disinfo / misinfo / malinfo", "studentMustDo": "Tag IO content correctly and distinguish MISO from MILDEC." },
+  { "id": "4.7-isr-cycle", "lesson": "4.7 ISR Fundamentals", "family": "ISR", "title": "ISR cycle and PIR → tasking", "studentMustDo": "Convert a PIR into collection tasks and identify ISR cycle stages." },
+  { "id": "4.8-orbits", "lesson": "4.8 Space Operations", "family": "Space", "title": "Orbit regimes and uses", "studentMustDo": "Match LEO / MEO / GEO / polar regimes to mission types." },
+  { "id": "4.8-counterspace", "lesson": "4.8 Space Operations", "family": "Space", "title": "Counterspace effects", "studentMustDo": "Distinguish kinetic and non-kinetic counterspace and assess escalation implications." }
+]

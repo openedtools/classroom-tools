@@ -1,0 +1,13 @@
+{
+  "id": "block-5-pacific-stub",
+  "title": "Pacific Reach (Stub)",
+  "block": "Block 5",
+  "subtitle": "Engine-scalability proof pack",
+  "region": "Indo-Pacific",
+  "estimatedMinutes": 10,
+  "studentRole": "Stub — proves the engine loads a second pack with no core code changes.",
+  "defaultPresetView": "regional",
+  "summary": "Placeholder scenario used only to verify the scenario engine is content-driven.",
+  "commanderPIR": "(stub)",
+  "objectiveFamilies": ["GEOINT", "ISR"]
+}

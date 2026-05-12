@@ -1,0 +1,83 @@
+[
+  {
+    "id": "political",
+    "title": "Political",
+    "type": "base",
+    "defaultVisible": true,
+    "description": "Country polygons and Donovia-Gorgas border highlight."
+  },
+  {
+    "id": "terrain",
+    "title": "Terrain",
+    "type": "annotation",
+    "defaultVisible": false,
+    "description": "Greater Caucasus ridge — masking line.",
+    "annotations": [
+      { "shape": "line", "stroke": "#8a6a3d", "strokeDash": "4,3", "strokeWidth": 2.5, "label": "Greater Caucasus ridge (LOS mask)",
+        "coords": [[40.0, 43.4], [41.6, 43.2], [43.0, 42.9], [44.4, 42.7], [45.8, 42.55], [47.1, 42.5]] }
+    ]
+  },
+  {
+    "id": "geoint",
+    "title": "GEOINT",
+    "type": "annotation",
+    "defaultVisible": false,
+    "description": "AOIs and named imagery locations.",
+    "annotations": [
+      { "shape": "box", "fill": "rgba(143,163,130,0.18)", "stroke": "#8fa382", "strokeWidth": 1.5, "label": "Motor pool AOI",
+        "bbox": [43.2, 43.0, 43.9, 43.3] },
+      { "shape": "marker", "color": "#3f5f37", "label": "Vehicle park", "coords": [43.55, 43.18] }
+    ]
+  },
+  {
+    "id": "radar",
+    "title": "Radar",
+    "type": "annotation",
+    "defaultVisible": false,
+    "description": "Donovian search-radar fans north of border + terrain blind spot south of ridge.",
+    "annotations": [
+      { "shape": "arc", "fill": "rgba(217,72,65,0.10)", "stroke": "#d94841", "strokeWidth": 1.5, "label": "Search radar fan",
+        "center": [43.6, 43.55], "radiusKm": 180, "startAngle": 150, "endAngle": 250 },
+      { "shape": "arc", "fill": "rgba(217,72,65,0.08)", "stroke": "#d94841", "strokeDash": "3,3", "strokeWidth": 1.2, "label": "Search radar fan",
+        "center": [45.8, 43.4], "radiusKm": 160, "startAngle": 160, "endAngle": 260 },
+      { "shape": "box", "fill": "rgba(120,120,120,0.18)", "stroke": "#9a9a9a", "strokeDash": "2,3", "strokeWidth": 1, "label": "Terrain mask",
+        "bbox": [41.0, 41.6, 46.5, 42.4] }
+    ]
+  },
+  {
+    "id": "ir",
+    "title": "IR",
+    "type": "annotation",
+    "defaultVisible": false,
+    "description": "Thermal hits along infiltration tracks and rotary-wing risk corridor.",
+    "annotations": [
+      { "shape": "circle", "fill": "rgba(217,72,65,0.20)", "stroke": "#d94841", "strokeWidth": 1.2, "label": "MANPADS threat ring",
+        "center": [42.7, 42.4], "radiusKm": 25 },
+      { "shape": "marker", "color": "#d94841", "label": "FLIR hit", "coords": [42.55, 42.55] },
+      { "shape": "marker", "color": "#d94841", "label": "FLIR hit", "coords": [43.05, 42.35] }
+    ]
+  },
+  {
+    "id": "cyber",
+    "title": "Cyber",
+    "type": "annotation",
+    "defaultVisible": false,
+    "description": "Cyber incident locations across Gorgas.",
+    "annotations": [
+      { "shape": "marker", "color": "#3a6b8a", "label": "CCTV outage", "coords": [42.6, 42.2] },
+      { "shape": "marker", "color": "#3a6b8a", "label": "SCADA cred-spray", "coords": [44.78, 41.72] },
+      { "shape": "marker", "color": "#3a6b8a", "label": "Ministry defacement", "coords": [44.83, 41.71] }
+    ]
+  },
+  {
+    "id": "space",
+    "title": "Space",
+    "type": "annotation",
+    "defaultVisible": false,
+    "description": "GNSS interference area and ISR revisit overlay.",
+    "annotations": [
+      { "shape": "circle", "fill": "rgba(58,107,138,0.14)", "stroke": "#3a6b8a", "strokeWidth": 1.3, "strokeDash": "4,3", "label": "GNSS jamming",
+        "center": [43.6, 42.6], "radiusKm": 80 }
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "id": "block-4-operation-northern-veil",
+  "title": "Operation Northern Veil",
+  "block": "Block 4",
+  "subtitle": "Multi-Domain Intelligence Fundamentals Review",
+  "region": "Eurasia / Caucasus",
+  "estimatedMinutes": 90,
+  "studentRole": "Coalition intelligence cell supporting Gorgan leadership",
+  "defaultPresetView": "caucasus",
+  "summary": "Donovia uses a manufactured border crisis near Zabzimek to pressure Gorgas while preserving deniability. Your cell must integrate multi-domain reporting to anticipate Donovian action.",
+  "commanderPIR": "Will Donovia conduct a limited cross-border operation into Gorgas within the next 72 hours?",
+  "objectiveFamilies": ["GEOINT", "EMS", "RADAR", "IR", "Cyber", "IO", "ISR", "Space"]
+}

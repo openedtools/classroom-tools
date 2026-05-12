@@ -1,0 +1,20 @@
+{
+  "packs": [
+    {
+      "id": "block-4-operation-northern-veil",
+      "title": "Operation Northern Veil",
+      "block": "Block 4",
+      "subtitle": "Multi-Domain Intelligence Fundamentals Review",
+      "region": "Eurasia / Caucasus",
+      "estimatedMinutes": 90
+    },
+    {
+      "id": "block-5-pacific-stub",
+      "title": "Pacific Reach (Stub)",
+      "block": "Block 5",
+      "subtitle": "Engine-scalability proof pack",
+      "region": "Indo-Pacific",
+      "estimatedMinutes": 10
+    }
+  ]
+}

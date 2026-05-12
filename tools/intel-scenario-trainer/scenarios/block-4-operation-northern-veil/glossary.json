@@ -1,0 +1,17 @@
+[
+  { "term": "GEOINT", "def": "Geospatial Intelligence — imagery, IMINT, and geospatial information used together." },
+  { "term": "IMINT", "def": "Imagery Intelligence — intelligence derived from interpretation of imagery." },
+  { "term": "SAR", "def": "Synthetic Aperture Radar — radar imagery providing all-weather, day-night coverage." },
+  { "term": "FMV / WAMI", "def": "Full-Motion / Wide-Area Motion Imagery — persistent or area video products." },
+  { "term": "ELINT", "def": "Signals intelligence from non-communications emitters (radars, beacons)." },
+  { "term": "COMINT", "def": "Signals intelligence from communications between persons." },
+  { "term": "LOS", "def": "Line of Sight — required for most RF, optical, and IR sensing." },
+  { "term": "Kill chain", "def": "Find–Fix–Track–Target–Engage–Assess sequence." },
+  { "term": "MANPADS", "def": "Man-Portable Air Defense System — typically IR-guided." },
+  { "term": "MISO", "def": "Military Information Support Operations — influence intent." },
+  { "term": "MILDEC", "def": "Military Deception — deceiving adversary decision-makers." },
+  { "term": "Disinformation", "def": "Deliberately false information shared to deceive." },
+  { "term": "Misinformation", "def": "Inaccurate information shared without intent to deceive." },
+  { "term": "PIR", "def": "Priority Intelligence Requirement — commander's top intel need." },
+  { "term": "Counterspace", "def": "Actions to deny, degrade, disrupt, destroy, or deceive space capabilities. Kinetic or non-kinetic." }
+]

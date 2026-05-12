@@ -1,0 +1,36 @@
+[
+  {
+    "objectiveId": "4.3-radar-kill-chain",
+    "acceptableEvidence": [
+      "Student orders: Find, Fix, Track, Target, Engage, Assess.",
+      "Student notes fire-control radar indicates higher imminence than search/acquisition only."
+    ],
+    "commonErrors": ["Treating all emissions as imminent engagement.", "Conflating detection with tracking or engagement."]
+  },
+  {
+    "objectiveId": "4.6-disinformation",
+    "acceptableEvidence": [
+      "Tags disinformation (deliberate, false).",
+      "Identifies cognitive + informational dimensions.",
+      "Notes MISO/influence intent, not battlefield deception (MILDEC)."
+    ],
+    "commonErrors": ["Tagging as misinformation (which is non-deliberate).", "Confusing MISO with MILDEC."]
+  },
+  {
+    "objectiveId": "4.1-geoint-elements",
+    "acceptableEvidence": ["Picks SAR for all-weather/day-night confirmation.", "Names a specific limitation of a single EO image (direction, readiness, intent)."],
+    "commonErrors": ["Picking more EO despite cloud cover.", "Treating one image as full pattern of life."]
+  },
+  {
+    "objectiveId": "4.4-ir-signatures",
+    "acceptableEvidence": ["Picks flares (matches IR seeker).", "Rejects chaff (chaff is for radar-guided)."]
+  },
+  {
+    "objectiveId": "4.5-cyber-actors",
+    "acceptableEvidence": ["Identifies nation-state APT.", "Notes parallel cyber + cyber-enabled effects."]
+  },
+  {
+    "objectiveId": "4.8-orbits",
+    "acceptableEvidence": ["Picks LEO for high-resolution imagery.", "Identifies GNSS jamming as non-kinetic counterspace."]
+  }
+]

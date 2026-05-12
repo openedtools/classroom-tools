@@ -1,0 +1,31 @@
+[
+  {
+    "id": "stub-overview",
+    "phaseId": "phase-0",
+    "sequence": 0,
+    "title": "Stub Overview",
+    "timestamp": "—",
+    "objective": "Confirm the engine loads pack content with no code changes.",
+    "storyText": "This is a stub. Replace this folder with real content to author a new scenario pack.",
+    "presetView": "regional",
+    "mapLayersToEnable": ["political"],
+    "evidenceIds": [],
+    "objectivesCovered": [],
+    "studentTasks": []
+  },
+  {
+    "id": "stub-final",
+    "phaseId": "phase-1",
+    "sequence": 1,
+    "title": "Stub Final",
+    "timestamp": "—",
+    "objective": "Reach the final-assessment screen.",
+    "storyText": "Stub final assessment.",
+    "presetView": "regional",
+    "mapLayersToEnable": ["political"],
+    "evidenceIds": [],
+    "objectivesCovered": [],
+    "isFinalAssessment": true,
+    "studentTasks": []
+  }
+]

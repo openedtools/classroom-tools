@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ev-io-001",
+    "type": "io-report",
+    "title": "Donovian State Media Bulletin",
+    "summary": "State broadcaster claims Gorgan nationalist militias are massing to attack Zabzimeki civilians.",
+    "details": "Same B-roll appears across three outlets within 11 minutes. Two clips reused from a 2023 unrelated event. Hashtag #DefendZabzimek trending across Donovian-linked accounts."
+  },
+  {
+    "id": "ev-osint-001",
+    "type": "osint-note",
+    "title": "OSINT Analyst Tip",
+    "summary": "Reverse image search ties two Zabzimek clips to a Donovian training exercise from 2023.",
+    "details": "Independent OSINT collective flags account network as previously linked to Donovian influence ops."
+  },
+  {
+    "id": "ev-cyber-001",
+    "type": "cyber-report",
+    "title": "Gorgan CERT Incident Summary",
+    "summary": "Border-camera CCTV blackouts and credential-spray attempts against utility SCADA in the same 36-hour window.",
+    "details": "Spear-phish vector targets a Gorgan logistics contractor; payload calls home to infrastructure previously attributed to a Donovian-linked APT. Website defacement on a Gorgan ministry portal occurs in parallel."
+  },
+  {
+    "id": "ev-geoint-001",
+    "type": "imagery-report",
+    "title": "EO Imagery — North-of-Border Motor Pool",
+    "summary": "EO image dated D-3 shows ~40 tracked vehicles, fuel bowsers, and engineering bridging assets at a previously empty motor pool.",
+    "details": "Cloud cover prevents D-1 EO collection. Single image; cannot establish movement direction or readiness state from imagery alone."
+  },
+  {
+    "id": "ev-geoint-002",
+    "type": "imagery-report",
+    "title": "SAR Coverage Request",
+    "summary": "All-weather SAR requested to overcome cloud cover.",
+    "details": "Synthetic aperture radar provides day-night/all-weather imagery; useful for confirming presence and gross changes despite weather."
+  },
+  {
+    "id": "ev-elint-001",
+    "type": "elint-report",
+    "title": "Emitter Activity — Border Sector North",
+    "summary": "Intermittent target acquisition radar emissions detected D-4 through D-2. Fire-control radar activity unconfirmed.",
+    "details": "Terrain masking by the Greater Caucasus ridge likely limits coverage south of the divide; emitter geometry consistent with IADS search role."
+  },
+  {
+    "id": "ev-ir-001",
+    "type": "ir-report",
+    "title": "Thermal Imagery — Infiltration Routes",
+    "summary": "FLIR overflight detects warm vehicle signatures along two unimproved tracks vicinity Zabzimek at 0220L.",
+    "details": "Engine exhaust signatures consistent with light-armored vehicles. Gorgan rotary-wing routes through the corridor are within range of suspected IR-guided MANPADS."
+  },
+  {
+    "id": "ev-space-001",
+    "type": "space-report",
+    "title": "Space Tasking Notes",
+    "summary": "LEO EO provides resolution but limited revisit; GEO supports SATCOM/weather. GNSS interference reported near the border.",
+    "details": "Collection planners must trade resolution vs persistence; counterspace activity to date appears non-kinetic (jamming)."
+  },
+  {
+    "id": "ev-cmdr-001",
+    "type": "commander-guidance",
+    "title": "Commander Priority Intelligence Requirement",
+    "summary": "Will Donovia conduct a limited cross-border operation into Gorgas within the next 72 hours?",
+    "details": "Commander wants BLUF, most likely COA, most dangerous COA, key indicators, and collection gaps."
+  }
+]

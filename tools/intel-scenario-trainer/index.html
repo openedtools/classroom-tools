@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1280" />
+  <title>Intel Scenario Trainer — Operation Northern Veil</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-title" id="scenarioTitle">Operation Northern Veil</div>
+        <div class="brand-sub" id="scenarioSub">Block 4 — Multi-Domain Intelligence Fundamentals Review</div>
+      </div>
+    </div>
+    <div class="topbar-controls">
+      <label class="ctl">
+        <span class="ctl-label">Scenario</span>
+        <select id="scenarioSelect"></select>
+      </label>
+      <div class="ctl">
+        <span class="ctl-label">Progress</span>
+        <div class="progress"><div class="progress-bar" id="progressBar"></div><span id="progressText">0 / 0</span></div>
+      </div>
+      <button class="btn" id="exportBtn">Export</button>
+      <button class="btn btn-ghost" id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <section class="card">
+        <h2 class="card-title">Scenario Phases</h2>
+        <ol class="phase-list" id="phaseList"></ol>
+      </section>
+      <section class="card">
+        <h2 class="card-title">Objective Coverage</h2>
+        <ul class="coverage-list" id="coverageList"></ul>
+        <div class="coverage-legend">
+          <span class="dot d-presented"></span>presented
+          <span class="dot d-applied"></span>applied
+          <span class="dot d-evaluated"></span>evaluated
+        </div>
+      </section>
+    </aside>
+
+    <section class="workspace">
+      <div class="map-toolbar">
+        <div class="layer-chips" id="layerChips"></div>
+        <div class="map-controls">
+          <label class="ctl ctl-inline">
+            <span class="ctl-label">View</span>
+            <select id="presetSelect"></select>
+          </label>
+          <button class="btn btn-ghost btn-sm" id="resetViewBtn">Reset view</button>
+        </div>
+      </div>
+      <div class="map-wrap card">
+        <svg id="map" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="map-overlay-info" id="mapSelection"></div>
+      </div>
+    </section>
+
+    <aside class="analysis" id="analysisPanel">
+      <!-- inject card / final assessment rendered here -->
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <span>Intel Scenario Trainer · Static MVP · v1</span>
+    <span class="env-tag">Training environment · No live operational data</span>
+  </footer>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
