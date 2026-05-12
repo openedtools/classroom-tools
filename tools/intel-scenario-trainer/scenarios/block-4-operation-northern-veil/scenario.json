@@ -9,5 +9,11 @@
   "defaultPresetView": "caucasus",
   "summary": "Donovia uses a manufactured border crisis near Zabzimek to pressure Gorgas while preserving deniability. Your cell must integrate multi-domain reporting to anticipate Donovian action.",
   "commanderPIR": "Will Donovia conduct a limited cross-border operation into Gorgas within the next 72 hours?",
-  "objectiveFamilies": ["GEOINT", "EMS", "RADAR", "IR", "Cyber", "IO", "ISR", "Space"]
+  "objectiveFamilies": ["GEOINT", "EMS", "RADAR", "IR", "Cyber", "IO", "ISR", "Space"],
+  "pirIssuedBy": "COALITION J2",
+  "pirIssuedDTG": "0500Z 12 MAY 26",
+  "situationText": [
+    "Donovia has been applying a coordinated, multi-domain campaign of pressure against Gorgas. The campaign combines <em>information operations</em>, <em>suspected cyber activity</em>, <em>military positioning near the border</em>, and <em>electronic warfare</em>.",
+    "Donovia maintains its actions are defensive and routine, denying any aggressive intent toward Gorgas. Coalition leadership has tasked your intelligence cell to work through each domain of evidence and advise on Donovian intent."
+  ]
 }

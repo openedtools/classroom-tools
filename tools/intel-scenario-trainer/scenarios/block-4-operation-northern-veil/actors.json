@@ -4,6 +4,11 @@
     "displayName": "Donovia",
     "fullName": "United Republics of Donovia",
     "role": "primary-adversary",
+    "code": "RED-01",
+    "posture": "HOSTILE",
+    "stance": "AGGRESSOR",
+    "color": "red",
+    "tags": ["MULTI-DOMAIN", "NUCLEAR", "PMC-ENABLED"],
     "summary": "Large, multi-domain coercive actor north of the Greater Caucasus. Employs proxies, information operations, cyber pressure, and conventional forces to dominate near-abroad."
   },
   {
@@ -11,6 +16,11 @@
     "displayName": "Gorgas",
     "fullName": "Democratic Republic of Gorgas",
     "role": "primary-partner",
+    "code": "GRN-01",
+    "posture": "FRIENDLY",
+    "stance": "PARTNER",
+    "color": "green",
+    "tags": ["NATO-ASPIRANT", "DEFENSIVE"],
     "summary": "Western-leaning state south of the Caucasus ridge. Long history of Donovian pressure, including the disputed Zabzimek region. Small, modern force; limited organic ISR."
   },
   {
@@ -18,6 +28,11 @@
     "displayName": "Zabzimek",
     "fullName": "Zabzimek Separatist Region",
     "role": "flashpoint",
+    "code": "VIO-01",
+    "posture": "CONTESTED",
+    "stance": "SEPARATIST",
+    "color": "violet",
+    "tags": ["PRO-DONOVIA", "DISPUTED ZONE"],
     "summary": "Russian-language separatist enclave inside Gorgas. Frequently cited by Donovian media as needing protection."
   },
   {
