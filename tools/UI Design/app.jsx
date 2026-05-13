@@ -1540,7 +1540,7 @@ function ActivityCard({
       </div>
       {!submitted && (
         <div className="activity-footer">
-          <button type="button" className="btn btn-primary" onClick={() => onSubmit(activity.id)} disabled={locked}>
+          <button type="button" className="btn-solid" onClick={() => onSubmit(activity.id)} disabled={locked}>
             Submit for scoring
           </button>
         </div>
@@ -1606,7 +1606,7 @@ const PhaseWorkspace = React.forwardRef(function PhaseWorkspace({ phase, respons
         <div className="phase-footer">
           <button
             type="button"
-            className="btn btn-ghost phase-top-btn"
+            className="btn-ghost phase-top-btn"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             Go to Top
@@ -1655,7 +1655,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const INSTRUCTOR_PASSWORD = "IITCInstructors";
-const PIN_DEFAULT = { x: 53, y: 62, label: "ZABZIMEK" };
+const PIN_DEFAULT = { x: 51, y: 74, label: "ZABZIMEK" };
 
 // Map overlay shows 20°E–60°E horizontally, 60°N–30°N vertically.
 // Overlay axes inset from the wrap edges; approximate ranges below.
