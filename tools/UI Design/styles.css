@@ -406,6 +406,9 @@ body {
 }
 
 /* ─── SOURCES MODAL ─────────────────────────────────────────────────── */
+.sources-shade {
+  z-index: 1100;
+}
 .sources-modal {
   width: min(720px, calc(100vw - 32px));
 }
