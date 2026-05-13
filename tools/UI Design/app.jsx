@@ -154,7 +154,7 @@ function ClassificationBar({ level }) {
   const cls = level === "SECRET" ? "secret" : level === "CONFIDENTIAL" ? "conf" : "unclass";
   return (
     <div className={`class-bar ${cls}`}>
-      <span>{level} // TRAINING USE ONLY // NOT FOR OPERATIONAL PLANNING</span>
+      <span>{level} // TRAINING USE ONLY // FICTIONAL SCENARIO ONLY</span>
     </div>
   );
 }

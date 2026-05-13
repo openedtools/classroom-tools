@@ -96,7 +96,7 @@ body {
 }
 .op-sep { color: var(--text-3); }
 .op-name {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: var(--text-0);
@@ -625,7 +625,7 @@ body {
 /* ─── LAYOUT ─────────────────────────────────────────────────────────── */
 .layout {
   display: grid;
-  grid-template-columns: 248px minmax(0, 1fr);
+  grid-template-columns: 228px minmax(0, 1fr);
   gap: 0;
   min-height: calc(100vh - 130px);
 }
