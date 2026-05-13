@@ -716,10 +716,14 @@ function BeginBar({ onBegin }) {
   );
 }
 
-const TRAINING_PHASES = window.NorthernVeilContent?.phases || {};
-const RESTORED_PHASE_IDS = ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar", "phase-5-ir", "phase-6-isr", "phase-7-space", "phase-8-final"];
-const SESSION_KEY = "onv-student-session-v1";
-const STUDENT_PASSWORD = "OperationNorthernV3il";
+// ── Scenario data: accepts window.ScenarioContent (any new op) or the legacy
+//    window.NorthernVeilContent so Operation Northern Veil keeps working as-is.
+const _sc  = window.ScenarioContent || window.NorthernVeilContent || {};
+const _cfg = _sc.config || {};
+const TRAINING_PHASES    = _sc.phases || {};
+const RESTORED_PHASE_IDS = _cfg.phaseIds || ["phase-0-overview", "phase-1-info", "phase-2-cyber", "phase-3-geoint", "phase-4-emsradar", "phase-5-ir", "phase-6-isr", "phase-7-space", "phase-8-final"];
+const SESSION_KEY        = _cfg.sessionKey || "onv-student-session-v1";
+const STUDENT_PASSWORD   = _cfg.studentPassword || "OperationNorthernV3il";
 
 const PHASE_ALIASES = {
   FR: "phase-8-final",
@@ -2041,8 +2045,8 @@ function App() {
 
       <TopBar
         dtg={dtg}
-        opName="NORTHERN VEIL"
-        opCode="OP-NV-26"
+        opName={_cfg.opName || "NORTHERN VEIL"}
+        opCode={_cfg.opCode || "OP-NV-26"}
         status={instructor ? { label: "INSTRUCTOR MODE", tone: "amber" } : null}
         instructor={instructor}
         onLockClick={onLockClick}

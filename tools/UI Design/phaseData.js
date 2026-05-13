@@ -1,5 +1,22 @@
 /* global window */
 window.NorthernVeilContent = {
+  config: {
+    opName: "NORTHERN VEIL",
+    opCode: "OP-NV-26",
+    studentPassword: "OperationNorthernV3il",
+    sessionKey: "onv-student-session-v1",
+    phaseIds: [
+      "phase-0-overview",
+      "phase-1-info",
+      "phase-2-cyber",
+      "phase-3-geoint",
+      "phase-4-emsradar",
+      "phase-5-ir",
+      "phase-6-isr",
+      "phase-7-space",
+      "phase-8-final"
+    ],
+  },
   restoredThrough: "phase-8-final",
   phases: {
     "phase-0-overview": {

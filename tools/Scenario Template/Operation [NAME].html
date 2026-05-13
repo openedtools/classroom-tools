@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       STEP 1 — Change the <title> to match your operation name.
+       Example: "Operation Iron Curtain — Block 5 Trainer"
+  ════════════════════════════════════════════════════════════════════════ -->
+  <title>Operation [NAME] — Block [N] Trainer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Shared framework styles — do NOT copy this file, reference it here -->
+  <link rel="stylesheet" href="../UI Design/styles.css?v=1" />
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React + Babel (CDN — no build step needed) -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       STEP 2 — Your scenario data file. Edit scenarioData.js with your
+       operation's config, phases, injects, evidence, and activities.
+       Bump the ?v= number any time you push changes so browsers reload it.
+       Example: scenarioData.js?v=2, scenarioData.js?v=3 ...
+  ════════════════════════════════════════════════════════════════════════ -->
+  <script src="scenarioData.js?v=1"></script>
+
+  <!-- Shared framework scripts — do NOT copy these files, reference them here -->
+  <script type="text/babel" src="../UI Design/tweaks-panel.jsx?v=20260512v"></script>
+  <script type="text/babel" src="../UI Design/app.jsx?v=20260512v"></script>
+</body>
+</html>
