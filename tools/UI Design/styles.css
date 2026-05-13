@@ -76,6 +76,13 @@ body {
 .class-bar.conf   { background: #1e64b8; }
 .class-bar.secret { background: #b8261f; }
 
+/* ─── STICKY CHROME ──────────────────────────────────────────────────── */
+.sticky-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
 /* ─── TOP BAR ────────────────────────────────────────────────────────── */
 .topbar {
   display: flex;

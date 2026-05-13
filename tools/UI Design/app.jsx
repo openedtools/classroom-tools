@@ -2086,22 +2086,26 @@ function App() {
       className={`app accent-${tw.accent} density-${tw.density} phase-style-${tw.phaseStyle}`}
       data-screen-label={currentPhase?.title || "00 Orientation"}
     >
-      <ClassificationBar level={tw.classification} />
+      <div className="sticky-chrome">
+        <ClassificationBar level={tw.classification} />
 
-      <TopBar
-        dtg={dtg}
-        opName={_cfg.opName || "NORTHERN VEIL"}
-        opCode={_cfg.opCode || "OP-NV-26"}
-        status={instructor ? { label: "INSTRUCTOR MODE", tone: "amber" } : null}
-        instructor={instructor}
-        onLockClick={onLockClick}
-        onGlossary={() => setGlossaryOpen(true)}
-        onSources={() => setSourcesOpen(true)}
-        onReset={handleResetExercise}
-        teamName={teamName}
-        scoreValue={earnedScore}
-        scoreMax={possibleScore}
-      />
+        <TopBar
+          dtg={dtg}
+          opName={_cfg.opName || "NORTHERN VEIL"}
+          opCode={_cfg.opCode || "OP-NV-26"}
+          status={instructor ? { label: "INSTRUCTOR MODE", tone: "amber" } : null}
+          instructor={instructor}
+          onLockClick={onLockClick}
+          onGlossary={() => setGlossaryOpen(true)}
+          onSources={() => setSourcesOpen(true)}
+          onReset={handleResetExercise}
+          teamName={teamName}
+          scoreValue={earnedScore}
+          scoreMax={possibleScore}
+        />
+
+        <PhaseNav active={activePhase} phases={phases} onChange={setActivePhase} doneIds={doneIds} />
+      </div>
 
       <GlossaryModal
         open={glossaryOpen}
@@ -2113,8 +2117,6 @@ function App() {
         open={sourcesOpen}
         onClose={() => setSourcesOpen(false)}
       />
-
-      <PhaseNav active={activePhase} phases={phases} onChange={setActivePhase} doneIds={doneIds} />
 
       <main className="layout">
         <div className="content">
