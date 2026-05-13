@@ -1015,19 +1015,13 @@ function reviewExplanationText(activity, row, context = {}) {
   switch (activity.type) {
     case "classification":
       extraParts.push("Think about what the item really is or does, not just what it mentions.");
-      if (correct) extraParts.push(`The correct category is ${correct}.`);
       break;
     case "decision":
-      extraParts.push("Pick the option that best fits the intelligence task here.");
-      if (correct) extraParts.push(`The correct choice is ${correct}.`);
       break;
     case "fillslot":
       extraParts.push("Read the full sentence. The missing word must make the statement accurate.");
-      if (correct) extraParts.push(`The right word here is ${correct}.`);
       break;
     case "matching":
-      extraParts.push("Match the main idea in the description, not just a nearby keyword.");
-      if (correct) extraParts.push(`The correct match is: ${correct}.`);
       break;
     case "sequencing": {
       const correctIds = activity.correct || activity.items.map(item => item.id);
@@ -1046,12 +1040,11 @@ function reviewExplanationText(activity, row, context = {}) {
     }
     case "ranking":
       extraParts.push("The number is where this item belongs in priority order.");
-      if (correct) extraParts.push(`The correct rank is ${correct}.`);
       break;
     case "multiselect":
       extraParts.push(correct === "Should be selected"
-        ? "This statement belongs here because it supports the lesson point."
-        : "This statement does not belong here because it does not support the lesson point.");
+        ? "This is one of the correct options."
+        : "This option should not be selected.");
       break;
     default:
       break;

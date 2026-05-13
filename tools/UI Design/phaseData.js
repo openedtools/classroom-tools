@@ -286,11 +286,11 @@ Coalition intelligence is tasked to assess: Is this criminal opportunism exploit
           instruction: "Select ALL indicators that most strongly support nation-state attribution for this cyber campaign. Some indicators are ambiguous or counter-indicative.",
           objectiveIds: ["4.5-cyber-actors"],
           options: [
-            { id: "m1", text: "Custom malware - not available commercially or on criminal markets", correct: true },
-            { id: "m2", text: "Extended dwell time - 6 weeks of undetected access before discovery", correct: true },
-            { id: "m3", text: "Destructive objective with no financial motive (no ransom demand)", correct: true },
-            { id: "m4", text: "Website defacement using a publicly available hacking tool with political messaging", correct: false },
-            { id: "m5", text: "Timing coordinated with an active IO campaign - not random opportunism", correct: true }
+            { id: "m1", text: "Custom malware - not available commercially or on criminal markets", correct: true, explanation: "Custom malware requires significant development resources and targeting intelligence. Criminal and hacktivist groups rely on commercially available or leaked tools. Bespoke capability is a nation-state signature." },
+            { id: "m2", text: "Extended dwell time - 6 weeks of undetected access before discovery", correct: true, explanation: "Six weeks of undetected persistence requires discipline, counter-detection tradecraft, and a strategic objective that rewards patience. Financial criminals extract quickly and leave. Nation-states park inside networks for long-term intelligence collection." },
+            { id: "m3", text: "Destructive objective with no financial motive (no ransom demand)", correct: true, explanation: "No ransom demand rules out criminal actors. Destruction against a strategic target with no payout points to a state operation aimed at degrading an adversary's capability, not extracting money." },
+            { id: "m4", text: "Website defacement using a publicly available hacking tool with political messaging", correct: false, explanation: "This is hacktivist behavior. Publicly available tools, visible defacement, and political messaging are the signature of low-sophistication actors or state-tolerated proxies - not the state operation itself. It weakens attribution to a nation-state." },
+            { id: "m5", text: "Timing coordinated with an active IO campaign - not random opportunism", correct: true, explanation: "Synchronization with a broader IO campaign indicates centralized planning and strategic coordination. Random opportunists do not time their attacks to coincide with state disinformation operations." }
           ],
           feedback: {
             correct: "Correct. Nation-state indicators from your lesson: custom/zero-day malware, extended dwell time, strategic objectives (no financial motive), and TTPs coordinated with broader operations. The defacement is hacktivist behavior - counter-indicative for state attribution.",
@@ -420,11 +420,11 @@ Your intelligence cell must now analyze the imagery picture: identify which GEOI
           instruction: "The analyst note (Card 5) reports a heat signature at the northeast warehouse. Select ALL intelligence questions that GEOINT imagery CANNOT answer about that warehouse.",
           objectiveIds: ["4.1-geoint-limits"],
           options: [
-            { id: "w1", text: "How many personnel are currently inside the warehouse", correct: true },
-            { id: "w2", text: "Whether weapons or military equipment are stored inside the building", correct: true },
-            { id: "w3", text: "That military vehicles are parked in the area directly outside the warehouse", correct: false },
-            { id: "w4", text: "The intent or mission of personnel operating inside the facility", correct: true },
-            { id: "w5", text: "What specific activity is occurring inside the building's walls", correct: true }
+            { id: "w1", text: "How many personnel are currently inside the warehouse", correct: true, explanation: "Sensors cannot resolve individual bodies through solid walls. The heat signature indicates occupancy or active equipment, but a headcount requires a sensor that penetrates structures - which no current imagery system can do." },
+            { id: "w2", text: "Whether weapons or military equipment are stored inside the building", correct: true, explanation: "Imagery identifies shape, heat, and position - not cargo. A heat signature tells you the building is active, not what is inside. Claiming weapons are present would require corroborating HUMINT or SIGINT." },
+            { id: "w3", text: "That military vehicles are parked in the area directly outside the warehouse", correct: false, explanation: "Vehicles outside the building are in the open - EO imagery can clearly image, count, and type them without penetrating anything. This is exactly what GEOINT can confirm." },
+            { id: "w4", text: "The intent or mission of personnel operating inside the facility", correct: true, explanation: "Intent cannot be read from a sensor feed. Even if you could see inside, people moving around does not reveal their purpose. Determining intent requires combining imagery with HUMINT, SIGINT, or pattern-of-life analysis." },
+            { id: "w5", text: "What specific activity is occurring inside the building's walls", correct: true, explanation: "Sensors cannot penetrate solid structures. Whether personnel are conducting maintenance, planning, or loading weapons is completely invisible to all imagery. The analyst can say the building is occupied - everything beyond that exceeds what the data supports." }
           ],
           feedback: {
             correct: "Correct selections. GEOINT cannot penetrate solid structures. It cannot count personnel inside, identify stored equipment, determine intent, or observe interior activity. It can confirm exterior evidence: vehicle positions, access patterns, heat signatures from outside.",
@@ -761,12 +761,12 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
           instruction: "Select all statements that are true about IR threats, sensors, and countermeasures.",
           objectiveIds: ["4.4-ir-signatures"],
           options: [
-            { id: "ms5-1", text: "Hot engine exhaust is the primary IR vulnerability on an aircraft.", correct: true },
-            { id: "ms5-2", text: "Flares are the standard countermeasure against a hot-spot IR seeker.", correct: true },
-            { id: "ms5-3", text: "IIR seekers are easily defeated by flares alone.", correct: false },
-            { id: "ms5-4", text: "Chaff is the standard countermeasure against an IR seeker.", correct: false },
-            { id: "ms5-5", text: "FLIR and IRST are passive thermal sensors.", correct: true },
-            { id: "ms5-6", text: "SBIRS is used for missile warning from space.", correct: true }
+            { id: "ms5-1", text: "Hot engine exhaust is the primary IR vulnerability on an aircraft.", correct: true, explanation: "Exhaust is consistently hot, visible in multiple IR bands, and trails the aircraft - making it the primary aim point for heat-seeking missiles. It is the signature the seeker locks onto." },
+            { id: "ms5-2", text: "Flares are the standard countermeasure against a hot-spot IR seeker.", correct: true, explanation: "Flares create a hotter, off-axis heat source that pulls a first-generation hot-spot seeker away from the aircraft's exhaust plume. They are the standard point-defense against basic IR missiles." },
+            { id: "ms5-3", text: "IIR seekers are easily defeated by flares alone.", correct: false, explanation: "Imaging Infrared (IIR) seekers compare the full thermal shape of the target against a known silhouette. Flares do not match the aircraft's shape signature, so IIR seekers can reject them. They are significantly harder to defeat than simple hot-spot seekers." },
+            { id: "ms5-4", text: "Chaff is the standard countermeasure against an IR seeker.", correct: false, explanation: "Chaff creates false radar returns to fool radar-guided missiles. IR seekers track heat, not radar - chaff has no effect on them. The correct countermeasure against IR threats is flares, not chaff." },
+            { id: "ms5-5", text: "FLIR and IRST are passive thermal sensors.", correct: true, explanation: "FLIR and IRST receive heat emitted by other objects - they do not transmit any signal themselves. Passive sensors are harder to detect and jam because they give away no emissions of their own." },
+            { id: "ms5-6", text: "SBIRS is used for missile warning from space.", correct: true, explanation: "SBIRS (Space-Based Infrared System) detects the intense heat signatures of ballistic missile launches from orbit, providing near-instantaneous global missile warning. It is a sensor system, not a weapon seeker." }
           ],
           feedback: {
             correct: "Correct. The true statements are the ones that match the lesson: exhaust is the vulnerability, flares defeat basic IR seekers, FLIR and IRST are passive sensors, and SBIRS provides missile warning.",
