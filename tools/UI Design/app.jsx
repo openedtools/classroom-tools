@@ -502,7 +502,7 @@ function MissionBrief() {
 }
 
 function MapPanel({ showReticle, showGrid, instructor, pin, onPinChange }) {
-  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ZABZIMEK" } : { x: 46, y: 61, label: "ZABZIMEK" };
+  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ZABZIMEK" } : { x: 51, y: 74, label: "ZABZIMEK" };
   const wrapRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [editingLabel, setEditingLabel] = useState(false);
@@ -1614,7 +1614,7 @@ const PhaseWorkspace = React.forwardRef(function PhaseWorkspace({ phase, respons
           {onNextPhase && (
             <button
               type="button"
-              className="btn btn-primary phase-next-btn"
+              className="btn-solid phase-next-btn"
               onClick={() => { onNextPhase(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
             >
               Next Phase{nextPhaseName ? `: ${nextPhaseName}` : ""} →
@@ -1772,7 +1772,7 @@ function App() {
   const [completionCelebrated, setCompletionCelebrated] = useState(false);
   const [pin, setPin] = useState(() => {
     try {
-      const raw = localStorage.getItem("onv-pin-v2");
+      const raw = localStorage.getItem("onv-pin-v3");
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === "object" && typeof parsed.x === "number" && typeof parsed.y === "number") {
@@ -1785,7 +1785,7 @@ function App() {
     return PIN_DEFAULT;
   });
   useEffect(() => {
-    try { localStorage.setItem("onv-pin-v2", JSON.stringify(pin)); } catch {}
+    try { localStorage.setItem("onv-pin-v3", JSON.stringify(pin)); } catch {}
   }, [pin]);
   useEffect(() => {
     try { localStorage.setItem("onv-instructor-v2", instructor ? "1" : "0"); } catch {}
