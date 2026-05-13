@@ -791,8 +791,10 @@ function emptyResponseFor(activity) {
       return { slots: {}, submitted: false, score: 0, correct: false };
     case "matching":
       return { pairs: {}, pending: null, submitted: false, score: 0, correct: false };
-    case "sequencing":
-      return { order: [...(activity.correct || activity.items.map(item => item.id))], submitted: false, score: 0, correct: false };
+    case "sequencing": {
+      const ids = activity.correct || activity.items.map(item => item.id);
+      return { order: seededShuffle([...ids], activity.id + ':init'), submitted: false, score: 0, correct: false };
+    }
     case "ranking":
       return { ranks: {}, submitted: false, score: 0, correct: false };
     case "multiselect":
@@ -1350,6 +1352,7 @@ function ActivityCard({
   const matchingItems = activity.type === "matching" ? seededShuffle(activity.items || [], `${activity.id}:items`) : activity.items || [];
   const matchingTargets = activity.type === "matching" ? seededShuffle(activity.targets || [], `${activity.id}:targets`) : activity.targets || [];
   const classificationCategories = activity.type === "classification" ? seededShuffle(activity.categories || [], `${activity.id}:categories`) : activity.categories || [];
+  const rankingItems = activity.type === "ranking" ? seededShuffle(activity.items || [], `${activity.id}:ranking`) : activity.items || [];
 
   return (
     <section className={`activity-card panel ${locked ? "submitted" : ""}`}>
@@ -1470,7 +1473,7 @@ function ActivityCard({
 
         {activity.type === "ranking" && (
           <div className="ranking-grid">
-            {activity.items.map(item => (
+            {rankingItems.map(item => (
               <label className="rank-row" key={item.id}>
                 <span className="rank-text">{item.text}</span>
                 <select
@@ -1519,9 +1522,10 @@ function ActivityCard({
                   key={option.id}
                   type="button"
                   className={`ms-opt ${
-                    selected && option.correct ? "mso-selected mso-good" :
-                    selected && !option.correct ? "mso-selected mso-bad" :
-                    submitted && option.correct ? "mso-correct" : ""
+                    submitted && selected && option.correct ? "mso-selected mso-good" :
+                    submitted && selected && !option.correct ? "mso-selected mso-bad" :
+                    submitted && !selected && option.correct ? "mso-correct" :
+                    selected ? "mso-selected" : ""
                   }`}
                   onClick={() => onChange("toggle", activity.id, option.id)}
                   disabled={locked}
@@ -1551,7 +1555,7 @@ function ActivityCard({
   );
 }
 
-const PhaseWorkspace = React.forwardRef(function PhaseWorkspace({ phase, responses, onChange, onSubmit }, ref) {
+const PhaseWorkspace = React.forwardRef(function PhaseWorkspace({ phase, responses, onChange, onSubmit, onNextPhase, nextPhaseName }, ref) {
   if (!phase) return null;
   const restored = Boolean(phase.activities && phase.activities.length);
   return (
@@ -1607,13 +1611,22 @@ const PhaseWorkspace = React.forwardRef(function PhaseWorkspace({ phase, respons
           >
             Go to Top
           </button>
+          {onNextPhase && (
+            <button
+              type="button"
+              className="btn btn-primary phase-next-btn"
+              onClick={() => { onNextPhase(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            >
+              Next Phase{nextPhaseName ? `: ${nextPhaseName}` : ""} →
+            </button>
+          )}
         </div>
       )}
     </section>
   );
 });
 
-function PhaseConsole({ phase, responses, onChange, onSubmit }) {
+function PhaseConsole({ phase, responses, onChange, onSubmit, onNextPhase, nextPhaseName }) {
   return (
     <div className="phase-console">
       <PhaseWorkspace
@@ -1621,6 +1634,8 @@ function PhaseConsole({ phase, responses, onChange, onSubmit }) {
         responses={responses}
         onChange={onChange}
         onSubmit={onSubmit}
+        onNextPhase={onNextPhase}
+        nextPhaseName={nextPhaseName}
       />
     </div>
   );
@@ -1835,6 +1850,11 @@ function App() {
   };
   const doneIds = phases.filter(phase => phaseIsComplete(phase.id, responses)).map(phase => phase.id);
   const coveredObjectives = objectives.map(obj => ({ ...obj, state: objectiveStates[obj.id] || 0 }));
+  const currentPhaseIndex = RESTORED_PHASE_IDS.indexOf(resolvedActivePhase);
+  const nextPhaseId = currentPhaseIndex >= 0 && currentPhaseIndex < RESTORED_PHASE_IDS.length - 1
+    ? RESTORED_PHASE_IDS[currentPhaseIndex + 1] : null;
+  const nextPhase = nextPhaseId ? phases.find(p => p.id === nextPhaseId) : null;
+  const handleNextPhase = nextPhaseId ? () => setActivePhase(nextPhaseId) : null;
 
   const handleAccess = ({ teamName: submittedTeamName, password }) => {
     if (password !== STUDENT_PASSWORD) {
@@ -2084,6 +2104,8 @@ function App() {
               responses={responses}
               onChange={handleActivityChange}
               onSubmit={handleActivitySubmit}
+              onNextPhase={handleNextPhase}
+              nextPhaseName={nextPhase?.title || null}
             />
           )}
         </div>
