@@ -1,5 +1,55 @@
 /* global React, ReactDOM */
 const { useState, useEffect, useRef } = React;
+const SCORE_UNIT = 100;
+
+function formatScore(value) {
+  return new Intl.NumberFormat("en-US").format(Number(value) || 0);
+}
+
+function useRollingNumber(target, enabled = true) {
+  const [display, setDisplay] = useState(target);
+  const [rolling, setRolling] = useState(false);
+  const currentRef = useRef(target);
+  const frameRef = useRef(0);
+
+  useEffect(() => {
+    if (!enabled) {
+      currentRef.current = target;
+      setDisplay(target);
+      setRolling(false);
+      return;
+    }
+    const from = currentRef.current;
+    if (from === target) return;
+
+    window.cancelAnimationFrame(frameRef.current);
+    setRolling(true);
+    const delta = target - from;
+    const duration = Math.min(1200, 420 + Math.abs(delta) * 0.02);
+    const start = performance.now();
+
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const wobble = Math.sin(t * 12) * Math.min(24, Math.abs(delta) * 0.01);
+      const next = Math.round(from + (delta * eased) + (delta >= 0 ? wobble : -wobble));
+      currentRef.current = next;
+      setDisplay(next);
+      if (t < 1) {
+        frameRef.current = window.requestAnimationFrame(tick);
+      } else {
+        currentRef.current = target;
+        setDisplay(target);
+        setRolling(false);
+      }
+    };
+
+    frameRef.current = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frameRef.current);
+  }, [target, enabled]);
+
+  return { display, rolling };
+}
 
 // ──────────────────────────────────────────────────────────────────────────
 // DATA LOADING
@@ -159,7 +209,8 @@ function ClassificationBar({ level }) {
   );
 }
 
-function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossary, onSources, onReset, teamName, scoreText }) {
+function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossary, onSources, onReset, teamName, scoreValue, scoreMax }) {
+  const { display: rollingScore, rolling } = useRollingNumber(scoreValue, scoreValue > 0);
   return (
     <header className="topbar">
       <div className="topbar-left">
@@ -179,10 +230,11 @@ function TopBar({ dtg, opName, opCode, status, instructor, onLockClick, onGlossa
             <span className="team-value">{teamName}</span>
           </div>
         )}
-        {scoreText && (
-          <div className="score-pill">
+        {scoreMax > 0 && (
+          <div className={`score-pill ${rolling ? "rolling" : ""}`} aria-live="polite" aria-atomic="true">
             <span className="team-label">SCORE</span>
-            <span className="team-value">{scoreText}</span>
+            <span className="score-value">{formatScore(rollingScore)}</span>
+            <span className="score-sub">OF {formatScore(scoreMax)} POINTS</span>
           </div>
         )}
         <div className="dtg">
@@ -818,59 +870,61 @@ function initResponse(activity, responses) {
 }
 
 function scoreActivity(activity, response) {
+  let score = 0;
   switch (activity.type) {
     case "classification": {
-      let score = 0;
       activity.items.forEach(item => {
         if (response.answers && response.answers[item.id] === item.correct) score += 1;
       });
-      return score;
+      break;
     }
     case "decision": {
       const selected = activity.options.find(option => option.id === response.selected);
-      return selected && selected.correct ? activity.points : 0;
+      score = selected && selected.correct ? activity.points : 0;
+      break;
     }
     case "fillslot": {
-      let score = 0;
       activity.sentence.filter(part => part.type === "slot").forEach(slot => {
         if (response.slots && response.slots[slot.id] === slot.correct) score += 1;
       });
-      return score;
+      break;
     }
     case "matching": {
-      let score = 0;
       activity.items.forEach(item => {
         const target = activity.targets.find(t => t.correct === item.id);
         if (target && response.pairs && response.pairs[item.id] === target.id) score += 1;
       });
-      return score;
+      break;
     }
     case "sequencing": {
       const correctOrder = activity.correct || [...activity.items].map(item => item.id);
       const matches = (response.order || []).filter((id, index) => id === correctOrder[index]).length;
-      if (matches === correctOrder.length) return activity.points;
       const pct = matches / correctOrder.length;
-      if (pct >= 0.8) return Math.max(1, activity.points - 1);
-      if (pct >= 0.5) return Math.floor(activity.points * 0.5);
-      return 0;
+      if (matches === correctOrder.length) score = activity.points;
+      else if (pct >= 0.8) score = Math.max(1, activity.points - 1);
+      else if (pct >= 0.5) score = Math.floor(activity.points * 0.5);
+      else score = 0;
+      break;
     }
     case "ranking": {
-      let score = 0;
       activity.items.forEach(item => {
         if (Number(response.ranks && response.ranks[item.id]) === Number(item.correct)) score += 1;
       });
-      return Math.min(score, activity.points);
+      score = Math.min(score, activity.points);
+      break;
     }
     case "multiselect": {
-      let score = 0;
       activity.options.forEach(option => {
         if (option.correct && response.selected && response.selected.includes(option.id)) score += 1;
       });
-      return Math.min(score, activity.points);
+      score = Math.min(score, activity.points);
+      break;
     }
     default:
-      return 0;
+      score = 0;
   }
+  score = Math.min(score, activity.points);
+  return score * SCORE_UNIT;
 }
 
 function objectiveBoost(activity, submitted) {
@@ -1174,14 +1228,14 @@ function buildCompletionReportMarkdown({ teamName, dtg, scoreText, pirText, phas
     const activities = content?.activities || [];
     if (!activities.length) return;
     const phaseScore = activities.reduce((sum, activity) => sum + Number(responses[activity.id]?.score || 0), 0);
-    const phasePossible = activities.reduce((sum, activity) => sum + Number(activity.points || 0), 0);
+    const phasePossible = activities.reduce((sum, activity) => sum + Number(activity.points || 0) * SCORE_UNIT, 0);
     lines.push("");
     lines.push(`### ${content.title}`);
-    lines.push(`- Score: ${phaseScore}/${phasePossible}`);
+    lines.push(`- Score: ${formatScore(phaseScore)}/${formatScore(phasePossible)}`);
     activities.forEach(activity => {
       const response = responses[activity.id] || emptyResponseFor(activity);
       const rows = activityReviewRows(activity, response);
-      lines.push(`- ${activity.typeLabel || activity.type}: ${response.submitted ? `${response.score}/${activity.points}` : `0/${activity.points}`}`);
+      lines.push(`- ${activity.typeLabel || activity.type}: ${response.submitted ? `${formatScore(response.score)}/${formatScore(activity.points * SCORE_UNIT)}` : `0/${formatScore(activity.points * SCORE_UNIT)}`}`);
       rows.forEach(row => {
         lines.push(`  - ${row.label}: ${row.user} (correct: ${row.correct})${row.ok ? "" : " - review recommended"}`);
       });
@@ -1306,14 +1360,14 @@ function ActivityHeader({ activity }) {
         <div className="activity-kicker">{activity.typeLabel}</div>
         <h3 className="activity-title">{activity.instruction}</h3>
       </div>
-      <div className="activity-points">{activity.points} pts</div>
+      <div className="activity-points">{formatScore(activity.points * SCORE_UNIT)} pts</div>
     </div>
   );
 }
 
 function ActivityFeedback({ activity, response }) {
   if (!response?.submitted) return null;
-  const correct = response.score >= activity.points;
+  const correct = response.score >= activity.points * SCORE_UNIT;
   const rows = activityReviewRows(activity, response);
   return (
     <div className={`feedback-box ${correct ? "good" : "bad"}`}>
@@ -1552,7 +1606,7 @@ function ActivityCard({
       )}
       {submitted && (
         <div className="activity-scoreline">
-          Score: {response.score}/{activity.points}
+          Score: {formatScore(response.score)}/{formatScore(activity.points * SCORE_UNIT)}
         </div>
       )}
       <ActivityFeedback activity={activity} response={response} />
@@ -1729,18 +1783,16 @@ function CompletionModal({ open, teamName, scoreText, reportMarkdown, onClose, o
           <div className="completion-lede">
             Team <strong>{teamName || "Anonymous Team"}</strong> completed Operation Northern Veil.
           </div>
-          <div className="completion-grid">
-            <div className="completion-stat">
-              <span className="completion-stat-label">TEAM</span>
-              <span className="completion-stat-value">{teamName || "Anonymous Team"}</span>
+          <div className="completion-board">
+            <div className="completion-board-label">WRITE THIS ON THE BOARD</div>
+            <div className="completion-board-row">
+              <span className="completion-board-team">{teamName || "Anonymous Team"}</span>
+              <span className="completion-board-score">{scoreText}</span>
             </div>
-            <div className="completion-stat">
-              <span className="completion-stat-label">SCORE</span>
-              <span className="completion-stat-value">{scoreText}</span>
-            </div>
+            <div className="completion-board-sub">TEAM NAME / SCORE</div>
           </div>
           <div className="completion-copy">
-            Download the markdown report for shared-drive review and instructor feedback before the test tomorrow.
+            Share the team name and score, then download the markdown report for shared-drive review and instructor feedback before the test tomorrow.
           </div>
         </div>
         <div className="modal-foot completion-foot">
@@ -1824,12 +1876,12 @@ function App() {
 
   const allRestoredActivities = RESTORED_PHASE_IDS.flatMap(phaseId => getPhaseContent(phaseId)?.activities || []);
   const allRestoredEvidence = RESTORED_PHASE_IDS.flatMap(phaseId => getPhaseContent(phaseId)?.evidenceCards || []);
-  const possibleScore = allRestoredActivities.reduce((sum, activity) => sum + activity.points, 0);
+  const possibleScore = allRestoredActivities.reduce((sum, activity) => sum + (activity.points * SCORE_UNIT), 0);
   const earnedScore = allRestoredActivities.reduce((sum, activity) => {
     const response = responses[activity.id];
     return sum + (response?.submitted ? Number(response.score || 0) : 0);
   }, 0);
-  const scoreText = studentReady ? `${earnedScore}/${possibleScore}` : "LOCKED";
+  const scoreText = studentReady ? `${formatScore(earnedScore)} / ${formatScore(possibleScore)}` : "LOCKED";
   const allActivitiesComplete = studentReady && allRestoredActivities.length > 0 && allRestoredActivities.every(activity => responses[activity.id]?.submitted);
   const evidenceCount = allRestoredEvidence.length;
   const activityCount = allRestoredActivities.length;
@@ -1977,7 +2029,7 @@ function App() {
         ...initResponse(activity, prev),
         submitted: true,
         score,
-        correct: score >= activity.points,
+        correct: score >= activity.points * SCORE_UNIT,
       }
     }));
     setObjectiveStates(prev => ({ ...prev, ...objectiveBoost(activity, true) }));
@@ -2054,7 +2106,8 @@ function App() {
         onSources={() => setSourcesOpen(true)}
         onReset={handleResetExercise}
         teamName={teamName}
-        scoreText={scoreText}
+        scoreValue={earnedScore}
+        scoreMax={possibleScore}
       />
 
       <GlossaryModal
