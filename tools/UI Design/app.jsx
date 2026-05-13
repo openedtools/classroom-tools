@@ -1039,7 +1039,6 @@ function reviewExplanationText(activity, row, context = {}) {
       break;
     }
     case "ranking":
-      extraParts.push("The number is where this item belongs in priority order.");
       break;
     case "multiselect":
       extraParts.push(correct === "Should be selected"

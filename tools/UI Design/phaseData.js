@@ -42,7 +42,9 @@ window.NorthernVeilContent = {
       subtitle: "Lesson 4.6 - Information Operations",
       domain: "io",
       objectiveIds: ["4.6-ie-dimensions", "4.6-disinformation"],
-      inject: `Donovian state media and aligned social accounts have launched a coordinated narrative claiming that Gorgas is preparing ethnic violence against Zabzimeki civilians. The campaign distributes fabricated footage, recycled clips stripped of context, and amplified social media posts designed to shape international opinion against Gorgas. Coalition signals intelligence has detected coordinated hashtag activity originating from Donovian-linked accounts, reaching audiences in 14 countries within 90 minutes. Open-source researchers have geolocated several video clips to Donovian training grounds - not Gorgas territory. Your intelligence cell has been asked to characterize the IO campaign: identify which dimensions of the Information Environment are being targeted, classify the type of information being used in each report, and clarify the intelligence officer's correct role in supporting the coalition's response.`,
+      inject: `Donovian state media and aligned social accounts have launched a coordinated narrative claiming that Gorgas is preparing ethnic violence against Zabzimeki civilians. The campaign distributes fabricated footage, recycled clips stripped of context, and amplified social media posts designed to shape international opinion against Gorgas. Coalition signals intelligence has detected coordinated hashtag activity originating from Donovian-linked accounts, reaching audiences in 14 countries within 90 minutes. Open-source researchers have geolocated several video clips to Donovian training grounds - not Gorgas territory.
+
+Your intelligence cell has been asked to characterize the IO campaign: identify which dimensions of the Information Environment are being targeted, classify the type of information being used in each report, and clarify the intelligence officer's correct role in supporting the coalition's response.`,
       evidenceCards: [
         {
           id: "e1-1",
@@ -569,10 +571,10 @@ In this phase, classify each emission as ELINT or COMINT, apply the kill chain f
           instruction: "Rank these four radar events from least imminent (1) to most imminent (4) based on where each places Donovia in the kill chain. Rank 1 = earliest stage, least threatening right now. Rank 4 = closest to weapons release.",
           objectiveIds: ["4.3-radar-kill-chain"],
           items: [
-            { id: "r-ew", text: "Early Warning radar activation - VHF-band, long-range detection sweep", correct: 1 },
-            { id: "r-gci", text: "Ground Control Intercept (GCI) voice intercept - encrypted coordination consistent with directing interceptors", correct: 2 },
-            { id: "r-ta", text: "Target Acquisition radar bursts - three bursts over 6 hours, precision tracking", correct: 3 },
-            { id: "r-fc", text: "Fire Control radar spike - X-band, 4 seconds, weapons-guidance grade precision", correct: 4 }
+            { id: "r-ew", text: "Early Warning radar activation - VHF-band, long-range detection sweep", correct: 1, explanation: "EW radar is the Find layer — it scans for airborne contacts at long range. This is the earliest and least imminent stage; Donovia is watching, not targeting anyone." },
+            { id: "r-gci", text: "Ground Control Intercept (GCI) voice intercept - encrypted coordination consistent with directing interceptors", correct: 2, explanation: "GCI means a contact has been detected and Donovia is now coordinating fighters toward it. The adversary has moved from passive detection to active intercept management." },
+            { id: "r-ta", text: "Target Acquisition radar bursts - three bursts over 6 hours, precision tracking", correct: 3, explanation: "TA radar represents the Fix/Track layer — Donovia has shifted from broad search to precision tracking of a specific contact. A weapon has not been assigned yet, but targeting is underway." },
+            { id: "r-fc", text: "Fire Control radar spike - X-band, 4 seconds, weapons-guidance grade precision", correct: 4, explanation: "FC radar is the Engage layer — a weapon system was actively guiding on a target. Even a 4-second spike means the IADS reached engagement state. This is the most imminent indicator in the entire collection picture." }
           ],
           feedback: {
             correct: "Correct ranking. Early Warning radar = Find stage (1). Ground Control Intercept (GCI) = coordination to direct interceptors (2). Target Acquisition radar = Fix/Track stage (3). Fire Control radar spike = Target/Engage stage - most imminent (4). If Fire Control radar is active, the adversary is at the threshold of firing.",
@@ -784,7 +786,9 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
       subtitle: "Lesson 4.7 - ISR Cycle & Tasking",
       domain: "isr",
       objectiveIds: ["4.7-isr-cycle"],
-      inject: `The commander has issued a new Priority Intelligence Requirement (PIR): determine whether Donovia is preparing a limited cross-border operation within the next 72 hours. The Coalition J2 just released it down to your cell. Your job is to convert that one question into a real collection plan, run incoming sensor feeds through Processing & Exploitation, keep persistent surveillance separate from directed reconnaissance, and route the results back through the cycle. Below is a snapshot of what is already in motion: the PIR tasking memo, the current ISR collection plan, the DCGS exploitation queue, the border surveillance feed, and the Route 7 reconnaissance task order.`,
+      inject: `The commander has issued a new Priority Intelligence Requirement (PIR): determine whether Donovia is preparing a limited cross-border operation within the next 72 hours. The Coalition J2 just released it down to your cell. Below is a snapshot of what is already in motion: the PIR tasking memo, the current ISR collection plan, the DCGS exploitation queue, the border surveillance feed, and the Route 7 reconnaissance task order.
+
+Your job is to convert that one question into a real collection plan, run incoming sensor feeds through Processing & Exploitation, keep persistent surveillance separate from directed reconnaissance, and route the results back through the cycle.`,
       evidenceCards: [
         {
           id: "e6-1",
@@ -920,7 +924,7 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
           id: "p6a5",
           type: "multiselect",
           typeLabel: "Activity 5 of 5 - Multi-Select",
-          points: 4,
+          points: 3,
           instruction: "Select all statements that are true about ISR, DCGS, and the PIR process.",
           objectiveIds: ["4.7-isr-cycle"],
           options: [
@@ -946,7 +950,9 @@ In this phase, identify the primary IR vulnerability on the aircraft, distinguis
       subtitle: "Lesson 4.8 - Orbit Regimes & Counterspace",
       domain: "space",
       objectiveIds: ["4.8-orbits", "4.8-counterspace"],
-      inject: `The intelligence cell now shifts to the space domain. Coalition ground units inside the Gorgas border corridor are reporting sudden GPS position errors and loss of timing lock - assessed as Donovian GNSS jamming in the user segment. The MEO navigation constellation itself is unaffected; only forces inside the corridor are degraded. The commander also wants to know how to characterize space threats: when is an action kinetic, when is it non-kinetic, and which response is more escalatory? Your job is to match orbit to mission, distinguish the counterspace effect, identify why kinetic ASAT is the most escalatory option in the lesson set, and confirm that no kinetic counterspace activity has been observed in this scenario.`,
+      inject: `The intelligence cell now shifts to the space domain. Coalition ground units inside the Gorgas border corridor are reporting sudden GPS position errors and loss of timing lock - assessed as Donovian GNSS jamming in the user segment. The MEO navigation constellation itself is unaffected; only forces inside the corridor are degraded. The commander also wants to know how to characterize space threats: when is an action kinetic, when is it non-kinetic, and which response is more escalatory?
+
+Your job is to match orbit to mission, distinguish the counterspace effect, identify why kinetic ASAT is the most escalatory option in the lesson set, and confirm that no kinetic counterspace activity has been observed in this scenario.`,
       evidenceCards: [
         {
           id: "e7-1",
