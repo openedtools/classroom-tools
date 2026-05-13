@@ -122,7 +122,7 @@ const HOW_STEPS = [
   { n: "02", title: "REVIEW EVIDENCE",      body: "Click any evidence card to expand the full report detail before answering." },
   { n: "03", title: "COMPLETE ACTIVITIES",  body: "Each phase has 2–5 structured tasks: matching, sequencing, classifying, ranking, decision-making." },
   { n: "04", title: "RECEIVE FEEDBACK",     body: "Submit each task to see immediate feedback, including why the correct answer matters for this scenario." },
-  { n: "05", title: "TRACK COVERAGE",       body: "Sidebar shows your Block 4 objective coverage. Filled marker means demonstrated." },
+  { n: "05", title: "TRACK COVERAGE",       body: "Track your Block 4 objective progress. Filled marker means demonstrated." },
   { n: "06", title: "SYNTHESIZE",           body: "The final phase fuses all domains into a structured assessment of Donovian intent." },
 ];
 
@@ -420,6 +420,7 @@ function PhaseNav({ active, phases, onChange, doneIds = [] }) {
 // ──────────────────────────────────────────────────────────────────────────
 
 function ObjectiveSidebar({ objectives }) {
+  return null;
   const total = objectives.length;
   const done = objectives.filter(o => o.state === 2).length;
   const partial = objectives.filter(o => o.state === 1).length;
@@ -1853,7 +1854,6 @@ function App() {
     placeholder: true,
   };
   const doneIds = phases.filter(phase => phaseIsComplete(phase.id, responses)).map(phase => phase.id);
-  const coveredObjectives = objectives.map(obj => ({ ...obj, state: objectiveStates[obj.id] || 0 }));
   const currentPhaseIndex = RESTORED_PHASE_IDS.indexOf(resolvedActivePhase);
   const nextPhaseId = currentPhaseIndex >= 0 && currentPhaseIndex < RESTORED_PHASE_IDS.length - 1
     ? RESTORED_PHASE_IDS[currentPhaseIndex + 1] : null;
@@ -2071,8 +2071,6 @@ function App() {
       <PhaseNav active={activePhase} phases={phases} onChange={setActivePhase} doneIds={doneIds} />
 
       <main className="layout">
-        <ObjectiveSidebar objectives={coveredObjectives} />
-
         <div className="content">
           {activePhase === "phase-0-overview" ? (
             <>

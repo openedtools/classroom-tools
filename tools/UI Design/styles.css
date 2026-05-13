@@ -625,7 +625,7 @@ body {
 /* ─── LAYOUT ─────────────────────────────────────────────────────────── */
 .layout {
   display: grid;
-  grid-template-columns: 228px minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: 0;
   min-height: calc(100vh - 130px);
 }
