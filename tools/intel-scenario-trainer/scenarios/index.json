@@ -15,6 +15,14 @@
       "subtitle": "Engine-scalability proof pack",
       "region": "Indo-Pacific",
       "estimatedMinutes": 10
+    },
+    {
+      "id": "block-6-tbd",
+      "title": "[TBD Operation Name]",
+      "block": "Block 6",
+      "subtitle": "[TBD subtitle]",
+      "region": "[TBD region]",
+      "estimatedMinutes": 90
     }
   ]
 }

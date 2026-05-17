@@ -1,0 +1,7 @@
+[
+  { "id": "phase-0-overview", "sequence": 0, "title": "Overview",      "shortLabel": "Overview", "summary": "[TBD orientation — actors, region, commander PIR.]" },
+  { "id": "phase-1-tbd",      "sequence": 1, "title": "[TBD Phase 1]", "shortLabel": "[TBD]",    "summary": "[TBD one-line summary of Phase 1.]" },
+  { "id": "phase-2-tbd",      "sequence": 2, "title": "[TBD Phase 2]", "shortLabel": "[TBD]",    "summary": "[TBD one-line summary of Phase 2.]" },
+  { "id": "phase-3-tbd",      "sequence": 3, "title": "[TBD Phase 3]", "shortLabel": "[TBD]",    "summary": "[TBD one-line summary of Phase 3.]" },
+  { "id": "phase-4-final",    "sequence": 4, "title": "Final Review",  "shortLabel": "Final Review", "summary": "[TBD synthesize and answer the commander's PIR.]" }
+]
