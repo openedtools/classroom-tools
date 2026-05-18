@@ -1162,20 +1162,32 @@ window.ScenarioContent = {
       "6.7-obj-3",
       "6.8-obj-5"
     ],
-    "inject": "D-Day plus 12 hours. Brig Gen Torres calls all AOC staff together for a rapid battle rhythm review. Twelve hours of live execution. He wants to confirm that every officer on his staff understands the AOC as an integrated system — not just the piece they touched today.\n\n'I have watched you all respond to individual problems over the past 12 hours. Now I want to see if you can put the whole picture together. Three activities. Every lesson. No excuses.'",
+    "inject": "D-Day plus 12 hours. Brig Gen Torres calls all AOC staff together for a rapid battle rhythm review. Twelve hours of live execution. He wants to confirm that every officer on his staff understands the AOC as an integrated system — not just the piece they touched today.\n\n'I have watched you all respond to individual problems over the past 12 hours. Now I want to see if you can put the whole picture together. Five activities. Every lesson. No excuses.'\n\nThe last two activities pivot from how the AOC is built to what the JFACC needs as an intelligence assessment: a calibrated BLUF on what Donovia will do next, expressed in ICD 203 likelihood language, plus a sort of candidate Donovian COAs into Most Likely, Most Dangerous, and implausible. Block 4 trained the indicator side. Iron Anvil now uses it.",
     "evidenceCards": [
       {
         "id": "e9-1",
         "title": "The Complete Air Tasking Cycle",
         "summary": "The air tasking cycle flows from JFC guidance through five AOC divisions to execution and back.",
         "detail": "1. JFC issues guidance to the JFACC.\n2. SRD develops the JAOP (long-range) and issues the AOD (cycle guidance) to CPD.\n3. CPD receives the AOD, builds the MAAP, and produces the ATO, ACO, and SPINS.\n4. COD executes the current ATO. The CCO is the senior decision-maker. COD operates 24/7.\n5. ISRD supports SRD (ISR Strategists), CPD (CMC produces RSTA Annex), and COD (ISRDO embedded on the floor).\n6. AMD submits requirements to CPD for inclusion in the ATO. AMD owns AE (AECT). COD owns CSAR (PRCC).\n7. Assessment and BDA feed back from COD to SRD and CPD for the next planning cycle."
+      },
+      {
+        "id": "e9-2",
+        "title": "ICD 203 Likelihood Language",
+        "summary": "Intelligence Community Directive 203 sets the calibrated probability terms every IC product must use.",
+        "detail": "ICD 203 (Analytic Standards) defines the only approved likelihood terms for IC assessments. Use these words — and only these words — when expressing the probability of an event:\n\n• ALMOST NO CHANCE / REMOTE        (01-05%)\n• VERY UNLIKELY / HIGHLY IMPROBABLE (05-20%)\n• UNLIKELY / IMPROBABLE             (20-45%)\n• ROUGHLY EVEN CHANCE / EVEN ODDS   (45-55%)\n• LIKELY / PROBABLE                 (55-80%)\n• VERY LIKELY / HIGHLY PROBABLE     (80-95%)\n• ALMOST CERTAIN / NEARLY CERTAIN   (95-99%)\n\nNote what is NOT on the list: 'possible', 'could', 'may', 'might', 'cannot rule out'. These hedge-words are vague — they communicate uncertainty without committing to a calibrated estimate, and they are not acceptable in finished IC products. Pick the ICD 203 band and own it.\n\nWhy this matters: your BLUF will be read by people who know the standard. Using 'possible' tells them the analyst was not willing to commit to a band. Using 'likely' tells them the analyst placed the assessment in the 55-80% range and is prepared to defend it."
+      },
+      {
+        "id": "e9-3",
+        "title": "MLCOA vs. MDCOA — Threshold Logic",
+        "summary": "MLCOA is what the indicators converge on. MDCOA is the highest-impact COA the indicators do not preclude. Other COAs are implausible.",
+        "detail": "Most Likely Course of Action (MLCOA): the COA most consistent with the convergence of all current indicators. It is what the evidence is actually pointing at. Use ICD 203 'likely' or 'very likely' for the MLCOA band depending on how strong the convergence is.\n\nMost Dangerous Course of Action (MDCOA): the highest-impact COA the indicators do not yet preclude. The commander must remain prepared for it even if probability is lower (typically 'unlikely' to 'roughly even chance' per ICD 203). MDCOA drives branch planning.\n\nImplausible / Contradicted: a COA the current indicators rule out. Examples: a Donovian stand-down while the IADS is active and EW jamming continues, or a kinetic ASAT strike with no space-attack indicators present. These COAs are excluded from the assessment.\n\nFor Iron Anvil specifically, the indicator carryover from Northern Veil is what you sort against: active IADS, ongoing EW, occupation forces in the Zabzimek Corridor, continued IO and cyber pressure."
       }
     ],
     "activities": [
       {
         "id": "p9a1",
         "type": "sequencing",
-        "typeLabel": "Activity 1 of 3 — Put in Order",
+        "typeLabel": "Activity 1 of 5 — Put in Order",
         "points": 4,
         "instruction": "Arrange these air tasking cycle steps in the correct sequence — from the start of planning to execution and assessment.",
         "objectiveIds": [
@@ -1228,7 +1240,7 @@ window.ScenarioContent = {
       {
         "id": "p9a2",
         "type": "classification",
-        "typeLabel": "Activity 2 of 3 — Classification",
+        "typeLabel": "Activity 2 of 5 — Classification",
         "points": 4,
         "instruction": "Classify each scenario by the correct command authority it describes.",
         "objectiveIds": [
@@ -1288,7 +1300,7 @@ window.ScenarioContent = {
       {
         "id": "p9a3",
         "type": "decision",
-        "typeLabel": "Activity 3 of 3 — Best Answer",
+        "typeLabel": "Activity 3 of 5 — Best Answer",
         "points": 1,
         "instruction": "SPARROW 03 (Gorgan F-16 pilot) ejected over Donovian-controlled territory and has just been recovered by the CSAR package. He is now at FOB Ararat with injuries requiring medical air transport to the hospital ship. Which statement correctly describes the handoff between CSAR and Aeromedical Evacuation?",
         "objectiveIds": [
@@ -1322,6 +1334,79 @@ window.ScenarioContent = {
           "incorrect": "Remember: CSAR = COD/PRCC (hostile environment, combat recovery). AE = AMD/AECT (permissive environment, medical transport). The handoff between the two occurs when the person is safely recovered into friendly hands.",
           "whyMatters": "This distinction is directly evaluated on the Block 6 test. In real operations, confusion between CSAR and AE means the wrong AOC division gets the call — and either a rescue package is never launched or a wounded pilot never gets to a hospital. Knowing the handoff point is as important as knowing who owns each mission.",
           "evidenceClue": "See Phase 8 Evidence Card 'AE vs. CSAR — Critical Distinction' for the full comparison and the handoff rule."
+        }
+      },
+      {
+        "id": "p9a4",
+        "type": "fillslot",
+        "typeLabel": "Activity 4 of 5 — Build the BLUF",
+        "points": 3,
+        "instruction": "Brig Gen Torres wants a calibrated BLUF on Donovia's most likely course of action against the coalition air campaign. Build the BLUF below using ICD 203 likelihood language. Carry the indicator picture from Block 4 (active IADS, ongoing EW, occupation forces in the Zabzimek Corridor, continued IO/cyber pressure) into the assessment.",
+        "objectiveIds": [
+          "6.4-obj-1",
+          "6.6-obj-3"
+        ],
+        "sentence": [
+          { "type": "text", "text": "BLUF: Over the next " },
+          { "type": "slot", "id": "bluf-timeframe", "options": ["72 hours", "7 days", "30 days"], "correct": "7 days", "explanation": "Iron Anvil is in the early days of a sustained air campaign. Major Donovian reinforcement-or-withdrawal decisions and force movements play out over roughly a week — long enough for reinforcement to arrive, short enough to bound the JFACC's planning horizon. '72 hours' is too tight for major repositioning; '30 days' is past the relevant decision window for the current ATO cycles." },
+          { "type": "text", "text": ", Donovia is " },
+          { "type": "slot", "id": "bluf-likelihood", "options": ["almost certain", "very likely", "likely", "roughly even chance", "unlikely", "very unlikely", "almost no chance"], "correct": "likely", "explanation": "ICD 203 places 'likely' at 55–80 percent. The indicator convergence is strong (active IADS, ongoing EW, occupation forces in place, continued cyber/IO pressure) but the final Donovian decision has not been observed and some attribution gaps remain. 'Very likely' overstates given those gaps; 'roughly even chance' understates given the convergence. 'Possible' is NOT an ICD 203 term — it is the kind of hedge-word ICD 203 was written to eliminate." },
+          { "type": "text", "text": " to " },
+          { "type": "slot", "id": "bluf-coa", "options": ["withdraw forces from the Zabzimek Corridor and accept ceasefire terms", "reinforce occupation forces in the Zabzimek Corridor and continue coercive pressure across the IO and cyber domains", "open a second front against Atropia or Pertuni", "hold a passive defensive posture with no further movement or pressure"], "correct": "reinforce occupation forces in the Zabzimek Corridor and continue coercive pressure across the IO and cyber domains", "explanation": "Donovian forces remain in the corridor, the IADS is active, EW jamming is ongoing, and IO/cyber operations continue. None of those indicators are consistent with a withdrawal or with a passive posture. A second-front COA against Atropia or Pertuni is not supported by any indicator — there is no staging there. The convergent read is reinforcement plus continued multi-domain pressure." },
+          { "type": "text", "text": "." }
+        ],
+        "feedback": {
+          "correct": "Correct BLUF. 'Likely' is the ICD 203-calibrated word for this picture. Reinforcement plus continued coercive pressure is what the indicator set actually supports. 7 days is the right horizon for major movement decisions and for the JFACC's near-term planning cycle.",
+          "incorrect": "Build the BLUF against ICD 203. The likelihood word MUST be one of: almost no chance, very unlikely, unlikely, roughly even chance, likely, very likely, almost certain. 'Possible' is not on that list and is not acceptable in a finished IC product. For the COA, ask which option is consistent with EVERY indicator. Active IADS + ongoing EW + corridor occupation + continued cyber/IO operations rule out withdrawal and rule out passive defense. No second-front staging rules out the Atropia/Pertuni option.",
+          "whyMatters": "Calibrated language is the difference between an assessment that withstands a peer challenge and one that does not. The JFACC will brief this BLUF to higher headquarters; the people in that room know ICD 203. Using 'likely' tells them you placed the assessment at 55–80 percent and are ready to defend it. Using 'possible' tells them you were not willing to commit.",
+          "evidenceClue": "See Evidence Card 'ICD 203 Likelihood Language' for the seven approved bands. Use the Block 4 indicator carryover plus Iron Anvil's IADS, EW, and corridor posture to anchor the COA selection."
+        }
+      },
+      {
+        "id": "p9a5",
+        "type": "classification",
+        "typeLabel": "Activity 5 of 5 — MLCOA / MDCOA Sort",
+        "points": 4,
+        "instruction": "Sort each candidate Donovian COA into Most Likely COA (MLCOA), Most Dangerous COA (MDCOA), or implausible / contradicted by current indicators. Apply the threshold logic from the evidence card — MLCOA is what indicators converge on; MDCOA is the highest-impact COA the indicators do not preclude; implausible COAs contradict the indicators or have no supporting indicators at all.",
+        "objectiveIds": [
+          "6.6-obj-3"
+        ],
+        "items": [
+          {
+            "id": "coa-1",
+            "text": "Reinforce occupation forces in the Zabzimek Corridor and continue IO/EW/cyber pressure while testing coalition ROE limits with small probing actions along the line of contact.",
+            "correct": "mlcoa",
+            "explanation": "This COA matches every indicator on the board: active IADS, continued EW jamming, ongoing IO/cyber pressure, occupation forces still in the corridor. It is the convergent read and the MLCOA the JFACC must plan against."
+          },
+          {
+            "id": "coa-2",
+            "text": "Launch a full conventional thrust into central Gorgas combined with a kinetic anti-satellite strike against a coalition LEO ISR satellite to blind the air campaign.",
+            "correct": "mdcoa",
+            "explanation": "Higher impact than the current indicator picture supports — but the coalition cannot rule it out. Donovia retains conventional combat power and demonstrated non-kinetic counterspace capability in Block 4 (GNSS denial). A kinetic ASAT would be a major escalation, not a routine option, but the JFACC must remain prepared for it. This is the MDCOA the AOC's branch plans must address."
+          },
+          {
+            "id": "coa-3",
+            "text": "Complete withdrawal from the Zabzimek Corridor, stand down the IADS, and accept UN-brokered ceasefire terms within 72 hours.",
+            "correct": "implausible",
+            "explanation": "Contradicts every active indicator. The IADS is up. EW is ongoing. Occupation forces remain in place. No diplomatic or media signals support a withdrawal posture at this time. ICD 203 'almost no chance' is the band — but the cleaner classification is implausible / contradicted: the current indicators rule it out."
+          },
+          {
+            "id": "coa-4",
+            "text": "Open a second front against Atropia or Pertuni to threaten the AOC's basing at Atropian Air Base and disrupt coalition rear-area operations.",
+            "correct": "implausible",
+            "explanation": "No staging, no force movements toward the Atropian or Pertuni borders, and no political signaling supports a second-front COA. The Donovian indicator picture is concentrated on the Gorgas-Zabzimek axis. Without supporting indicators, this COA is implausible, not merely unlikely."
+          }
+        ],
+        "categories": [
+          { "id": "mlcoa",       "label": "Most Likely COA" },
+          { "id": "mdcoa",       "label": "Most Dangerous COA" },
+          { "id": "implausible", "label": "Implausible / Contradicted by Indicators" }
+        ],
+        "feedback": {
+          "correct": "Correct. MLCOA = the reinforce-and-pressure COA that the indicators converge on. MDCOA = the full-conventional-thrust-plus-kinetic-ASAT COA the indicators do not preclude. Withdrawal and second-front COAs are implausible because the active indicator picture rules them out (withdrawal) or because no indicators support them at all (second front).",
+          "incorrect": "Apply the threshold logic. MLCOA is what the indicators converge on — reinforcement and continued pressure. MDCOA is the highest-impact COA still consistent with what could happen — full conventional plus kinetic counterspace. A COA that contradicts active indicators (withdrawal while IADS is up and EW is jamming) is implausible. A COA with zero supporting indicators (second front against Atropia with no staging there) is also implausible.",
+          "whyMatters": "Commanders plan against MLCOA and prepare branches against MDCOA. Collapsing the two leads to over-reacting to the worst case or missing the warning the evidence actually supports. Calling an implausible COA the MDCOA wastes coalition planning capacity on something that is not going to happen.",
+          "evidenceClue": "Evidence Card 'MLCOA vs. MDCOA — Threshold Logic' gives the rule. Carry the Block 4 indicator matrix forward: active IADS rules out withdrawal; no Atropia-direction staging rules out the second front."
         }
       }
     ]
