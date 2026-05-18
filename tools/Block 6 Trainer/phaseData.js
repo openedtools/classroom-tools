@@ -887,13 +887,13 @@ window.ScenarioContent = {
       "6.7-obj-2",
       "6.7-obj-3"
     ],
-    "inject": "D-Day plus 4 hours. The air campaign is in full swing, and the ISR Division is the intelligence engine driving every decision across the AOC. The ISRD simultaneously supports strategy planning for the next cycle, feeds targeting data to Combat Plans, and manages real-time ISR collection on the operations floor.\n\nThe ISRD has four primary cells — ACF Cell, Targeting Cell, ISR Ops Cell, and the Collection Management Cell (CMC) — plus two embedded positions: ISR Strategists with the SRD, and the ISRDO on the COD floor. Five requests arrive at once. The ISRD Chief needs each one routed to the right cell immediately.",
+    "inject": "D-Day plus 4 hours. The air campaign is in full swing, and the ISR Division is the intelligence engine driving every decision across the AOC. The ISRD simultaneously supports strategy planning for the next cycle, feeds targeting data to Combat Plans, and manages real-time ISR collection on the operations floor.\n\nThe ISRD has three primary cells — the ACF Cell, the ISR Operations Team, and the Collection Management Cell (CMC) — plus two embedded positions: ISR Strategists with the SRD, and the ISRDO on the COD floor. Tasks arrive simultaneously, and the ISRD Chief needs each one routed to the right cell immediately.",
     "evidenceCards": [
       {
         "id": "e7-1",
         "title": "ISRD Internal Cells",
-        "summary": "The ISRD has four cells plus two embedded positions that support the rest of the AOC.",
-        "detail": "ACF Cell (Analysis, Correlation and Fusion): Primary analysis and production cell. Takes raw intelligence from multiple sources (IMINT, SIGINT, MASINT, HUMINT) and fuses them into finished intelligence products for the COD operations floor and other AOC divisions.\n\nTargeting Cell / Tactical Assessment: Supports target development — helps identify and validate targets. Conducts post-strike tactical assessment to determine if strikes achieved their desired effects and whether re-strike is needed.\n\nISR Ops Cell: Manages and executes ISR collection operations. Ensures PED (Processing, Exploitation, and Dissemination) is planned for all scheduled ISR missions. Produces the PED Tasking Order.\n\nCMC (Collection Management Cell): Formally tasks ISR collection platforms. Produces the RSTA Annex — the document that formally assigns collection tasks to ISR platforms for integration into the ATO.\n\nISR Strategists: ISRD personnel embedded with (or coordinated closely with) the SRD. Support campaign strategy planning, PIR development, and collection gap assessment.\n\nISRDO (ISR Operations Duty Officer): Embedded on the COD operations floor during execution. Manages real-time ISR collection and re-tasking to meet dynamic requirements."
+        "summary": "The ISRD has three primary cells plus two embedded positions that support the rest of the AOC.",
+        "detail": "ACF Cell (Analysis, Correlation and Fusion): Primary analysis and production cell. Takes raw intelligence from multiple sources (IMINT, SIGINT, MASINT, HUMINT) and fuses them into finished intelligence products for the COD operations floor and other AOC divisions. ACF also supports the COD with threat warnings and immediate target analysis for dynamic targeting.\n\nISR Operations Team (ISR Ops): Manages and executes ISR collection operations. Ensures PED (Processing, Exploitation, and Dissemination) is planned for all scheduled ISR missions. Produces the PED Tasking Order.\n\nCMC (Collection Management Cell): Formally tasks ISR collection platforms. Produces the RSTA Annex — the document that formally assigns collection tasks to ISR platforms for integration into the ATO.\n\nISR Strategists (embedded): ISRD personnel embedded with (or coordinated closely with) the SRD. Support campaign strategy planning, PIR development, and collection gap assessment.\n\nISRDO — ISR Operations Duty Officer (embedded): Embedded on the COD operations floor during execution. Manages real-time ISR collection and re-tasking to meet dynamic requirements."
       },
       {
         "id": "e7-2",
@@ -907,8 +907,8 @@ window.ScenarioContent = {
         "id": "p7a1",
         "type": "classification",
         "typeLabel": "Activity 1 of 3 — Classification",
-        "points": 4,
-        "instruction": "Four tasks arrive at the ISRD simultaneously. Classify each task by the correct ISRD cell responsible for handling it.",
+        "points": 3,
+        "instruction": "Three tasks arrive at the ISRD simultaneously. Classify each task by the correct ISRD cell responsible for handling it.",
         "objectiveIds": [
           "6.7-obj-2"
         ],
@@ -921,18 +921,12 @@ window.ScenarioContent = {
           },
           {
             "id": "i2",
-            "text": "Assess whether the strike on the Donovian logistics depot at Grid 612 achieved its desired effects. Determine if a re-strike is required.",
-            "correct": "targeting",
-            "explanation": "Post-strike tactical assessment — evaluating whether a strike achieved its desired effects and whether re-strike is needed — is the Targeting Cell's function."
+            "text": "Ensure PED is planned for all ISR missions in tonight's ATO — including the MQ-9 sorties, the U-2, and the RC-135 Rivet Joint. Produce the PED Tasking Order.",
+            "correct": "isrops",
+            "explanation": "The ISR Operations Team ensures PED is planned for every scheduled ISR mission and produces the PED Tasking Order. Without this, collected data may never be processed or exploited."
           },
           {
             "id": "i3",
-            "text": "Ensure PED is planned for all ISR missions in tonight's ATO — including the MQ-9 sorties, the U-2, and the RC-135 Rivet Joint. Produce the PED Tasking Order.",
-            "correct": "isrops",
-            "explanation": "The ISR Ops Cell ensures PED is planned for every scheduled ISR mission and produces the PED Tasking Order. Without this, collected data may never be processed or exploited."
-          },
-          {
-            "id": "i4",
             "text": "Formally task the two MQ-9s, one U-2S, and the RC-135 for tomorrow's ATO. Produce the document that formally assigns collection tasks to these platforms.",
             "correct": "cmc",
             "explanation": "The CMC (Collection Management Cell) formally tasks ISR collection platforms and produces the RSTA Annex — the document that integrates ISR collection tasking into the ATO."
@@ -944,12 +938,8 @@ window.ScenarioContent = {
             "label": "ACF Cell — Analysis, Correlation and Fusion"
           },
           {
-            "id": "targeting",
-            "label": "Targeting Cell / Tactical Assessment"
-          },
-          {
             "id": "isrops",
-            "label": "ISR Ops Cell"
+            "label": "ISR Operations Team"
           },
           {
             "id": "cmc",
@@ -957,9 +947,9 @@ window.ScenarioContent = {
           }
         ],
         "feedback": {
-          "correct": "Correct. ACF = fuse multi-source data into finished intelligence. Targeting Cell = post-strike assessment. ISR Ops Cell = ensure PED is planned, produce PED Tasking Order. CMC = formally task platforms, produce the RSTA Annex.",
-          "incorrect": "Review the four ISRD cells. ACF = analysis and intelligence production. Targeting Cell = target development and post-strike assessment. ISR Ops = PED planning and PED Tasking Order. CMC = formal collection tasking and RSTA Annex.",
-          "whyMatters": "Routing an assessment request to the CMC instead of the Targeting Cell means a re-strike decision is delayed while the CMC explains it is the wrong office. Routing a collection tasking request to the ACF Cell means no RSTA Annex is produced and the platforms are never formally tasked.",
+          "correct": "Correct. ACF = fuse multi-source data into finished intelligence. ISR Operations Team = ensure PED is planned, produce PED Tasking Order. CMC = formally task platforms, produce the RSTA Annex.",
+          "incorrect": "Review the three ISRD cells. ACF = analysis and intelligence production. ISR Operations Team = PED planning and PED Tasking Order. CMC = formal collection tasking and RSTA Annex.",
+          "whyMatters": "Routing a fusion request to the CMC instead of the ACF Cell means the COD does not get finished intelligence in time. Routing a collection tasking request to the ACF Cell means no RSTA Annex is produced and the platforms are never formally tasked.",
           "evidenceClue": "See Evidence Card 'ISRD Internal Cells' for each cell's primary function and the documents they produce."
         }
       },
@@ -1046,13 +1036,13 @@ window.ScenarioContent = {
         "options": [
           {
             "id": "a",
-            "text": "ACF Cell — produces the Intelligence Summary (INTSUM) to formally task collection platforms.",
-            "explanation": "The ACF Cell produces finished intelligence products through analysis and fusion — it does not formally task collection platforms. The INTSUM is not a collection tasking document."
+            "text": "ACF Cell — fuses multi-source intelligence into finished products for the COD operations floor.",
+            "explanation": "The ACF Cell fuses multi-source intelligence for the COD — but it does not formally task ISR collection platforms or produce the document that places them on the ATO. That is a different ISRD function."
           },
           {
             "id": "b",
-            "text": "ISR Ops Cell — produces the PED Tasking Order, which formally assigns collection tasks to ISR platforms.",
-            "explanation": "The ISR Ops Cell produces the PED Tasking Order to ensure PED is planned for each mission — but the PED Tasking Order plans the processing and exploitation of data, not the formal collection tasking of the platform itself."
+            "text": "ISR Operations Team — produces the PED Tasking Order to formally task ISR platforms for the ATO.",
+            "explanation": "The ISR Operations Team produces the PED Tasking Order — which formalizes Processing, Exploitation, and Dissemination planning for scheduled missions. The PED Tasking Order is NOT the document that formally tasks collection platforms; that is the RSTA Annex."
           },
           {
             "id": "c",
@@ -1062,8 +1052,8 @@ window.ScenarioContent = {
           },
           {
             "id": "d",
-            "text": "ISR Strategists — produce the JIPOE to formally task ISR platforms for the campaign.",
-            "explanation": "ISR Strategists support the SRD's campaign strategy planning — they do not produce the formal collection tasking document. The JIPOE is an intelligence preparation product, not a collection tasking order."
+            "text": "ISR Strategists — embedded with SRD; produce the Air Operations Directive (AOD) for the next planning cycle.",
+            "explanation": "ISR Strategists support the SRD's campaign strategy planning and PIR development. They do not produce the AOD (that is the SRD's Strategy Guidance Team) and they do not formally task ISR platforms (that is the CMC)."
           }
         ],
         "feedback": {

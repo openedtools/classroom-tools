@@ -24,7 +24,7 @@
   { "id": "6.6-obj-3", "lesson": "6.6 COD",          "family": "COD",          "title": "Dynamic targeting and TST",                       "studentMustDo": "Define dynamic targeting and apply it to Time-Sensitive Targets not on the ATO." },
   { "id": "6.6-obj-4", "lesson": "6.6 COD",          "family": "COD",          "title": "ISRDO cross-division relationship",               "studentMustDo": "Explain why the ISRDO sits on the COD floor while organizationally belonging to ISRD (dashed-line relationship)." },
 
-  { "id": "6.7-obj-1", "lesson": "6.7 ISRD",         "family": "ISRD",         "title": "ISRD cells and their functions",                  "studentMustDo": "Identify each ISRD cell (ACF, Targeting, ISR Ops, CMC) and the function it performs." },
+  { "id": "6.7-obj-1", "lesson": "6.7 ISRD",         "family": "ISRD",         "title": "ISRD cells and their functions",                  "studentMustDo": "Identify each ISRD cell (ACF, ISR Operations Team, CMC) and the function it performs." },
   { "id": "6.7-obj-2", "lesson": "6.7 ISRD",         "family": "ISRD",         "title": "ISRD across the AOC",                             "studentMustDo": "Describe how ISRD supports SRD (ISR Strategists), CPD (CMC / RSTA Annex), and COD (ISRDO embedded on the floor)." },
   { "id": "6.7-obj-3", "lesson": "6.7 ISRD",         "family": "ISRD",         "title": "PED and the RSTA Annex",                          "studentMustDo": "Define Processing, Exploitation, and Dissemination (PED); identify the ISRD cell that produces the RSTA Annex." },
 
