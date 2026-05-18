@@ -1,0 +1,12 @@
+[
+  { "id": "phase-0-overview",     "sequence": 0, "title": "Overview",                            "shortLabel": "Overview",     "summary": "Orient on the post-invasion situation, CJTF-CAU, the JFACC's mission." },
+  { "id": "phase-1-joint-forces", "sequence": 1, "title": "Establishing the Coalition Command", "shortLabel": "Joint Forces", "summary": "Command authorities — COCOM, OPCON, TACON, ADCON — and Joint vs. Combined ops." },
+  { "id": "phase-2-tacs",         "sequence": 2, "title": "Building the Air Control System",    "shortLabel": "TACS",         "summary": "TACS layers, CAS request chain, AWACS vs. JSTARS, TAC(A) vs. FAC(A)." },
+  { "id": "phase-3-aoc",          "sequence": 3, "title": "Welcome to the AOC",                 "shortLabel": "AOC",          "summary": "AOC divisions, key products (ATO/MAAP/AOD/ACO/SPINS/JAOP), and BCD/NALE/SOLE liaisons." },
+  { "id": "phase-4-srd",          "sequence": 4, "title": "The Strategy Team Has a Problem",    "shortLabel": "SRD",          "summary": "Strategy Division — JAOP vs. AOD, assessment feedback loop, ISR Strategists." },
+  { "id": "phase-5-cpd",          "sequence": 5, "title": "The Planning Frenzy",                "shortLabel": "CPD",          "summary": "Combat Plans Division — TET, MAAP, C2 Planning, ATO Production." },
+  { "id": "phase-6-cod",          "sequence": 6, "title": "The Heat of Execution",              "shortLabel": "COD",          "summary": "Combat Operations Division — CCO authority, dynamic targeting, ACF/ICT/ISRDO." },
+  { "id": "phase-7-isrd",         "sequence": 7, "title": "Eyes Everywhere",                    "shortLabel": "ISRD",         "summary": "ISR Division — ACF, Targeting, ISR Ops, CMC, ISR Strategists, ISRDO, PED." },
+  { "id": "phase-8-amd",          "sequence": 8, "title": "Crisis at FOB Ararat",               "shortLabel": "AMD",          "summary": "Air Mobility Division — Airlift, Air Refueling, AE; AE vs. CSAR handoff." },
+  { "id": "phase-9-synthesis",    "sequence": 9, "title": "Final Synthesis",                    "shortLabel": "Synthesis",    "summary": "Full air tasking cycle review across all Block 6 lessons." }
+]

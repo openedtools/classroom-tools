@@ -1,61 +1,60 @@
-# Block 6 Trainer — Blank Canvas
+# Block 6 Trainer — Operation Iron Anvil
 
-This is a clone of the Block 4 (Operation Northern Veil) trainer with all
-scenario-specific content stripped out and replaced with `[TBD]` placeholders.
-The UI, scoring, activity types, instructor mode, glossary, sources modal,
-completion report, and all other UX behavior are identical to Block 4.
+Coalition AOC scenario picking up after Operation Northern Veil. Donovia
+invaded Gorgas and seized the Zabzimek Corridor. The student is now an
+international Liaison Officer at the Coalition AOC at Atropian Air Base,
+learning the air tasking cycle across all Block 6 lessons.
+
+## Phases
+
+| # | Phase | Lesson |
+| --- | --- | --- |
+| 0 | Scenario Orientation | — |
+| 1 | Establishing the Coalition Command | 6.1 Joint Forces |
+| 2 | Building the Air Control System | 6.2 TACS |
+| 3 | Welcome to the AOC | 6.3 AOC |
+| 4 | The Strategy Team Has a Problem | 6.4 SRD |
+| 5 | The Planning Frenzy | 6.5 CPD |
+| 6 | The Heat of Execution | 6.6 COD |
+| 7 | Eyes Everywhere | 6.7 ISRD |
+| 8 | Crisis at FOB Ararat | 6.8 AMD |
+| 9 | Final Synthesis | All Block 6 lessons |
 
 ## Files in this folder
 
 | File | What it is |
 | --- | --- |
 | `Block 6 Trainer.html` | Entry point. Open this in a browser. |
-| `phaseData.js` | **Per-phase content** — inject text, evidence cards, activities. **Edit this to add Block 6 content.** |
-| `app.jsx` | React app. Do not change unless you want UI changes. |
+| `phaseData.js` | Per-phase content for all 10 phases. |
+| `app.jsx` | React app. Same as Block 4 with Block 6 chrome. |
 | `styles.css` | Shared styles, identical to Block 4. |
 | `tweaks-panel.jsx` | Tweaks panel (accent, density, classification, map options). |
-| `assets/` | Map images. Replace if Block 6 uses a different region. |
+| `assets/` | Map images. |
 
 ## Sister data folder
 
-The trainer also fetches scenario metadata as JSON from a sibling directory:
+Scenario metadata as JSON:
 
 ```
-tools/intel-scenario-trainer/scenarios/block-6-tbd/
-  scenario.json     ← commander PIR, situation text, region
-  phases-v2.json    ← phase ids/titles/summaries shown in the nav
-  objectives.json   ← block objectives shown in coverage sidebar
-  actors.json       ← ORBAT panel
-  glossary.json     ← glossary modal
+tools/intel-scenario-trainer/scenarios/block-6-operation-iron-anvil/
+  scenario.json     ← JFACC mission, situation text, region
+  phases-v2.json    ← phase nav (id, sequence, title, shortLabel, summary)
+  objectives.json   ← Block 6 objectives (6.1 through 6.8)
+  actors.json       ← CJTF-CAU, Donovia, Gorgas, partners
+  glossary.json     ← Block 6 terms (COCOM, OPCON, AOC, TACS, etc.)
 ```
 
-The phase IDs in `phases-v2.json` must match the keys in `phaseData.js`
-under `phases:`. The `block-6-tbd` folder name is referenced in `app.jsx`
-as `DATA_BASE` — rename both together if you give the scenario a real
-short name.
+## Student access
 
-## What to edit when you fill in Block 6
+- Student password (set in `phaseData.js` → `config.studentPassword`): `OperationIronAnvil`
+- Instructor password (hardcoded in `app.jsx`): `IITCInstructors`
 
-1. `phaseData.js`:
-   - Set `config.opName`, `config.opCode`, `config.studentPassword`.
-   - Define each phase under `phases:` with its inject text, evidence
-     cards, and activities. Phase 1 in the skeleton shows one example
-     of every supported activity type — copy/delete as needed.
-2. `tools/intel-scenario-trainer/scenarios/block-6-tbd/`:
-   - Fill in `scenario.json` (commander PIR, situation text).
-   - Fill in `phases-v2.json` to match the phase IDs in `phaseData.js`.
-   - Fill in `objectives.json`, `actors.json`, `glossary.json`.
-3. `Block 6 Trainer.html`:
-   - Update the `<title>` once you have an operation name.
-4. `app.jsx` — only if you want different chrome:
-   - `BLOCK 6 APPLIED REVIEW` sub-line in `TopBar`.
-   - Mission-brief sub-line under `MissionBrief`.
-   - `BEGIN PHASE 01` text under `BeginBar`.
-   - Default pin label (currently `[TBD FOCUS]`).
-   - `INSTRUCTOR_PASSWORD` (currently `IITCInstructors`).
+## Known follow-ups
 
-## Supported activity types
-
-`classification`, `decision`, `fillslot`, `matching`, `sequencing`,
-`ranking`, `multiselect`. See the comment block at the top of
-`phaseData.js` for shape examples.
+- `objectives.json` was generated from the objective IDs referenced
+  across phases with titles inferred from the scenario content. Refine
+  these against the actual Block 6 LPs in
+  `Block 6\Practical\LPs\` if you want exact LP language.
+- 6.7 ISRD has no LP in the LPs folder yet; objectives for 6.7 in
+  `objectives.json` were derived from the scenario content only.
+- `restoredThrough` in `phaseData.js` is set to `phase-9-synthesis`.

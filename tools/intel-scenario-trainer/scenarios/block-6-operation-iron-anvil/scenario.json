@@ -1,0 +1,19 @@
+{
+  "id": "block-6-operation-iron-anvil",
+  "title": "Operation Iron Anvil",
+  "block": "Block 6",
+  "subtitle": "Air Operations in a Joint Environment",
+  "region": "Eurasia / Caucasus",
+  "estimatedMinutes": 90,
+  "studentRole": "International LNO / Staff Officer assigned to the Coalition Air Operations Center",
+  "defaultPresetView": "caucasus",
+  "summary": "Donovia invaded Gorgas, seizing the Zabzimek Corridor — exactly the MLCOA the Block 4 intelligence cell predicted. The United States, NATO partners, and regional coalition nations formed Combined Joint Task Force CAUCASUS (CJTF-CAU) to restore Gorgan sovereignty. You are a newly arrived international Liaison Officer at the Coalition Air Operations Center at Atropian Air Base. Your job is to understand how the AOC functions — who does what, what they produce, and who has authority — before the first ATO executes.",
+  "commanderPIR": "Is this AOC correctly organized and postured to execute the coalition air campaign against Donovia in defense of Gorgas?",
+  "objectiveFamilies": ["Joint Forces", "TACS", "AOC", "SRD", "CPD", "COD", "ISRD", "AMD"],
+  "pirIssuedBy": "JFACC · BRIG GEN TORRES",
+  "pirIssuedDTG": "D-48H · CJTF-CAU AOC",
+  "situationText": [
+    "Donovian 58th Combined Arms Army units crossed the Gorgan border and seized the Zabzimek Corridor. The UN Security Council passed Resolution 2841 condemning the incursion. The United States, NATO partners, and regional coalition nations formed <em>Combined Joint Task Force CAUCASUS (CJTF-CAU)</em> to restore Gorgan sovereignty and deter further Donovian aggression.",
+    "The Coalition Air Operations Center is standing up at Atropian Air Base, 220 km south of the Gorgas-Donovia border. Seven nations are contributing air assets. Donovia's Integrated Air Defense System is active, EW is jamming coalition communications along the border corridor, and Donovian IO and cyber operations are ongoing. The JFACC, <em>Brig Gen Michael Torres</em>, has 48 hours to stand up the AOC and execute the first ATO."
+  ]
+}

@@ -55,7 +55,7 @@ function useRollingNumber(target, enabled = true) {
 // DATA LOADING
 // ──────────────────────────────────────────────────────────────────────────
 
-const DATA_BASE = "../intel-scenario-trainer/scenarios/block-6-tbd";
+const DATA_BASE = "../intel-scenario-trainer/scenarios/block-6-operation-iron-anvil";
 async function loadScenarioData() {
   const fetchJson = async (path, label) => {
     const response = await fetch(path, { cache: "reload" });

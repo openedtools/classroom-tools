@@ -1,0 +1,88 @@
+[
+  {
+    "id": "cjtf-cau",
+    "displayName": "CJTF-CAU",
+    "fullName": "Combined Joint Task Force CAUCASUS",
+    "role": "primary-friendly",
+    "code": "BLU-01",
+    "posture": "COALITION",
+    "stance": "RESTORE",
+    "color": "blue",
+    "tags": ["MULTI-NATIONAL", "JOINT", "COMBINED"],
+    "summary": "Coalition task force formed under UN Security Council Resolution 2841 to restore Gorgan sovereignty and deter further Donovian aggression. CJTF Commander: Lt Gen Sandra Park, USAF. JFACC: Brig Gen Michael Torres, USAF. Seven nations contributing air assets."
+  },
+  {
+    "id": "jfacc-torres",
+    "displayName": "JFACC · Torres",
+    "fullName": "Brig Gen Michael Torres, USAF — Joint Force Air Component Commander",
+    "role": "key-commander",
+    "code": "BLU-AIR",
+    "posture": "COMMAND",
+    "stance": "DIRECTING",
+    "color": "blue",
+    "tags": ["JFACC", "AOC", "AIR"],
+    "summary": "Commands all coalition air operations from the AOC at Atropian Air Base. Has 48 hours to stand up the AOC and execute the first ATO. Operates under strict ROE — collateral damage is a strategic concern."
+  },
+  {
+    "id": "donovia",
+    "displayName": "Donovia",
+    "fullName": "United Republics of Donovia",
+    "role": "primary-adversary",
+    "code": "RED-01",
+    "posture": "HOSTILE",
+    "stance": "OCCUPYING",
+    "color": "red",
+    "tags": ["IADS-ACTIVE", "EW", "OCCUPIER"],
+    "summary": "Now occupying the Zabzimek Corridor inside Gorgas following the 58th Combined Arms Army cross-border operation. IADS active. EW jamming coalition communications along the border. Continues IO and cyber pressure on Gorgas."
+  },
+  {
+    "id": "gorgas",
+    "displayName": "Gorgas",
+    "fullName": "Democratic Republic of Gorgas",
+    "role": "primary-partner",
+    "code": "GRN-01",
+    "posture": "FRIENDLY",
+    "stance": "DEFENDING",
+    "color": "green",
+    "tags": ["NATO-ASPIRANT", "INVADED", "F-16"],
+    "summary": "Contributing 24 F-16C/D fighters and a small modern force to the coalition. The JFLCC (Joint Force Land Component Commander) is Maj Gen Aram Petrosyan, Gorgan Army."
+  },
+  {
+    "id": "atropia",
+    "displayName": "Atropia",
+    "fullName": "Republic of Atropia",
+    "role": "primary-partner",
+    "code": "GRN-02",
+    "posture": "FRIENDLY",
+    "stance": "HOSTING",
+    "color": "green",
+    "tags": ["HOST-NATION", "SU-30SM"],
+    "summary": "Hosts the Coalition AOC at Atropian Air Base. Contributing 12 Su-30SM fighters."
+  },
+  {
+    "id": "zabzimek",
+    "displayName": "Zabzimek Corridor",
+    "fullName": "Zabzimek Separatist Region (now Donovian-occupied)",
+    "role": "flashpoint",
+    "code": "VIO-01",
+    "posture": "OCCUPIED",
+    "stance": "CONTESTED",
+    "color": "violet",
+    "tags": ["DONOVIAN-OCCUPIED", "OBJECTIVE"],
+    "summary": "Donovian-language separatist enclave inside Gorgas, now seized by Donovian 58th Combined Arms Army. The principal objective for the coalition air campaign."
+  },
+  {
+    "id": "coalition-air-partners",
+    "displayName": "Coalition Air Partners",
+    "fullName": "France, UK, Poland, UAE, Gorgas, Atropia, plus contributing nations",
+    "role": "regional-context",
+    "summary": "Seven nations contributing air assets to CJTF-CAU. France deploying 6 Rafales to Atropian Air Base. UK, Poland, UAE also contributing fighter and support aircraft."
+  },
+  {
+    "id": "usn-csg",
+    "displayName": "USS Gerald R. Ford CSG",
+    "fullName": "USS Gerald R. Ford Carrier Strike Group · JFMCC",
+    "role": "regional-context",
+    "summary": "On station in the Caspian Sea with 24 F/A-18E/F Super Hornets. JFMCC: Rear Adm James Kowalski, USN. NALE coordinates carrier air wing integration with the AOC."
+  }
+]
