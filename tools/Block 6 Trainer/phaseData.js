@@ -85,7 +85,7 @@ window.ScenarioContent = {
       {
         "id": "p1a1",
         "type": "matching",
-        "typeLabel": "Activity 1 of 2 — Matching",
+        "typeLabel": "Activity 1 of 3 — Matching",
         "points": 4,
         "instruction": "Match each command authority to its correct definition.",
         "objectiveIds": [
@@ -145,7 +145,7 @@ window.ScenarioContent = {
       {
         "id": "p1a2",
         "type": "decision",
-        "typeLabel": "Activity 2 of 2 — Best Answer",
+        "typeLabel": "Activity 2 of 3 — Best Answer",
         "points": 1,
         "instruction": "Brig Gen Torres needs to integrate 24 Gorgan F-16s into the coalition air campaign and task them for specific missions. Which command authority should he hold over these aircraft?",
         "objectiveIds": [
@@ -179,6 +179,50 @@ window.ScenarioContent = {
           "incorrect": "Torres needs the ability to task and organize — that is OPCON. COCOM cannot be held over partner forces. TACON is too limited for mission tasking. ADCON is administrative only.",
           "whyMatters": "Without OPCON, Torres cannot put Gorgan F-16s on the ATO for specific targets. They become observers, not participants. Getting this right before the first ATO is not a legal formality — it determines what the coalition can actually do in the air.",
           "evidenceClue": "See Evidence Card 'The Four Command Authorities' — specifically the OPCON definition and the note that coalition partners can hold OPCON."
+        }
+      },
+      {
+        "id": "p1a3",
+        "type": "classification",
+        "typeLabel": "Activity 3 of 3 — Joint vs. Combined",
+        "points": 3,
+        "instruction": "U.S. doctrine distinguishes JOINT operations from COMBINED operations. Classify each scenario by the correct type.",
+        "objectiveIds": ["6.1-obj-1"],
+        "items": [
+          {
+            "id": "i1",
+            "text": "U.S. Army and U.S. Air Force conducting a coordinated strike against a Donovian armored column inside the Zabzimek Corridor.",
+            "correct": "joint",
+            "explanation": "Two or more U.S. military departments operating together makes this a JOINT operation. No partner or allied nation forces are involved."
+          },
+          {
+            "id": "i2",
+            "text": "CJTF-CAU air operations — U.S., Gorgan, Atropian, French, and UK aircraft flying tonight's ATO together.",
+            "correct": "combined",
+            "explanation": "U.S. forces operating with partner and allied nation forces makes this a COMBINED operation. CJTF-CAU is the textbook example: U.S. plus six partner nations."
+          },
+          {
+            "id": "i3",
+            "text": "A U.S. Navy carrier air wing and a U.S. Marine Corps fixed-wing squadron flying integrated strike packages from the USS Gerald R. Ford.",
+            "correct": "joint",
+            "explanation": "Two U.S. military departments (Navy and Marine Corps) operating together is JOINT. No partner-nation forces are present in this operation."
+          },
+          {
+            "id": "i4",
+            "text": "U.S. Air Force tankers refueling Gorgan and Atropian F-16s during a SEAD mission over the Donovian border.",
+            "correct": "combined",
+            "explanation": "U.S. forces operating with partner-nation forces (Gorgan, Atropian) is COMBINED. The presence of even one non-U.S. partner makes the operation combined, not joint."
+          }
+        ],
+        "categories": [
+          { "id": "joint",    "label": "JOINT — U.S. services only" },
+          { "id": "combined", "label": "COMBINED — U.S. plus partner/allied nations" }
+        ],
+        "feedback": {
+          "correct": "Correct. JOINT = two or more U.S. military services operating together. COMBINED = U.S. plus partner or allied nations. The distinction is about WHO is in the operation, not WHAT they are doing.",
+          "incorrect": "Apply the U.S. doctrinal rule. JOINT operations involve two or more U.S. military services only (Army + Air Force, Navy + Marines, etc.). COMBINED operations involve U.S. forces plus any partner or allied nation. If even one non-U.S. force is in the operation, it is combined.",
+          "whyMatters": "This distinction drives command authority decisions. COCOM is a U.S. statutory authority — it can be held over U.S. forces in a joint operation, but never extended to a partner nation in a combined operation. Mislabeling joint vs combined can lead to assigning command authorities that are not legally valid.",
+          "evidenceClue": "See Evidence Card 'Joint vs. Combined Operations' — joint is U.S.-only; combined adds partner/allied forces. CJTF-CAU is a combined operation."
         }
       }
     ]
@@ -329,7 +373,7 @@ window.ScenarioContent = {
         "id": "e3-1",
         "title": "The Five AOC Divisions",
         "summary": "The AOC is organized into five divisions, each responsible for a different part of the air tasking cycle.",
-        "detail": "Strategy Division (SRD): Develops the Joint Air Operations Plan (JAOP) and issues the Air Operations Directive (AOD). Operates 48-72+ hours ahead of execution.\n\nCombat Plans Division (CPD): Receives the AOD, builds the Master Air Attack Plan (MAAP), and produces the Air Tasking Order (ATO), Airspace Control Order (ACO), and Special Instructions (SPINS). Operates next-day to 48 hours ahead.\n\nCombat Operations Division (COD): Executes the current ATO in real time. The Chief of Combat Operations (CCO) is the senior decision-maker. Operates 24/7.\n\nISR Division (ISRD): Plans, tasks, and assesses ISR operations. Supports all three other divisions.\n\nAir Mobility Division (AMD): Plans and coordinates airlift, air refueling, and aeromedical evacuation."
+        "detail": "Strategy Division (SRD): Develops the command's overall vision and guidance for the air campaign. Produces the Joint Air Operations Plan (JAOP) and issues the Air Operations Directive (AOD). Operates 72-96+ hours ahead of execution.\n\nCombat Plans Division (CPD): Receives the AOD, builds the Master Air Attack Plan (MAAP), and produces the AOC's primary output — the Air Tasking Order (ATO) — along with the Airspace Control Order (ACO) and Special Instructions (SPINS). Provides near-term planning 48 to 96 hours prior to ATO execution.\n\nCombat Operations Division (COD): Executes the current ATO in real time. The Chief of Combat Operations (CCO) leads execution of the current ATO on behalf of the JFACC. Operates 24/7.\n\nISR Division (ISRD): Plans, tasks, and assesses ISR operations. Supports all three other divisions.\n\nAir Mobility Division (AMD): Plans and coordinates airlift, air refueling, and aeromedical evacuation."
       },
       {
         "id": "e3-2",
@@ -388,7 +432,7 @@ window.ScenarioContent = {
           },
           {
             "id": "t4",
-            "text": "The formal 24-hour tasking order assigning specific missions, targets, times, and aircraft to all coalition units; the primary execution document.",
+            "text": "The AOC's primary output and primary execution document — the formal 24-hour tasking order assigning specific missions, targets, times, and aircraft to all coalition units.",
             "correct": "m4"
           }
         ],
@@ -466,8 +510,8 @@ window.ScenarioContent = {
       {
         "id": "e4-1",
         "title": "SRD Internal Teams",
-        "summary": "The SRD has four internal teams, each responsible for a different aspect of air campaign strategy.",
-        "detail": "Strategy Plans Team: Develops the long-range Joint Air Operations Plan (JAOP). Thinks in weeks.\n\nStrategy Guidance Team: Produces the Air Operations Directive (AOD) each ATO cycle. Translates long-range strategy into specific 24-48 hour guidance for the Combat Plans Division.\n\nObjectives/Effects Team: Prioritizes desired effects and links them to the JFC's objectives. Ensures the air campaign is actually achieving what the commander wants.\n\nAssessment Team: Evaluates whether current operations are achieving desired effects. Feeds results back to the SRD and CPD for the next planning cycle. Uses BDA (Battle Damage Assessment) results as key inputs."
+        "summary": "The SRD develops the command's overall vision and guidance for the air campaign through four internal teams.",
+        "detail": "The Strategy Division's primary function in the air tasking cycle is to develop the command's overall vision and guidance — the strategy that everything downstream supports.\n\nStrategy Plans Team: Develops the long-range Joint Air Operations Plan (JAOP). Thinks in weeks.\n\nStrategy Guidance Team: Produces the Air Operations Directive (AOD) each ATO cycle. Translates long-range strategy into specific 24-48 hour guidance for the Combat Plans Division.\n\nObjectives/Effects Team: Prioritizes desired effects and links them to the JFC's objectives. Ensures the air campaign is actually achieving what the commander wants.\n\nAssessment Team: Evaluates whether current operations are achieving desired effects. Feeds results back to the SRD and CPD for the next planning cycle. Uses BDA (Battle Damage Assessment) results as key inputs."
       },
       {
         "id": "e4-2",
@@ -574,13 +618,13 @@ window.ScenarioContent = {
       "6.5-obj-2",
       "6.5-obj-3"
     ],
-    "inject": "D-Day minus 24 hours. The Combat Plans Division is in full sprint. The first ATO must be complete and disseminated in 18 hours. Four simultaneous planning tasks hit the floor. The CPD Chief needs them routed to the right team immediately — there is no time for confusion about who does what.\n\nThe CPD has four key internal teams: the MAAP Team (allocates sorties to missions), the Targeting Effects Team (TET) (targets and weaponeering), the C2 Planning Team (airspace and communications), and the ATO Production Team (compiles and publishes the final ATO).",
+    "inject": "D-Day minus 24 hours. The Combat Plans Division is in full sprint. The CPD provides near-term planning 48 to 96 hours prior to ATO execution — and the first ATO of the campaign must be complete and disseminated in 18 hours. Four simultaneous planning tasks hit the floor. The CPD Chief needs them routed to the right team immediately — there is no time for confusion about who does what.\n\nThe CPD has four key internal teams: the MAAP Team (allocates sorties to missions), the Targeting Effects Team (TET) (target nomination, weaponeering, and CDE), the C2 Planning Team (airspace and SPINS/ROE integration), and the ATO Production Team (compiles and publishes the final ATO).",
     "evidenceCards": [
       {
         "id": "e5-1",
         "title": "CPD's Four Key Teams",
         "summary": "Each CPD team handles a distinct part of building the ATO.",
-        "detail": "MAAP Team: Allocates available air sorties to missions; sets timing, sequencing, and weight of effort; matches the right aircraft to the right target type. Produces the Master Air Attack Plan.\n\nTargeting Effects Team (TET): Determines which munition achieves the desired effect on each target; conducts Collateral Damage Estimation (CDE); maintains the Joint Integrated Prioritized Target List (JIPTL); ensures compliance with ROE and LOAC.\n\nC2 Planning Team: Plans the airspace control architecture; produces the Air Control Order (ACO) and Special Instructions (SPINS); deconflicts with ground and naval C2 nodes.\n\nATO Production Team: Compiles all inputs from the three planning teams into the formatted ATO document; ensures accuracy and on-time dissemination to all coalition units."
+        "detail": "MAAP Team: Allocates available air sorties to missions; sets timing, sequencing, and weight of effort; matches the right aircraft to the right target type. Produces the Master Air Attack Plan.\n\nTargeting Effects Team (TET): Nominates and vets targets for inclusion in the Joint Integrated Prioritized Target List (JIPTL); determines which munition achieves the desired effect for each approved target; conducts Collateral Damage Estimation (CDE); ensures target-level compliance with ROE and LOAC.\n\nC2 Planning Team: Plans the airspace control architecture; produces the Air Control Order (ACO) and Special Instructions (SPINS) — which integrate cycle ROE supplements and special procedures into the daily plan; deconflicts with ground and naval C2 nodes. The ACO defines airspace control measures, boundaries, and communication procedures for the cycle.\n\nATO Production Team: Compiles all inputs from the three planning teams into the formatted ATO document; ensures accuracy and on-time dissemination to all coalition units."
       }
     ],
     "activities": [
@@ -602,9 +646,9 @@ window.ScenarioContent = {
           },
           {
             "id": "i2",
-            "text": "Determine the correct munition for the hardened radar bunker at Grid 447; complete Collateral Damage Estimation — there is a hospital 800 meters to the west.",
+            "text": "Nominate and vet the hardened radar bunker at Grid 447 for the JIPTL, determine the correct munition, and complete Collateral Damage Estimation — there is a hospital 800 meters to the west.",
             "correct": "tet",
-            "explanation": "Weaponeering (selecting the right munition for the target) and Collateral Damage Estimation (CDE) are TET functions. TET also ensures the target meets ROE and LOAC requirements before it goes on the ATO."
+            "explanation": "Nominating and vetting targets for the JIPTL, weaponeering (selecting the right munition), and Collateral Damage Estimation (CDE) are all TET functions. TET also ensures the target meets ROE and LOAC requirements before it goes on the ATO."
           },
           {
             "id": "i3",
@@ -727,7 +771,7 @@ window.ScenarioContent = {
         "id": "e6-1",
         "title": "COD Teams and Positions",
         "summary": "The COD has four organic teams plus the embedded ISRDO from the ISR Division.",
-        "detail": "CCO (Chief of Combat Operations): Senior decision-maker on the operations floor; acts on behalf of the JFACC. Has personal authority to approve time-sensitive targets, redirect missions, divert aircraft, and apply ROE. Cannot delegate these decisions.\n\nOffensive Operations Team: Monitors execution of all offensive air missions — strike, interdiction, CAS. Tracks aircraft status and BDA.\n\nDefensive Operations Team: Monitors Defensive Counter-Air (DCA) and theater missile defense. Tracks threats to friendly aircraft and bases.\n\nACF Team (Analysis, Correlation and Fusion): Provides near-real-time intelligence fusion to the operations floor. Fuses ELINT, IMINT, and other feeds to support CCO decision-making.\n\nICT (Interface Control Team): Manages data links and the Common Operating Picture (COP). Ensures all nodes are connected and the air picture is accurate and shared.\n\nISRDO (ISR Operations Duty Officer): Embedded from the ISR Division. Manages real-time ISR collection and re-tasking during execution."
+        "detail": "CCO (Chief of Combat Operations): Senior decision-maker on the operations floor. Leads the execution of the current Air Tasking Order on behalf of the JFACC during real-time operations. Has personal authority to approve time-sensitive targets, redirect missions, divert aircraft, and apply ROE. Cannot delegate these decisions.\n\nOffensive Operations Team: Monitors execution of all offensive air missions — strike, interdiction, CAS. Tracks aircraft status and BDA.\n\nDefensive Operations Team: Manages oversight of the execution of theater air defense operations. Monitors Defensive Counter-Air (DCA) and theater missile defense. Tracks threats to friendly aircraft and bases.\n\nACF Team (Analysis, Correlation and Fusion): Provides near-real-time intelligence fusion to the operations floor. Fuses ELINT, IMINT, and other feeds to deliver threat warnings and immediate target analysis that support CCO decision-making and dynamic targeting.\n\nICT (Interface Control Team): Manages data links and the Common Operating Picture (COP). Ensures all nodes are connected and the air picture is accurate and shared across the operations floor.\n\nISRDO (ISR Operations Duty Officer): Embedded from the ISR Division. Manages real-time ISR collection and re-tasking during execution."
       }
     ],
     "activities": [
@@ -1062,7 +1106,7 @@ window.ScenarioContent = {
       {
         "id": "p8a1",
         "type": "classification",
-        "typeLabel": "Activity 1 of 2 — Classification",
+        "typeLabel": "Activity 1 of 3 — Classification",
         "points": 3,
         "instruction": "Three crises arrive simultaneously. Classify each one by the AOC division that has primary responsibility.",
         "objectiveIds": [
@@ -1108,7 +1152,7 @@ window.ScenarioContent = {
       {
         "id": "p8a2",
         "type": "multiselect",
-        "typeLabel": "Activity 2 of 2 — Select All That Apply",
+        "typeLabel": "Activity 2 of 3 — Select All That Apply",
         "points": 3,
         "instruction": "Select ALL of the mission sets that belong to the Air Mobility Division (AMD). Do not select any that do not belong to AMD.",
         "objectiveIds": [
@@ -1145,6 +1189,74 @@ window.ScenarioContent = {
           "incorrect": "AMD has exactly three mission sets: Airlift, Air Refueling (AR), and Aeromedical Evacuation (AE). CSAR is explicitly NOT an AMD mission — it belongs to COD. This distinction is directly evaluated on the Block 6 test.",
           "whyMatters": "This distinction appears on the Block 6 test because it is a real operational confusion point. AMD and COD must both be ready to respond to a downed pilot — but to very different missions. COD launches the rescue; AMD may later transport the recovered pilot for medical care. Mixing up the two creates command confusion at the worst possible moment.",
           "evidenceClue": "See Evidence Card 'AE vs. CSAR — Critical Distinction' for the full explanation of why CSAR belongs to COD."
+        }
+      },
+      {
+        "id": "p8a3",
+        "type": "matching",
+        "typeLabel": "Activity 3 of 3 — AMD Team-Level Matching",
+        "points": 5,
+        "instruction": "Inside the Air Mobility Division, each AMD position or team owns a specific mission. Match each AMD element to the responsibility it owns.",
+        "objectiveIds": ["6.8-obj-3", "6.8-obj-4"],
+        "items": [
+          {
+            "id": "m1",
+            "text": "ALCT — Airlift Control Team",
+            "explanation": "The ALCT plans and coordinates airlift missions — moving cargo, personnel, and equipment by air. Tonight's airlift mission planning and integration with the ATO is an ALCT function."
+          },
+          {
+            "id": "m2",
+            "text": "ARCT — Air Refueling Control Team",
+            "explanation": "The ARCT plans and coordinates tanker support and in-flight refueling for receiver aircraft. The KC-135 shortfall and replacement tanker call goes here."
+          },
+          {
+            "id": "m3",
+            "text": "AECT — Aeromedical Evacuation Control Team",
+            "explanation": "The AECT plans and coordinates the movement of sick and wounded patients by air to medical facilities. The wounded Gorgan soldiers at FOB Ararat needing transport to the hospital ship is an AECT call."
+          },
+          {
+            "id": "m4",
+            "text": "AMCT — Air Mobility Control Team",
+            "explanation": "The AMCT monitors and tracks execution of all air mobility missions, providing situational awareness to the Chief of Mobility Division (CMD). Think of it as the execution monitoring cell for AMD."
+          },
+          {
+            "id": "m5",
+            "text": "CMD — Chief of Mobility Division",
+            "explanation": "The CMD is the JFACC's primary advisor on all air mobility matters. The CMD coordinates with AMC's TACC and is responsible for the AMD's three mission sets — airlift, air refueling, and aeromedical evacuation — at the division level."
+          }
+        ],
+        "targets": [
+          {
+            "id": "t1",
+            "text": "Plans and coordinates airlift missions — moving cargo, personnel, and equipment by air; integrates airlift requirements into the ATO.",
+            "correct": "m1"
+          },
+          {
+            "id": "t2",
+            "text": "Plans and coordinates tanker support and in-flight refueling; finds the replacement tanker when Texaco 41 goes down.",
+            "correct": "m2"
+          },
+          {
+            "id": "t3",
+            "text": "Plans and coordinates movement of injured personnel by air to medical facilities; works with medical authorities to match patient needs to aircraft and crews.",
+            "correct": "m3"
+          },
+          {
+            "id": "t4",
+            "text": "Monitors and tracks execution of all air mobility missions; provides situational awareness on AMD operations to the Chief of Mobility Division.",
+            "correct": "m4"
+          },
+          {
+            "id": "t5",
+            "text": "Primary advisor to the JFACC on all air mobility matters; coordinates air refueling, intratheater airlift, and aeromedical missions at the division level.",
+            "correct": "m5"
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. ALCT = airlift. ARCT = air refueling. AECT = aeromedical evacuation. AMCT = mission monitoring and situational awareness. CMD = JFACC's primary mobility advisor and division-level coordinator.",
+          "incorrect": "Match each AMD element to its specific function. ALCT handles airlift. ARCT handles air refueling. AECT handles aeromedical evacuation (medical transport of patients). AMCT monitors execution of all AMD missions. The CMD advises the JFACC and coordinates all three mission sets at the division level.",
+          "whyMatters": "The Block 6 test asks for these team-level distinctions specifically. Knowing the right AMD division for a problem is not enough — you have to route it to the right team within AMD. The wounded soldier transport call goes to AECT, not just 'AMD.' The tanker shortfall call goes to ARCT, not just 'AMD.'",
+          "evidenceClue": "See Evidence Card 'AMD's Four Teams' for each team's primary mission and product, plus the CMD's role as the JFACC's primary advisor on mobility matters."
         }
       }
     ]
