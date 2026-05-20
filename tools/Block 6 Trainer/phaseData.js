@@ -185,7 +185,7 @@ window.ScenarioContent = {
         "id": "p1a3",
         "type": "classification",
         "typeLabel": "Activity 3 of 3 — Joint vs. Combined",
-        "points": 3,
+        "points": 4,
         "instruction": "U.S. doctrine distinguishes JOINT operations from COMBINED operations. Classify each scenario by the correct type.",
         "objectiveIds": ["6.1-obj-1"],
         "items": [
@@ -237,7 +237,7 @@ window.ScenarioContent = {
       "6.2-obj-2",
       "6.2-obj-3"
     ],
-    "inject": "The AOC is operational. Brig Gen Torres has activated the Theater Air Control System (TACS) to manage all air operations across the theater. The TACS is not a single building or headquarters — it is a collection of agencies, people, equipment, and procedures organized into three functional layers.\n\nA critical test arrives immediately: the Gorgan Army's 3rd Brigade has made contact with Donovian armored forces in the Zabzimek Corridor and is requesting Close Air Support. The CAS request enters the TACS. Not everyone in the room agrees on how it should be routed — or which agency does what.",
+    "inject": "The AOC is operational. With the JFACC's coalition command structure now in place, the Theater Air Control System (TACS) is being stood up to manage all air operations across the theater. The TACS is not a single building or headquarters — it is a collection of agencies, people, equipment, and procedures organized into three functional layers, each with its own role in the air fight.\n\nA critical test arrives immediately: the Gorgan Army's 3rd Brigade has made contact with Donovian armored forces in the Zabzimek Corridor and is requesting Close Air Support. The CAS request enters the TACS. Not everyone in the room agrees on how it should be routed — or which agency does what.",
     "evidenceCards": [
       {
         "id": "e2-1",
@@ -257,7 +257,7 @@ window.ScenarioContent = {
         "id": "p2a1",
         "type": "sequencing",
         "typeLabel": "Activity 1 of 2 — Put in Order",
-        "points": 3,
+        "points": 4,
         "instruction": "The Gorgan 3rd Brigade has a target and needs Close Air Support. Arrange these TACS nodes in the correct order — from the ground unit's request to the aircraft executing the strike.",
         "objectiveIds": [
           "6.2-obj-2",
@@ -367,7 +367,7 @@ window.ScenarioContent = {
       "6.3-obj-2",
       "6.3-obj-3"
     ],
-    "inject": "You have been formally assigned to the Coalition AOC support staff. Your section chief drops a stack of documents on your desk with a single instruction: figure out who produced what, and who you need to talk to for each problem that walks through the door.\n\nThe AOC is a weapon system — formally organized, trained, and equipped. It has five divisions and produces six major planning documents. Three liaison elements represent the other joint force components inside the AOC. If you cannot identify who does what in the next 20 minutes, you are useless on this staff.",
+    "inject": "You have been formally assigned to the Coalition AOC support staff. Your section chief drops a stack of documents on your desk with a single instruction: figure out who produced what, and who you need to talk to for each problem that walks through the door.\n\nThe AOC is a weapon system — formally organized, trained, and equipped. It has five divisions and produces six major planning documents. Three liaison elements represent the other joint force components inside the AOC. Take the next 20 minutes to map the players to the products and the liaisons to the components — by the time the first inject lands on the floor, you need to know exactly who to call.",
     "evidenceCards": [
       {
         "id": "e3-1",
@@ -565,7 +565,7 @@ window.ScenarioContent = {
         "id": "p4a2",
         "type": "sequencing",
         "typeLabel": "Activity 2 of 2 — Put in Order",
-        "points": 3,
+        "points": 4,
         "instruction": "Arrange these four AOC planning documents in the correct order — from the broadest, longest-range document to the most specific execution document.",
         "objectiveIds": [
           "6.4-obj-1",
@@ -692,7 +692,7 @@ window.ScenarioContent = {
         "id": "p5a2",
         "type": "fillslot",
         "typeLabel": "Activity 2 of 2 — Fill the Assessment",
-        "points": 2,
+        "points": 3,
         "instruction": "Complete the sentence that explains the relationship between the MAAP and the ATO.",
         "objectiveIds": [
           "6.5-obj-2",
@@ -1143,7 +1143,7 @@ window.ScenarioContent = {
         "id": "p8a2",
         "type": "multiselect",
         "typeLabel": "Activity 2 of 3 — Select All That Apply",
-        "points": 3,
+        "points": 4,
         "instruction": "Select ALL of the mission sets that belong to the Air Mobility Division (AMD). Do not select any that do not belong to AMD.",
         "objectiveIds": [
           "6.8-obj-1"
@@ -1290,7 +1290,7 @@ window.ScenarioContent = {
         "id": "p9a1",
         "type": "sequencing",
         "typeLabel": "Activity 1 of 5 — Put in Order",
-        "points": 4,
+        "points": 5,
         "instruction": "Arrange these air tasking cycle steps in the correct sequence — from the start of planning to execution and assessment.",
         "objectiveIds": [
           "6.3-obj-1",

@@ -1,29 +1,5 @@
 [
   {
-    "id": "cjtf-cau",
-    "displayName": "CJTF-CAU",
-    "fullName": "Combined Joint Task Force CAUCASUS",
-    "role": "primary-friendly",
-    "code": "BLU-01",
-    "posture": "COALITION",
-    "stance": "RESTORE",
-    "color": "blue",
-    "tags": ["MULTI-NATIONAL", "JOINT", "COMBINED"],
-    "summary": "Coalition task force formed under UN Security Council Resolution 2841 to restore Gorgan sovereignty and deter further Donovian aggression. CJTF Commander: Lt Gen Sandra Park, USAF. JFACC: Brig Gen Michael Torres, USAF. Seven nations contributing air assets."
-  },
-  {
-    "id": "jfacc-torres",
-    "displayName": "JFACC · Torres",
-    "fullName": "Brig Gen Michael Torres, USAF — Joint Force Air Component Commander",
-    "role": "key-commander",
-    "code": "BLU-AIR",
-    "posture": "COMMAND",
-    "stance": "DIRECTING",
-    "color": "blue",
-    "tags": ["JFACC", "AOC", "AIR"],
-    "summary": "Commands all coalition air operations from the AOC at Atropian Air Base. Has 48 hours to stand up the AOC and execute the first ATO. Operates under strict ROE — collateral damage is a strategic concern."
-  },
-  {
     "id": "donovia",
     "displayName": "Donovia",
     "fullName": "United Republics of Donovia",
@@ -33,7 +9,19 @@
     "stance": "OCCUPYING",
     "color": "red",
     "tags": ["IADS-ACTIVE", "EW", "OCCUPIER"],
-    "summary": "Now occupying the Zabzimek Corridor inside Gorgas following the 58th Combined Arms Army cross-border operation. IADS active. EW jamming coalition communications along the border. Continues IO and cyber pressure on Gorgas."
+    "summary": "Now occupying the Zabzimek Corridor inside Gorgas following the 58th Combined Arms Army cross-border operation. IADS active. EW jamming coalition communications along the border. Continues IO and cyber pressure on Gorgas and other regional states."
+  },
+  {
+    "id": "pirtuni",
+    "displayName": "Pirtuni",
+    "fullName": "The Republic of Pirtuni",
+    "role": "pressured-partner",
+    "code": "VIO-02",
+    "posture": "CONTESTED",
+    "stance": "WESTERN-LEANING",
+    "color": "violet",
+    "tags": ["NATO-ASPIRANT", "DONOVIAN-PRESSURED", "SEPARATIST-RISK"],
+    "summary": "Western-leaning constitutional republic on the north shore of the Black Sea. Western-majority population seeks NATO and EU membership; eastern minority blocks reforms and aligns with Donovia. Donovia claims portions of eastern Pirtuni and backs separatist activity. The map shades Pirtuni in the Donovian claim envelope — Pirtuni is not Donovian, but it is under sustained Donovian pressure."
   },
   {
     "id": "gorgas",
@@ -45,7 +33,7 @@
     "stance": "DEFENDING",
     "color": "green",
     "tags": ["NATO-ASPIRANT", "INVADED", "F-16"],
-    "summary": "Contributing 24 F-16C/D fighters and a small modern force to the coalition. The JFLCC (Joint Force Land Component Commander) is Maj Gen Aram Petrosyan, Gorgan Army."
+    "summary": "The reason CJTF-CAU exists. Contributing 24 F-16C/D fighters and a small modern force to the coalition. The JFLCC (Joint Force Land Component Commander) is Maj Gen Aram Petrosyan, Gorgan Army. Zabzimek Corridor is currently occupied by Donovian forces."
   },
   {
     "id": "atropia",
@@ -56,13 +44,13 @@
     "posture": "FRIENDLY",
     "stance": "HOSTING",
     "color": "green",
-    "tags": ["HOST-NATION", "SU-30SM"],
-    "summary": "Hosts the Coalition AOC at Atropian Air Base. Contributing 12 Su-30SM fighters."
+    "tags": ["HOST-NATION", "SU-30SM", "AOC-LOCATION"],
+    "summary": "Hosts the Coalition AOC at Atropian Air Base, 220 km south of the Gorgas-Donovia border. Contributing 12 Su-30SM fighters."
   },
   {
     "id": "zabzimek",
     "displayName": "Zabzimek Corridor",
-    "fullName": "Zabzimek Separatist Region (now Donovian-occupied)",
+    "fullName": "Zabzimek Separatist Region (Donovian-occupied)",
     "role": "flashpoint",
     "code": "VIO-01",
     "posture": "OCCUPIED",
@@ -74,9 +62,9 @@
   {
     "id": "coalition-air-partners",
     "displayName": "Coalition Air Partners",
-    "fullName": "France, UK, Poland, UAE, Gorgas, Atropia, plus contributing nations",
+    "fullName": "France, UK, Poland, UAE, plus contributing nations",
     "role": "regional-context",
-    "summary": "Seven nations contributing air assets to CJTF-CAU. France deploying 6 Rafales to Atropian Air Base. UK, Poland, UAE also contributing fighter and support aircraft."
+    "summary": "Additional partner nations contributing air assets to CJTF-CAU. France deploying 6 Rafales to Atropian Air Base. UK, Poland, UAE also contributing fighter and support aircraft."
   },
   {
     "id": "usn-csg",

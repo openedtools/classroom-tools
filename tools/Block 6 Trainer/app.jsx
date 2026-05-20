@@ -558,7 +558,7 @@ function MissionBrief() {
 }
 
 function MapPanel({ showReticle, showGrid, instructor, pin, onPinChange }) {
-  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "[TBD FOCUS]" } : { x: 51, y: 74, label: "[TBD FOCUS]" };
+  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ATROPIAN AB · AOC" } : { x: 73, y: 65, label: "ATROPIAN AB · AOC" };
   const wrapRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [editingLabel, setEditingLabel] = useState(false);
@@ -750,22 +750,19 @@ function HowItWorks() {
   );
 }
 
-function BeginBar({ onBegin }) {
+function BeginBar({ onBegin, nextPhaseLabel }) {
+  const label = nextPhaseLabel ? nextPhaseLabel.toUpperCase() : "PHASE 01";
   return (
     <div className="begin-bar">
       <div className="begin-meta">
         <div className="bm-row">
           <span className="bm-k">NEXT</span>
-          <span className="bm-v">PHASE 01 · [TBD DOMAIN]</span>
-        </div>
-        <div className="bm-row">
-          <span className="bm-k">OBJECTIVES</span>
-          <span className="bm-v">3 IN SCOPE · 0/3 DEMONSTRATED</span>
+          <span className="bm-v">PHASE 01 · {label}</span>
         </div>
       </div>
       <button className="begin-btn" onClick={onBegin}>
         <span className="bb-tag">EXEC</span>
-        <span className="bb-text">BEGIN PHASE 01</span>
+        <span className="bb-text">BEGIN PHASE 01 — {label}</span>
         <span className="bb-arrow">→</span>
       </button>
     </div>
@@ -1387,11 +1384,19 @@ function ActivityFeedback({ activity, response }) {
         </div>
       )}
       {(activity.feedback.whyMatters || activity.feedback.evidenceClue) && (
-        <details className="feedback-context">
-          <summary>More context</summary>
-          {activity.feedback.whyMatters && <div className="feedback-copy subtle">{activity.feedback.whyMatters}</div>}
-          {activity.feedback.evidenceClue && <div className="feedback-copy subtle">{activity.feedback.evidenceClue}</div>}
-        </details>
+        <div className="feedback-context expanded">
+          <div className="feedback-context-label">Context</div>
+          {activity.feedback.whyMatters && (
+            <div className="feedback-copy subtle">
+              <strong>Why this matters:</strong> {activity.feedback.whyMatters}
+            </div>
+          )}
+          {activity.feedback.evidenceClue && (
+            <div className="feedback-copy subtle">
+              <strong>Where to find it:</strong> {activity.feedback.evidenceClue}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
@@ -1711,7 +1716,10 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const INSTRUCTOR_PASSWORD = "IITCInstructors";
-const PIN_DEFAULT = { x: 51, y: 74, label: "[TBD FOCUS]" };
+// Atropian Air Base — Coalition AOC location, ~220 km south of the Gorgas-Donovia
+// border. Map projection runs 20°E-60°E horizontal and 60°N-30°N vertical; AB
+// sits at roughly 49°E / 40°N → (73, 65) in map-percentage coordinates.
+const PIN_DEFAULT = { x: 73, y: 65, label: "ATROPIAN AB · AOC" };
 
 // Map overlay shows 20°E–60°E horizontally, 60°N–30°N vertically.
 // Overlay axes inset from the wrap edges; approximate ranges below.
@@ -2150,7 +2158,17 @@ function App() {
 
               <SituationPanel situationText={data.situationText} evidenceCount={evidenceCount} activityCount={activityCount} />
               <HowItWorks />
-              <BeginBar onBegin={() => setActivePhase(RESTORED_PHASE_IDS[1] || "phase-1-tbd")} />
+              <BeginBar
+                onBegin={() => setActivePhase(RESTORED_PHASE_IDS[1] || "phase-1-tbd")}
+                nextPhaseLabel={(() => {
+                  const firstContentPhaseId = RESTORED_PHASE_IDS[1];
+                  if (!firstContentPhaseId) return null;
+                  const navMeta = phases.find(p => p.id === firstContentPhaseId);
+                  if (navMeta?.long) return navMeta.long;
+                  const content = getPhaseContent(firstContentPhaseId);
+                  return content?.subtitle?.replace(/^Lesson\s+[\d.]+\s*[—-]\s*/i, "") || content?.title || null;
+                })()}
+              />
             </>
           ) : (
             <PhaseConsole
