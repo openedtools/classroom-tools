@@ -298,7 +298,7 @@
     }
     .launch .arrow { font-size: 14px; }
 
-    /* Featured card (trainer) — slightly bigger title, full-width on its own row when only one in section */
+    /* Featured card */
     .card.featured .card-title { font-size: 20px; }
 
     /* Footer */
@@ -320,205 +320,626 @@
       .topbar-right { display: none; }
       .grid { grid-template-columns: 1fr; }
     }
+
+    /* ─── Welcome / access modal ─────────────────────────────────────── */
+    .modal-shade {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 10, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 900;
+      padding: 24px;
+      backdrop-filter: blur(3px);
+    }
+    .modal-shade.hidden { display: none; }
+
+    .modal-box {
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 4px;
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: var(--bg-3);
+      border-bottom: 1px solid var(--border-1);
+    }
+    .modal-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--accent);
+      padding: 2px 8px;
+      border: 1px solid var(--accent);
+      border-radius: 2px;
+      background: var(--accent-ghost);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .modal-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.20em;
+      color: var(--text-1);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .modal-x {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: var(--text-3);
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 2px;
+      transition: color 140ms ease;
+    }
+    .modal-x:hover { color: var(--text-0); }
+
+    .modal-body {
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-lede {
+      font-size: 13px;
+      color: var(--text-1);
+      line-height: 1.6;
+      padding: 12px 14px;
+      background: var(--bg-1);
+      border: 1px solid var(--border-1);
+      border-radius: 3px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .modal-disclaimer {
+      font-size: 12.5px;
+      color: var(--text-2);
+      line-height: 1.55;
+    }
+
+    .modal-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .field-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--text-2);
+      text-transform: uppercase;
+    }
+    .field-input {
+      background: var(--bg-1);
+      border: 1px solid var(--border-1);
+      border-radius: 3px;
+      color: var(--text-0);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 160ms ease;
+      letter-spacing: 0.06em;
+    }
+    .field-input:focus { border-color: var(--accent); }
+    .field-input.err   { border-color: #dc4040; }
+
+    .field-err {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.16em;
+      color: #e07070;
+      text-transform: uppercase;
+    }
+
+    .modal-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      border-top: 1px solid var(--border-1);
+      background: var(--bg-1);
+      gap: 12px;
+    }
+
+    .btn-ghost {
+      background: none;
+      border: 1px solid var(--border-2);
+      border-radius: 2px;
+      color: var(--text-2);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: color 140ms ease, border-color 140ms ease;
+    }
+    .btn-ghost:hover {
+      color: var(--text-0);
+      border-color: var(--text-1);
+    }
+
+    .btn-solid {
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 2px;
+      color: var(--bg-0);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      cursor: pointer;
+      transition: background 140ms ease, color 140ms ease;
+    }
+    .btn-solid:hover {
+      background: var(--accent-hi);
+      border-color: var(--accent-hi);
+    }
+
+    /* ─── Sources modal ──────────────────────────────────────────────── */
+    .sources-shade {
+      z-index: 1000;
+    }
+    .sources-box {
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 4px;
+      width: 100%;
+      max-width: 640px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    }
+    .sources-body {
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .sources-lede {
+      font-size: 12.5px;
+      color: var(--text-2);
+      line-height: 1.6;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed var(--border-1);
+    }
+    .sources-section-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .source-item {
+      padding: 10px 14px;
+      background: var(--bg-1);
+      border: 1px solid var(--border-0);
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+    .source-item:last-child { margin-bottom: 0; }
+    .source-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-0);
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .source-detail {
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.55;
+    }
+    .source-url {
+      display: inline-block;
+      margin-top: 5px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--cyan-tag);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+    }
+    .source-url:hover { text-decoration: underline; }
+
+    /* Page content hidden until unlocked */
+    #page-content { display: none; }
+    #page-content.unlocked { display: block; }
   </style>
 </head>
 <body>
   <div class="class-bar">UNCLASSIFIED // TRAINING USE ONLY // FICTIONAL SCENARIO ONLY</div>
 
-  <header class="topbar">
-    <div class="op-block">
-      <div class="op-line">
-        <span class="op-code">HUB-01</span>
-        <span class="op-sep">/</span>
-        <span class="op-name">FUNDAMENTALS CLASSROOM TOOLS</span>
+  <!-- ─── Welcome / Access Modal ────────────────────────────────────── -->
+  <div class="modal-shade" id="welcomeShade">
+    <div class="modal-box">
+      <div class="modal-head">
+        <span class="modal-tag">ACCESS</span>
+        <span class="modal-title">FUNDAMENTALS CLASSROOM TOOLS</span>
       </div>
-      <div class="op-sub">QUICK-LAUNCH HUB · ESL-FRIENDLY · UNCLASSIFIED TRAINING</div>
-    </div>
-    <div class="topbar-right">
-      <div>
-        <span class="dtg-label">REL</span>
-        <span class="dtg-value" id="dtg">—</span>
+      <form class="modal-body" id="accessForm" onsubmit="handleAccess(event)">
+        <div class="modal-lede">
+          This site is intended for <strong>UNCLASSIFIED, non-CUI training purposes only.</strong>
+          All content, scenarios, and data presented within are derived exclusively from
+          open-source and publicly available materials. No classified, CUI, or FOUO
+          information has been incorporated.
+        </div>
+        <p class="modal-disclaimer">
+          All fictional nations, units, and operational environments are drawn from US Army
+          TRADOC's Decisive Action Training Environment (DATE) — an unclassified training
+          construct. By entering, you acknowledge this site is for training use only.
+        </p>
+        <div class="modal-field">
+          <span class="field-label">Access Code</span>
+          <input
+            class="field-input"
+            type="password"
+            id="accessInput"
+            placeholder="Enter access code"
+            autocomplete="off"
+            autofocus
+          />
+          <span class="field-err" id="accessErr" style="display:none;">INVALID ACCESS CODE — TRY AGAIN</span>
+        </div>
+      </form>
+      <div class="modal-foot">
+        <button class="btn-ghost" type="button" onclick="openSources()">§ SOURCES</button>
+        <button class="btn-solid" type="submit" form="accessForm">ENTER →</button>
       </div>
     </div>
-  </header>
-
-  <div class="wrap">
-
-    <!-- ────────────────────────────────────────────────────────────────
-         SCENARIO TRAINERS
-         ──────────────────────────────────────────────────────────────── -->
-    <div class="section-head">
-      <span class="section-tag">EXEC</span>
-      <span class="section-title">Scenario Trainers</span>
-      <span class="section-rule"></span>
-      <span class="section-meta">02 TRAINERS</span>
-    </div>
-
-    <section class="grid">
-
-      <article class="card featured">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="card-head">
-          <span class="card-tag">TRAINER</span>
-          <span class="card-block">BLOCK 4 · APPLIED REVIEW</span>
-        </div>
-        <h2 class="card-title">Operation Northern Veil</h2>
-        <div class="card-sub">OP-NV-26 · Multi-Domain Intelligence</div>
-        <p class="card-desc">Multi-domain trainer covering Block 4 fundamentals: IO, Cyber, GEOINT, EMS/Radar, IR, ISR, and Space. Students work the commander PIR — "Will Donovia conduct a limited cross-border operation into Gorgas within 72 hours?" — across nine phases.</p>
-        <div class="card-meta">
-          <div><span class="kv-k">PHASES</span><span class="kv-v">9</span></div>
-          <div><span class="kv-k">REGION</span><span class="kv-v">Caucasus</span></div>
-          <div><span class="kv-k">EST.</span><span class="kv-v">90 min</span></div>
-        </div>
-        <div class="card-foot">
-          <span class="card-status ready">READY</span>
-          <a class="launch" href="./tools/UI Design/Operation Northern Veil.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-      <article class="card featured">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="card-head">
-          <span class="card-tag">TRAINER</span>
-          <span class="card-block">BLOCK 6 · AIR OPERATIONS</span>
-        </div>
-        <h2 class="card-title">Operation Iron Anvil</h2>
-        <div class="card-sub">OP-IA-26 · Coalition AOC</div>
-        <p class="card-desc">Picks up after Northern Veil — Donovia invaded Gorgas. You are an LNO at the Coalition Air Operations Center. Nine phases across Joint Forces, TACS, AOC, SRD, CPD, COD, ISRD, and AMD, ending in a full air tasking cycle synthesis.</p>
-        <div class="card-meta">
-          <div><span class="kv-k">PHASES</span><span class="kv-v">9</span></div>
-          <div><span class="kv-k">REGION</span><span class="kv-v">Caucasus</span></div>
-          <div><span class="kv-k">EST.</span><span class="kv-v">90 min</span></div>
-        </div>
-        <div class="card-foot">
-          <span class="card-status ready">READY</span>
-          <a class="launch" href="./tools/Block 6 Trainer/Block 6 Trainer.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-    </section>
-
-    <!-- ────────────────────────────────────────────────────────────────
-         DOMAIN TOOLS
-         ──────────────────────────────────────────────────────────────── -->
-    <div class="section-head">
-      <span class="section-tag">TOOL</span>
-      <span class="section-title">Domain Tools</span>
-      <span class="section-rule"></span>
-      <span class="section-meta">05 TOOLS</span>
-    </div>
-
-    <section class="grid">
-
-      <article class="card">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="card-head">
-          <span class="card-tag green">ANALYSIS</span>
-          <span class="card-block">STRUCTURED METHOD</span>
-        </div>
-        <h2 class="card-title">ACH Matrix</h2>
-        <div class="card-sub">Analysis of Competing Hypotheses</div>
-        <p class="card-desc">Practice ACH with the Bakery Dilemma scenario. Mark evidence consistency, count inconsistencies, and find the most likely hypothesis.</p>
-        <div class="card-foot">
-          <span class="card-status ready">READY</span>
-          <a class="launch" href="./tools/ach.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-      <article class="card">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="card-head">
-          <span class="card-tag violet">RADAR</span>
-          <span class="card-block">EMS / SIGNATURES</span>
-        </div>
-        <h2 class="card-title">Radar Visibility Trainer</h2>
-        <div class="card-sub">Radar Cross Section · RCS</div>
-        <p class="card-desc">Explore how shape, aspect angle, material, and frequency change an aircraft's radar return.</p>
-        <div class="card-foot">
-          <span class="card-status ready">READY</span>
-          <a class="launch" href="./tools/rcs.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-      <article class="card">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="card-head">
-          <span class="card-tag cyan">SPECTRUM</span>
-          <span class="card-block">EMS / IMINT / TASKS</span>
-        </div>
-        <h2 class="card-title">EM Spectrum ⇄ IMINT</h2>
-        <div class="card-sub">Spectrum · Modalities · Analyst Tasks</div>
-        <p class="card-desc">Interactive spectrum slider linking collection modalities (visible, IR, SAR, etc.) to the analyst tasks they enable.</p>
-        <div class="card-foot">
-          <span class="card-status ready">READY</span>
-          <a class="launch" href="./tools/em-imint-tasks.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-      <article class="card">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="card-head">
-          <span class="card-tag">CYBER</span>
-          <span class="card-block">TRIAGE · KILL CHAIN</span>
-        </div>
-        <h2 class="card-title">Cyber Incident Triage</h2>
-        <div class="card-sub">Threat classification · Actor ID</div>
-        <p class="card-desc">Scenario-driven cyber intelligence triage: classify threats, place Kill Chain stages, identify actors, and launch discussion.</p>
-        <div class="card-foot">
-          <span class="card-status ready">READY</span>
-          <a class="launch" href="./tools/cyber-triage.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-      <article class="card">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="card-head">
-          <span class="card-tag green">UTILITY</span>
-          <span class="card-block">CLASSROOM · RANDOM ORDER</span>
-        </div>
-        <h2 class="card-title">Student Brief Order</h2>
-        <div class="card-sub">ORD-01 · Random Sequence Generator</div>
-        <p class="card-desc">Paste student names — one per line or comma-separated — and instantly generate a randomized briefing order. Reshuffle and copy to clipboard with one click.</p>
-        <div class="card-foot">
-          <span class="card-status ready">READY</span>
-          <a class="launch" href="./tools/student-order.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
-        </div>
-      </article>
-
-    </section>
-
-    <footer>
-      © Training Center · Unclassified Training Use Only · No FOUO · No CUI · No User Data Collected
-    </footer>
   </div>
 
-  <div class="class-bar bottom">UNCLASSIFIED // TRAINING USE ONLY // FICTIONAL SCENARIO ONLY</div>
+  <!-- ─── Sources Modal ────────────────────────────────────────────── -->
+  <div class="modal-shade sources-shade hidden" id="sourcesShade" onclick="closeSources(event)">
+    <div class="sources-box" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <span class="modal-tag">SRC</span>
+        <span class="modal-title">SOURCES &amp; REFERENCES</span>
+        <button class="modal-x" type="button" onclick="closeSources()">×</button>
+      </div>
+      <div class="sources-body">
+        <p class="sources-lede">
+          All content in this training hub is based on fictional scenarios using notional
+          countries developed by US Army TRADOC for educational purposes. No classified,
+          CUI, or FOUO material has been used. All sources listed below are publicly
+          available and unclassified.
+        </p>
+
+        <div>
+          <div class="sources-section-title">Scenario Framework</div>
+          <div class="source-item">
+            <div class="source-name">TRADOC ODIN — Decisive Action Training Environment (DATE)</div>
+            <div class="source-detail">US Army Training and Doctrine Command — Operational Environment and Threat Analysis Directorate. Provides the fictional nation-state construct (Donovia, Gorgas, Atropia, Limaria, Ariana) used across all scenario trainers.</div>
+            <a class="source-url" href="https://odin.tradoc.army.mil" target="_blank" rel="noopener">odin.tradoc.army.mil</a>
+          </div>
+          <div class="source-item">
+            <div class="source-name">TRADOC Pamphlet 525-3-1 — The U.S. Army in Multi-Domain Operations 2028</div>
+            <div class="source-detail">Headquarters, US Army Training and Doctrine Command (Dec 2018). Unclassified concept document establishing the Multi-Domain Operations (MDO) framework referenced in scenario design.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sources-section-title">Intelligence Doctrine</div>
+          <div class="source-item">
+            <div class="source-name">JP 2-0 — Joint Intelligence</div>
+            <div class="source-detail">Joint Chiefs of Staff (01 Oct 2013). Defines the joint intelligence enterprise, collection disciplines (GEOINT, SIGINT, HUMINT, MASINT, OSINT), all-source analysis, and the PIR/IR process.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">FM 2-0 — Intelligence</div>
+            <div class="source-detail">Headquarters, Department of the Army (06 Jul 2018). Army intelligence doctrine covering collection management and ISR operations.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">ADP 2-0 — Intelligence</div>
+            <div class="source-detail">Headquarters, Department of the Army (Jul 2019). Foundational Army doctrine defining intelligence principles and the commander's critical information requirements (CCIR) process.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">ATP 2-01 — Planning Requirements and Assessing Collection</div>
+            <div class="source-detail">Headquarters, Department of the Army. ISR tasking and collection management procedures.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">ICD 203 — Analytic Standards</div>
+            <div class="source-detail">Office of the Director of National Intelligence (Jan 2015). Unclassified directive establishing analytic tradecraft standards including sourcing, confidence levels, and BLUF formatting.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sources-section-title">Air Force Doctrine</div>
+          <div class="source-item">
+            <div class="source-name">AFDP 2-0 — Global Integrated ISR Operations</div>
+            <div class="source-detail">Air Force Doctrine Publication. Covers Air Force ISR concepts, collection management, and the integration of ISR capabilities into joint operations.</div>
+            <a class="source-url" href="https://www.doctrine.af.mil" target="_blank" rel="noopener">doctrine.af.mil</a>
+          </div>
+          <div class="source-item">
+            <div class="source-name">AFDP 3-0 — Operations and Planning</div>
+            <div class="source-detail">Air Force Doctrine Publication. Foundational Air Force operations and planning doctrine used in air operations scenario design.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">AFDP 3-52 — Airspace Control</div>
+            <div class="source-detail">Air Force Doctrine Publication. Joint airspace control doctrine including the Airspace Control Order (ACO) and coordination with ground forces.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">AFDP 3-60 — Targeting</div>
+            <div class="source-detail">Air Force Doctrine Publication. Joint targeting cycle (D3A/F3EAD), target development, and effects assessment referenced in air operations phases.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sources-section-title">Cyberspace Operations</div>
+          <div class="source-item">
+            <div class="source-name">JP 3-12 — Cyberspace Operations</div>
+            <div class="source-detail">Joint Chiefs of Staff (08 Jun 2018). Joint doctrine for offensive (OCO) and defensive (DCO) cyberspace operations and the cyber threat landscape.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">Cyber Kill Chain® Framework</div>
+            <div class="source-detail">Hutchins, Cloppert & Amin (2011). Intelligence-Driven Computer Network Defense — Lockheed Martin. Publicly available white paper used to structure cyber inject analysis tasks.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">MITRE ATT&CK® Framework</div>
+            <div class="source-detail">MITRE Corporation. Publicly available knowledge base of adversary tactics, techniques, and procedures (TTPs) used to categorize threat actor behavior.</div>
+            <a class="source-url" href="https://attack.mitre.org" target="_blank" rel="noopener">attack.mitre.org</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="sources-section-title">Electromagnetic Spectrum &amp; Electronic Warfare</div>
+          <div class="source-item">
+            <div class="source-name">JP 3-85 — Joint Electromagnetic Spectrum Operations</div>
+            <div class="source-detail">Joint Chiefs of Staff (22 May 2020). Defines JEMSO, electronic warfare (EW), electronic attack/protection/support, and spectrum management.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">FM 3-12 — Cyberspace and Electronic Warfare Operations</div>
+            <div class="source-detail">Headquarters, Department of the Army (11 Apr 2017). Army doctrine for integrated cyberspace and EW operations including GNSS jamming and counter-UAS.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sources-section-title">Geospatial Intelligence</div>
+          <div class="source-item">
+            <div class="source-name">GEOINT Basic Doctrine Publication 1-0 (BDP 1-0)</div>
+            <div class="source-detail">National Geospatial-Intelligence Agency (NGA). Unclassified foundational doctrine covering imagery intelligence (IMINT), FMV, wide-area motion imagery (WAMI), and synthetic aperture radar (SAR).</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sources-section-title">Information Operations</div>
+          <div class="source-item">
+            <div class="source-name">JP 3-13 — Information Operations</div>
+            <div class="source-detail">Joint Chiefs of Staff (20 Nov 2014). Defines IO core capabilities including military deception (MILDEC), MISO, OPSEC, and the information environment.</div>
+          </div>
+          <div class="source-item">
+            <div class="source-name">FM 3-53 — Military Information Support Operations</div>
+            <div class="source-detail">Headquarters, Department of the Army (03 Jan 2013). MISO planning and execution doctrine informing disinformation and social media narrative analysis tasks.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sources-section-title">Space Operations</div>
+          <div class="source-item">
+            <div class="source-name">JP 3-14 — Space Operations</div>
+            <div class="source-detail">Joint Chiefs of Staff (10 Apr 2018, Change 1 — 26 Oct 2020). Covers space control, ISR from space, satellite communications, PNT, and space situational awareness.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Page Content (locked until password entered) ─────────────── -->
+  <div id="page-content">
+    <header class="topbar">
+      <div class="op-block">
+        <div class="op-line">
+          <span class="op-code">HUB-01</span>
+          <span class="op-sep">/</span>
+          <span class="op-name">FUNDAMENTALS CLASSROOM TOOLS</span>
+        </div>
+        <div class="op-sub">QUICK-LAUNCH HUB · ESL-FRIENDLY · UNCLASSIFIED TRAINING</div>
+      </div>
+      <div class="topbar-right">
+        <div>
+          <span class="dtg-label">REL</span>
+          <span class="dtg-value" id="dtg">—</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap">
+
+      <!-- ── Scenario Trainers ──────────────────────────────────────── -->
+      <div class="section-head">
+        <span class="section-tag">EXEC</span>
+        <span class="section-title">Scenario Trainers</span>
+        <span class="section-rule"></span>
+        <span class="section-meta">02 TRAINERS</span>
+      </div>
+
+      <section class="grid">
+
+        <article class="card featured">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <div class="card-head">
+            <span class="card-tag">TRAINER</span>
+            <span class="card-block">BLOCK 4 · APPLIED REVIEW</span>
+          </div>
+          <h2 class="card-title">Operation Northern Veil</h2>
+          <div class="card-sub">OP-NV-26 · Multi-Domain Intelligence</div>
+          <p class="card-desc">Multi-domain trainer covering Block 4 fundamentals: IO, Cyber, GEOINT, EMS/Radar, IR, ISR, and Space. Students work the commander PIR — "Will Donovia conduct a limited cross-border operation into Gorgas within 72 hours?" — across nine phases.</p>
+          <div class="card-meta">
+            <div><span class="kv-k">PHASES</span><span class="kv-v">9</span></div>
+            <div><span class="kv-k">REGION</span><span class="kv-v">Caucasus</span></div>
+            <div><span class="kv-k">EST.</span><span class="kv-v">90 min</span></div>
+          </div>
+          <div class="card-foot">
+            <span class="card-status ready">READY</span>
+            <a class="launch" href="./tools/UI Design/Operation Northern Veil.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="card featured">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <div class="card-head">
+            <span class="card-tag">TRAINER</span>
+            <span class="card-block">BLOCK 6 · AIR OPERATIONS</span>
+          </div>
+          <h2 class="card-title">Operation Iron Anvil</h2>
+          <div class="card-sub">OP-IA-26 · Coalition AOC</div>
+          <p class="card-desc">Picks up after Northern Veil — Donovia invaded Gorgas. You are an LNO at the Coalition Air Operations Center. Nine phases across Joint Forces, TACS, AOC, SRD, CPD, COD, ISRD, and AMD, ending in a full air tasking cycle synthesis.</p>
+          <div class="card-meta">
+            <div><span class="kv-k">PHASES</span><span class="kv-v">9</span></div>
+            <div><span class="kv-k">REGION</span><span class="kv-v">Caucasus</span></div>
+            <div><span class="kv-k">EST.</span><span class="kv-v">90 min</span></div>
+          </div>
+          <div class="card-foot">
+            <span class="card-status ready">READY</span>
+            <a class="launch" href="./tools/Block 6 Trainer/Block 6 Trainer.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- ── Domain Tools ───────────────────────────────────────────── -->
+      <div class="section-head">
+        <span class="section-tag">TOOL</span>
+        <span class="section-title">Domain Tools</span>
+        <span class="section-rule"></span>
+        <span class="section-meta">03 TOOLS</span>
+      </div>
+
+      <section class="grid">
+
+        <article class="card">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <div class="card-head">
+            <span class="card-tag green">ANALYSIS</span>
+            <span class="card-block">STRUCTURED METHOD</span>
+          </div>
+          <h2 class="card-title">ACH Matrix</h2>
+          <div class="card-sub">Analysis of Competing Hypotheses</div>
+          <p class="card-desc">Practice ACH with the Bakery Dilemma scenario. Mark evidence consistency, count inconsistencies, and find the most likely hypothesis.</p>
+          <div class="card-foot">
+            <span class="card-status ready">READY</span>
+            <a class="launch" href="./tools/ach.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <div class="card-head">
+            <span class="card-tag">CYBER</span>
+            <span class="card-block">TRIAGE · KILL CHAIN</span>
+          </div>
+          <h2 class="card-title">Cyber Incident Triage</h2>
+          <div class="card-sub">Threat classification · Actor ID</div>
+          <p class="card-desc">Scenario-driven cyber intelligence triage: classify threats, place Kill Chain stages, identify actors, and launch discussion.</p>
+          <div class="card-foot">
+            <span class="card-status ready">READY</span>
+            <a class="launch" href="./tools/cyber-triage.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <div class="card-head">
+            <span class="card-tag green">UTILITY</span>
+            <span class="card-block">CLASSROOM · RANDOM ORDER</span>
+          </div>
+          <h2 class="card-title">Student Brief Order</h2>
+          <div class="card-sub">ORD-01 · Random Sequence Generator</div>
+          <p class="card-desc">Paste student names — one per line or comma-separated — and instantly generate a randomized briefing order. Reshuffle and copy to clipboard with one click.</p>
+          <div class="card-foot">
+            <span class="card-status ready">READY</span>
+            <a class="launch" href="./tools/student-order.html" target="_blank" rel="noopener">Launch <span class="arrow">→</span></a>
+          </div>
+        </article>
+
+      </section>
+
+      <footer>
+        © Training Center · Unclassified Training Use Only · No FOUO · No CUI · No User Data Collected
+      </footer>
+    </div>
+
+    <div class="class-bar bottom">UNCLASSIFIED // TRAINING USE ONLY // FICTIONAL SCENARIO ONLY</div>
+  </div>
 
   <script>
-    // DTG generator — matches the trainer format (DDHHMMZMonYY)
+    // DTG display
     (function () {
       const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
       const update = () => {
         const d = new Date();
         const pad = n => String(n).padStart(2, "0");
-        const day = pad(d.getUTCDate());
-        const hh  = pad(d.getUTCHours());
-        const mm  = pad(d.getUTCMinutes());
-        const mon = months[d.getUTCMonth()];
-        const yr  = String(d.getUTCFullYear()).slice(-2);
         const el = document.getElementById("dtg");
-        if (el) el.textContent = `${day}${hh}${mm}Z${mon}${yr}`;
+        if (el) el.textContent = `${pad(d.getUTCDate())}${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}Z${months[d.getUTCMonth()]}${String(d.getUTCFullYear()).slice(-2)}`;
       };
       update();
       setInterval(update, 60000);
     })();
+
+    const ACCESS = atob("SW50M3JuYXRpb25hbA==");
+
+    function handleAccess(e) {
+      e.preventDefault();
+      const val = document.getElementById("accessInput").value;
+      const inp = document.getElementById("accessInput");
+      const err = document.getElementById("accessErr");
+      if (val === ACCESS) {
+        document.getElementById("welcomeShade").classList.add("hidden");
+        document.getElementById("page-content").classList.add("unlocked");
+      } else {
+        inp.classList.add("err");
+        err.style.display = "block";
+        inp.value = "";
+        inp.focus();
+      }
+    }
+
+    document.getElementById("accessInput").addEventListener("input", function () {
+      this.classList.remove("err");
+      document.getElementById("accessErr").style.display = "none";
+    });
+
+    function openSources() {
+      document.getElementById("sourcesShade").classList.remove("hidden");
+    }
+
+    function closeSources(e) {
+      if (!e || e.target === document.getElementById("sourcesShade")) {
+        document.getElementById("sourcesShade").classList.add("hidden");
+      }
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeSources();
+    });
   </script>
 </body>
 </html>
