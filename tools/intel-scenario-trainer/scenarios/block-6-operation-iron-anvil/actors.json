@@ -12,18 +12,6 @@
     "summary": "Now occupying the Zabzimek Corridor inside Gorgas following the 58th Combined Arms Army cross-border operation. IADS active. EW jamming coalition communications along the border. Continues IO and cyber pressure on Gorgas and other regional states."
   },
   {
-    "id": "pirtuni",
-    "displayName": "Pirtuni",
-    "fullName": "The Republic of Pirtuni",
-    "role": "pressured-partner",
-    "code": "VIO-02",
-    "posture": "CONTESTED",
-    "stance": "WESTERN-LEANING",
-    "color": "violet",
-    "tags": ["NATO-ASPIRANT", "DONOVIAN-PRESSURED", "SEPARATIST-RISK"],
-    "summary": "Western-leaning constitutional republic on the north shore of the Black Sea. Western-majority population seeks NATO and EU membership; eastern minority blocks reforms and aligns with Donovia. Donovia claims portions of eastern Pirtuni and backs separatist activity. The map shades Pirtuni in the Donovian claim envelope — Pirtuni is not Donovian, but it is under sustained Donovian pressure."
-  },
-  {
     "id": "gorgas",
     "displayName": "Gorgas",
     "fullName": "Democratic Republic of Gorgas",

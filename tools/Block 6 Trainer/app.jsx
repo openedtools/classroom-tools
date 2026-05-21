@@ -558,7 +558,7 @@ function MissionBrief() {
 }
 
 function MapPanel({ showReticle, showGrid, instructor, pin, onPinChange }) {
-  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ATROPIAN AB · AOC" } : { x: 73, y: 65, label: "ATROPIAN AB · AOC" };
+  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ATROPIAN AB · AOC" } : { x: 68, y: 63, label: "ATROPIAN AB · AOC" };
   const wrapRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [editingLabel, setEditingLabel] = useState(false);
@@ -1410,6 +1410,7 @@ function ActivityCard({
 }) {
   const submitted = response?.submitted;
   const locked = Boolean(submitted);
+  const seqDragRef = useRef(null);
   const matchingItems = activity.type === "matching" ? seededShuffle(activity.items || [], `${activity.id}:items`) : activity.items || [];
   const matchingTargets = activity.type === "matching" ? seededShuffle(activity.targets || [], `${activity.id}:targets`) : activity.targets || [];
   const classificationCategories = activity.type === "classification" ? seededShuffle(activity.categories || [], `${activity.id}:categories`) : activity.categories || [];
@@ -1559,15 +1560,24 @@ function ActivityCard({
               const item = activity.items.find(entry => entry.id === id);
               if (!item) return null;
               return (
-                <li key={id} className="seq-item">
+                <li
+                  key={id}
+                  className="seq-item"
+                  draggable={!locked}
+                  onDragStart={!locked ? () => { seqDragRef.current = index; } : undefined}
+                  onDragOver={!locked ? (e) => { e.preventDefault(); e.currentTarget.classList.add("seq-over"); } : undefined}
+                  onDragLeave={!locked ? (e) => { e.currentTarget.classList.remove("seq-over"); } : undefined}
+                  onDrop={!locked ? (e) => {
+                    e.currentTarget.classList.remove("seq-over");
+                    if (seqDragRef.current !== null && seqDragRef.current !== index) {
+                      onChange("seqMove", activity.id, { from: seqDragRef.current, to: index });
+                    }
+                    seqDragRef.current = null;
+                  } : undefined}
+                >
+                  {!locked && <span className="seq-handle" aria-hidden="true">⠿</span>}
                   <span className="seq-num">{index + 1}</span>
                   <span className="seq-text">{item.text}</span>
-                  {!locked && (
-                    <div className="seq-btns">
-                      <button type="button" className="seq-btn" onClick={() => onChange("seqUp", activity.id, index)} disabled={index === 0}>▲</button>
-                      <button type="button" className="seq-btn" onClick={() => onChange("seqDown", activity.id, index)} disabled={index === response.order.length - 1}>▼</button>
-                    </div>
-                  )}
                 </li>
               );
             })}
@@ -1983,21 +1993,12 @@ function App() {
           updated.pending = null;
           break;
         }
-        case "seqUp": {
+        case "seqMove": {
           const order = [...(current.order || [])];
-          const index = value;
-          const swapIndex = index - 1;
-          if (swapIndex < 0) return prev;
-          [order[index], order[swapIndex]] = [order[swapIndex], order[index]];
-          updated.order = order;
-          break;
-        }
-        case "seqDown": {
-          const order = [...(current.order || [])];
-          const index = value;
-          const swapIndex = index + 1;
-          if (swapIndex >= order.length) return prev;
-          [order[index], order[swapIndex]] = [order[swapIndex], order[index]];
+          const { from, to } = value;
+          if (from === to || from < 0 || to < 0 || from >= order.length || to >= order.length) return prev;
+          const [moved] = order.splice(from, 1);
+          order.splice(to, 0, moved);
           updated.order = order;
           break;
         }

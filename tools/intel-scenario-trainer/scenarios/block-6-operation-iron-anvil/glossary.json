@@ -104,7 +104,6 @@
   { "term": "Donovia",                                    "def": "Large multi-domain coercive state north of the Greater Caucasus. Primary adversary in this scenario. Currently occupying the Zabzimek Corridor inside Gorgas." },
   { "term": "Gorgas",                                     "def": "Western-leaning state south of the Caucasus ridge. NATO-aspirant. Primary coalition partner; the reason CJTF-CAU exists. Currently being invaded." },
   { "term": "Atropia",                                    "def": "Coalition partner east of Gorgas; hosts the Coalition AOC at Atropian Air Base." },
-  { "term": "Pirtuni",                                    "def": "Constitution-based republic on the north shore of the Black Sea. Western-leaning majority population seeks NATO and EU membership; Donovia claims portions of eastern Pirtuni and backs separatist activity. Under sustained Donovian pressure but not Donovian-aligned." },
   { "term": "Zabzimek Corridor",                          "def": "Donovian-language separatist enclave inside Gorgas, currently seized by Donovian 58th Combined Arms Army. The principal objective for the coalition air campaign." },
   { "term": "Atropian Air Base",                          "def": "Host installation for the Coalition AOC, 220 km south of the Gorgas-Donovia border. The JFACC's primary command location." }
 ]

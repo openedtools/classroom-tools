@@ -1264,7 +1264,7 @@ window.ScenarioContent = {
       "6.7-obj-3",
       "6.8-obj-5"
     ],
-    "inject": "D-Day plus 12 hours. Brig Gen Torres calls all AOC staff together for a rapid battle rhythm review. Twelve hours of live execution. He wants to confirm that every officer on his staff understands the AOC as an integrated system — not just the piece they touched today.\n\n'I have watched you all respond to individual problems over the past 12 hours. Now I want to see if you can put the whole picture together. Five activities. Every lesson. No excuses.'\n\nThe last two activities pivot from how the AOC is built to what the JFACC needs as an intelligence assessment: a calibrated BLUF on what Donovia will do next, expressed in ICD 203 likelihood language, plus a sort of candidate Donovian COAs into Most Likely, Most Dangerous, and implausible. Block 4 trained the indicator side. Iron Anvil now uses it.",
+    "inject": "D-Day plus 12 hours. Brig Gen Torres calls all AOC staff together for a rapid battle rhythm review. Twelve hours of live execution. He wants to confirm that every officer on his staff understands the AOC as an integrated system — not just the piece they touched today.\n\n'I have watched you all respond to individual problems over the past 12 hours. Now I want to see if you can put the whole picture together. Five activities. Every lesson. No excuses.'\n\nThe last two activities pivot from how the AOC is built to what the JFACC needs as an intelligence assessment: a calibrated BLUF on what Donovia will do next, expressed in ICD 203 likelihood language, plus a sort of candidate Donovian COAs into Most Likely, Most Dangerous, and implausible. The current Donovian indicator picture as of D+12H is in the evidence cards — use it to anchor your assessment.",
     "evidenceCards": [
       {
         "id": "e9-1",
@@ -1277,6 +1277,12 @@ window.ScenarioContent = {
         "title": "ICD 203 Likelihood Language",
         "summary": "Intelligence Community Directive 203 sets the calibrated probability terms every IC product must use.",
         "detail": "ICD 203 (Analytic Standards) defines the only approved likelihood terms for IC assessments. Use these words — and only these words — when expressing the probability of an event:\n\n• ALMOST NO CHANCE / REMOTE        (01-05%)\n• VERY UNLIKELY / HIGHLY IMPROBABLE (05-20%)\n• UNLIKELY / IMPROBABLE             (20-45%)\n• ROUGHLY EVEN CHANCE / EVEN ODDS   (45-55%)\n• LIKELY / PROBABLE                 (55-80%)\n• VERY LIKELY / HIGHLY PROBABLE     (80-95%)\n• ALMOST CERTAIN / NEARLY CERTAIN   (95-99%)\n\nNote what is NOT on the list: 'possible', 'could', 'may', 'might', 'cannot rule out'. These hedge-words are vague — they communicate uncertainty without committing to a calibrated estimate, and they are not acceptable in finished IC products. Pick the ICD 203 band and own it.\n\nWhy this matters: your BLUF will be read by people who know the standard. Using 'possible' tells them the analyst was not willing to commit to a band. Using 'likely' tells them the analyst placed the assessment in the 55-80% range and is prepared to defend it."
+      },
+      {
+        "id": "e9-4",
+        "title": "Current Donovian Indicators — Iron Anvil D+12H",
+        "summary": "Active indicators as of D+12H: IADS active, EW jamming ongoing, occupation forces holding the Zabzimek Corridor, IO/cyber pressure continuing — no withdrawal or ceasefire signals.",
+        "detail": "ACTIVE INDICATORS AS OF D+12H:\n\n• IADS ACTIVE: Donovian Integrated Air Defense System remains fully postured. SA-10 and SA-12 sites forward-deployed near the Zabzimek Corridor. Coalition aircraft are operating under threat of engagement along the border corridor.\n\n• EW JAMMING ONGOING: Electronic warfare jamming of coalition communications continues along the border. GPS/GNSS disruption is affecting precision navigation in the forward area. No reduction or pause observed.\n\n• GROUND FORCES HOLDING: Donovian 58th Combined Arms Army occupation forces remain in the Zabzimek Corridor. No withdrawal indicators. No redeployment away from the corridor. Force posture is consistent with consolidation, not drawdown.\n\n• IO/CYBER CONTINUING: Donovian information operations and cyber pressure on Gorgas and regional states is ongoing. Social media manipulation narratives remain active. No pause or reduction indicators.\n\n• NO SECOND-FRONT INDICATORS: No Donovian force staging toward Atropia's borders. No force movements or logistics posture consistent with opening a second front. This COA is not supported by current collection.\n\n• NO WITHDRAWAL/CEASEFIRE SIGNALS: No diplomatic back-channel activity, no media signaling, no political statements consistent with a Donovian ceasefire acceptance. IADS posture alone rules out a stand-down.\n\nCOLLECTION GAPS: Attribution of specific unit locations within the Zabzimek Corridor is incomplete due to EW interference with ISR platforms. Donovian political decision-making is not directly observed. These gaps reduce confidence at the margins but do not reverse the indicator convergence."
       },
       {
         "id": "e9-3",
@@ -1443,7 +1449,7 @@ window.ScenarioContent = {
         "type": "fillslot",
         "typeLabel": "Activity 4 of 5 — Build the BLUF",
         "points": 3,
-        "instruction": "Brig Gen Torres wants a calibrated BLUF on Donovia's most likely course of action against the coalition air campaign. Build the BLUF below using ICD 203 likelihood language. Carry the indicator picture from Block 4 (active IADS, ongoing EW, occupation forces in the Zabzimek Corridor, continued IO/cyber pressure) into the assessment.",
+        "instruction": "Brig Gen Torres wants a calibrated BLUF on Donovia's most likely course of action against the coalition air campaign. Build the BLUF below using ICD 203 likelihood language. Use the current Donovian indicator picture from the D+12H evidence card to anchor your assessment.",
         "objectiveIds": [
           "6.4-obj-1",
           "6.6-obj-3"
@@ -1461,7 +1467,7 @@ window.ScenarioContent = {
           "correct": "Correct BLUF. 'Likely' is the ICD 203-calibrated word for this picture. Reinforcement plus continued coercive pressure is what the indicator set actually supports. 7 days is the right horizon for major movement decisions and for the JFACC's near-term planning cycle.",
           "incorrect": "Build the BLUF against ICD 203. The likelihood word MUST be one of: almost no chance, very unlikely, unlikely, roughly even chance, likely, very likely, almost certain. 'Possible' is not on that list and is not acceptable in a finished IC product. For the COA, ask which option is consistent with EVERY indicator. Active IADS + ongoing EW + corridor occupation + continued cyber/IO operations rule out withdrawal and rule out passive defense. No second-front staging rules out the Atropia/Pertuni option.",
           "whyMatters": "Calibrated language is the difference between an assessment that withstands a peer challenge and one that does not. The JFACC will brief this BLUF to higher headquarters; the people in that room know ICD 203. Using 'likely' tells them you placed the assessment at 55–80 percent and are ready to defend it. Using 'possible' tells them you were not willing to commit.",
-          "evidenceClue": "See Evidence Card 'ICD 203 Likelihood Language' for the seven approved bands. Use the Block 4 indicator carryover plus Iron Anvil's IADS, EW, and corridor posture to anchor the COA selection."
+          "evidenceClue": "See Evidence Card 'ICD 203 Likelihood Language' for the seven approved bands. Use the D+12H indicator card to anchor the COA selection — IADS active, EW jamming, corridor occupied, IO/cyber ongoing."
         }
       },
       {
@@ -1494,9 +1500,9 @@ window.ScenarioContent = {
           },
           {
             "id": "coa-4",
-            "text": "Open a second front against Atropia or Pertuni to threaten the AOC's basing at Atropian Air Base and disrupt coalition rear-area operations.",
+            "text": "Open a second front against Atropia to threaten the AOC's basing at Atropian Air Base and disrupt coalition rear-area operations.",
             "correct": "implausible",
-            "explanation": "No staging, no force movements toward the Atropian or Pertuni borders, and no political signaling supports a second-front COA. The Donovian indicator picture is concentrated on the Gorgas-Zabzimek axis. Without supporting indicators, this COA is implausible, not merely unlikely."
+            "explanation": "No staging, no force movements toward the Atropian border, and no political signaling supports a second-front COA. The Donovian indicator picture is concentrated on the Gorgas-Zabzimek axis. Without supporting indicators, this COA is implausible, not merely unlikely."
           }
         ],
         "categories": [
@@ -1508,7 +1514,7 @@ window.ScenarioContent = {
           "correct": "Correct. MLCOA = the reinforce-and-pressure COA that the indicators converge on. MDCOA = the full-conventional-thrust-plus-kinetic-ASAT COA the indicators do not preclude. Withdrawal and second-front COAs are implausible because the active indicator picture rules them out (withdrawal) or because no indicators support them at all (second front).",
           "incorrect": "Apply the threshold logic. MLCOA is what the indicators converge on — reinforcement and continued pressure. MDCOA is the highest-impact COA still consistent with what could happen — full conventional plus kinetic counterspace. A COA that contradicts active indicators (withdrawal while IADS is up and EW is jamming) is implausible. A COA with zero supporting indicators (second front against Atropia with no staging there) is also implausible.",
           "whyMatters": "Commanders plan against MLCOA and prepare branches against MDCOA. Collapsing the two leads to over-reacting to the worst case or missing the warning the evidence actually supports. Calling an implausible COA the MDCOA wastes coalition planning capacity on something that is not going to happen.",
-          "evidenceClue": "Evidence Card 'MLCOA vs. MDCOA — Threshold Logic' gives the rule. Carry the Block 4 indicator matrix forward: active IADS rules out withdrawal; no Atropia-direction staging rules out the second front."
+          "evidenceClue": "Evidence Card 'MLCOA vs. MDCOA — Threshold Logic' gives the rule. See the D+12H indicator card: active IADS rules out withdrawal; no Atropia-direction staging rules out the second front."
         }
       }
     ]
