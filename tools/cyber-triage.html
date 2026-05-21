@@ -4,32 +4,244 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cyber Incident Triage | IIAOC 4.5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-/* ── RESET & VARIABLES ─────────────────────────── */
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f6f8fb;--surface:#ffffff;--surface2:#eef3f8;
-  --border:#d6dee8;--border2:#aebdca;
-  --green:#138a4a;--green-d:#e7f6ee;
-  --red:#c4372f;--red-d:#fdebea;
-  --blue:#1f6feb;--blue-d:#e8f1ff;
-  --yellow:#a05a00;--yellow-d:#fff3d6;
-  --purple:#7b3fb5;--purple-d:#f1e9fb;
-  --text:#17202a;--dim:#526173;--muted:#7d8b9b;
-  --accent:#0f766e;--accent2:#115e59;
-  --shadow:0 16px 40px rgba(16,24,40,.08);
+  --bg-0:#07090d;--bg-1:#0c1117;--bg-2:#121922;--bg-3:#1a2330;--bg-raise:#1e2937;
+  --border-0:#1d2733;--border-1:#2a3848;--border-2:#3a4a5e;
+  --text-0:#e6ecf3;--text-1:#aab4c2;--text-2:#6b7787;--text-3:#495362;
+  --accent:#f4a14d;--accent-hi:#ffb867;--accent-ghost:rgba(244,161,77,.12);
+  --green:#5bc77a;--green-ghost:rgba(91,199,122,.12);
+  --red:#e05050;--red-ghost:rgba(224,80,80,.12);
+  --cyan:#5db8d6;--violet:#a78bfa;
+  --kc1:#5db8d6;--kc2:#a78bfa;--kc3:#f4a14d;--kc4:#f97316;--kc5:#ef4444;--kc6:#dc2626;--kc7:#b91c1c;
 }
 html,body{min-height:100vh}
-body{
-  background:
-    radial-gradient(circle at 20% 0%, rgba(31,111,235,.09), transparent 28rem),
-    linear-gradient(180deg,#fbfdff 0%,var(--bg) 48%,#eef4f8 100%);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
-  display:flex;flex-direction:column;align-items:center;
-  padding:16px 16px 40px;
-}
+body{background:var(--bg-0);color:var(--text-0);font-family:'IBM Plex Sans',system-ui,sans-serif;display:flex;flex-direction:column;}
 .hidden{display:none!important}
+
+/* ── CLASSIFICATION BAR ── */
+.class-bar{background:#2f8a3e;color:#e8fbec;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em;font-weight:600;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.4);position:sticky;top:0;z-index:200;}
+.class-bar.bottom{position:static;border-top:1px solid rgba(255,255,255,.1);border-bottom:none;}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:linear-gradient(180deg,var(--bg-1),var(--bg-0));border-bottom:1px solid var(--border-1);gap:16px;flex-wrap:wrap;}
+.op-block{display:flex;flex-direction:column;gap:3px;}
+.op-line{display:flex;align-items:baseline;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;font-weight:600;}
+.op-code{color:var(--accent)}.op-sep{color:var(--text-3)}.op-name{color:var(--text-0)}
+.op-sub{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--text-2);text-transform:uppercase;}
+.topbar-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end;}
+.dtg-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:var(--text-3);margin-right:4px;}
+.dtg-value{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:var(--text-0);}
+
+/* ── PAGE WRAP ── */
+.page-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:28px 16px 60px;width:100%;}
+
+/* ── SCORE PILL + HOME BTN ── */
+.score-pill{background:var(--bg-3);color:var(--text-0);border:1px solid var(--border-2);border-radius:999px;padding:6px 14px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.1px;}
+.score-pill span{color:var(--accent)}
+.badge{background:rgba(91,199,122,.12);color:var(--green);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border-radius:2px;border:1px solid var(--green);}
+
+/* ── BUTTONS ── */
+.btn{padding:9px 20px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s;}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--bg-0);}
+.btn-primary:hover{background:var(--accent-hi);border-color:var(--accent-hi);}
+.btn-ghost{background:transparent;border-color:var(--border-2);color:var(--text-2);}
+.btn-ghost:hover{border-color:var(--text-1);color:var(--text-0);}
+.btn-lg{padding:11px 28px;font-size:12px;}
+.home-btn{display:inline-flex;align-items:center;gap:6px;}
+
+/* ── PROGRESS ── */
+.prog-wrap{width:100%;max-width:900px;margin-bottom:18px;}
+.prog-meta{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3);margin-bottom:6px;letter-spacing:.12em;}
+.prog-track{height:4px;background:var(--bg-3);border-radius:4px;overflow:hidden;border:1px solid var(--border-0);}
+.prog-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .5s ease;}
+
+/* ── CARD ── */
+.card{position:relative;width:100%;max-width:900px;background:var(--bg-2);border:1px solid var(--border-1);border-radius:4px;padding:22px;margin-bottom:12px;}
+
+/* ── CORNER TICKS ── */
+.corner{position:absolute;width:10px;height:10px;border-color:var(--border-2);border-style:solid;border-width:0;pointer-events:none;}
+.corner.tl{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px;}
+.corner.tr{top:-1px;right:-1px;border-top-width:1px;border-right-width:1px;}
+.corner.bl{bottom:-1px;left:-1px;border-bottom-width:1px;border-left-width:1px;}
+.corner.br{bottom:-1px;right:-1px;border-bottom-width:1px;border-right-width:1px;}
+
+/* ── INCIDENT CARD ── */
+.inc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.inc-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);background:var(--accent-ghost);padding:3px 9px;border-radius:2px;border:1px solid var(--accent);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.inc-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3);letter-spacing:.1em;}
+.inc-title{font-size:18px;font-weight:700;margin-bottom:10px;color:var(--text-0);}
+.inc-body{background:var(--bg-1);border:1px solid var(--border-1);border-radius:3px;padding:14px 16px;font-size:14px;line-height:1.75;color:var(--text-1);}
+.inc-body .hl{color:var(--accent);font-weight:600;}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:text-bottom;animation:blink .7s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── QUESTION ── */
+.q-step{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:16px;color:var(--text-0);}
+
+/* ── CHOICE CARDS (threat, actor, layer, attack, intel) ── */
+.threat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:500px){.threat-grid{grid-template-columns:1fr}}
+.threat-card{background:var(--bg-3);border:2px solid var(--border-1);border-radius:4px;padding:18px;cursor:pointer;text-align:center;transition:all .15s;}
+.threat-card:hover:not(.disabled){border-color:var(--accent);background:var(--bg-raise);}
+.threat-card .tc-icon{font-size:30px;margin-bottom:8px;}
+.threat-card .tc-name{font-size:15px;font-weight:700;margin-bottom:5px;color:var(--text-0);}
+.threat-card .tc-sub{font-size:12px;color:var(--text-2);line-height:1.5;}
+.threat-card.correct{border-color:var(--green);background:var(--green-ghost);}
+.threat-card.incorrect{border-color:var(--red);background:var(--red-ghost);}
+.threat-card.dimmed{opacity:.3;}
+.threat-card.disabled{cursor:default;}
+
+.actor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:500px){.actor-grid{grid-template-columns:1fr}}
+.actor-card{background:var(--bg-3);border:2px solid var(--border-1);border-radius:4px;padding:14px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;transition:all .15s;}
+.actor-card:hover:not(.disabled){border-color:var(--accent);background:var(--bg-raise);}
+.actor-card .ac-icon{font-size:24px;flex-shrink:0;margin-top:2px;}
+.actor-card .ac-name{font-size:14px;font-weight:700;margin-bottom:3px;color:var(--text-0);}
+.actor-card .ac-mot{font-size:11.5px;color:var(--text-2);line-height:1.4;}
+.actor-card.correct{border-color:var(--green);background:var(--green-ghost);}
+.actor-card.incorrect{border-color:var(--red);background:var(--red-ghost);}
+.actor-card.dimmed{opacity:.3;}
+.actor-card.disabled{cursor:default;}
+
+/* ── KILL CHAIN TIMELINE ── */
+.evidence-card{background:var(--bg-3);border:1px solid var(--border-2);border-left:3px solid var(--accent);border-radius:4px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;}
+.evidence-card .ev-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.evidence-card .ev-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:3px;}
+.evidence-card .ev-text{font-size:13px;line-height:1.5;color:var(--text-1);}
+.kc-timeline{display:flex;align-items:center;gap:0;flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;}
+.kc-stage{flex-shrink:0;background:var(--bg-3);border:1px solid var(--border-1);border-top-width:3px;border-radius:4px;padding:10px 8px;cursor:pointer;text-align:center;transition:all .15s;min-width:90px;}
+.kc-stage:hover:not(.disabled){background:var(--bg-raise);transform:translateY(-2px);}
+.kc-stage .ks-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:3px;font-weight:700;letter-spacing:.1em;}
+.kc-stage .ks-name{font-size:11px;font-weight:700;line-height:1.3;color:var(--text-0);}
+.kc-stage .ks-sub{font-size:10px;color:var(--text-2);line-height:1.3;margin-top:2px;}
+.kc-arrow{flex-shrink:0;color:var(--text-3);font-size:14px;padding:0 2px;line-height:1;align-self:center;}
+.kc-stage.correct{border-color:var(--green)!important;background:var(--green-ghost);}
+.kc-stage.incorrect,.kc-stage.selected-wrong{border-color:var(--red)!important;background:var(--red-ghost);}
+.kc-stage.dimmed{opacity:.25;}
+.kc-stage.disabled{cursor:default;}
+
+/* ── FEEDBACK ── */
+.feedback{margin-top:14px;border-radius:4px;padding:12px 16px;font-size:13px;line-height:1.6;display:none;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.feedback.correct{background:var(--green-ghost);border:1px solid var(--green);color:var(--text-1);}
+.feedback.incorrect{background:var(--red-ghost);border:1px solid var(--red);color:var(--text-1);}
+.feedback strong{display:block;font-size:14px;margin-bottom:3px;color:var(--text-0);}
+
+/* ── NAV ── */
+.nav-row{width:100%;max-width:900px;display:flex;justify-content:flex-end;margin-top:4px;}
+
+/* ── LANGUAGE SCREEN ── */
+#screen-lang{width:100%;max-width:900px;padding:32px 0 12px;}
+#screen-lang .lang-head{margin-bottom:20px;}
+#screen-lang .lang-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;}
+#screen-lang h2{font-size:22px;font-weight:700;color:var(--text-0);margin-bottom:4px;}
+#screen-lang .sub{color:var(--text-2);font-size:13.5px;}
+.lang-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:24px;}
+.lang-btn{background:var(--bg-2);border:1px solid var(--border-1);border-radius:4px;padding:12px;cursor:pointer;text-align:center;transition:all .15s;}
+.lang-btn:hover{border-color:var(--accent);background:var(--bg-3);}
+.lang-btn.selected{border-color:var(--green);background:var(--green-ghost);}
+.lang-btn .lf{font-size:24px;margin-bottom:5px;}
+.lang-btn .ln{font-size:13px;font-weight:600;color:var(--text-0);}
+.start-row{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* ── KC PRIMER SCREEN ── */
+#screen-kc-primer{width:100%;max-width:900px;padding:32px 0 12px;}
+.primer-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:6px;}
+.primer-title{font-size:22px;font-weight:700;color:var(--text-0);margin-bottom:6px;}
+.primer-sub{font-size:13.5px;color:var(--text-2);margin-bottom:4px;line-height:1.55;}
+.primer-insight{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--accent);letter-spacing:.08em;padding:10px 14px;border:1px solid var(--border-2);border-left:3px solid var(--accent);border-radius:3px;margin:16px 0 20px;background:var(--accent-ghost);}
+.kc-primer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:24px;}
+.kc-primer-card{background:var(--bg-2);border:1px solid var(--border-1);border-radius:4px;padding:14px 16px;border-top-width:3px;}
+.kc-primer-card .kp-num{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;font-weight:700;text-transform:uppercase;margin-bottom:4px;}
+.kc-primer-card .kp-icon{font-size:22px;margin-bottom:6px;}
+.kc-primer-card .kp-name{font-size:14px;font-weight:700;color:var(--text-0);margin-bottom:4px;}
+.kc-primer-card .kp-desc{font-size:11.5px;color:var(--text-2);line-height:1.5;margin-bottom:6px;}
+.kc-primer-card .kp-role{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--text-3);line-height:1.45;border-top:1px dashed var(--border-1);padding-top:6px;margin-top:6px;}
+.primer-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.btn-skip{background:none;border:none;color:var(--text-3);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;cursor:pointer;text-transform:uppercase;padding:8px 0;}
+.btn-skip:hover{color:var(--text-1);}
+
+/* ── KC REFERENCE STRIP (in-game) ── */
+.kc-ref-wrap{width:100%;max-width:900px;background:var(--bg-2);border:1px solid var(--border-1);border-radius:4px;margin-bottom:12px;overflow:hidden;}
+.kc-ref-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:9px 16px;background:none;border:none;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-2);transition:color .15s;}
+.kc-ref-toggle:hover{color:var(--text-0);}
+.kc-ref-toggle .ref-label{color:var(--accent);}
+.kc-ref-stages{display:flex;overflow-x:auto;padding:10px 14px 12px;gap:4px;border-top:1px solid var(--border-0);}
+.kc-ref-stage{flex-shrink:0;background:var(--bg-3);border:1px solid var(--border-0);border-top-width:2px;border-radius:3px;padding:5px 8px;text-align:center;min-width:76px;}
+.kc-ref-stage .rs-num{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--text-3);margin-bottom:2px;}
+.kc-ref-stage .rs-name{font-size:10.5px;font-weight:600;color:var(--text-1);white-space:nowrap;}
+.kc-ref-arrow{flex-shrink:0;color:var(--text-3);font-size:12px;align-self:center;padding:0 1px;}
+
+/* ── RESULTS ── */
+#screen-results{width:100%;max-width:900px;}
+.results-top{text-align:center;padding:24px 0 18px;}
+.score-ring{width:100px;height:100px;border-radius:50%;border:3px solid var(--accent);background:var(--accent-ghost);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;}
+.score-ring .sr-n{font-size:32px;font-weight:700;color:var(--accent);line-height:1;}
+.score-ring .sr-d{font-size:12px;color:var(--text-3);}
+.results-top h2{font-size:20px;font-weight:700;margin-bottom:5px;color:var(--text-0);}
+.results-top p{color:var(--text-2);font-size:13.5px;}
+.sc-block{background:var(--bg-2);border:1px solid var(--border-1);border-radius:4px;padding:14px 18px;margin-bottom:10px;}
+.sc-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.sc-hdr .sc-title{font-weight:600;font-size:14px;color:var(--text-0);}
+.sc-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;padding:2px 10px;border-radius:2px;}
+.sc-tag.p{background:var(--green-ghost);color:var(--green);border:1px solid var(--green);}
+.sc-tag.m{background:var(--accent-ghost);color:var(--accent);border:1px solid var(--accent);}
+.sc-tag.f{background:var(--red-ghost);color:var(--red);border:1px solid var(--red);}
+.q-row{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:5px 0;border-top:1px solid var(--border-0);}
+.q-row .q-ic{flex-shrink:0;margin-top:1px;}
+.q-row .q-lbl{color:var(--text-2);flex:1;}
+.q-row .q-ans{font-weight:600;color:var(--text-0);}
+.q-row.w .q-ans{color:var(--red);}
+.q-row .q-fix{color:var(--green);font-size:11px;}
+.takeaways{background:var(--bg-2);border:1px solid var(--border-1);border-radius:4px;padding:18px 20px;margin-top:8px;}
+.takeaways h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:14px;}
+.tk{display:flex;gap:10px;margin-bottom:8px;font-size:13px;line-height:1.5;}
+.tk .ti{flex-shrink:0;}
+.tk .tt{color:var(--text-2);}
+.tk .tt strong{color:var(--text-0);}
+.results-foot{text-align:center;padding:20px 0 10px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.discussion{background:var(--bg-2);border:1px solid var(--border-1);border-radius:4px;padding:18px 20px;margin-top:8px;}
+.discussion h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;margin-bottom:14px;}
+.discussion-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.discussion-card{border:1px solid var(--border-1);border-radius:4px;background:var(--bg-3);padding:12px 14px;font-size:13px;line-height:1.5;color:var(--text-2);}
+.discussion-card strong{display:block;color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px;}
+@media(max-width:640px){.discussion-grid{grid-template-columns:1fr}}
+
+/* ── REVIEW ── */
+#screen-review{width:100%;max-width:900px;}
+.review-top{margin-bottom:14px;}
+.review-top h2{font-size:22px;margin-bottom:5px;color:var(--text-0);}
+.review-top p{color:var(--text-2);font-size:13.5px;line-height:1.5;}
+.review-block{background:var(--bg-2);border:1px solid var(--border-1);border-radius:4px;padding:16px 18px;margin-bottom:12px;}
+.review-block h3{font-size:15px;margin-bottom:5px;color:var(--text-0);}
+.review-meta{font-size:12px;color:var(--text-3);line-height:1.5;margin-bottom:12px;}
+.review-row{border-top:1px solid var(--border-0);padding:10px 0;}
+.review-step{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);margin-bottom:4px;}
+.review-q{font-size:14px;font-weight:600;margin-bottom:5px;line-height:1.4;color:var(--text-0);}
+.review-answer{font-size:13px;color:var(--text-1);line-height:1.5;}
+.review-answer strong{color:var(--green);}
+.review-discuss{margin-top:7px;background:var(--bg-1);border:1px solid var(--border-0);border-radius:3px;padding:9px 12px;font-size:12.5px;color:var(--text-2);line-height:1.45;}
+
+/* ── FOOTER ── */
+.page-footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--border-1);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.16em;color:var(--text-3);text-transform:uppercase;text-align:center;width:100%;max-width:900px;}
+
+/* ── RTL ── */
+[dir=rtl] .topbar{flex-direction:row-reverse}
+[dir=rtl] .kc-timeline{flex-direction:row-reverse}
+[dir=rtl] .kc-arrow{transform:scaleX(-1)}
+[dir=rtl] .evidence-card{flex-direction:row-reverse}
+[dir=rtl] .actor-card{flex-direction:row-reverse}
+[dir=rtl] .nav-row{justify-content:flex-start}
+[dir=rtl] .prog-meta{flex-direction:row-reverse}
+[dir=rtl] .start-row{flex-direction:row-reverse}
+[dir=rtl] .primer-foot{flex-direction:row-reverse}
 
 /* ── HEADER ──────────────────────────────────────── */
 .hdr{
@@ -276,33 +488,63 @@ body{
 </head>
 <body>
 
-<!-- ══ HEADER ══════════════════════════════════════ -->
-<header class="hdr">
-  <div class="hdr-left">
-    <div class="sup">IIAOC Block 4 · Lesson 4.5</div>
-    <h1 id="hdr-title">Cyber Incident Triage</h1>
+<div class="class-bar">UNCLASSIFIED // TRAINING USE ONLY // FICTIONAL SCENARIO ONLY</div>
+
+<header class="topbar">
+  <div class="op-block">
+    <div class="op-line">
+      <span class="op-code">CYB-4.5</span>
+      <span class="op-sep">/</span>
+      <span class="op-name" id="hdr-title">CYBER INCIDENT TRIAGE</span>
+    </div>
+    <div class="op-sub">BLOCK 4 · LESSON 4.5 · CYBERSPACE INTELLIGENCE</div>
   </div>
-  <div class="hdr-actions">
-    <button class="btn btn-ghost home-btn hidden" id="home-btn" onclick="goHome()" type="button">Home</button>
+  <div class="topbar-right">
+    <div><span class="dtg-label">REL</span><span class="dtg-value" id="dtg">—</span></div>
     <div class="score-pill hidden" id="score-pill"><span id="score-points">0</span> pts</div>
+    <button class="btn btn-ghost home-btn hidden" id="home-btn" onclick="goHome()" type="button">Home</button>
     <div class="badge">UNCLASSIFIED</div>
   </div>
 </header>
 
-<!-- ══ LANGUAGE SCREEN ═════════════════════════════ -->
+<div class="page-wrap">
+
+<!-- ══ LANGUAGE SCREEN ══ -->
 <div id="screen-lang">
-  <div class="icon">🌐</div>
-  <h2 id="lang-h2">Choose your language</h2>
-  <p class="sub" id="lang-sub">Select to begin · Sélectionner pour commencer</p>
+  <div class="lang-head">
+    <div class="lang-tag">Step 1 of 2 — Language Select</div>
+    <h2 id="lang-h2">Choose your language</h2>
+    <p class="sub" id="lang-sub">Select to begin · Sélectionner pour commencer</p>
+  </div>
   <div class="lang-grid" id="lang-grid"></div>
   <div class="start-row">
-    <button class="btn btn-primary btn-lg" id="start-btn" onclick="startSim()">Begin Triage →</button>
-    <button class="btn btn-ghost btn-lg" id="review-start-btn" onclick="showInstructorReview()" style="margin-left:8px">Instructor Review</button>
+    <button class="btn btn-primary btn-lg" id="start-btn" onclick="showKCPrimer()">Begin Triage →</button>
+    <button class="btn btn-ghost btn-lg" id="review-start-btn" onclick="showInstructorReview()">Instructor Review</button>
   </div>
 </div>
 
-<!-- ══ GAME SCREEN ══════════════════════════════════ -->
-<div id="screen-game" class="hidden" style="width:100%;max-width:900px">
+<!-- ══ KILL CHAIN PRIMER SCREEN ══ -->
+<div id="screen-kc-primer" class="hidden">
+  <span class="primer-tag">Step 2 of 2 — Kill Chain Reference</span>
+  <h2 class="primer-title">The 7 Stages of a Cyberattack</h2>
+  <p class="primer-sub">An adversary must complete these stages in order. Study them before you begin — you will identify them in the exercise.</p>
+  <div class="primer-insight">Intelligence officers can detect and disrupt operations at every stage. Earlier disruption = greater impact.</div>
+  <div class="kc-primer-grid" id="kc-primer-grid"></div>
+  <div class="primer-foot">
+    <button class="btn btn-primary btn-lg" onclick="startSim()">Begin Triage →</button>
+    <button class="btn-skip" onclick="startSim()">Skip reference →</button>
+  </div>
+</div>
+
+<!-- ══ GAME SCREEN ══ -->
+<div id="screen-game" class="hidden">
+  <div class="kc-ref-wrap" id="kc-ref-wrap">
+    <button class="kc-ref-toggle" onclick="toggleKCRef()" id="kc-ref-toggle">
+      <span class="ref-label">§ KILL CHAIN REFERENCE</span>
+      <span id="kc-ref-arrow">▼</span>
+    </button>
+    <div class="kc-ref-stages hidden" id="kc-ref-stages"></div>
+  </div>
   <div class="prog-wrap">
     <div class="prog-meta">
       <span id="prog-label"></span>
@@ -312,6 +554,7 @@ body{
     <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
   </div>
   <div class="card" id="inc-card">
+    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
     <div class="inc-hdr">
       <div class="inc-tag" id="inc-tag">Incoming Alert</div>
       <div class="inc-id" id="inc-id">INCID-001</div>
@@ -320,6 +563,7 @@ body{
     <div class="inc-body" id="inc-body"></div>
   </div>
   <div class="card" id="q-card">
+    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
     <div class="q-step" id="q-step"></div>
     <div class="q-text" id="q-text"></div>
     <div id="q-area"></div>
@@ -330,19 +574,20 @@ body{
   </div>
 </div>
 
-<!-- ══ RESULTS SCREEN ══════════════════════════════ -->
-<div id="screen-review" class="hidden" style="width:100%;max-width:900px">
+<!-- ══ INSTRUCTOR REVIEW SCREEN ══ -->
+<div id="screen-review" class="hidden">
   <div class="review-top">
     <h2>Instructor Review</h2>
-    <p>Use this after the 10-minute mission to walk the room through the decisions. The point is not just the answer; it is the reasoning that separates technical detail from intelligence judgment.</p>
+    <p>Use this after the 10-minute mission to walk the room through the decisions. The point is not just the answer — it is the reasoning that separates technical detail from intelligence judgment.</p>
   </div>
   <div id="review-content"></div>
   <div class="results-foot">
-    <button class="btn btn-ghost" onclick="goHome()" style="font-size:15px;padding:12px 24px;margin-right:8px">Home</button>
-    <button class="btn btn-primary" onclick="startSim()" style="font-size:15px;padding:12px 30px">Run Activity</button>
+    <button class="btn btn-ghost" onclick="goHome()">Home</button>
+    <button class="btn btn-primary" onclick="startSim()">Run Activity</button>
   </div>
 </div>
 
+<!-- ══ RESULTS SCREEN ══ -->
 <div id="screen-results" class="hidden">
   <div class="results-top">
     <div class="score-ring">
@@ -356,11 +601,16 @@ body{
   <div class="takeaways" id="takeaways-block"></div>
   <div class="discussion" id="discussion-block"></div>
   <div class="results-foot">
-    <button class="btn btn-ghost" id="home-results-btn" onclick="goHome()" style="font-size:15px;padding:12px 24px;margin-right:8px">Home</button>
-    <button class="btn btn-ghost" id="review-results-btn" onclick="showInstructorReview()" style="font-size:15px;padding:12px 24px;margin-right:8px">Instructor Review</button>
-    <button class="btn btn-primary" id="restart-btn" onclick="startSim()" style="font-size:15px;padding:12px 30px"></button>
+    <button class="btn btn-ghost" id="home-results-btn" onclick="goHome()">Home</button>
+    <button class="btn btn-ghost" id="review-results-btn" onclick="showInstructorReview()">Instructor Review</button>
+    <button class="btn btn-primary" id="restart-btn" onclick="startSim()"></button>
   </div>
 </div>
+
+<div class="page-footer">© Training Center · Unclassified Training Use Only · No FOUO · No CUI</div>
+</div><!-- end page-wrap -->
+
+<div class="class-bar bottom">UNCLASSIFIED // TRAINING USE ONLY // FICTIONAL SCENARIO ONLY</div>
 
 <script>
 // ════════════════════════════════════════════════════
@@ -971,8 +1221,16 @@ let missionTimer = null, missionStartedAt = null;
 // ════════════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════════════
+// DTG
+(function(){
+  const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  const update=()=>{const d=new Date(),pad=n=>String(n).padStart(2,'0'),el=document.getElementById('dtg');if(el)el.textContent=`${pad(d.getUTCDate())}${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}Z${months[d.getUTCMonth()]}${String(d.getUTCFullYear()).slice(-2)}`;};
+  update();setInterval(update,60000);
+})();
+
 window.onload = function(){
   buildLangGrid();
+  buildKCRefStrip();
 };
 
 function buildLangGrid(){
@@ -990,16 +1248,16 @@ function buildLangGrid(){
 function applyLang(){
   document.documentElement.lang = selectedLang;
   document.documentElement.dir = L.dir;
-  document.getElementById('hdr-title').textContent = L.title;
   document.getElementById('start-btn').textContent = L.begin;
   document.getElementById('home-btn').textContent = ui('home');
   document.getElementById('home-results-btn').textContent = ui('home');
+  buildKCRefStrip();
 }
 
 function show(id){
-  ['screen-lang','screen-game','screen-review','screen-results'].forEach(s=>document.getElementById(s).classList.add('hidden'));
+  ['screen-lang','screen-kc-primer','screen-game','screen-review','screen-results'].forEach(s=>document.getElementById(s).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
-  const active = id !== 'screen-lang';
+  const active = id !== 'screen-lang' && id !== 'screen-kc-primer';
   document.getElementById('home-btn').classList.toggle('hidden', !active);
   document.getElementById('score-pill').classList.toggle('hidden', id !== 'screen-game');
 }
@@ -1214,30 +1472,25 @@ function renderIntel(area,q){
 }
 
 // ── KILL CHAIN ──
+const KC_COLORS=['#5db8d6','#a78bfa','#f4a14d','#f97316','#ef4444','#dc2626','#b91c1c'];
+
 function renderKillchain(area,q){
-  // Evidence card
   const ev = document.createElement('div');
   ev.className='evidence-card';
   ev.innerHTML=`<div class="ev-icon">${q.evidenceIcon}</div><div><div class="ev-label">${L.evidence}</div><div class="ev-text">${q.evidenceText}</div></div>`;
   area.appendChild(ev);
-  // Instruction
   const instr = document.createElement('div');
-  instr.style.cssText='font-size:13px;color:var(--dim);margin-bottom:12px';
+  instr.style.cssText='font-family:\'IBM Plex Mono\',monospace;font-size:11px;letter-spacing:.12em;color:var(--text-2);margin-bottom:12px;text-transform:uppercase;';
   instr.textContent = L.placeKC;
   area.appendChild(instr);
-  // Timeline
   const tl = document.createElement('div');
   tl.className='kc-timeline';
   L.kc.forEach((name,i)=>{
-    if(i>0){
-      const arr = document.createElement('div');
-      arr.className='kc-arrow';
-      arr.textContent='›';
-      tl.appendChild(arr);
-    }
+    if(i>0){const arr=document.createElement('div');arr.className='kc-arrow';arr.textContent='›';tl.appendChild(arr);}
     const stage = document.createElement('div');
     stage.className='kc-stage';
-    stage.innerHTML=`<div class="ks-num">${i+1}</div><div class="ks-name">${name}</div><div class="ks-sub">${L.kcSub[i]}</div>`;
+    stage.style.borderTopColor=KC_COLORS[i];
+    stage.innerHTML=`<div class="ks-num" style="color:${KC_COLORS[i]}">${i+1}</div><div class="ks-name">${name}</div><div class="ks-sub">${L.kcSub[i]}</div>`;
     stage.onclick=()=>selectKCAnswer(i,q,stage,tl);
     tl.appendChild(stage);
   });
@@ -1389,6 +1642,64 @@ function goHome(){
   updateScorePill();
   show('screen-lang');
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── KILL CHAIN PRIMER ──
+const KC_ICONS=['🔍','🔧','📨','💥','🪝','📡','🎯'];
+const KC_ROLES=[
+  'Detect: target profiling, OSINT collection, phishing prep',
+  'Detect: malware signatures, exploit kit acquisition',
+  'Detect: phishing email, drive-by, USB — highest disruption value',
+  'Detect: vulnerability triggered, first access gained',
+  'Detect: persistence mechanism — RAT, backdoor, scheduled task',
+  'Detect: outbound beacon, suspicious DNS, encrypted C2 tunnel',
+  'Assess: data loss scope, disruption impact, attribution indicators',
+];
+
+function showKCPrimer(){
+  show('screen-kc-primer');
+  buildKCPrimer();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildKCPrimer(){
+  const grid=document.getElementById('kc-primer-grid');
+  if(!grid) return;
+  grid.innerHTML='';
+  L.kc.forEach((name,i)=>{
+    const card=document.createElement('div');
+    card.className='kc-primer-card';
+    card.style.borderTopColor=KC_COLORS[i];
+    card.innerHTML=`
+      <div class="kp-num" style="color:${KC_COLORS[i]}">Stage ${i+1}</div>
+      <div class="kp-icon">${KC_ICONS[i]}</div>
+      <div class="kp-name">${name}</div>
+      <div class="kp-desc">${L.kcSub[i]}</div>
+      <div class="kp-role">${KC_ROLES[i]}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── KC REFERENCE STRIP ──
+function buildKCRefStrip(){
+  const strip=document.getElementById('kc-ref-stages');
+  if(!strip) return;
+  strip.innerHTML='';
+  L.kc.forEach((name,i)=>{
+    if(i>0){const arr=document.createElement('div');arr.className='kc-ref-arrow';arr.textContent='›';strip.appendChild(arr);}
+    const s=document.createElement('div');
+    s.className='kc-ref-stage';
+    s.style.borderTopColor=KC_COLORS[i];
+    s.innerHTML=`<div class="rs-num" style="color:${KC_COLORS[i]}">${i+1}</div><div class="rs-name">${name}</div>`;
+    strip.appendChild(s);
+  });
+}
+
+function toggleKCRef(){
+  const stages=document.getElementById('kc-ref-stages');
+  const arrow=document.getElementById('kc-ref-arrow');
+  const hidden=stages.classList.toggle('hidden');
+  if(arrow) arrow.textContent=hidden?'▼':'▲';
 }
 
 function stripHtml(html){
