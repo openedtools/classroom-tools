@@ -217,20 +217,23 @@ function renderTasks(inject, pack, session, handlers) {
       const list = el('ol', { class: 'ordering-list' });
       items.forEach((item, idx) => {
         const li = el('li', { draggable: 'true', 'data-item': item }, [
+          el('span', { class: 'ord-handle' }, '⠿'),
           el('span', { class: 'ord-num' }, String(idx + 1)),
           el('span', {}, item),
         ]);
         list.appendChild(li);
       });
-      // simple drag-and-drop
+      // drag-and-drop
       let dragged = null;
       list.addEventListener('dragstart', (e) => { dragged = e.target.closest('li'); dragged.classList.add('dragging'); });
-      list.addEventListener('dragend', () => { dragged && dragged.classList.remove('dragging'); dragged = null; });
+      list.addEventListener('dragend', () => { dragged && dragged.classList.remove('dragging'); list.querySelectorAll('.drag-over').forEach(n => n.classList.remove('drag-over')); dragged = null; });
       list.addEventListener('dragover', (e) => { e.preventDefault(); const over = e.target.closest('li'); if (!over || over === dragged) return;
+        list.querySelectorAll('.drag-over').forEach(n => n.classList.remove('drag-over')); over.classList.add('drag-over');
         const rect = over.getBoundingClientRect(); const before = (e.clientY - rect.top) < rect.height / 2;
         list.insertBefore(dragged, before ? over : over.nextSibling);
       });
       list.addEventListener('drop', () => {
+        list.querySelectorAll('.drag-over').forEach(n => n.classList.remove('drag-over'));
         const order = Array.from(list.querySelectorAll('li')).map(li => li.dataset.item);
         // refresh numbering
         Array.from(list.children).forEach((li, i) => { li.querySelector('.ord-num').textContent = String(i + 1); });
