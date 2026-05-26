@@ -1446,9 +1446,11 @@ function ActivityCard({
               <label
                 className={`decision-option ${
                   response.selected === option.id
-                    ? option.correct
-                      ? "selected selected-good"
-                      : "selected selected-bad"
+                    ? submitted
+                      ? option.correct
+                        ? "selected selected-good"
+                        : "selected selected-bad"
+                      : "selected"
                     : submitted && option.correct
                       ? "correct-answer"
                       : ""
