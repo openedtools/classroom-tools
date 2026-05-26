@@ -85,7 +85,7 @@ window.ScenarioContent = {
       {
         "id": "p1a1",
         "type": "matching",
-        "typeLabel": "Activity 1 of 3 — Matching",
+        "typeLabel": "Activity 1 of 4 — Matching",
         "points": 4,
         "instruction": "Match each command authority to its correct definition.",
         "objectiveIds": [
@@ -145,7 +145,7 @@ window.ScenarioContent = {
       {
         "id": "p1a2",
         "type": "decision",
-        "typeLabel": "Activity 2 of 3 — Best Answer",
+        "typeLabel": "Activity 2 of 4 — Best Answer",
         "points": 1,
         "instruction": "Brig Gen Torres needs to integrate 24 Gorgan F-16s into the coalition air campaign and task them for specific missions. Which command authority should he hold over these aircraft?",
         "objectiveIds": [
@@ -184,7 +184,7 @@ window.ScenarioContent = {
       {
         "id": "p1a3",
         "type": "classification",
-        "typeLabel": "Activity 3 of 3 — Joint vs. Combined",
+        "typeLabel": "Activity 3 of 4 — Joint vs. Combined",
         "points": 4,
         "instruction": "U.S. doctrine distinguishes JOINT operations from COMBINED operations. Classify each scenario by the correct type.",
         "objectiveIds": ["6.1-obj-1"],
@@ -224,6 +224,43 @@ window.ScenarioContent = {
           "whyMatters": "This distinction drives command authority decisions. COCOM is a U.S. statutory authority — it can be held over U.S. forces in a joint operation, but never extended to a partner nation in a combined operation. Mislabeling joint vs combined can lead to assigning command authorities that are not legally valid.",
           "evidenceClue": "See Evidence Card 'Joint vs. Combined Operations' — joint is U.S.-only; combined adds partner/allied forces. CJTF-CAU is a combined operation."
         }
+      },
+      {
+        "id": "p1a4",
+        "type": "decision",
+        "typeLabel": "Activity 4 of 4 — Best Answer",
+        "points": 1,
+        "instruction": "Two Gorgan F-16 pilots assigned to the coalition air campaign are due for their annual flight physicals. Their aircraft are under Brig Gen Torres's OPCON for tonight's ATO. Who is responsible for scheduling and conducting their flight physicals?",
+        "objectiveIds": ["6.1-obj-4"],
+        "options": [
+          {
+            "id": "a",
+            "text": "Brig Gen Torres's staff at the AOC — he holds OPCON over their aircraft, so he is responsible for all aspects of the pilots' readiness.",
+            "explanation": "OPCON covers mission tasking and force organization — not administrative support. Flight physicals, pay, personnel records, and training are administrative functions that stay with the national force, not the OPCON commander."
+          },
+          {
+            "id": "b",
+            "text": "The Gorgan Air Force through its own administrative chain — ADCON (administrative control) stays with the national force regardless of who holds OPCON over the aircraft.",
+            "correct": true,
+            "explanation": "ADCON covers training, readiness, pay, personnel, and maintenance — including flight physicals. It always stays with the service or national force. Even though the Gorgan F-16s are under Torres's OPCON, the Gorgan Air Force retains ADCON over its own pilots."
+          },
+          {
+            "id": "c",
+            "text": "The CJTF-CAU medical section — the joint task force provides all medical support to coalition forces during the operation.",
+            "explanation": "The CJTF may coordinate theater-level medical support, but routine administrative medical requirements like flight physicals remain with the national force under ADCON. The CJTF does not take over every nation's administrative functions."
+          },
+          {
+            "id": "d",
+            "text": "No one — flight physicals are suspended during active combat operations until the campaign ends.",
+            "explanation": "Flight physicals and readiness requirements are not suspended during operations. They are critical to ensuring pilots are medically fit to fly. The national force manages them through ADCON, which continues regardless of combat operations."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. ADCON stays with the national force — always. The Gorgan Air Force schedules its own pilots' flight physicals, manages their pay, conducts their training, and maintains their aircraft. Torres holds OPCON to task the jets for missions, but he does not take over Gorgan administrative functions.",
+          "incorrect": "ADCON covers administrative functions: training, readiness, pay, personnel records, maintenance, and medical requirements like flight physicals. ADCON always stays with the service or national force — even when OPCON is held by a coalition commander. Torres tasks the aircraft; Gorgas takes care of its people.",
+          "whyMatters": "In your home military, your nation retains ADCON over you even when you serve under a coalition commander's OPCON. This protects your rights, your pay, and your readiness. If ADCON transferred with OPCON, a coalition commander could change your training standards, reassign your personnel, or neglect your maintenance — none of which your nation would accept.",
+          "evidenceClue": "See Evidence Card 'The Four Command Authorities' — ADCON is defined as support functions that stay with the service or national force."
+        }
       }
     ]
   },
@@ -256,7 +293,7 @@ window.ScenarioContent = {
       {
         "id": "p2a1",
         "type": "sequencing",
-        "typeLabel": "Activity 1 of 2 — Put in Order",
+        "typeLabel": "Activity 1 of 4 — Put in Order",
         "points": 4,
         "instruction": "The Gorgan 3rd Brigade has a target and needs Close Air Support. Arrange these TACS nodes in the correct order — from the ground unit's request to the aircraft executing the strike.",
         "objectiveIds": [
@@ -301,7 +338,7 @@ window.ScenarioContent = {
       {
         "id": "p2a2",
         "type": "classification",
-        "typeLabel": "Activity 2 of 2 — Classification",
+        "typeLabel": "Activity 2 of 4 — Classification",
         "points": 4,
         "instruction": "Assign each TACS agency to the correct layer of the Theater Air Control System.",
         "objectiveIds": [
@@ -354,6 +391,80 @@ window.ScenarioContent = {
           "whyMatters": "Understanding the layers tells you who to call and in what order. A ground commander who tries to call the AOC directly for CAS bypasses the entire coordination layer — his request will get lost. The TACS exists because no single agency can manage everything from the strategic to the tactical level simultaneously.",
           "evidenceClue": "See Evidence Card 'TACS Three-Layer Structure' for the complete list of agencies in each layer."
         }
+      },
+      {
+        "id": "p2a3",
+        "type": "decision",
+        "typeLabel": "Activity 3 of 4 — Best Answer",
+        "points": 1,
+        "instruction": "The Gorgan Army's 2nd Brigade commander says: 'I need someone embedded with my unit who can advise me on what air and space power can do for my troops — and when I need Close Air Support, I need someone who can control the strike directly.' Which TACS agency provides this capability?",
+        "objectiveIds": ["6.2-obj-2", "6.2-obj-3"],
+        "options": [
+          {
+            "id": "a",
+            "text": "TACP (Tactical Air Control Party) — a small Air Force team embedded with the ground unit that advises the ground commander on air and space power capabilities and controls Close Air Support through its JTAC.",
+            "correct": true,
+            "explanation": "The TACP is the Air Force team embedded with Army ground units at brigade level and below. Its primary role is twofold: advise the ground commander on what air and space power can and cannot do, and control CAS through the JTAC (Joint Terminal Attack Controller) — the certified specialist who talks directly to aircraft and clears weapons delivery."
+          },
+          {
+            "id": "b",
+            "text": "ASOC (Air Support Operations Center) — the corps/division-level agency that manages all CAS requests and coordinates directly with individual aircraft.",
+            "explanation": "The ASOC processes and coordinates CAS requests at the corps/division level — it is not embedded with brigade-level ground units. The ASOC is a coordination center, not a team that deploys with a ground commander. And the ASOC does not directly control aircraft — that is the JTAC within the TACP."
+          },
+          {
+            "id": "c",
+            "text": "AWACS (Airborne Warning and Control System) — the airborne radar platform that manages air operations and controls CAS from the air.",
+            "explanation": "AWACS provides the airborne air picture and manages air traffic — it watches the sky. AWACS does not advise ground commanders, does not embed with ground units, and does not control CAS terminal attacks. CAS control belongs to the JTAC within the TACP."
+          },
+          {
+            "id": "d",
+            "text": "AOC (Air Operations Center) — the theater-level headquarters that assigns aircraft to ground commanders and controls all strikes directly.",
+            "explanation": "The AOC is the theater-level command center — it allocates aircraft and produces the ATO, but it does not embed with ground units or control individual strikes. A ground commander cannot call the AOC directly for CAS — the request flows through the TACP and ASOC first."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. The TACP is the Air Force team embedded with ground units. Its primary role is to advise ground commanders on air and space power capabilities and limitations, and to control CAS through the JTAC. The TACP is the critical link between the ground fight and the air fight.",
+          "incorrect": "The TACP is the only TACS agency that embeds with ground units at brigade level. The ASOC sits at corps/division HQ. AWACS is airborne. The AOC is theater-level. The TACP's JTAC is the only person certified to control terminal weapons delivery for CAS.",
+          "whyMatters": "If a ground commander does not have a TACP, he has no one to advise him on what air power can do — and no one qualified to control a CAS strike when he needs one. The TACP is not optional in a combined arms fight. Without it, the ground force either gets no air support or gets uncontrolled air support, which risks fratricide.",
+          "evidenceClue": "See Evidence Card 'Key TACS Platform Distinctions' — the JTAC entry describes the TACP's terminal control function. See 'TACS Three-Layer Structure' for the TACP's Layer 2 position."
+        }
+      },
+      {
+        "id": "p2a4",
+        "type": "decision",
+        "typeLabel": "Activity 4 of 4 — Best Answer",
+        "points": 1,
+        "instruction": "The Gorgan Army corps commander needs a single agency to serve as the primary control point for all air operations supporting his land forces — processing CAS requests, coordinating air support priorities, and managing the flow of air support between his units and the AOC. Which TACS agency fills this role?",
+        "objectiveIds": ["6.2-obj-2", "6.2-obj-3"],
+        "options": [
+          {
+            "id": "a",
+            "text": "ASOC (Air Support Operations Center) — the TACS primary control agency for air operations in direct support of the land component; co-located with the Army corps or division headquarters.",
+            "correct": true,
+            "explanation": "The ASOC is the primary control agency for air operations in direct support of land operations. It sits at the corps or division level, co-located with the Army HQ, and manages the flow of CAS requests and air support coordination between ground forces and the AOC."
+          },
+          {
+            "id": "b",
+            "text": "TACP (Tactical Air Control Party) — the team embedded with ground units that processes all air support requests for the corps.",
+            "explanation": "The TACP is embedded at brigade level and below — not at the corps level. The TACP handles individual CAS requests for a single ground unit. The ASOC manages the flow for the entire corps/division, coordinating between multiple TACPs and the AOC."
+          },
+          {
+            "id": "c",
+            "text": "CRC (Control and Reporting Center) — the ground-based radar agency that manages all air support for land forces.",
+            "explanation": "The CRC is a Layer 3 execution agency that provides ground-based radar and air traffic control. It manages airspace and tracks aircraft — it does not process CAS requests or coordinate ground-force air support priorities. That is the ASOC."
+          },
+          {
+            "id": "d",
+            "text": "JACCE (Joint Air Component Coordination Element) — the liaison team that coordinates air support requirements inside the land component headquarters.",
+            "explanation": "The JACCE is a JFACC-provided liaison element inside the land or maritime HQ — the JFACC's ambassadors. It coordinates component-level requirements but is not the primary control agency for air support to land forces. The ASOC holds that role."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. The ASOC is the TACS primary control agency for air operations in direct support of the land component. Think of the ASOC as the gate agent at one airport — the AOC is airline headquarters, and the ASOC manages the specific airport where the Army's air support flows through.",
+          "incorrect": "The ASOC is the corps/division-level agency that manages all air support for land operations. The TACP is at brigade level (too low). The CRC tracks aircraft (wrong function). The JACCE is a liaison element (coordinates, does not control). The ASOC is the primary control agency.",
+          "whyMatters": "If a corps-level air support request goes directly to the AOC instead of through the ASOC, it bypasses the coordination that prevents conflicts between different ground units' CAS priorities. The ASOC exists to manage the flow — without it, competing requests from multiple brigades would arrive at the AOC uncoordinated.",
+          "evidenceClue": "See Evidence Card 'TACS Three-Layer Structure' — the ASOC is listed in Layer 2 as the primary agency for CAS support to Army corps and division."
+        }
       }
     ]
   },
@@ -386,7 +497,7 @@ window.ScenarioContent = {
       {
         "id": "p3a1",
         "type": "matching",
-        "typeLabel": "Activity 1 of 2 — Matching",
+        "typeLabel": "Activity 1 of 4 — Matching",
         "points": 4,
         "instruction": "Match each AOC planning document to the description that best explains its purpose and scope.",
         "objectiveIds": [
@@ -446,7 +557,7 @@ window.ScenarioContent = {
       {
         "id": "p3a2",
         "type": "classification",
-        "typeLabel": "Activity 2 of 2 — Classification",
+        "typeLabel": "Activity 2 of 4 — Classification",
         "points": 3,
         "instruction": "Three problems just walked through the AOC door. Classify each one by the correct liaison element that handles it.",
         "objectiveIds": [
@@ -491,6 +602,89 @@ window.ScenarioContent = {
           "incorrect": "Remember: BCD represents the Army (land), NALE represents the Navy and Marines (maritime), SOLE represents special operations forces. The component they represent determines which liaison element handles the problem.",
           "whyMatters": "If a ground commander's CAS request goes to the SOLE instead of the BCD, it will not be properly coordinated with the Army's requirements. If the Navy's carrier wing goes to the SOLE instead of the NALE, their sorties may not appear in the ATO at all.",
           "evidenceClue": "See Evidence Card 'AOC Liaison Elements' for each element's component and primary responsibility."
+        }
+      },
+      {
+        "id": "p3a3",
+        "type": "decision",
+        "typeLabel": "Activity 3 of 4 — Best Answer",
+        "points": 1,
+        "instruction": "A coalition officer says: 'The JFACC and the AOC are the same thing, right? When we say JFACC, we mean the AOC.' Is this correct?",
+        "objectiveIds": ["6.3-obj-1"],
+        "options": [
+          {
+            "id": "a",
+            "text": "No — the JFACC is the commander (a person); the AOC is the headquarters (a weapon system). The JFACC commands through the AOC, but they are not the same thing.",
+            "correct": true,
+            "explanation": "The JFACC (Brig Gen Torres) is a person — the Joint Force Air Component Commander. The AOC is a formally designated weapon system — the headquarters through which the JFACC plans, tasks, executes, and assesses air operations. The JFACC commands THROUGH the AOC."
+          },
+          {
+            "id": "b",
+            "text": "Yes — JFACC is the official designation and AOC is the informal name for the same organization.",
+            "explanation": "They are not the same. JFACC is a command position held by a person (Brig Gen Torres). AOC is a weapon system — a formally organized, trained, and equipped headquarters. You can have a JFACC without an AOC (in theory), or an AOC without the JFACC physically present."
+          },
+          {
+            "id": "c",
+            "text": "No — the AOC commands the JFACC. The AOC is the higher organization and the JFACC reports to it.",
+            "explanation": "This is backwards. The JFACC is the commander; the AOC is the tool. The JFACC commands THROUGH the AOC — the AOC does not command the JFACC."
+          },
+          {
+            "id": "d",
+            "text": "Yes — the JFACC is the AOC when it is operating in a combined (multinational) environment.",
+            "explanation": "The relationship between JFACC and AOC does not change in a combined environment. The JFACC is still the commander; the AOC is still the headquarters. The distinction is about role (person vs. organization), not about whether the operation is joint or combined."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. The JFACC is the commander (Brig Gen Torres). The AOC is the weapon system — the headquarters through which the JFACC exercises command. Think of it this way: Torres can leave the building, but the AOC keeps functioning. Torres is still the JFACC even when he is not physically in the AOC.",
+          "incorrect": "The JFACC is a person (the commander). The AOC is a weapon system (the headquarters). The JFACC commands through the AOC. They are not interchangeable terms, not the same organization, and the AOC does not command the JFACC.",
+          "whyMatters": "If a staff officer treats them as the same thing, they may confuse command decisions (JFACC) with staff actions (AOC divisions). Only the JFACC can make certain command decisions — the AOC divisions prepare options and execute orders. Blurring this line leads to staff officers making command decisions they do not have authority for.",
+          "evidenceClue": "See Evidence Card 'The Five AOC Divisions' — the AOC is the organizational structure; the JFACC is the commander who directs it."
+        }
+      },
+      {
+        "id": "p3a4",
+        "type": "classification",
+        "typeLabel": "Activity 4 of 4 — Classification",
+        "points": 4,
+        "instruction": "Four problems arrive at the AOC. Classify each one by the AOC division that should handle it.",
+        "objectiveIds": ["6.3-obj-1"],
+        "items": [
+          {
+            "id": "i1",
+            "text": "The JFACC wants a new set of campaign objectives and long-range guidance developed for the next week of operations.",
+            "correct": "srd",
+            "explanation": "Long-range campaign planning and developing the command's vision and guidance is the Strategy Division's primary function. The SRD produces the JAOP and AOD."
+          },
+          {
+            "id": "i2",
+            "text": "Tonight's ATO needs to be built — sorties allocated to targets, airspace deconflicted, and the final order published to all coalition units.",
+            "correct": "cpd",
+            "explanation": "Building the ATO is the Combat Plans Division's primary function. The CPD's MAAP Team allocates sorties, the C2 Planning Team handles airspace (ACO/SPINS), and the ATO Production Team publishes the final order."
+          },
+          {
+            "id": "i3",
+            "text": "A time-sensitive target just appeared on the operations floor during ATO execution. A real-time engagement decision is needed.",
+            "correct": "cod",
+            "explanation": "Real-time execution decisions — including dynamic targeting of time-sensitive targets — belong to the Combat Operations Division. The CCO has personal authority to approve engagement."
+          },
+          {
+            "id": "i4",
+            "text": "ISR collection platforms need to be formally tasked for tomorrow's ATO, and the intelligence team needs to fuse multi-source reporting into finished products for the operations floor.",
+            "correct": "isrd",
+            "explanation": "ISR collection tasking (CMC → RSTA Annex) and intelligence fusion (ACF Cell) are both ISR Division functions. The ISRD supports every other division with intelligence."
+          }
+        ],
+        "categories": [
+          { "id": "srd", "label": "Strategy Division (SRD)" },
+          { "id": "cpd", "label": "Combat Plans Division (CPD)" },
+          { "id": "cod", "label": "Combat Operations Division (COD)" },
+          { "id": "isrd", "label": "ISR Division (ISRD)" }
+        ],
+        "feedback": {
+          "correct": "Correct. SRD = campaign strategy and guidance. CPD = building the ATO. COD = executing the ATO in real time. ISRD = ISR tasking and intelligence production. Think of the AOC as a kitchen: SRD is the head chef (decides the menu), CPD is the prep team (builds tonight's dishes), COD is the line cooks (executing orders now), ISRD is the sourcing and quality team (provides the ingredients and checks the results).",
+          "incorrect": "Route by time horizon: SRD works days-to-weeks ahead (strategy). CPD works 48-96 hours ahead (planning). COD works right now (execution). ISRD supports all three with intelligence. Campaign guidance → SRD. ATO building → CPD. Real-time decisions → COD. Intelligence → ISRD.",
+          "whyMatters": "Bringing a real-time targeting decision to the SRD wastes time — the SRD works days ahead, not in real time. Bringing a long-range strategy question to the CPD wastes their planning bandwidth on something that is not their job. Routing to the right division is the first skill an LNO needs.",
+          "evidenceClue": "See Evidence Card 'The Five AOC Divisions' for each division's function, products, and time horizon."
         }
       }
     ]
@@ -1229,7 +1423,7 @@ window.ScenarioContent = {
       {
         "id": "p7a1",
         "type": "classification",
-        "typeLabel": "Activity 1 of 3 — Classification",
+        "typeLabel": "Activity 1 of 4 — Classification",
         "points": 3,
         "instruction": "Three tasks arrive at the ISRD simultaneously. Classify each task by the correct ISRD cell responsible for handling it.",
         "objectiveIds": [
@@ -1279,7 +1473,7 @@ window.ScenarioContent = {
       {
         "id": "p7a2",
         "type": "fillslot",
-        "typeLabel": "Activity 2 of 3 — Fill the Assessment",
+        "typeLabel": "Activity 2 of 4 — Fill the Assessment",
         "points": 3,
         "instruction": "Complete the definition of PED — the three-stage process by which raw ISR data is turned into finished intelligence.",
         "objectiveIds": [
@@ -1349,7 +1543,7 @@ window.ScenarioContent = {
       {
         "id": "p7a3",
         "type": "decision",
-        "typeLabel": "Activity 3 of 3 — Best Answer",
+        "typeLabel": "Activity 3 of 4 — Best Answer",
         "points": 1,
         "instruction": "The Combat Plans Division needs ISR collection platforms formally tasked for tomorrow's ATO. Which ISRD cell handles this, and what document does it produce?",
         "objectiveIds": [
@@ -1385,6 +1579,54 @@ window.ScenarioContent = {
           "whyMatters": "Without the RSTA Annex, ISR platforms are not formally tasked and their missions do not appear in the ATO. Aircrew and ground controllers do not know the ISR platform is out there — creating deconfliction hazards and uncoordinated collection that may duplicate or miss priority targets.",
           "evidenceClue": "See Evidence Card 'ISRD Internal Cells' — the CMC entry specifically names the RSTA Annex as its key product."
         }
+      },
+      {
+        "id": "p7a4",
+        "type": "matching",
+        "typeLabel": "Activity 4 of 4 — Matching",
+        "points": 3,
+        "instruction": "The ISRD does not just sit in one room — it embeds personnel across the AOC. Match each ISRD element to the AOC division it directly supports.",
+        "objectiveIds": ["6.7-obj-3"],
+        "items": [
+          {
+            "id": "m1",
+            "text": "ISR Strategists",
+            "explanation": "ISR Strategists are ISRD personnel embedded with (or closely coordinated with) the Strategy Division. They align ISR collection with campaign objectives and help define PIRs."
+          },
+          {
+            "id": "m2",
+            "text": "CMC (Collection Management Cell)",
+            "explanation": "The CMC produces the RSTA Annex — the document that formally tasks ISR collection platforms for the ATO. This directly supports the Combat Plans Division's ATO production process."
+          },
+          {
+            "id": "m3",
+            "text": "ISRDO (ISR Ops Duty Officer)",
+            "explanation": "The ISRDO is embedded on the Combat Operations Division floor. The ISRDO manages real-time ISR collection and re-tasking during ATO execution — serving the COD's dynamic needs while reporting back to the ISRD Chief."
+          }
+        ],
+        "targets": [
+          {
+            "id": "t1",
+            "text": "Strategy Division (SRD) — supports campaign planning, PIR development, and collection gap assessment for the long-range air plan.",
+            "correct": "m1"
+          },
+          {
+            "id": "t2",
+            "text": "Combat Plans Division (CPD) — produces the RSTA Annex that integrates ISR collection tasking into the ATO for the next cycle.",
+            "correct": "m2"
+          },
+          {
+            "id": "t3",
+            "text": "Combat Operations Division (COD) — manages real-time ISR collection and re-tasking on the operations floor during ATO execution.",
+            "correct": "m3"
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. ISR Strategists support the SRD (campaign planning). The CMC supports CPD (RSTA Annex for the ATO). The ISRDO supports the COD (real-time collection on the ops floor). The ISRD touches every division — it is the intelligence backbone of the AOC.",
+          "incorrect": "The ISRD embeds forward into three divisions: ISR Strategists → SRD (strategy and PIRs). CMC → CPD (RSTA Annex for the ATO). ISRDO → COD (real-time collection during execution). Each element serves a different time horizon: weeks ahead, next cycle, and right now.",
+          "whyMatters": "If you need ISR support for a strategy question, you go to the ISR Strategists — not the ISRDO. If you need a platform formally tasked for tomorrow's ATO, you go to the CMC — not the ACF Cell. If you need an ISR platform re-tasked right now during execution, you go to the ISRDO on the COD floor. Routing ISR requests to the wrong ISRD element means the request lands in the wrong time horizon.",
+          "evidenceClue": "See Evidence Card 'ISRD Internal Cells' — the embedded elements section describes ISR Strategists (SRD) and ISRDO (COD). The CMC entry identifies the RSTA Annex as the link to CPD/ATO."
+        }
       }
     ]
   },
@@ -1419,7 +1661,7 @@ window.ScenarioContent = {
       {
         "id": "p8a1",
         "type": "classification",
-        "typeLabel": "Activity 1 of 3 — Classification",
+        "typeLabel": "Activity 1 of 4 — Classification",
         "points": 3,
         "instruction": "Three crises arrive simultaneously. Classify each one by the AOC division that has primary responsibility.",
         "objectiveIds": [
@@ -1465,7 +1707,7 @@ window.ScenarioContent = {
       {
         "id": "p8a2",
         "type": "multiselect",
-        "typeLabel": "Activity 2 of 3 — Select All That Apply",
+        "typeLabel": "Activity 2 of 4 — Select All That Apply",
         "points": 4,
         "instruction": "Select ALL of the mission sets that belong to the Air Mobility Division (AMD). Do not select any that do not belong to AMD.",
         "objectiveIds": [
@@ -1507,7 +1749,7 @@ window.ScenarioContent = {
       {
         "id": "p8a3",
         "type": "matching",
-        "typeLabel": "Activity 3 of 3 — AMD Team-Level Matching",
+        "typeLabel": "Activity 3 of 4 — AMD Team-Level Matching",
         "points": 5,
         "instruction": "Inside the Air Mobility Division, each AMD position or team owns a specific mission. Match each AMD element to the responsibility it owns.",
         "objectiveIds": ["6.8-obj-3", "6.8-obj-4"],
@@ -1570,6 +1812,47 @@ window.ScenarioContent = {
           "incorrect": "Match each AMD element to its specific function. ALCT handles airlift. ARCT handles air refueling. AECT handles aeromedical evacuation (medical transport of patients). AMCT monitors execution of all AMD missions. The CMD advises the JFACC and coordinates all three mission sets at the division level.",
           "whyMatters": "The Block 6 test asks for these team-level distinctions specifically. Knowing the right AMD division for a problem is not enough — you have to route it to the right team within AMD. The wounded soldier transport call goes to AECT, not just 'AMD.' The tanker shortfall call goes to ARCT, not just 'AMD.'",
           "evidenceClue": "See Evidence Card 'AMD's Four Teams' for each team's primary mission and product, plus the CMD's role as the JFACC's primary advisor on mobility matters."
+        }
+      },
+      {
+        "id": "p8a4",
+        "type": "ranking",
+        "typeLabel": "Activity 4 of 4 — Priority Ranking",
+        "points": 4,
+        "instruction": "Four air mobility requests arrive at the AMD within 15 minutes of each other. All four are legitimate. The CMD (Chief of Mobility Division) must prioritize them according to the JFACC's guidance: mission-critical combat support first, then life-threatening medical needs, then routine sustainment, then non-mission requests. Rank them from highest priority (1) to lowest priority (4).",
+        "objectiveIds": ["6.8-obj-2"],
+        "items": [
+          {
+            "id": "r1",
+            "text": "Two critical trauma patients at FOB Ararat need AE transport to the hospital ship CNS Hippocrates within 2 hours or they will die.",
+            "correct": 2,
+            "explanation": "Life-threatening AE is the second-highest priority. The patients will die without transport — but the strike tanker directly enables tonight's combat mission, which the JFACC prioritized. AE for critical patients comes immediately after mission-critical combat support."
+          },
+          {
+            "id": "r2",
+            "text": "Tonight's SEAD strike package cannot reach the target area without a replacement tanker — Texaco 41 is down with a hydraulic failure. Without a tanker, the entire SEAD package is cancelled.",
+            "correct": 1,
+            "explanation": "This is the highest priority. The SEAD strike package is a mission-critical combat operation on tonight's ATO. Without the tanker, the JFACC's primary combat mission for the cycle fails. The CMD prioritizes per the JFACC's guidance — combat mission support comes first."
+          },
+          {
+            "id": "r3",
+            "text": "A coalition general officer needs transport from Atropian Air Base to the CJTF headquarters for a planning conference tomorrow morning.",
+            "correct": 4,
+            "explanation": "A VIP transport for a planning conference is the lowest priority. It is not combat-critical, not life-threatening, and not time-sensitive sustainment. The general can videoconference, delay travel, or use ground transport. Rank does not set AMD priorities — the JFACC's guidance does."
+          },
+          {
+            "id": "r4",
+            "text": "An ammunition resupply airlift is needed to restock the Gorgan 3rd Brigade, which expended 60% of its air defense munitions in yesterday's engagement. The resupply is scheduled for tomorrow.",
+            "correct": 3,
+            "explanation": "Ammunition resupply is important sustainment — the brigade needs it — but it is scheduled for tomorrow and is not immediately life-threatening or mission-critical for tonight's ATO. It ranks above the VIP transport but below the combat tanker and the critical AE patients."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. Priority order: (1) Strike tanker — tonight's mission fails without it. (2) Critical AE patients — they will die without transport. (3) Ammo resupply — important but scheduled for tomorrow. (4) VIP transport — not mission-critical. The CMD prioritizes per the JFACC's guidance, not per who calls first or who has the highest rank.",
+          "partial": "Partially correct. The key principle: the CMD prioritizes per the JFACC's guidance — mission-critical combat support first, life-threatening medical needs second, routine sustainment third, non-mission requests last. A caller's rank does not change the priority.",
+          "incorrect": "The CMD does not prioritize by rank, by who calls first, or by who shouts loudest. The JFACC's guidance sets the priority: (1) mission-critical combat support, (2) life-threatening medical, (3) routine sustainment, (4) non-mission requests. The general's ride is last because a planning conference is not a combat mission.",
+          "whyMatters": "In a real AOC, a coalition general officer who calls the AMD and says 'my transport is the top priority' will hear 'sir, the CMD prioritizes per the JFACC's guidance.' The CMD exists precisely to make these decisions — and to push back on requests that do not align with the JFACC's priorities. If the AMD prioritized by rank, the general's ride would bump the critical patients and the strike tanker.",
+          "evidenceClue": "See Evidence Card 'AMD's Four Teams' — the CMD sets priorities per the JFACC's guidance. See 'AE vs. CSAR' — AE is medical patient transport, a legitimate AMD function, but it is prioritized against other AMD demands."
         }
       }
     ]
