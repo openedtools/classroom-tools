@@ -505,7 +505,7 @@ window.ScenarioContent = {
       "6.4-obj-2",
       "6.4-obj-3"
     ],
-    "inject": "D-Day minus 36 hours. The Strategy Division (SRD) is building the Joint Air Operations Plan and is 12 hours from issuing the first Air Operations Directive for the initial ATO cycle. The SRD Chief, Col Patricia Nguyen, is running the planning cell. She needs ISR support — fast.\n\nMeanwhile, officers on the staff keep confusing the JAOP with the AOD, and no one can explain how these documents connect to the next planning step. The SRD is the engine of the air campaign. If the strategy is wrong, everything downstream is wrong.",
+    "inject": "D-Day minus 36 hours. The Strategy Division (SRD) is building the Joint Air Operations Plan (JAOP) — the long-range air campaign strategy — and is 12 hours from issuing the first Air Operations Directive (AOD) for the initial ATO cycle.\n\nIn Block 4, your intelligence cell identified the indicators and predicted the Donovian invasion. Now you are on the other side of the problem: instead of warning about what Donovia might do, you are inside the headquarters that decides what the coalition will do about it. The SRD is where that decision starts.\n\nThe SRD Chief, Col Patricia Nguyen, is running the planning cell. She needs ISR support — fast. Meanwhile, officers on the staff keep confusing the JAOP with the AOD, and no one can explain how these documents connect to what the Combat Plans Division (CPD) does next.\n\nThink of it this way: the SRD is the coach who calls the play. The CPD is the coordinator who draws it up. The COD is the team that runs it on the field. If the coach's play call is wrong — or if there is no play call at all — everything downstream fails.",
     "evidenceCards": [
       {
         "id": "e4-1",
@@ -518,13 +518,19 @@ window.ScenarioContent = {
         "title": "JAOP vs. AOD — Same Division, Different Purpose",
         "summary": "Both documents come from the SRD, but the JAOP is long-range and the AOD is cycle-specific.",
         "detail": "JAOP (Joint Air Operations Plan): The overarching air campaign plan. Covers the full campaign — days to weeks. Produced by the Strategy Plans Team. Guides the overall direction of the air campaign.\n\nAOD (Air Operations Directive): Issued by the Strategy Guidance Team each ATO cycle (every 24-48 hours). Translates the JAOP into specific objectives, weight-of-effort guidance, and priorities for the Combat Plans Division to use when building the next ATO.\n\nFlow: JAOP (long-range) → AOD (cycle-specific) → CPD receives AOD → builds MAAP → produces ATO."
+      },
+      {
+        "id": "e4-3",
+        "title": "The SRD Starts the Air Tasking Cycle",
+        "summary": "The SRD initiates the air tasking cycle by issuing the AOD — without it, no division downstream can do its job.",
+        "detail": "The air tasking cycle does not start with the ATO or the MAAP. It starts with the Strategy Division.\n\nThe SRD's primary function is developing the command's overall vision and guidance for the air campaign. It translates the JFC's objectives into an air strategy, then issues the Air Operations Directive (AOD) to kick off each planning cycle.\n\nWhy the AOD matters to CPD: The AOD's guidance and objectives flow directly into the daily air plan. It tells the Combat Plans Division what to prioritize, what weight of effort to apply, and what the JFACC wants to achieve in the next 24-48 hours. Without the AOD, CPD has no direction — they would be building an air plan without knowing what the commander wants right now.\n\nThe cycle: SRD issues the AOD → CPD receives the AOD and builds the MAAP → CPD produces the ATO → COD executes the ATO → Assessment results feed back to SRD for the next cycle.\n\nKey point: The SRD initiates the cycle. Every other division responds to what the SRD produces."
       }
     ],
     "activities": [
       {
         "id": "p4a1",
         "type": "decision",
-        "typeLabel": "Activity 1 of 2 — Best Answer",
+        "typeLabel": "Activity 1 of 5 — Best Answer",
         "points": 1,
         "instruction": "Col Nguyen needs ISR expertise in her planning cell to help define Priority Intelligence Requirements (PIRs) and assess collection gaps for the campaign. Which ISRD element does she need?",
         "objectiveIds": [
@@ -564,7 +570,7 @@ window.ScenarioContent = {
       {
         "id": "p4a2",
         "type": "sequencing",
-        "typeLabel": "Activity 2 of 2 — Put in Order",
+        "typeLabel": "Activity 2 of 5 — Put in Order",
         "points": 4,
         "instruction": "Arrange these four AOC planning documents in the correct order — from the broadest, longest-range document to the most specific execution document.",
         "objectiveIds": [
@@ -605,6 +611,117 @@ window.ScenarioContent = {
           "whyMatters": "Every CPD planner working on tonight's ATO is working from the AOD — which came from the JAOP. If a planner skips the AOD and goes straight to the ATO, they may plan missions that contradict the campaign strategy. The document chain is not bureaucracy — it is how the JFC's intent flows from concept to execution.",
           "evidenceClue": "See Evidence Card 'JAOP vs. AOD' for the distinction between these two SRD products and how they connect to CPD."
         }
+      },
+      {
+        "id": "p4a3",
+        "type": "decision",
+        "typeLabel": "Activity 3 of 5 — Best Answer",
+        "points": 1,
+        "instruction": "A newly arrived coalition officer asks you: 'I understand the SRD writes the JAOP and the AOD — but what is the SRD's primary function in the air tasking cycle? What are they actually doing for the JFACC?'",
+        "objectiveIds": ["6.4-obj-1"],
+        "options": [
+          {
+            "id": "a",
+            "text": "Developing the command's overall vision and guidance for the air campaign — translating the JFC's objectives into an air strategy that every other division supports.",
+            "correct": true,
+            "explanation": "The SRD's primary function is developing the command's vision and guidance. The JAOP and AOD are the products of that function, not the function itself. The SRD decides WHERE the air campaign is going; CPD figures out HOW to get there."
+          },
+          {
+            "id": "b",
+            "text": "Executing the current Air Tasking Order in real time and managing dynamic targeting decisions on the operations floor.",
+            "explanation": "This describes the Combat Operations Division (COD), not the SRD. The COD operates 24/7 and manages real-time execution. The SRD works 48-72 hours ahead — it is a planning division, not an execution division."
+          },
+          {
+            "id": "c",
+            "text": "Building the Master Air Attack Plan (MAAP) and producing the Air Tasking Order (ATO) for dissemination to coalition units.",
+            "explanation": "This describes the Combat Plans Division (CPD). The CPD builds the MAAP and ATO based on the guidance it receives from the SRD. The SRD provides the direction; CPD turns it into an executable plan."
+          },
+          {
+            "id": "d",
+            "text": "Formally tasking ISR collection platforms and producing the RSTA Annex for integration into the ATO.",
+            "explanation": "This describes the Collection Management Cell (CMC) within the ISR Division (ISRD). The SRD uses ISR products but does not task ISR platforms — that is the CMC's job."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. The SRD's primary function is developing the command's vision and guidance. Think of the SRD as the coach who calls the play — the JAOP and AOD are the play calls. CPD draws up the play (MAAP/ATO). COD runs it on the field.",
+          "incorrect": "The SRD develops the command's vision and guidance — it sets the direction for the entire air campaign. ATO execution belongs to COD. MAAP/ATO production belongs to CPD. ISR collection tasking belongs to ISRD (CMC). The SRD works at the strategic level, ahead of everyone else.",
+          "whyMatters": "If you confuse the SRD with the CPD or the COD, you will bring the wrong problem to the wrong division. The SRD answers 'what should we achieve?' — not 'how do we build tonight's ATO' (CPD) or 'what is happening right now' (COD). A staff officer who misunderstands the SRD's role wastes time asking strategy officers to solve tactical problems.",
+          "evidenceClue": "See Evidence Card 'SRD Internal Teams' — the first line states the primary function: 'develop the command's overall vision and guidance.'"
+        }
+      },
+      {
+        "id": "p4a4",
+        "type": "decision",
+        "typeLabel": "Activity 4 of 5 — Best Answer",
+        "points": 1,
+        "instruction": "The AOC is standing up and the air tasking cycle is about to begin for the first time. A CPD planner asks: 'When does our work start? Who kicks off the cycle?' Which statement correctly identifies how the air tasking cycle begins?",
+        "objectiveIds": ["6.4-obj-1", "6.4-obj-3"],
+        "options": [
+          {
+            "id": "a",
+            "text": "The Combat Plans Division (CPD) initiates the cycle by publishing the Air Tasking Order — the ATO is the first document produced in each cycle.",
+            "explanation": "The ATO is the last major document in the cycle, not the first. CPD cannot build the ATO until it receives guidance from the SRD telling it what to prioritize."
+          },
+          {
+            "id": "b",
+            "text": "The Strategy Division (SRD) initiates the air tasking cycle by issuing the Air Operations Directive (AOD) — the AOD provides the guidance and objectives that CPD needs to begin planning.",
+            "correct": true,
+            "explanation": "The SRD initiates the cycle. The AOD tells CPD what to prioritize, what weight of effort to apply, and what the JFACC wants to achieve in the next 24-48 hours. Without the AOD, CPD has no direction."
+          },
+          {
+            "id": "c",
+            "text": "The Combat Operations Division (COD) initiates the cycle by executing the previous ATO — execution results automatically trigger the next planning cycle.",
+            "explanation": "Execution results and BDA feed back into the next cycle, but the COD does not initiate it. The SRD reviews those results and then issues the AOD to start the next cycle. The COD reacts to the cycle; it does not start it."
+          },
+          {
+            "id": "d",
+            "text": "The ISR Division (ISRD) initiates the cycle by issuing the RSTA Annex — ISR collection must be tasked before any other planning can begin.",
+            "explanation": "The RSTA Annex is produced by the CMC later in the cycle to integrate ISR tasking into the ATO. The ISRD supports the cycle but does not initiate it — the SRD does."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. The Strategy Division initiates the air tasking cycle by issuing the AOD. The AOD is the starting signal — it tells CPD what to plan, what to prioritize, and what the JFACC wants to achieve. No AOD means no ATO.",
+          "incorrect": "The air tasking cycle starts with strategy, not with planning or execution. The SRD issues the AOD → CPD receives it and builds the MAAP/ATO → COD executes the ATO → assessment feeds back to SRD. The SRD is always first.",
+          "whyMatters": "A CPD planner who does not wait for the AOD may start building an air plan based on yesterday's guidance — which may no longer reflect the JFACC's priorities. The SRD initiates each cycle so the air campaign can adapt to the changing situation. Skipping the AOD means the coalition flies yesterday's war.",
+          "evidenceClue": "See Evidence Card 'The SRD Starts the Air Tasking Cycle' — the cycle begins with the SRD issuing the AOD to CPD."
+        }
+      },
+      {
+        "id": "p4a5",
+        "type": "decision",
+        "typeLabel": "Activity 5 of 5 — Best Answer",
+        "points": 1,
+        "instruction": "A frustrated CPD planner says: 'We already know the JFACC's mission — achieve air superiority, degrade Donovian forces, protect civilian infrastructure. Why can't we just start building the ATO without waiting for the AOD from the SRD? We are wasting time.' What is the best response?",
+        "objectiveIds": ["6.4-obj-3", "6.5-obj-3"],
+        "options": [
+          {
+            "id": "a",
+            "text": "You are right — the JFACC mission statement is enough. The AOD is an optional planning document that CPD can skip when time is short.",
+            "explanation": "The AOD is not optional. The JFACC's broad mission statement does not change every cycle — but the situation does. The AOD provides the cycle-specific guidance that CPD needs to build a plan that matches today's reality."
+          },
+          {
+            "id": "b",
+            "text": "The AOD's guidance and objectives flow into the daily air plan — it tells CPD what to prioritize, what weight of effort to apply, and what the JFACC wants to achieve in this specific cycle. Without it, CPD cannot build an air plan that reflects the current situation.",
+            "correct": true,
+            "explanation": "The JFACC mission statement is broad and enduring. The AOD translates it into cycle-specific guidance — priority targets, weight of effort, effects to achieve in the next 24-48 hours. Without the AOD, CPD would plan against a static mission statement instead of adapting to what is happening now."
+          },
+          {
+            "id": "c",
+            "text": "The AOD contains the formatted ATO template that CPD fills in — without the template, CPD cannot publish the ATO in the correct format.",
+            "explanation": "The AOD is not a template or a form. It is strategic guidance — objectives, priorities, and weight-of-effort direction. The ATO format is a CPD responsibility (ATO Production Team), not something the SRD provides."
+          },
+          {
+            "id": "d",
+            "text": "The AOD lists every aircraft and tail number available for the cycle — CPD needs this aircraft inventory before it can allocate sorties.",
+            "explanation": "The AOD does not list aircraft or tail numbers. Aircraft availability comes from the wings and partner nations. The AOD provides strategic guidance — what to achieve and what to prioritize — not asset inventories."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. The AOD's guidance and objectives flow into the daily air plan. The broad mission statement says 'achieve air superiority' — but the AOD says 'tonight, prioritize SEAD against these radar sites, weight main effort toward the northern corridor, and hold reserve for a possible ground-force CAS request.' That specificity is what CPD needs to build a plan that works right now.",
+          "incorrect": "The AOD is not optional, not a template, and not an asset list. It is cycle-specific strategic guidance: what to prioritize, what effects to achieve, what weight of effort to apply. The JFACC's mission statement does not change every 24 hours — but the AOD does, because the battlefield changes.",
+          "whyMatters": "If CPD builds the ATO without the AOD, tonight's air plan may repeat yesterday's priorities even though the situation has changed. Yesterday's AOD prioritized SEAD in the northern corridor. Today, Donovian forces shifted south — but without a new AOD, CPD builds another northern SEAD package while the real threat moves unopposed. The AOD is how strategy adapts.",
+          "evidenceClue": "See Evidence Card 'The SRD Starts the Air Tasking Cycle' — specifically the section 'Why the AOD matters to CPD.'"
+        }
       }
     ]
   },
@@ -618,20 +735,26 @@ window.ScenarioContent = {
       "6.5-obj-2",
       "6.5-obj-3"
     ],
-    "inject": "D-Day minus 24 hours. The Combat Plans Division is in full sprint. The CPD provides near-term planning 48 to 96 hours prior to ATO execution — and the first ATO of the campaign must be complete and disseminated in 18 hours. Four simultaneous planning tasks hit the floor. The CPD Chief needs them routed to the right team immediately — there is no time for confusion about who does what.\n\nThe CPD has four key internal teams: the MAAP Team (allocates sorties to missions), the Targeting Effects Team (TET) (target nomination, weaponeering, and CDE), the C2 Planning Team (airspace and SPINS/ROE integration), and the ATO Production Team (compiles and publishes the final ATO).",
+    "inject": "D-Day minus 24 hours. The Combat Plans Division (CPD) is in full sprint. If the SRD decides WHAT the air campaign should achieve, the CPD decides HOW — which aircraft, which targets, which timing, which airspace. The CPD provides near-term planning 48 to 96 hours prior to ATO execution, and the first ATO of the campaign must be complete and disseminated in 18 hours.\n\nFour simultaneous planning tasks hit the floor. The CPD Chief needs them routed to the right team immediately — there is no time for confusion about who does what.\n\nThe CPD has four key internal teams: the MAAP Team (allocates sorties to missions and sets timing and sequencing), the Targeting Effects Team or TET (nominates and vets targets, conducts weaponeering and Collateral Damage Estimation), the C2 Planning Team (produces the Airspace Control Order and SPINS, integrates ROE), and the ATO Production Team (compiles and publishes the final ATO).",
     "evidenceCards": [
       {
         "id": "e5-1",
         "title": "CPD's Four Key Teams",
         "summary": "Each CPD team handles a distinct part of building the ATO.",
-        "detail": "MAAP Team: Allocates available air sorties to missions; sets timing, sequencing, and weight of effort; matches the right aircraft to the right target type. Produces the Master Air Attack Plan.\n\nTargeting Effects Team (TET): Nominates and vets targets for inclusion in the Joint Integrated Prioritized Target List (JIPTL); determines which munition achieves the desired effect for each approved target; conducts Collateral Damage Estimation (CDE); ensures target-level compliance with ROE and LOAC.\n\nC2 Planning Team: Plans the airspace control architecture; produces the Air Control Order (ACO) and Special Instructions (SPINS) — which integrate cycle ROE supplements and special procedures into the daily plan; deconflicts with ground and naval C2 nodes. The ACO defines airspace control measures, boundaries, and communication procedures for the cycle.\n\nATO Production Team: Compiles all inputs from the three planning teams into the formatted ATO document; ensures accuracy and on-time dissemination to all coalition units."
+        "detail": "MAAP Team: Allocates available air sorties to missions; sets timing, sequencing, and weight of effort; matches the right aircraft to the right target type. Produces the Master Air Attack Plan. Think of the MAAP Team as the architect drawing tomorrow's blueprint.\n\nTargeting Effects Team (TET): Nominates and vets targets to achieve strategy goals; develops and refines the Joint Integrated Prioritized Target List (JIPTL); determines which munition achieves the desired effect for each approved target (weaponeering); conducts Collateral Damage Estimation (CDE); ensures target-level compliance with ROE and LOAC. The MAAP Team decides WHICH targets and HOW MANY aircraft; TET decides WHAT WEAPON and checks civilian risk.\n\nC2 Planning Team: Plans the airspace control architecture; produces the Air Control Order (ACO) and Special Instructions (SPINS) — which integrate cycle ROE supplements and special procedures into the daily plan; deconflicts with ground and naval C2 nodes. The ACO defines airspace control measures, boundaries, and communication procedures for the cycle.\n\nATO Production Team: Compiles all inputs from the three planning teams into the formatted ATO document; ensures accuracy and on-time dissemination to all coalition units. Think of the ATO Production Team as the publisher."
+      },
+      {
+        "id": "e5-2",
+        "title": "CPD in the Air Tasking Cycle",
+        "summary": "CPD turns the SRD's guidance into an executable plan. It works 48 to 96 hours ahead of execution.",
+        "detail": "CPD's place in the cycle: The SRD issues the Air Operations Directive (AOD). CPD receives the AOD and turns its guidance into an executable plan — the MAAP first, then the ATO.\n\nPlanning horizon: CPD provides near-term planning 48 to 96 hours prior to ATO execution. This window gives CPD enough time to build the MAAP, coordinate targeting, deconflict airspace, and compile the ATO before it must be disseminated to all coalition units.\n\nMAAP vs. ATO — the key distinction: The MAAP is the detailed execution plan — it allocates sorties to targets, sets timing and sequencing, and builds the strike packages. The ATO is the formal, published order — it is the document that goes to every coalition unit and tells them exactly what to fly, when, and where. The MAAP comes first; the ATO comes second. The MAAP is the plan; the ATO is the order.\n\nWhat CPD hands off: CPD delivers the ATO, ACO, and SPINS to the COD for execution. Once the ATO is published, it belongs to the COD — CPD is already working on the next cycle."
       }
     ],
     "activities": [
       {
         "id": "p5a1",
         "type": "classification",
-        "typeLabel": "Activity 1 of 2 — Classification",
+        "typeLabel": "Activity 1 of 5 — Classification",
         "points": 4,
         "instruction": "Four planning tasks hit the CPD floor simultaneously. Classify each task by the correct CPD team responsible for executing it.",
         "objectiveIds": [
@@ -691,7 +814,7 @@ window.ScenarioContent = {
       {
         "id": "p5a2",
         "type": "fillslot",
-        "typeLabel": "Activity 2 of 2 — Fill the Assessment",
+        "typeLabel": "Activity 2 of 5 — Fill the Assessment",
         "points": 3,
         "instruction": "Complete the sentence that explains the relationship between the MAAP and the ATO.",
         "objectiveIds": [
@@ -751,6 +874,117 @@ window.ScenarioContent = {
           "whyMatters": "Understanding that the MAAP comes before the ATO tells you where in the process to intervene. If a commander wants to change tonight's targets, he talks to the MAAP Team before the ATO is finalized — not the ATO Production Team after the fact.",
           "evidenceClue": "See Evidence Card 'CPD's Four Key Teams' — the MAAP Team produces the Master Air Attack Plan, the ATO Production Team produces the final ATO from it."
         }
+      },
+      {
+        "id": "p5a3",
+        "type": "decision",
+        "typeLabel": "Activity 3 of 5 — Best Answer",
+        "points": 1,
+        "instruction": "Tonight's ATO has French Rafales, Gorgan F-16s, and U.S. Navy F/A-18s all operating in overlapping airspace over the Zabzimek Corridor. To prevent fratricide, someone must produce a document that defines who flies where, when, and on what frequencies. What does the Air Control Order (ACO) define?",
+        "objectiveIds": ["6.5-obj-2"],
+        "options": [
+          {
+            "id": "a",
+            "text": "Airspace control measures, boundaries, and communication procedures for the cycle — it is the document that prevents aircraft from different nations and missions from colliding or engaging each other.",
+            "correct": true,
+            "explanation": "The ACO defines airspace control measures (who owns what airspace), boundaries (where each force may operate), and communication procedures (frequencies and call signs). It is produced by the C2 Planning Team and published alongside the ATO."
+          },
+          {
+            "id": "b",
+            "text": "Target priorities and weapons selection for each strike package — it tells each aircraft which target to hit and what munition to use.",
+            "explanation": "Target priorities and weapons selection are handled by the Targeting Effects Team (TET) and the MAAP Team, not by the ACO. The ACO controls airspace, not targeting."
+          },
+          {
+            "id": "c",
+            "text": "Intelligence collection requirements and ISR platform tasking — it assigns ISR assets to specific collection areas for the cycle.",
+            "explanation": "ISR collection tasking is handled by the RSTA Annex, produced by the Collection Management Cell (CMC) in the ISR Division. The ACO manages airspace, not ISR collection."
+          },
+          {
+            "id": "d",
+            "text": "The JFACC's campaign strategy and long-range objectives — it defines the overall direction of the air campaign for the next several weeks.",
+            "explanation": "Long-range campaign strategy belongs to the JAOP, produced by the SRD. The ACO is a cycle-specific airspace document that accompanies the ATO, not a strategy document."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. The ACO defines airspace control measures, boundaries, and communication procedures. Think of the ATO as telling you WHAT to do; the ACO tells you WHERE you may go; the SPINS tell you the fine print (frequencies, IFF codes, ROE supplements).",
+          "incorrect": "The ACO is about airspace control — not targeting (TET/MAAP), not ISR collection (CMC/RSTA Annex), and not campaign strategy (JAOP/SRD). It defines the measures, boundaries, and communication procedures that keep seven nations' aircraft from running into each other.",
+          "whyMatters": "With seven coalition nations flying in the same airspace, the ACO is what prevents a Polish F-16 and a French Rafale from occupying the same block of sky at the same time. Without it, the risk of midair collision or fratricide is unacceptable — especially in a contested environment with active Donovian IADS.",
+          "evidenceClue": "See Evidence Card 'CPD's Four Key Teams' — the C2 Planning Team entry defines the ACO's content: airspace control measures, boundaries, and communication procedures."
+        }
+      },
+      {
+        "id": "p5a4",
+        "type": "decision",
+        "typeLabel": "Activity 4 of 5 — Best Answer",
+        "points": 1,
+        "instruction": "A coalition LNO asks: 'How far in advance does the CPD start planning the ATO? When does their work begin relative to execution?' Which answer correctly describes the CPD's planning horizon?",
+        "objectiveIds": ["6.5-obj-1"],
+        "options": [
+          {
+            "id": "a",
+            "text": "CPD provides near-term planning 48 to 96 hours prior to ATO execution — enough time to receive the AOD, build the MAAP, coordinate targeting and airspace, and compile the ATO before dissemination.",
+            "correct": true,
+            "explanation": "The CPD works 48 to 96 hours ahead of execution. This window gives CPD time to receive the AOD from SRD, build the MAAP, coordinate with the TET, produce the ACO and SPINS, and compile the final ATO."
+          },
+          {
+            "id": "b",
+            "text": "CPD plans 1 to 6 hours before execution — the ATO is built in real time as the situation develops on the operations floor.",
+            "explanation": "1 to 6 hours is the COD's domain — real-time execution and dynamic targeting. CPD works much further ahead. An ATO built in real time would have no coordination, no CDE, and no airspace deconfliction."
+          },
+          {
+            "id": "c",
+            "text": "CPD plans 7 to 14 days ahead — the ATO is a long-range document covering the entire campaign.",
+            "explanation": "7 to 14 days is the SRD's planning horizon for the JAOP. The ATO is a cycle-specific document covering roughly 24 hours. CPD works on the next cycle, not the next week."
+          },
+          {
+            "id": "d",
+            "text": "CPD has no fixed planning horizon — the ATO is published whenever the commander decides the plan is ready.",
+            "explanation": "The ATO follows a disciplined cycle tied to the air tasking cycle. CPD must publish the ATO on a predictable schedule (typically every 24 hours) so coalition units can prepare. Unpredictable publication would paralyze the coalition."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. CPD provides near-term planning 48 to 96 hours prior to ATO execution. This 2-to-4-day window ensures there is enough time for every CPD team to do its work — MAAP, targeting, airspace, and production — before the ATO goes out the door.",
+          "incorrect": "CPD's planning horizon is 48 to 96 hours before execution. That is not real-time (COD), not weeks ahead (SRD/JAOP), and not open-ended. The cycle is predictable and disciplined — every coalition unit depends on receiving the ATO on time.",
+          "whyMatters": "If a staff officer does not understand CPD's planning horizon, they may bring a request too late or too early. A CDE request submitted 6 hours before execution may not have time for TET review. A strategy question submitted to CPD should go to the SRD instead — CPD works 48 to 96 hours out, not weeks out.",
+          "evidenceClue": "See Evidence Card 'CPD in the Air Tasking Cycle' — the planning horizon section states 48 to 96 hours prior to ATO execution."
+        }
+      },
+      {
+        "id": "p5a5",
+        "type": "decision",
+        "typeLabel": "Activity 5 of 5 — Best Answer",
+        "points": 1,
+        "instruction": "An officer new to the AOC says: 'I keep hearing people talk about the MAAP and the ATO like they are different things. Aren't they the same document?' What is the key difference between the MAAP and the ATO?",
+        "objectiveIds": ["6.5-obj-2", "6.5-obj-3"],
+        "options": [
+          {
+            "id": "a",
+            "text": "The MAAP is the detailed execution plan that allocates sorties to targets and sets timing; the ATO is the formal, published order that goes to every coalition unit.",
+            "correct": true,
+            "explanation": "The MAAP is the plan — it is the detailed scheme where CPD works out which aircraft hit which targets, in what order, with what support. The ATO is the order — it is the formal, published document that goes to every coalition unit and tells them exactly what to fly. The MAAP comes first; the ATO is built from it."
+          },
+          {
+            "id": "b",
+            "text": "The MAAP covers the entire campaign over weeks; the ATO covers a single 24-hour cycle.",
+            "explanation": "Both the MAAP and the ATO are cycle-specific documents — neither covers weeks. The long-range campaign plan is the JAOP, produced by the SRD. The MAAP and ATO serve the same cycle; they differ in function, not timeframe."
+          },
+          {
+            "id": "c",
+            "text": "The MAAP is produced by the Strategy Division; the ATO is produced by the Combat Plans Division.",
+            "explanation": "Both the MAAP and the ATO are produced by the Combat Plans Division. The SRD produces the JAOP and AOD. The CPD produces the MAAP first, then the ATO Production Team compiles it into the formal ATO."
+          },
+          {
+            "id": "d",
+            "text": "They are the same document — 'MAAP' is the informal name and 'ATO' is the formal name for the same product.",
+            "explanation": "They are not the same document. The MAAP is the planning document that comes first — the internal working product. The ATO is the formal order that comes second — the published product distributed to units. Confusing the two causes coordination failures."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. The MAAP is the detailed execution plan; the ATO is the formal, published order. The MAAP comes first — CPD works out the plan. Then the ATO Production Team compiles it into the ATO — the order that goes to every coalition unit.",
+          "incorrect": "The MAAP and the ATO are two different documents produced by CPD in sequence. The MAAP is the detailed plan (which aircraft, which targets, which timing). The ATO is the formal order (the published document units receive). They serve the same cycle but have different roles — plan vs. order.",
+          "whyMatters": "If a staff officer treats the MAAP and the ATO as the same thing, they may try to change the ATO directly instead of going back to the MAAP Team. Changes to the plan must happen during MAAP development — once the ATO is published, changes require dynamic targeting authority from the CCO on the COD floor.",
+          "evidenceClue": "See Evidence Card 'CPD in the Air Tasking Cycle' — the 'MAAP vs. ATO' section explains the distinction: plan vs. order."
+        }
       }
     ]
   },
@@ -765,20 +999,26 @@ window.ScenarioContent = {
       "6.6-obj-3",
       "6.6-obj-4"
     ],
-    "inject": "D-Day plus 2 hours. The ATO is executing. The COD operations floor is fully manned. Brig Gen Torres is in his battle chair. The Chief of Combat Operations (CCO), Col David Kim, is managing execution on behalf of the JFACC. Four crises hit the floor simultaneously.\n\nThe COD operates 24/7 during combat operations. The CCO has specific personal authorities — approving time-sensitive targets, redirecting missions, applying ROE — that cannot be delegated. Every other problem has a team or position responsible for handling it.",
+    "inject": "D-Day plus 2 hours. The ATO is executing. The COD operations floor is fully manned. Brig Gen Torres is in his battle chair. The Chief of Combat Operations (CCO), Col David Kim, is managing execution on behalf of the JFACC.\n\nThink of it this way: CPD writes the script; COD performs the play — and improvises when the stage catches fire. The COD operates 24/7 during combat operations. The CCO has specific personal authorities — approving time-sensitive targets, redirecting missions, applying ROE — that cannot be delegated to anyone. Every other problem has a team or position responsible for handling it.\n\nFour crises hit the floor simultaneously. Who handles what?",
     "evidenceCards": [
       {
         "id": "e6-1",
         "title": "COD Teams and Positions",
         "summary": "The COD has four organic teams plus the embedded ISRDO from the ISR Division.",
-        "detail": "CCO (Chief of Combat Operations): Senior decision-maker on the operations floor. Leads the execution of the current Air Tasking Order on behalf of the JFACC during real-time operations. Has personal authority to approve time-sensitive targets, redirect missions, divert aircraft, and apply ROE. Cannot delegate these decisions.\n\nOffensive Operations Team: Monitors execution of all offensive air missions — strike, interdiction, CAS. Tracks aircraft status and BDA.\n\nDefensive Operations Team: Manages oversight of the execution of theater air defense operations. Monitors Defensive Counter-Air (DCA) and theater missile defense. Tracks threats to friendly aircraft and bases.\n\nACF Team (Analysis, Correlation and Fusion): Provides near-real-time intelligence fusion to the operations floor. Fuses ELINT, IMINT, and other feeds to deliver threat warnings and immediate target analysis that support CCO decision-making and dynamic targeting.\n\nICT (Interface Control Team): Manages data links and the Common Operating Picture (COP). Ensures all nodes are connected and the air picture is accurate and shared across the operations floor.\n\nISRDO (ISR Operations Duty Officer): Embedded from the ISR Division. Manages real-time ISR collection and re-tasking during execution."
+        "detail": "CCO (Chief of Combat Operations): Senior decision-maker on the operations floor. Leads the execution of the current Air Tasking Order on behalf of the JFACC during real-time operations. Has personal authority to approve time-sensitive targets, redirect missions, divert aircraft, and apply ROE. Cannot delegate these decisions.\n\nOffensive Operations Team: Monitors execution of all offensive air missions — strike, interdiction, CAS. Tracks aircraft status and BDA.\n\nDefensive Operations Team: Manages oversight of the execution of theater air defense operations. Monitors Defensive Counter-Air (DCA) and theater missile defense. Tracks threats to friendly aircraft and bases.\n\nACF Team (Analysis, Correlation and Fusion): Provides near-real-time intelligence fusion to the operations floor. Fuses ELINT, IMINT, and other feeds to deliver threat warnings and immediate target analysis that support CCO decision-making and dynamic targeting.\n\nICT (Interface Control Team): Manages data links and the Common Operating Picture (COP). Ensures all nodes are connected and the air picture is accurate and shared across the operations floor. Without ICT, the COD is blind — no one can see where any friendly aircraft are.\n\nISRDO (ISR Operations Duty Officer): Embedded from the ISR Division — belongs to the ISRD, not the COD. The ISRDO sits on the COD floor to manage real-time ISR collection and re-tasking during execution. This is a dashed-line relationship: ISRDO serves the COD's real-time needs but reports to the ISRD Chief."
+      },
+      {
+        "id": "e6-2",
+        "title": "Dynamic Targeting — When the Plan Changes",
+        "summary": "Dynamic targeting is the process of engaging targets that arise during ATO execution and were not planned. Only the CCO can approve.",
+        "detail": "Deliberate targeting: Targets that are planned into the ATO before execution begins. CPD nominates them through the TET, weaponeers them, completes CDE, and places them on the ATO. This is the normal planning process.\n\nDynamic targeting: The process of engaging targets that arise during ATO execution and were not planned. A Donovian BTR column that appears on a road 30 minutes after the ATO was published is a dynamic target — it was not on the ATO. Only the CCO has the authority to approve engagement of a dynamic or time-sensitive target. The CCO acts on behalf of the JFACC for these real-time decisions.\n\nHow the COD supports dynamic targeting: The ACF Team provides threat warnings and immediate target analysis — confirming the target is real, identifying what it is, and assessing collateral risk. The ISRDO re-tasks ISR platforms to collect on the new target. The Offensive Ops Team tracks available aircraft that can be redirected. The CCO makes the engagement decision based on all of this input.\n\nKey term: A Time-Sensitive Target (TST) is a target that requires immediate engagement because the opportunity to strike will disappear. TSTs are always dynamic targets — they were not on the ATO."
       }
     ],
     "activities": [
       {
         "id": "p6a1",
         "type": "classification",
-        "typeLabel": "Activity 1 of 2 — Classification",
+        "typeLabel": "Activity 1 of 4 — Classification",
         "points": 4,
         "instruction": "Four crises hit the COD operations floor simultaneously. Classify each one by the correct COD team or position that has primary responsibility.",
         "objectiveIds": [
@@ -839,7 +1079,7 @@ window.ScenarioContent = {
       {
         "id": "p6a2",
         "type": "decision",
-        "typeLabel": "Activity 2 of 2 — Best Answer",
+        "typeLabel": "Activity 2 of 4 — Best Answer",
         "points": 1,
         "instruction": "The CCO (Chief of Combat Operations) has specific personal authorities during ATO execution. Which of the following actions is specifically within the CCO's personal authority?",
         "objectiveIds": [
@@ -873,6 +1113,89 @@ window.ScenarioContent = {
           "incorrect": "The CCO's personal authorities are execution-focused and time-critical: approving time-sensitive targets, redirecting missions, diverting aircraft, and applying ROE. These are not planning functions (AOD, ATO) and not ISR tasking functions (CMC).",
           "whyMatters": "A Donovian BTR column moving toward a critical bridge is a time-sensitive target. If no one has authority to approve engagement, the window closes and the bridge is lost. The CCO exists precisely for this — real-time authority during execution when there is no time to go back to the planning cycle.",
           "evidenceClue": "See Evidence Card 'COD Teams and Positions' — the CCO entry specifically lists dynamic targeting approval as a personal authority."
+        }
+      },
+      {
+        "id": "p6a3",
+        "type": "multiselect",
+        "typeLabel": "Activity 3 of 4 — Select All That Apply",
+        "points": 4,
+        "instruction": "Five events hit the COD floor within two minutes of each other. Select ALL events that require the CCO's personal authority — meaning Col Kim himself must make the decision, and no one else on the floor can handle it for him.",
+        "objectiveIds": ["6.6-obj-2", "6.6-obj-3"],
+        "options": [
+          {
+            "id": "ms1",
+            "text": "A Donovian BTR column is moving toward the Kazbegi Bridge. It was not on the ATO. An F-16 flight has ordnance and is 4 minutes away — but the target has not been approved for engagement.",
+            "correct": true,
+            "explanation": "This is a time-sensitive target (TST) not on the ATO. Approving engagement of a dynamic target is the CCO's personal authority. No one else on the floor can authorize this strike."
+          },
+          {
+            "id": "ms2",
+            "text": "Viper 11 is in the target area but reports civilians near the aim point. The JTAC on the ground confirms civilian presence. A weapons release decision under ROE is needed immediately.",
+            "correct": true,
+            "explanation": "ROE decisions — especially weapons release calls with civilian presence — are the CCO's personal authority. This decision cannot be delegated because it carries legal and strategic consequences."
+          },
+          {
+            "id": "ms3",
+            "text": "The data link feeding the Common Operating Picture has dropped. No one on the floor can see friendly aircraft positions.",
+            "correct": false,
+            "explanation": "The ICT (Interface Control Team) handles data link and COP issues. This is critical and urgent, but it is a technical problem — the ICT team restores connectivity. The CCO does not need to make this decision personally."
+          },
+          {
+            "id": "ms4",
+            "text": "An ELINT report shows the Donovian SA-15 Gauntlet battery has relocated directly under the inbound strike package's ingress route. The threat picture needs an immediate update.",
+            "correct": false,
+            "explanation": "Updating the threat picture is the Defensive Operations Team's function. They track and update air defense threats. The CCO needs to know, but the Defensive Ops Team handles the update — the CCO does not personally update the threat picture."
+          },
+          {
+            "id": "ms5",
+            "text": "The JFACC wants to divert two F/A-18s from their planned SEAD mission to provide emergency CAS to the Gorgan 3rd Brigade, which is under direct fire. Changing the ATO in real time requires authorization.",
+            "correct": true,
+            "explanation": "Redirecting missions and diverting aircraft — changing the ATO in real time — is the CCO's personal authority. Diverting assets from one mission to another has operational consequences that only the CCO (acting for the JFACC) can authorize."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. Three events require the CCO personally: the time-sensitive target (dynamic targeting approval), the ROE/weapons release decision (civilian presence), and the mission diversion (changing the ATO in real time). The COP outage goes to ICT. The threat update goes to Defensive Ops.",
+          "incorrect": "The CCO's personal authorities are: approving time-sensitive/dynamic targets, applying ROE (especially weapons release with civilians present), and redirecting/diverting missions (changing the ATO in real time). Technical problems (COP outage → ICT) and threat picture updates (SA-15 relocation → Defensive Ops) are team-level responsibilities — urgent, but not CCO-personal.",
+          "whyMatters": "If everything goes to the CCO, he is overwhelmed and the real CCO-level decisions — the ones with legal and strategic consequences — get delayed. If a CCO-level decision goes to a team instead, it may not have legal authority. Knowing which decisions require the CCO personally and which a team can handle is what makes an operations floor function under pressure.",
+          "evidenceClue": "See Evidence Card 'COD Teams and Positions' for the CCO's personal authorities and Evidence Card 'Dynamic Targeting' for the TST engagement process."
+        }
+      },
+      {
+        "id": "p6a4",
+        "type": "decision",
+        "typeLabel": "Activity 4 of 4 — Best Answer",
+        "points": 1,
+        "instruction": "During ATO execution, the ACF Team reports that a Donovian logistics convoy has appeared on Route 7 near the Zabzimek Corridor — it was not on the ATO. Col Kim (CCO) needs to decide whether to engage. What is the correct term for the process of engaging a target that arises during execution and was not planned into the ATO?",
+        "objectiveIds": ["6.6-obj-3"],
+        "options": [
+          {
+            "id": "a",
+            "text": "Deliberate targeting — the standard process of nominating targets through the TET and placing them on the ATO during the planning cycle.",
+            "explanation": "Deliberate targeting is what happens BEFORE execution — targets are planned into the ATO by CPD/TET. This convoy appeared DURING execution and was not on the ATO. That makes it the opposite of deliberate targeting."
+          },
+          {
+            "id": "b",
+            "text": "Dynamic targeting — the process of engaging targets that arise during ATO execution and were not planned.",
+            "correct": true,
+            "explanation": "Dynamic targeting is the correct term. It applies to any target that arises during execution and was not on the ATO. Time-Sensitive Targets (TSTs) are a subset of dynamic targets — targets where the engagement window is closing fast."
+          },
+          {
+            "id": "c",
+            "text": "Collection management — the process of tasking ISR platforms to locate and track new targets for the next planning cycle.",
+            "explanation": "Collection management is an ISRD function (CMC). While the ISRDO may re-task ISR to confirm the convoy, collection management is the ISR tasking process — not the engagement process. The question asks about engaging the target, not collecting on it."
+          },
+          {
+            "id": "d",
+            "text": "Battle Damage Assessment — the process of evaluating whether a previous strike achieved its intended effect.",
+            "explanation": "BDA happens after a strike, not before. BDA evaluates the results of an engagement. This convoy has not been struck yet — the decision is whether to engage it."
+          }
+        ],
+        "feedback": {
+          "correct": "Correct. Dynamic targeting is the process of engaging targets that arise during ATO execution and were not planned. The key distinction: deliberate targeting happens during CPD's planning cycle (before execution); dynamic targeting happens during COD's execution (in real time). Only the CCO can approve dynamic engagements.",
+          "incorrect": "The process of engaging an unplanned target during execution is called dynamic targeting. Deliberate targeting is the normal CPD planning process (before execution). Collection management is ISR tasking (ISRD/CMC). BDA is post-strike assessment. Dynamic targeting is the CCO's real-time engagement authority.",
+          "whyMatters": "If a staff officer confuses dynamic targeting with deliberate targeting, they may try to send the convoy target through CPD's planning cycle — which takes 48 to 96 hours. By then the convoy is gone. Dynamic targeting exists because the battlefield does not wait for the next ATO cycle.",
+          "evidenceClue": "See Evidence Card 'Dynamic Targeting — When the Plan Changes' for the distinction between deliberate and dynamic targeting and the CCO's role."
         }
       }
     ]
