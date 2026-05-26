@@ -140,23 +140,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "COCOM — retains full U.S. statutory authority over all coalition assets for legal accountability.",
+              "text": "COCOM — the highest U.S. command authority, giving Torres permanent statutory control over Gorgan forces for the campaign.",
               "explanation": "COCOM cannot be held over partner nation forces. It is a U.S.-only statutory authority that applies to U.S. forces — it cannot be extended to Gorgan aircraft."
             },
             {
               "id": "b",
-              "text": "OPCON — allows Torres to task and organize the Gorgan F-16s for specific missions while the Gorgan Air Force retains ADCON.",
+              "text": "OPCON — authority to task and organize the Gorgan F-16s for specific missions each ATO cycle while Gorgas retains ADCON.",
               "correct": true,
               "explanation": "OPCON is the correct authority. It gives Torres the ability to task and organize the F-16s for missions. The Gorgan Air Force retains ADCON over its own pilots — pay, personnel, and maintenance stay with Gorgas."
             },
             {
               "id": "c",
-              "text": "TACON — sufficient authority to coordinate the F-16s with other coalition aircraft during operations.",
+              "text": "TACON — authority to direct the Gorgan F-16s in combat, including assigning them specific strike missions on the ATO.",
               "explanation": "TACON is too limited. It only covers local movement and maneuver — Torres cannot assign missions or reorganize the Gorgan force under TACON."
             },
             {
               "id": "d",
-              "text": "ADCON — gives Torres control over Gorgan maintenance and readiness to ensure the F-16s are mission-capable.",
+              "text": "ADCON — authority over Gorgan pilot readiness, maintenance, and training, ensuring the F-16s meet coalition standards.",
               "explanation": "ADCON is an administrative function, not an operational one. It has nothing to do with tasking aircraft for missions."
             }
           ],
@@ -229,23 +229,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "Brig Gen Torres's staff at the AOC — he holds OPCON over their aircraft, so he is responsible for all aspects of the pilots' readiness.",
+              "text": "Brig Gen Torres's staff — he holds OPCON, so all aspects of Gorgan pilot readiness fall under his authority during the campaign.",
               "explanation": "OPCON covers mission tasking and force organization — not administrative support. Flight physicals, pay, personnel records, and training are administrative functions that stay with the national force, not the OPCON commander."
             },
             {
               "id": "b",
-              "text": "The Gorgan Air Force through its own administrative chain — ADCON (administrative control) stays with the national force regardless of who holds OPCON over the aircraft.",
+              "text": "The Gorgan Air Force — ADCON stays with the national force, so Gorgas handles its own pilots' administrative and medical requirements.",
               "correct": true,
               "explanation": "ADCON covers training, readiness, pay, personnel, and maintenance — including flight physicals. It always stays with the service or national force. Even though the Gorgan F-16s are under Torres's OPCON, the Gorgan Air Force retains ADCON over its own pilots."
             },
             {
               "id": "c",
-              "text": "The CJTF-CAU medical section — the joint task force provides all medical support to coalition forces during the operation.",
+              "text": "The CJTF-CAU joint medical section — the combined task force provides centralized medical support for all coalition forces during operations.",
               "explanation": "The CJTF may coordinate theater-level medical support, but routine administrative medical requirements like flight physicals remain with the national force under ADCON. The CJTF does not take over every nation's administrative functions."
             },
             {
               "id": "d",
-              "text": "No one — flight physicals are suspended during active combat operations until the campaign ends.",
+              "text": "The AOC's combat operations staff — the COD is responsible for readiness tracking of all coalition aircrew flying the current ATO.",
               "explanation": "Flight physicals and readiness requirements are not suspended during operations. They are critical to ensuring pilots are medically fit to fly. The national force manages them through ADCON, which continues regardless of combat operations."
             }
           ],
@@ -383,23 +383,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "TACP (Tactical Air Control Party) — a small Air Force team embedded with the ground unit that advises the ground commander on air and space power capabilities and controls Close Air Support through its JTAC.",
+              "text": "TACP — an Air Force team embedded with the ground unit that advises the commander on air power and controls CAS through its JTAC.",
               "correct": true,
               "explanation": "The TACP is the Air Force team embedded with Army ground units at brigade level and below. Its primary role is twofold: advise the ground commander on what air and space power can and cannot do, and control CAS through the JTAC (Joint Terminal Attack Controller) — the certified specialist who talks directly to aircraft and clears weapons delivery."
             },
             {
               "id": "b",
-              "text": "ASOC (Air Support Operations Center) — the corps/division-level agency that manages all CAS requests and coordinates directly with individual aircraft.",
+              "text": "ASOC — the corps-level agency that embeds liaison teams with each brigade to advise ground commanders and manage all CAS requests.",
               "explanation": "The ASOC processes and coordinates CAS requests at the corps/division level — it is not embedded with brigade-level ground units. The ASOC is a coordination center, not a team that deploys with a ground commander. And the ASOC does not directly control aircraft — that is the JTAC within the TACP."
             },
             {
               "id": "c",
-              "text": "AWACS (Airborne Warning and Control System) — the airborne radar platform that manages air operations and controls CAS from the air.",
+              "text": "AWACS — the airborne platform that provides direct advisory support to ground commanders and coordinates CAS strikes from overhead.",
               "explanation": "AWACS provides the airborne air picture and manages air traffic — it watches the sky. AWACS does not advise ground commanders, does not embed with ground units, and does not control CAS terminal attacks. CAS control belongs to the JTAC within the TACP."
             },
             {
               "id": "d",
-              "text": "AOC (Air Operations Center) — the theater-level headquarters that assigns aircraft to ground commanders and controls all strikes directly.",
+              "text": "CRC — the ground-based radar agency that assigns air advisors to ground units and provides terminal attack control for all CAS.",
               "explanation": "The AOC is the theater-level command center — it allocates aircraft and produces the ATO, but it does not embed with ground units or control individual strikes. A ground commander cannot call the AOC directly for CAS — the request flows through the TACP and ASOC first."
             }
           ],
@@ -422,23 +422,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "ASOC (Air Support Operations Center) — the TACS primary control agency for air operations in direct support of the land component; co-located with the Army corps or division headquarters.",
+              "text": "ASOC — the primary control agency for air operations in direct support of the land component, co-located with the corps or division HQ.",
               "correct": true,
               "explanation": "The ASOC is the primary control agency for air operations in direct support of land operations. It sits at the corps or division level, co-located with the Army HQ, and manages the flow of CAS requests and air support coordination between ground forces and the AOC."
             },
             {
               "id": "b",
-              "text": "TACP (Tactical Air Control Party) — the team embedded with ground units that processes all air support requests for the corps.",
+              "text": "TACP — the primary control agency for all air support to land forces, embedded at brigade level and managing the full CAS flow to the AOC.",
               "explanation": "The TACP is embedded at brigade level and below — not at the corps level. The TACP handles individual CAS requests for a single ground unit. The ASOC manages the flow for the entire corps/division, coordinating between multiple TACPs and the AOC."
             },
             {
               "id": "c",
-              "text": "CRC (Control and Reporting Center) — the ground-based radar agency that manages all air support for land forces.",
+              "text": "CRC — the ground-based radar and control agency responsible for managing close air support coordination between ground forces and the AOC.",
               "explanation": "The CRC is a Layer 3 execution agency that provides ground-based radar and air traffic control. It manages airspace and tracks aircraft — it does not process CAS requests or coordinate ground-force air support priorities. That is the ASOC."
             },
             {
               "id": "d",
-              "text": "JACCE (Joint Air Component Coordination Element) — the liaison team that coordinates air support requirements inside the land component headquarters.",
+              "text": "JACCE — the joint coordination element inside the land component HQ that serves as the primary air support control agency for all land ops.",
               "explanation": "The JACCE is a JFACC-provided liaison element inside the land or maritime HQ — the JFACC's ambassadors. It coordinates component-level requirements but is not the primary control agency for air support to land forces. The ASOC holds that role."
             }
           ],
@@ -583,23 +583,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "No — the JFACC is the commander (a person); the AOC is the headquarters (a weapon system). The JFACC commands through the AOC, but they are not the same thing.",
+              "text": "No — the JFACC is the commander (a person); the AOC is the weapon system (a headquarters). The JFACC commands through the AOC.",
               "correct": true,
               "explanation": "The JFACC (Brig Gen Torres) is a person — the Joint Force Air Component Commander. The AOC is a formally designated weapon system — the headquarters through which the JFACC plans, tasks, executes, and assesses air operations. The JFACC commands THROUGH the AOC."
             },
             {
               "id": "b",
-              "text": "Yes — JFACC is the official designation and AOC is the informal name for the same organization.",
+              "text": "Yes — JFACC and AOC are two designations for the same organization, used interchangeably throughout joint and combined doctrine.",
               "explanation": "They are not the same. JFACC is a command position held by a person (Brig Gen Torres). AOC is a weapon system — a formally organized, trained, and equipped headquarters. You can have a JFACC without an AOC (in theory), or an AOC without the JFACC physically present."
             },
             {
               "id": "c",
-              "text": "No — the AOC commands the JFACC. The AOC is the higher organization and the JFACC reports to it.",
+              "text": "No — the AOC is the higher headquarters that commands the JFACC and directs all air operations across the joint force.",
               "explanation": "This is backwards. The JFACC is the commander; the AOC is the tool. The JFACC commands THROUGH the AOC — the AOC does not command the JFACC."
             },
             {
               "id": "d",
-              "text": "Yes — the JFACC is the AOC when it is operating in a combined (multinational) environment.",
+              "text": "Yes — in a combined environment, the JFACC title replaces the AOC organizational structure and they merge into one entity.",
               "explanation": "The relationship between JFACC and AOC does not change in a combined environment. The JFACC is still the commander; the AOC is still the headquarters. The distinction is about role (person vs. organization), not about whether the operation is joint or combined."
             }
           ],
@@ -696,23 +696,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "Collection Management Cell (CMC) — they formally task ISR assets and produce the RSTA Annex.",
+              "text": "Collection Management Cell (CMC) — the ISRD cell assigned to the SRD to formally task ISR platforms and align collection with strategy.",
               "explanation": "The CMC formally tasks ISR collection platforms — that is a CPD support function. The CMC is not the element embedded with the SRD for strategy planning."
             },
             {
               "id": "b",
-              "text": "ISR Strategists — ISRD personnel specifically embedded with the SRD to align ISR with campaign objectives and PIR development.",
+              "text": "ISR Strategists — ISRD personnel embedded with the SRD to support PIR development, collection alignment, and gap assessment.",
               "correct": true,
               "explanation": "ISR Strategists are the ISRD element that works directly with the SRD. They help define PIRs, assess collection gaps, and ensure ISR assets are aligned with the campaign strategy before CPD builds the ATO."
             },
             {
               "id": "c",
-              "text": "ISRDO (ISR Operations Duty Officer) — they manage real-time ISR collection from the COD floor.",
+              "text": "ISRDO — the ISR duty officer embedded with the SRD planning cell to manage real-time ISR collection for campaign strategy.",
               "explanation": "The ISRDO is embedded on the COD operations floor to manage real-time ISR execution — not in the SRD strategy cell for campaign planning."
             },
             {
               "id": "d",
-              "text": "ACF Cell — they fuse multi-source intelligence for the COD floor.",
+              "text": "ACF Cell — the ISRD analysis team that produces fused intelligence assessments and threat products directly for the SRD staff.",
               "explanation": "The ACF Cell produces fused intelligence products for real-time operations — it does not provide strategy-level support to the SRD planning process."
             }
           ],
@@ -778,23 +778,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "Developing the command's overall vision and guidance for the air campaign — translating the JFC's objectives into an air strategy that every other division supports.",
+              "text": "Developing the command's overall vision and guidance — translating the JFC's objectives into an air campaign strategy.",
               "correct": true,
               "explanation": "The SRD's primary function is developing the command's vision and guidance. The JAOP and AOD are the products of that function, not the function itself. The SRD decides WHERE the air campaign is going; CPD figures out HOW to get there."
             },
             {
               "id": "b",
-              "text": "Executing the current Air Tasking Order in real time and managing dynamic targeting decisions on the operations floor.",
+              "text": "Executing the current Air Tasking Order in real time and managing dynamic targeting decisions during combat operations.",
               "explanation": "This describes the Combat Operations Division (COD), not the SRD. The COD operates 24/7 and manages real-time execution. The SRD works 48-72 hours ahead — it is a planning division, not an execution division."
             },
             {
               "id": "c",
-              "text": "Building the Master Air Attack Plan (MAAP) and producing the Air Tasking Order (ATO) for dissemination to coalition units.",
+              "text": "Building the Master Air Attack Plan and producing the Air Tasking Order for dissemination to all coalition units.",
               "explanation": "This describes the Combat Plans Division (CPD). The CPD builds the MAAP and ATO based on the guidance it receives from the SRD. The SRD provides the direction; CPD turns it into an executable plan."
             },
             {
               "id": "d",
-              "text": "Formally tasking ISR collection platforms and producing the RSTA Annex for integration into the ATO.",
+              "text": "Formally tasking ISR collection platforms and producing the RSTA Annex for integration into the Air Tasking Order.",
               "explanation": "This describes the Collection Management Cell (CMC) within the ISR Division (ISRD). The SRD uses ISR products but does not task ISR platforms — that is the CMC's job."
             }
           ],
@@ -817,23 +817,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "The Combat Plans Division (CPD) initiates the cycle by publishing the Air Tasking Order — the ATO is the first document produced in each cycle.",
+              "text": "The CPD initiates the cycle by publishing the Air Tasking Order — the ATO is the first document and triggers planning across all divisions.",
               "explanation": "The ATO is the last major document in the cycle, not the first. CPD cannot build the ATO until it receives guidance from the SRD telling it what to prioritize."
             },
             {
               "id": "b",
-              "text": "The Strategy Division (SRD) initiates the air tasking cycle by issuing the Air Operations Directive (AOD) — the AOD provides the guidance and objectives that CPD needs to begin planning.",
+              "text": "The SRD initiates the cycle by issuing the Air Operations Directive — the AOD provides the guidance that CPD needs to begin planning.",
               "correct": true,
               "explanation": "The SRD initiates the cycle. The AOD tells CPD what to prioritize, what weight of effort to apply, and what the JFACC wants to achieve in the next 24-48 hours. Without the AOD, CPD has no direction."
             },
             {
               "id": "c",
-              "text": "The Combat Operations Division (COD) initiates the cycle by executing the previous ATO — execution results automatically trigger the next planning cycle.",
+              "text": "The COD initiates the cycle by completing execution of the previous ATO — execution results automatically trigger the next planning cycle.",
               "explanation": "Execution results and BDA feed back into the next cycle, but the COD does not initiate it. The SRD reviews those results and then issues the AOD to start the next cycle. The COD reacts to the cycle; it does not start it."
             },
             {
               "id": "d",
-              "text": "The ISR Division (ISRD) initiates the cycle by issuing the RSTA Annex — ISR collection must be tasked before any other planning can begin.",
+              "text": "The ISRD initiates the cycle by issuing the RSTA Annex — ISR collection must be formally tasked before any other planning can begin.",
               "explanation": "The RSTA Annex is produced by the CMC later in the cycle to integrate ISR tasking into the ATO. The ISRD supports the cycle but does not initiate it — the SRD does."
             }
           ],
@@ -856,23 +856,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "You are right — the JFACC mission statement is enough. The AOD is an optional planning document that CPD can skip when time is short.",
+              "text": "The AOD is an optional planning aid — the JFACC's broad mission statement provides enough direction for CPD to build the ATO independently.",
               "explanation": "The AOD is not optional. The JFACC's broad mission statement does not change every cycle — but the situation does. The AOD provides the cycle-specific guidance that CPD needs to build a plan that matches today's reality."
             },
             {
               "id": "b",
-              "text": "The AOD's guidance and objectives flow into the daily air plan — it tells CPD what to prioritize, what weight of effort to apply, and what the JFACC wants to achieve in this specific cycle. Without it, CPD cannot build an air plan that reflects the current situation.",
+              "text": "The AOD's guidance and objectives flow into the daily air plan — without it, CPD has no direction for the current cycle's priorities.",
               "correct": true,
               "explanation": "The JFACC mission statement is broad and enduring. The AOD translates it into cycle-specific guidance — priority targets, weight of effort, effects to achieve in the next 24-48 hours. Without the AOD, CPD would plan against a static mission statement instead of adapting to what is happening now."
             },
             {
               "id": "c",
-              "text": "The AOD contains the formatted ATO template that CPD fills in — without the template, CPD cannot publish the ATO in the correct format.",
+              "text": "The AOD contains the formatted ATO template and standard formatting — without the template, CPD cannot produce the order correctly.",
               "explanation": "The AOD is not a template or a form. It is strategic guidance — objectives, priorities, and weight-of-effort direction. The ATO format is a CPD responsibility (ATO Production Team), not something the SRD provides."
             },
             {
               "id": "d",
-              "text": "The AOD lists every aircraft and tail number available for the cycle — CPD needs this aircraft inventory before it can allocate sorties.",
+              "text": "The AOD lists all available aircraft by tail number and readiness status — CPD needs this inventory before it can allocate sorties.",
               "explanation": "The AOD does not list aircraft or tail numbers. Aircraft availability comes from the wings and partner nations. The AOD provides strategic guidance — what to achieve and what to prioritize — not asset inventories."
             }
           ],
@@ -1031,23 +1031,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "Airspace control measures, boundaries, and communication procedures for the cycle — it is the document that prevents aircraft from different nations and missions from colliding or engaging each other.",
+              "text": "Airspace control measures, boundaries, and communication procedures — it coordinates who flies where and on what frequencies each cycle.",
               "correct": true,
               "explanation": "The ACO defines airspace control measures (who owns what airspace), boundaries (where each force may operate), and communication procedures (frequencies and call signs). It is produced by the C2 Planning Team and published alongside the ATO."
             },
             {
               "id": "b",
-              "text": "Target priorities and weapons selection for each strike package — it tells each aircraft which target to hit and what munition to use.",
+              "text": "Target priorities and weapons selection for each strike package — it assigns which aircraft hits which target with what munition.",
               "explanation": "Target priorities and weapons selection are handled by the Targeting Effects Team (TET) and the MAAP Team, not by the ACO. The ACO controls airspace, not targeting."
             },
             {
               "id": "c",
-              "text": "Intelligence collection requirements and ISR platform tasking — it assigns ISR assets to specific collection areas for the cycle.",
+              "text": "Intelligence collection requirements and ISR platform assignments — it directs which sensors cover which areas during the cycle.",
               "explanation": "ISR collection tasking is handled by the RSTA Annex, produced by the Collection Management Cell (CMC) in the ISR Division. The ACO manages airspace, not ISR collection."
             },
             {
               "id": "d",
-              "text": "The JFACC's campaign strategy and long-range objectives — it defines the overall direction of the air campaign for the next several weeks.",
+              "text": "The JFACC's campaign strategy and long-range guidance — it defines the overall direction of the air campaign for the coming weeks.",
               "explanation": "Long-range campaign strategy belongs to the JAOP, produced by the SRD. The ACO is a cycle-specific airspace document that accompanies the ATO, not a strategy document."
             }
           ],
@@ -1069,23 +1069,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "CPD provides near-term planning 48 to 96 hours prior to ATO execution — enough time to receive the AOD, build the MAAP, coordinate targeting and airspace, and compile the ATO before dissemination.",
+              "text": "48 to 96 hours prior to ATO execution — enough time to receive the AOD, build the MAAP, coordinate targeting, and compile the ATO.",
               "correct": true,
               "explanation": "The CPD works 48 to 96 hours ahead of execution. This window gives CPD time to receive the AOD from SRD, build the MAAP, coordinate with the TET, produce the ACO and SPINS, and compile the final ATO."
             },
             {
               "id": "b",
-              "text": "CPD plans 1 to 6 hours before execution — the ATO is built in real time as the situation develops on the operations floor.",
+              "text": "1 to 6 hours before execution — the ATO is built in near-real-time as the tactical situation develops on the operations floor.",
               "explanation": "1 to 6 hours is the COD's domain — real-time execution and dynamic targeting. CPD works much further ahead. An ATO built in real time would have no coordination, no CDE, and no airspace deconfliction."
             },
             {
               "id": "c",
-              "text": "CPD plans 7 to 14 days ahead — the ATO is a long-range document covering the entire campaign.",
+              "text": "7 to 14 days ahead of execution — the ATO is a long-range document covering the campaign's full operational sequence.",
               "explanation": "7 to 14 days is the SRD's planning horizon for the JAOP. The ATO is a cycle-specific document covering roughly 24 hours. CPD works on the next cycle, not the next week."
             },
             {
               "id": "d",
-              "text": "CPD has no fixed planning horizon — the ATO is published whenever the commander decides the plan is ready.",
+              "text": "No fixed planning horizon — the ATO is published whenever the JFACC determines that the operational plan is ready for execution.",
               "explanation": "The ATO follows a disciplined cycle tied to the air tasking cycle. CPD must publish the ATO on a predictable schedule (typically every 24 hours) so coalition units can prepare. Unpredictable publication would paralyze the coalition."
             }
           ],
@@ -1108,23 +1108,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "The MAAP is the detailed execution plan that allocates sorties to targets and sets timing; the ATO is the formal, published order that goes to every coalition unit.",
+              "text": "The MAAP is the detailed execution plan that allocates sorties to targets; the ATO is the formal, published order distributed to all units.",
               "correct": true,
               "explanation": "The MAAP is the plan — it is the detailed scheme where CPD works out which aircraft hit which targets, in what order, with what support. The ATO is the order — it is the formal, published document that goes to every coalition unit and tells them exactly what to fly. The MAAP comes first; the ATO is built from it."
             },
             {
               "id": "b",
-              "text": "The MAAP covers the entire campaign over weeks; the ATO covers a single 24-hour cycle.",
+              "text": "The MAAP covers the entire campaign over weeks of operations; the ATO covers a single 24-hour execution cycle within that campaign.",
               "explanation": "Both the MAAP and the ATO are cycle-specific documents — neither covers weeks. The long-range campaign plan is the JAOP, produced by the SRD. The MAAP and ATO serve the same cycle; they differ in function, not timeframe."
             },
             {
               "id": "c",
-              "text": "The MAAP is produced by the Strategy Division; the ATO is produced by the Combat Plans Division.",
+              "text": "The MAAP is produced by the Strategy Division based on campaign objectives; the ATO is produced by the Combat Plans Division separately.",
               "explanation": "Both the MAAP and the ATO are produced by the Combat Plans Division. The SRD produces the JAOP and AOD. The CPD produces the MAAP first, then the ATO Production Team compiles it into the formal ATO."
             },
             {
               "id": "d",
-              "text": "They are the same document — 'MAAP' is the informal name and 'ATO' is the formal name for the same product.",
+              "text": "They are the same document — MAAP is the internal working name used by the CPD staff, and ATO is the formal designation for distribution.",
               "explanation": "They are not the same document. The MAAP is the planning document that comes first — the internal working product. The ATO is the formal order that comes second — the published product distributed to units. Confusing the two causes coordination failures."
             }
           ],
@@ -1222,7 +1222,7 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "Producing the Air Operations Directive for the next planning cycle.",
+              "text": "Producing the Air Operations Directive and issuing cycle guidance to the Combat Plans Division.",
               "explanation": "The AOD is produced by the Strategy Division — specifically the Strategy Guidance Team. It is a planning function, not an execution function, and it does not involve the CCO."
             },
             {
@@ -1233,12 +1233,12 @@ window.ScenarioContent = {
             },
             {
               "id": "c",
-              "text": "Publishing the Air Tasking Order to all coalition units.",
+              "text": "Publishing the Air Tasking Order and disseminating it to all coalition units before execution.",
               "explanation": "The ATO is published by the ATO Production Team within the Combat Plans Division — not the COD. By the time execution begins, the ATO is already in the hands of the units."
             },
             {
               "id": "d",
-              "text": "Formally tasking ISR collection platforms for the next ATO cycle.",
+              "text": "Formally tasking ISR collection platforms and producing the RSTA Annex for the next cycle.",
               "explanation": "Formally tasking ISR platforms is the CMC's function within the ISR Division. The CCO manages real-time execution — not the next cycle's collection planning."
             }
           ],
@@ -1480,23 +1480,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "ACF Cell — fuses multi-source intelligence into finished products for the COD operations floor.",
+              "text": "ACF Cell — fuses multi-source intelligence and produces the RSTA Annex to formally task ISR platforms for integration into the ATO.",
               "explanation": "The ACF Cell fuses multi-source intelligence for the COD — but it does not formally task ISR collection platforms or produce the document that places them on the ATO. That is a different ISRD function."
             },
             {
               "id": "b",
-              "text": "ISR Operations Team — produces the PED Tasking Order to formally task ISR platforms for the ATO.",
+              "text": "ISR Operations Team — produces the RSTA Annex and ensures PED is planned for all ISR collection platforms tasked in each ATO cycle.",
               "explanation": "The ISR Operations Team produces the PED Tasking Order — which formalizes Processing, Exploitation, and Dissemination planning for scheduled missions. The PED Tasking Order is NOT the document that formally tasks collection platforms; that is the RSTA Annex."
             },
             {
               "id": "c",
-              "text": "Collection Management Cell (CMC) — produces the RSTA Annex to formally task ISR collection assets for integration into the ATO.",
+              "text": "CMC (Collection Management Cell) — formally tasks ISR collection platforms and produces the RSTA Annex for integration into the ATO.",
               "correct": true,
               "explanation": "The CMC is the correct answer. It formally tasks ISR collection platforms and produces the RSTA Annex — the document that integrates ISR collection requirements into the ATO so platforms are formally assigned their collection missions."
             },
             {
               "id": "d",
-              "text": "ISR Strategists — embedded with SRD; produce the Air Operations Directive (AOD) for the next planning cycle.",
+              "text": "ISR Strategists — embedded with the SRD, they produce the RSTA Annex that aligns ISR collection with the JFACC's campaign strategy.",
               "explanation": "ISR Strategists support the SRD's campaign strategy planning and PIR development. They do not produce the AOD (that is the SRD's Strategy Guidance Team) and they do not formally task ISR platforms (that is the CMC)."
             }
           ],
@@ -1932,23 +1932,23 @@ window.ScenarioContent = {
           "options": [
             {
               "id": "a",
-              "text": "Both CSAR and AE are AMD functions. The AMD plans the rescue and the medical transport as a continuous operation.",
+              "text": "Both CSAR and AE are AMD functions — the AMD plans the rescue from hostile territory and the medical transport as a single continuous operation.",
               "explanation": "CSAR is not an AMD function. AMD cannot plan or execute combat rescue from hostile territory. CSAR belongs to COD through the PRCC."
             },
             {
               "id": "b",
-              "text": "CSAR is a COD function (executed through the PRCC). Once SPARROW 03 is safely at FOB Ararat and needs medical transport, that becomes an AE mission coordinated by AMD's AECT.",
+              "text": "CSAR is a COD function executed through the PRCC; once the pilot is safely at FOB Ararat, medical transport becomes AE — an AMD/AECT function.",
               "correct": true,
               "explanation": "This is correct. The COD/PRCC executed the rescue from hostile territory. Now that SPARROW 03 is safely at FOB Ararat in friendly hands, the medical transport leg is AE — an AMD function handled by the AECT."
             },
             {
               "id": "c",
-              "text": "AE is a COD function because injured pilots are a combat priority. AMD only handles cargo airlift and refueling.",
+              "text": "AE is a COD function because injured pilots are a combat priority — AMD handles only cargo airlift, air refueling, and routine transport.",
               "explanation": "AE is an AMD function, not COD. AMD handles all three: Airlift, Air Refueling, and Aeromedical Evacuation. COD owns CSAR — not AE."
             },
             {
               "id": "d",
-              "text": "CSAR and AE are interchangeable terms for the same mission — the distinction is only administrative.",
+              "text": "CSAR and AE are interchangeable terms for the same mission — the distinction between them is an administrative classification, not operational.",
               "explanation": "CSAR and AE are completely different missions owned by completely different divisions. CSAR = hostile recovery (COD/PRCC). AE = medical patient transport (AMD/AECT). The distinction is operational, not administrative."
             }
           ],
