@@ -1373,8 +1373,14 @@ function ActivityFeedback({ activity, response }) {
             <div className={`feedback-row ${row.ok ? "row-good" : "row-bad"}`} key={`${activity.id}-${index}`}>
               <div className="feedback-row-label">{row.label}</div>
               <div className="feedback-row-values">
-                <span className={`feedback-chip ${row.ok ? "chip-good" : "chip-bad"}`}>Your answer: {row.user}</span>
-                <span className="feedback-chip chip-good">Correct answer: {row.correct}</span>
+                {row.ok ? (
+                  <span className="feedback-chip chip-good">Correct — {row.correct}</span>
+                ) : (
+                  <>
+                    <span className="feedback-chip chip-bad">Your answer: {row.user}</span>
+                    <span className="feedback-chip chip-good">Correct answer: {row.correct}</span>
+                  </>
+                )}
               </div>
               {row.explanation && (
                 <div className="feedback-row-expl"><strong>Explanation:</strong> {row.explanation}</div>
@@ -1776,14 +1782,35 @@ function InstructorModal({ open, onClose, onUnlock }) {
   );
 }
 
-function CompletionModal({ open, teamName, scoreText, reportMarkdown, onClose, onDownload }) {
+function narrativeOutcome(earned, possible) {
+  if (!possible || possible <= 0) return null;
+  const pct = (earned / possible) * 100;
+  if (pct >= 90) return {
+    tier: "outstanding",
+    headline: "OPERATION IRON ANVIL — DECISIVE SUCCESS",
+    text: "The coalition air campaign launches on time and on target. Every ATO cycle runs as planned. The JFACC briefs higher headquarters with confidence — your AOC team built a machine that works. Donovian forces in the Zabzimek Corridor are isolated and degraded within 96 hours. Coalition partners trust the system because your team made it trustworthy."
+  };
+  if (pct >= 70) return {
+    tier: "adequate",
+    headline: "OPERATION IRON ANVIL — MISSION ACCOMPLISHED WITH FRICTION",
+    text: "The AOC functions, but coordination delays cost the campaign early momentum. Some CAS requests were routed to the wrong division. An ISR gap left one target set uncovered for a full ATO cycle. The JFACC had to intervene personally on decisions that should have been handled at the division level. The coalition air campaign succeeds — but the AOC team knows it could have been sharper."
+  };
+  return {
+    tier: "critical",
+    headline: "OPERATION IRON ANVIL — SIGNIFICANT SHORTFALLS",
+    text: "Critical errors in the AOC standup slow the air campaign. Targeting data arrives late. A CAS request from the Gorgan 3rd Brigade is misrouted and the strike window closes. A time-sensitive target is missed because the wrong division tried to process it. The JFACC orders a stand-down review before the next ATO cycle. The coalition air campaign continues — but the learning curve cost lives and time that the ground force did not have."
+  };
+}
+
+function CompletionModal({ open, teamName, scoreText, earnedScore, possibleScore, reportMarkdown, onClose, onDownload }) {
   if (!open) return null;
+  const narrative = narrativeOutcome(earnedScore, possibleScore);
   return (
     <div className="modal-shade completion-shade" onClick={onClose}>
       <div className="modal completion-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-head">
           <span className="modal-tag">MISSION COMPLETE</span>
-          <span className="modal-title">CONGRATULATIONS</span>
+          <span className="modal-title">{narrative ? narrative.headline : "CONGRATULATIONS"}</span>
           <button type="button" className="modal-x" onClick={onClose}>×</button>
         </div>
         <div className="modal-body completion-body">
@@ -1798,6 +1825,11 @@ function CompletionModal({ open, teamName, scoreText, reportMarkdown, onClose, o
             </div>
             <div className="completion-board-sub">TEAM NAME / SCORE</div>
           </div>
+          {narrative && (
+            <div className={`completion-narrative narrative-${narrative.tier}`}>
+              <div className="completion-narrative-text">{narrative.text}</div>
+            </div>
+          )}
           <div className="completion-copy">
             Share the team name and score, then download the markdown report for shared-drive review and instructor feedback before the test tomorrow.
           </div>
@@ -2204,6 +2236,8 @@ function App() {
         open={completionModalOpen}
         teamName={teamName}
         scoreText={scoreText}
+        earnedScore={earnedScore}
+        possibleScore={possibleScore}
         reportMarkdown={completionReportMarkdown}
         onClose={() => setCompletionModalOpen(false)}
         onDownload={(markdown) => downloadMarkdownReport(completionReportFilename, markdown)}

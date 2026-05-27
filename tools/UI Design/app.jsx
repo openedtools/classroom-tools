@@ -1371,8 +1371,14 @@ function ActivityFeedback({ activity, response }) {
             <div className={`feedback-row ${row.ok ? "row-good" : "row-bad"}`} key={`${activity.id}-${index}`}>
               <div className="feedback-row-label">{row.label}</div>
               <div className="feedback-row-values">
-                <span className={`feedback-chip ${row.ok ? "chip-good" : "chip-bad"}`}>Your answer: {row.user}</span>
-                <span className="feedback-chip chip-good">Correct answer: {row.correct}</span>
+                {row.ok ? (
+                  <span className="feedback-chip chip-good">Correct — {row.correct}</span>
+                ) : (
+                  <>
+                    <span className="feedback-chip chip-bad">Your answer: {row.user}</span>
+                    <span className="feedback-chip chip-good">Correct answer: {row.correct}</span>
+                  </>
+                )}
               </div>
               {row.explanation && (
                 <div className="feedback-row-expl"><strong>Explanation:</strong> {row.explanation}</div>

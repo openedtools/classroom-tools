@@ -284,7 +284,7 @@ window.ScenarioContent = {
             {
               "id": "s1",
               "text": "TACP / JTAC — receives the ground commander's request; advises on air support options; communicates directly with aircraft during the strike",
-              "explanation": "The TACP is the Air Force team embedded with the Army ground unit. The JTAC within the TACP is the certified specialist who controls the actual weapons delivery."
+              "explanation": "The TACP is the Air Force team embedded with the Army ground unit. Every person assigned to a TACP must be JTAC-qualified — meaning they are certified to control terminal weapons delivery. However, not all JTACs serve in TACPs. JTAC-qualified personnel also serve as Combat Controllers, FAC(A) pilots, and in other roles across the joint force."
             },
             {
               "id": "s2",
@@ -347,7 +347,7 @@ window.ScenarioContent = {
               "id": "i4",
               "text": "TACP — Tactical Air Control Party",
               "correct": "layer-2",
-              "explanation": "The TACP is Layer 2 — Coordination and Integration. It is the Air Force team embedded with Army ground units at brigade level and below, providing the critical link between ground commanders and aircraft."
+              "explanation": "The TACP is organizationally assigned to Layer 2 — Coordination and Integration. However, the TACP's JTAC function — terminal attack control — is an execution task that spans into Layer 3. The TACP coordinates with the ground commander (Layer 2) AND controls the actual strike (Layer 3 execution). It is the critical link between the ground fight and the air fight."
             }
           ],
           "categories": [
@@ -365,7 +365,7 @@ window.ScenarioContent = {
             }
           ],
           "feedback": {
-            "correct": "Correct. The three TACS layers move from theater-level command (Layer 1: JFACC, AOC) through coordination elements (Layer 2: JACCE, WOC, ASOC, TACP) down to execution (Layer 3: CRC, AWACS, TAC(A), FAC(A), JSTARS).",
+            "correct": "Correct. The three TACS layers move from theater-level command (Layer 1: JFACC, AOC) through coordination elements (Layer 2: JACCE, WOC, ASOC, TACP) down to execution (Layer 3: CRC, AWACS, TAC(A), FAC(A), JSTARS). Note: the TACP sits organizationally in Layer 2 but its JTAC function — terminal attack control — spans into Layer 3 execution.",
             "incorrect": "Review the three TACS layers. Layer 1 is command and planning at the theater level (JFACC, AOC). Layer 2 is coordination between theater and executing forces (ASOC, TACP, JACCE, WOC). Layer 3 is execution and direct control (AWACS, CRC, TAC(A), FAC(A), JSTARS).",
             "whyMatters": "Understanding the layers tells you who to call and in what order. A ground commander who tries to call the AOC directly for CAS bypasses the entire coordination layer — his request will get lost. The TACS exists because no single agency can manage everything from the strategic to the tactical level simultaneously."
           }
@@ -385,7 +385,7 @@ window.ScenarioContent = {
               "id": "a",
               "text": "TACP — an Air Force team embedded with the ground unit that advises the commander on air power and controls CAS through its JTAC.",
               "correct": true,
-              "explanation": "The TACP is the Air Force team embedded with Army ground units at brigade level and below. Its primary role is twofold: advise the ground commander on what air and space power can and cannot do, and control CAS through the JTAC (Joint Terminal Attack Controller) — the certified specialist who talks directly to aircraft and clears weapons delivery."
+              "explanation": "The TACP is the Air Force team embedded with Army ground units at brigade level and below. Its primary role is twofold: advise the ground commander on what air and space power can and cannot do, and control CAS through the JTAC. Every person assigned to a TACP must be JTAC-qualified. Not all JTACs serve in TACPs — JTAC-qualified personnel also fill roles like Combat Controller and FAC(A) pilot."
             },
             {
               "id": "b",
@@ -404,7 +404,7 @@ window.ScenarioContent = {
             }
           ],
           "feedback": {
-            "correct": "Correct. The TACP is the Air Force team embedded with ground units. Its primary role is to advise ground commanders on air and space power capabilities and limitations, and to control CAS through the JTAC. The TACP is the critical link between the ground fight and the air fight.",
+            "correct": "Correct. The TACP is the Air Force team embedded with ground units. Its primary role is to advise ground commanders on air and space power capabilities and limitations, and to control CAS through the JTAC. Every TACP member must be JTAC-qualified — but not all JTACs serve in TACPs.",
             "incorrect": "The TACP is the only TACS agency that embeds with ground units at brigade level. The ASOC sits at corps/division HQ. AWACS is airborne. The AOC is theater-level. The TACP's JTAC is the only person certified to control terminal weapons delivery for CAS.",
             "whyMatters": "If a ground commander does not have a TACP, he has no one to advise him on what air power can do — and no one qualified to control a CAS strike when he needs one. The TACP is not optional in a combined arms fight. Without it, the ground force either gets no air support or gets uncontrolled air support, which risks fratricide."
           }
@@ -1804,6 +1804,12 @@ window.ScenarioContent = {
           "title": "MLCOA vs. MDCOA — Threshold Logic",
           "summary": "MLCOA is what the indicators converge on. MDCOA is the highest-impact COA the indicators do not preclude. Other COAs are implausible.",
           "detail": "Most Likely Course of Action (MLCOA): the COA most consistent with the convergence of all current indicators. It is what the evidence is actually pointing at. Use ICD 203 'likely' or 'very likely' for the MLCOA band depending on how strong the convergence is.\n\nMost Dangerous Course of Action (MDCOA): the highest-impact COA the indicators do not yet preclude. The commander must remain prepared for it even if probability is lower (typically 'unlikely' to 'roughly even chance' per ICD 203). MDCOA drives branch planning.\n\nImplausible / Contradicted: a COA the current indicators rule out. Examples: a Donovian stand-down while the IADS is active and EW jamming continues, or a kinetic ASAT strike with no space-attack indicators present. These COAs are excluded from the assessment.\n\nFor Iron Anvil specifically, the indicator carryover from Northern Veil is what you sort against: active IADS, ongoing EW, occupation forces in the Zabzimek Corridor, continued IO and cyber pressure."
+        },
+        {
+          "id": "e9-4",
+          "title": "Current Donovian Indicator Picture — D+12 Hours",
+          "summary": "Structured summary of active, absent, and ambiguous indicators for Donovian operations in the Zabzimek Corridor.",
+          "detail": "ACTIVE INDICATORS (observed and continuing):\n\n1. IADS — Donovian integrated air defense system is fully active along the corridor and border zone. SA-21 and SA-22 systems confirmed operational. No stand-down signals detected.\n\n2. ELECTRONIC WARFARE — Continuous EW jamming against coalition communications and GPS frequencies. Jamming intensity has not decreased since D-Day.\n\n3. OCCUPATION FORCES — Donovian 58th Combined Arms Army units remain in the Zabzimek Corridor. No withdrawal movements detected. Defensive positions are being improved.\n\n4. IO / CYBER PRESSURE — Ongoing information operations targeting coalition partner publics. Cyber probing of coalition logistics networks continues.\n\nNOT OBSERVED (absent indicators):\n\n• No withdrawal movements or stand-down orders detected.\n• No diplomatic or media signals supporting ceasefire or de-escalation.\n• No force staging toward Atropia or Pertuni borders — no indicators of a second-front option.\n• No confirmed kinetic anti-satellite preparations — though non-kinetic counterspace (GNSS denial) was demonstrated in Block 4.\n\nAMBIGUOUS:\n\n• Donovian 58th CAA reserve elements have not been committed. Could indicate a holding posture or preparation for a second echelon push.\n• Coalition HUMINT reporting on Donovian political decision-making is limited. The final decision to reinforce or hold has not been directly observed.\n\nUse this picture to anchor your ICD 203 likelihood assessment and MLCOA/MDCOA sort. Active indicators rule out certain COAs. Absent indicators constrain others."
         }
       ],
       "activities": [
@@ -2029,7 +2035,7 @@ window.ScenarioContent = {
             "correct": "Correct BLUF. 'Likely' is the ICD 203-calibrated word for this picture. Reinforcement plus continued coercive pressure is what the indicator set actually supports. 7 days is the right horizon for major movement decisions and for the JFACC's near-term planning cycle.",
             "incorrect": "Build the BLUF against ICD 203. The likelihood word MUST be one of: almost no chance, very unlikely, unlikely, roughly even chance, likely, very likely, almost certain. 'Possible' is not on that list and is not acceptable in a finished IC product. For the COA, ask which option is consistent with EVERY indicator. Active IADS + ongoing EW + corridor occupation + continued cyber/IO operations rule out withdrawal and rule out passive defense. No second-front staging rules out the Atropia/Pertuni option.",
             "whyMatters": "Calibrated language is the difference between an assessment that withstands a peer challenge and one that does not. The JFACC will brief this BLUF to higher headquarters; the people in that room know ICD 203. Using 'likely' tells them you placed the assessment at 55–80 percent and are ready to defend it. Using 'possible' tells them you were not willing to commit.",
-            "evidenceClue": "See Evidence Card 'ICD 203 Likelihood Language' for the seven approved bands. Use the Block 4 indicator carryover plus Iron Anvil's IADS, EW, and corridor posture to anchor the COA selection."
+            "evidenceClue": "See Evidence Card 'ICD 203 Likelihood Language' for the seven approved bands and 'Current Donovian Indicator Picture' for the indicators to reason against."
           }
         },
         {
@@ -2085,7 +2091,7 @@ window.ScenarioContent = {
             "correct": "Correct. MLCOA = the reinforce-and-pressure COA that the indicators converge on. MDCOA = the full-conventional-thrust-plus-kinetic-ASAT COA the indicators do not preclude. Withdrawal and second-front COAs are implausible because the active indicator picture rules them out (withdrawal) or because no indicators support them at all (second front).",
             "incorrect": "Apply the threshold logic. MLCOA is what the indicators converge on — reinforcement and continued pressure. MDCOA is the highest-impact COA still consistent with what could happen — full conventional plus kinetic counterspace. A COA that contradicts active indicators (withdrawal while IADS is up and EW is jamming) is implausible. A COA with zero supporting indicators (second front against Atropia with no staging there) is also implausible.",
             "whyMatters": "Commanders plan against MLCOA and prepare branches against MDCOA. Collapsing the two leads to over-reacting to the worst case or missing the warning the evidence actually supports. Calling an implausible COA the MDCOA wastes coalition planning capacity on something that is not going to happen.",
-            "evidenceClue": "Evidence Card 'MLCOA vs. MDCOA — Threshold Logic' gives the rule. Carry the Block 4 indicator matrix forward: active IADS rules out withdrawal; no Atropia-direction staging rules out the second front."
+            "evidenceClue": "Evidence Card 'MLCOA vs. MDCOA — Threshold Logic' gives the sorting rule. Evidence Card 'Current Donovian Indicator Picture' gives the indicators. Active IADS rules out withdrawal; no Atropia-direction staging rules out the second front."
           }
         }
       ]

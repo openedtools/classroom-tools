@@ -469,6 +469,29 @@ body {
   font-size: 15px;
   line-height: 1.55;
 }
+.completion-narrative {
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+.completion-narrative-text {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-1);
+}
+.narrative-outstanding {
+  border: 1px solid rgba(77, 193, 123, 0.4);
+  background: rgba(77, 193, 123, 0.07);
+}
+.narrative-adequate {
+  border: 1px solid rgba(244, 161, 77, 0.4);
+  background: rgba(244, 161, 77, 0.07);
+}
+.narrative-critical {
+  border: 1px solid rgba(232, 91, 91, 0.4);
+  background: rgba(232, 91, 91, 0.07);
+}
 .completion-foot {
   justify-content: space-between;
 }
