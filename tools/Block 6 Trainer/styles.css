@@ -53,7 +53,7 @@ body {
 }
 
 .mono, .panel-tag, .panel-meta, .meta-chip, .dom-tag, .dom-count,
-.actor-code, .tag, .legend-item, .ret-coord, .map-coords span, .kv-k, .kv-v,
+.actor-code, .tag, .legend-item, .ret-coord, .grat-lbl, .kv-k, .kv-v,
 .bm-k, .bb-tag, .ret-name, .save-text, .op-code, .dtg-label, .dtg-value,
 .status-text, .num-done, .num-slash, .num-total,
 .phase-num, .pir-issued, .pir-class, .step-n, .brief-pre, .stance, .posture,
@@ -946,15 +946,16 @@ body {
   flex: 1;
   background: #cdd6df;
   overflow: hidden;
-  aspect-ratio: 1102 / 868;
+  aspect-ratio: 2824 / 2228;
 }
 .map-img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* fill (not cover) so the whole image always maps 1:1 to the wrap — this
+     locks the coordinate grid and the pin to the image at every screen size. */
+  object-fit: fill;
   filter: saturate(0.85) contrast(0.95);
-  min-height: 480px;
 }
 .map-grid {
   position: absolute; inset: 0;
@@ -968,20 +969,26 @@ body {
   mix-blend-mode: multiply;
   opacity: 0.9;
 }
-.map-coords {
+/* Coordinate graticule — positioned by percentage so it stays locked to the
+   image at any size. Major ticks every 10° (labeled); minor ticks every 5°. */
+.graticule { position: absolute; inset: 0; pointer-events: none; }
+.grat { position: absolute; }
+.grat-x { bottom: 0; border-left: 1px solid rgba(8, 14, 22, 0.55); }
+.grat-x.grat-major { height: 13px; }
+.grat-x.grat-minor { height: 7px; border-left-color: rgba(8, 14, 22, 0.38); }
+.grat-y { left: 0; border-top: 1px solid rgba(8, 14, 22, 0.55); }
+.grat-y.grat-major { width: 13px; }
+.grat-y.grat-minor { width: 7px; border-top-color: rgba(8, 14, 22, 0.38); }
+.grat-lbl {
   position: absolute;
-  display: flex;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11.5px;
-  color: rgba(8, 14, 22, 0.6);
-  letter-spacing: 0.08em;
-  pointer-events: none;
+  color: rgba(8, 14, 22, 0.7);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
 }
-.map-coords-x { bottom: 4px; left: 60px; right: 12px; justify-content: space-between; }
-.map-coords-y {
-  top: 12px; bottom: 24px; left: 4px;
-  flex-direction: column; justify-content: space-between;
-}
+.grat-x .grat-lbl { bottom: 15px; left: 0; transform: translateX(-50%); }
+.grat-y .grat-lbl { left: 16px; top: 0; transform: translateY(-50%); }
 .corner {
   position: absolute; width: 14px; height: 14px;
   border-color: var(--accent);

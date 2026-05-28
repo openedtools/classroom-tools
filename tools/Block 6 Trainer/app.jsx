@@ -592,7 +592,7 @@ function MapPanel({ showReticle, showGrid, instructor, pin, onPinChange }) {
       </header>
       <div className={`map-wrap ${instructor ? 'instructor' : ''} ${dragging ? 'dragging' : ''}`} ref={wrapRef}>
         {showGrid && <div className="map-grid" />}
-        <img src="assets/Eurasia_map_small.png" alt="Eurasia Region Map" className="map-img" draggable={false} />
+        <img src="assets/Eurasia_map_v2.png?v=2" alt="Eurasia Region Map" className="map-img" draggable={false} />
         {instructor && (
           <div className="map-instructor-hint">
             <span className="hint-dot" /> INSTRUCTOR · DRAG PIN · CLICK LABEL TO RENAME
@@ -632,11 +632,25 @@ function MapPanel({ showReticle, showGrid, instructor, pin, onPinChange }) {
             </div>
           </div>
         )}
-        <div className="map-coords map-coords-x">
-          {["20°E","30°E","40°E","50°E","60°E"].map(c => <span key={c}>{c}</span>)}
-        </div>
-        <div className="map-coords map-coords-y">
-          {["60°N","50°N","40°N","30°N"].map(c => <span key={c}>{c}</span>)}
+        <div className="graticule" aria-hidden="true">
+          {GRAT_X.map(t => (
+            <div
+              className={`grat grat-x ${t.major ? 'grat-major' : 'grat-minor'}`}
+              style={{ left: `${t.pct}%` }}
+              key={`x${t.deg}`}
+            >
+              {t.major && <span className="grat-lbl">{t.deg}°E</span>}
+            </div>
+          ))}
+          {GRAT_Y.map(t => (
+            <div
+              className={`grat grat-y ${t.major ? 'grat-major' : 'grat-minor'}`}
+              style={{ top: `${t.pct}%` }}
+              key={`y${t.deg}`}
+            >
+              {t.major && <span className="grat-lbl">{t.deg}°N</span>}
+            </div>
+          ))}
         </div>
         <Corners />
       </div>
@@ -1737,6 +1751,12 @@ const pctToLatLon = (x, y) => {
   const lat = 60 - ((y - 3) / (96 - 3)) * 30;
   return { lon, lat };
 };
+// Inverse of pctToLatLon — used to lock the coordinate graticule to the image.
+const lonToPct = (lon) => 8 + ((lon - 20) / 40) * (98 - 8);
+const latToPct = (lat) => 3 + ((60 - lat) / 30) * (96 - 3);
+// Graticule ticks: major (labeled) every 10°, minor every 5° in between.
+const GRAT_X = [20, 25, 30, 35, 40, 45, 50, 55, 60].map(d => ({ deg: d, pct: lonToPct(d), major: d % 10 === 0 }));
+const GRAT_Y = [60, 55, 50, 45, 40, 35, 30].map(d => ({ deg: d, pct: latToPct(d), major: d % 10 === 0 }));
 
 function InstructorModal({ open, onClose, onUnlock }) {
   const [pw, setPw] = useState("");
