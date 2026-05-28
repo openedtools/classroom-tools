@@ -558,7 +558,7 @@ function MissionBrief() {
 }
 
 function MapPanel({ showReticle, showGrid, instructor, pin, onPinChange }) {
-  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ZABZIMEK CORRIDOR" } : { x: 66.5, y: 83.6, label: "ZABZIMEK CORRIDOR" };
+  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ATROPIAN AB · CAOC" } : { x: 66.5, y: 83.6, label: "ATROPIAN AB · CAOC" };
   const wrapRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [editingLabel, setEditingLabel] = useState(false);
@@ -778,7 +778,7 @@ const RESTORED_PHASE_IDS = _cfg.phaseIds || ["phase-0-overview"];
 const SESSION_KEY        = _cfg.sessionKey || "block6-student-session-v1";
 const STUDENT_PASSWORD   = _cfg.studentPassword || "ChangeMe";
 const INSTRUCTOR_KEY     = `${SESSION_KEY}-instructor`;
-const PIN_KEY            = `${SESSION_KEY}-pin-v2`;
+const PIN_KEY            = `${SESSION_KEY}-pin-v3`;
 
 // PHASE_ALIASES lets legacy phase IDs redirect to the current canonical
 // IDs (used when phase IDs are renamed mid-deployment to keep saved
@@ -1724,10 +1724,11 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const INSTRUCTOR_PASSWORD = "IITCInstructors";
-// Zabzimek Corridor — the Donovian-occupied objective and focus of the coalition
-// air campaign. Map projection runs 20°E-60°E horizontal and 60°N-30°N vertical;
-// the corridor sits at roughly 46°E / 34°N → (66.5, 83.6) in map-percentage coords.
-const PIN_DEFAULT = { x: 66.5, y: 83.6, label: "ZABZIMEK CORRIDOR" };
+// Atropian Air Base — the Coalition AOC where the students (international LNOs)
+// are assigned. This reticle marks "you are here." Map projection runs 20°E-60°E
+// horizontal and 60°N-30°N vertical; the CAOC sits at roughly 46°E / 34°N →
+// (66.5, 83.6) in map-percentage coordinates.
+const PIN_DEFAULT = { x: 66.5, y: 83.6, label: "ATROPIAN AB · CAOC" };
 
 // Map overlay shows 20°E–60°E horizontally, 60°N–30°N vertically.
 // Overlay axes inset from the wrap edges; approximate ranges below.
