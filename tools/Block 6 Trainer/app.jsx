@@ -551,14 +551,14 @@ function MissionBrief() {
         <span className="brief-pre">MISSION BRIEF //</span>
       </h1>
       <div className="brief-sub">
-        Coalition intelligence cell · [TBD mission brief sub-line — describe the assessment task for this scenario].
+        Coalition Air Operations Center · You are a newly arrived international Liaison Officer. Learn how the AOC is organized, what each division produces, and who holds authority — before the first ATO executes.
       </div>
     </section>
   );
 }
 
 function MapPanel({ showReticle, showGrid, instructor, pin, onPinChange }) {
-  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ATROPIAN AB · AOC" } : { x: 73, y: 65, label: "ATROPIAN AB · AOC" };
+  const safePin = pin && typeof pin.x === "number" ? { ...pin, label: pin.label || "ZABZIMEK CORRIDOR" } : { x: 66.5, y: 83.6, label: "ZABZIMEK CORRIDOR" };
   const wrapRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [editingLabel, setEditingLabel] = useState(false);
@@ -778,7 +778,7 @@ const RESTORED_PHASE_IDS = _cfg.phaseIds || ["phase-0-overview"];
 const SESSION_KEY        = _cfg.sessionKey || "block6-student-session-v1";
 const STUDENT_PASSWORD   = _cfg.studentPassword || "ChangeMe";
 const INSTRUCTOR_KEY     = `${SESSION_KEY}-instructor`;
-const PIN_KEY            = `${SESSION_KEY}-pin`;
+const PIN_KEY            = `${SESSION_KEY}-pin-v2`;
 
 // PHASE_ALIASES lets legacy phase IDs redirect to the current canonical
 // IDs (used when phase IDs are renamed mid-deployment to keep saved
@@ -1724,10 +1724,10 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const INSTRUCTOR_PASSWORD = "IITCInstructors";
-// Atropian Air Base — Coalition AOC location, ~220 km south of the Gorgas-Donovia
-// border. Map projection runs 20°E-60°E horizontal and 60°N-30°N vertical; AB
-// sits at roughly 49°E / 40°N → (73, 65) in map-percentage coordinates.
-const PIN_DEFAULT = { x: 73, y: 65, label: "ATROPIAN AB · AOC" };
+// Zabzimek Corridor — the Donovian-occupied objective and focus of the coalition
+// air campaign. Map projection runs 20°E-60°E horizontal and 60°N-30°N vertical;
+// the corridor sits at roughly 46°E / 34°N → (66.5, 83.6) in map-percentage coords.
+const PIN_DEFAULT = { x: 66.5, y: 83.6, label: "ZABZIMEK CORRIDOR" };
 
 // Map overlay shows 20°E–60°E horizontally, 60°N–30°N vertically.
 // Overlay axes inset from the wrap edges; approximate ranges below.

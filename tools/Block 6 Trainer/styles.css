@@ -252,12 +252,12 @@ body {
 .reticle.editable .ret-ring {
   box-shadow:
     0 0 0 1px rgba(7, 9, 13, 0.55),
-    0 0 20px rgba(167, 139, 250, 0.56),
-    0 0 44px rgba(167, 139, 250, 0.26);
+    0 0 20px rgba(91, 199, 122, 0.56),
+    0 0 44px rgba(91, 199, 122, 0.26);
 }
 .reticle.editable .ret-label { cursor: default; }
 .reticle.editable .ret-name { cursor: text; }
-.reticle.editable .ret-name:hover { background: rgba(167, 139, 250, 0.18); }
+.reticle.editable .ret-name:hover { background: rgba(91, 199, 122, 0.18); }
 
 .map-instructor-hint {
   position: absolute;
@@ -997,16 +997,16 @@ body {
   position: absolute;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  filter: drop-shadow(0 0 10px rgba(167, 139, 250, 0.45));
+  filter: drop-shadow(0 0 10px rgba(91, 199, 122, 0.45));
 }
 .ret-ring {
   width: 92px; height: 92px;
-  border: 2px solid var(--contested);
+  border: 2px solid var(--friendly);
   border-radius: 50%;
   box-shadow:
     0 0 0 1px rgba(7, 9, 13, 0.55),
-    0 0 20px rgba(167, 139, 250, 0.5),
-    0 0 44px rgba(167, 139, 250, 0.22);
+    0 0 20px rgba(91, 199, 122, 0.5),
+    0 0 44px rgba(91, 199, 122, 0.22);
   animation: ringpulse 2.4s ease-in-out infinite;
 }
 @keyframes ringpulse {
@@ -1018,29 +1018,29 @@ body {
   transform: translate(-50%, -50%);
   width: 124px; height: 124px;
   background:
-    radial-gradient(circle, rgba(167, 139, 250, 0.18) 0 5px, transparent 6px) center/100% 100% no-repeat,
-    linear-gradient(var(--contested), var(--contested)) center/2px 28px no-repeat,
-    linear-gradient(90deg, var(--contested), var(--contested)) center/28px 2px no-repeat;
+    radial-gradient(circle, rgba(91, 199, 122, 0.18) 0 5px, transparent 6px) center/100% 100% no-repeat,
+    linear-gradient(var(--friendly), var(--friendly)) center/2px 28px no-repeat,
+    linear-gradient(90deg, var(--friendly), var(--friendly)) center/28px 2px no-repeat;
 }
 .ret-label {
   position: absolute;
   top: 50%; left: calc(100% + 8px);
   transform: translateY(-50%);
   background: rgba(7, 9, 13, 0.9);
-  border: 1px solid var(--contested);
+  border: 1px solid var(--friendly);
   padding: 4px 8px;
   display: flex;
   flex-direction: column;
   white-space: nowrap;
-  box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.14), 0 0 18px rgba(167, 139, 250, 0.14);
+  box-shadow: 0 0 0 1px rgba(91, 199, 122, 0.14), 0 0 18px rgba(91, 199, 122, 0.14);
 }
 .ret-name {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
   letter-spacing: 0.14em;
-  color: var(--contested);
+  color: var(--friendly);
   font-weight: 700;
-  text-shadow: 0 0 10px rgba(167, 139, 250, 0.25);
+  text-shadow: 0 0 10px rgba(91, 199, 122, 0.25);
 }
 .ret-coord {
   font-size: 11px;
